@@ -1,0 +1,54 @@
+- model: core.qualificationlicense
+  fields:
+    name: Führerschein B
+- model: core.qualificationlicense
+  fields:
+    name: Führerschein BE
+- model: core.qualificationlicense
+  fields:
+    name: Führerschein E
+- model: core.qualificationlicense
+  fields:
+    name: Führerschein D1
+- model: core.qualificationlicense
+  fields:
+    name: Führerschein D1E
+- model: core.qualificationlicense
+  fields:
+    name: Führerschein D
+- model: core.qualificationlicense
+  fields:
+    name: Führerschein DE
+- model: core.qualificationlicense
+  fields:
+    name: Führerschein C1
+- model: core.qualificationlicense
+  fields:
+    name: Führerschein C1E
+- model: core.qualificationlicense
+  fields:
+    name: Führerschein CE
+- model: core.qualificationlicense
+  fields:
+    name: Führerschein C
+- model: core.qualificationlicense
+  fields:
+    name: Führerschein A2
+- model: core.qualificationlicense
+  fields:
+    name: Führerschein A1
+- model: core.qualificationlicense
+  fields:
+    name: Führerschein Boot
+- model: core.qualificationlicense
+  fields:
+    name: Führerschein A
+- model: core.qualificationlicense
+  fields:
+    name: Führerschein AM
+- model: core.qualificationlicense
+  fields:
+    name: Führerschein L
+- model: core.qualificationlicense
+  fields:
+    name: Führerschein T

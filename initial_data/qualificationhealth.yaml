@@ -1,0 +1,15 @@
+- model: core.qualificationhealth
+  fields:
+    name: Rettungsdienst-Qualifikation (unten eintragen)
+- model: core.qualificationhealth
+  fields:
+    name: Examinierte Pflegekraft
+- model: core.qualificationhealth
+  fields:
+    name: Gesundheits- und Krankenpfleger/in
+- model: core.qualificationhealth
+  fields:
+    name: Medizinisch Technische Assistenz
+- model: core.qualificationhealth
+  fields:
+    name: Mediziner/in

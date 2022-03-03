@@ -1,0 +1,21 @@
+- model: core.qualificationtechnical
+  fields:
+    name: Informationstechnik 
+- model: core.qualificationtechnical
+  fields:
+    name: Kommunikationstechnik
+- model: core.qualificationtechnical
+  fields:
+    name: Kleine Amateurfunklizenz
+- model: core.qualificationtechnical
+  fields:
+    name: Große Amateurfunklizenz
+- model: core.qualificationtechnical
+  fields:
+    name: Amateurfunkzeugnis der Klasse E
+- model: core.qualificationtechnical
+  fields:
+    name: Amateurfunkzeugnis der Klasse A
+- model: core.qualificationtechnical
+  fields:
+    name: Eigene Amateurfunkstation

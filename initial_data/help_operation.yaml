@@ -1,0 +1,18 @@
+- model: core.helpoperation
+  fields:
+    name: Einkaufen
+- model: core.helpoperation
+  fields:
+    name: Haushalt
+- model: core.helpoperation
+  fields:
+    name: Handwerkliche Tätigkeit
+- model: core.helpoperation
+  fields:
+    name: Fahrdienst - eigener PKW
+- model: core.helpoperation
+  fields:
+    name: Fahrdienst - eigener Transporter
+- model: core.helpoperation
+  fields:
+    name: Fahrdienst - gestelltes Fahrzeug

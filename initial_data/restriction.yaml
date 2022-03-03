@@ -1,0 +1,6 @@
+- model: core.restriction
+  fields:
+    name: kein schweres Heben
+- model: core.restriction
+  fields:
+    name: kein leichtes Heben

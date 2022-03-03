@@ -1,0 +1,66 @@
+- model: core.qualificationlanguage
+  fields:
+    name: Englisch
+- model: core.qualificationlanguage
+  fields:
+    name: Französisch
+- model: core.qualificationlanguage
+  fields:
+    name: Spanisch
+- model: core.qualificationlanguage
+  fields:
+    name: Arabisch
+- model: core.qualificationlanguage
+  fields:
+    name: Türkisch
+- model: core.qualificationlanguage
+  fields:
+    name: Polnisch
+- model: core.qualificationlanguage
+  fields:
+    name: Kurdisch
+- model: core.qualificationlanguage
+  fields:
+    name: Italienisch
+- model: core.qualificationlanguage
+  fields:
+    name: Griechisch
+- model: core.qualificationlanguage
+  fields:
+    name: Niederländisch
+- model: core.qualificationlanguage
+  fields:
+    name: Serbisch
+- model: core.qualificationlanguage
+  fields:
+    name: Kroatisch
+- model: core.qualificationlanguage
+  fields:
+    name: Ukrainisch
+- model: core.qualificationlanguage
+  fields:
+    name: Russisch
+- model: core.qualificationlanguage
+  fields:
+    name: Rumänisch
+- model: core.qualificationlanguage
+  fields:
+    name: Ungarisch
+- model: core.qualificationlanguage
+  fields:
+    name: Slowakisch
+- model: core.qualificationlanguage
+  fields:
+    name: Tschechisch
+- model: core.qualificationlanguage
+  fields:
+    name: Polnisch
+- model: core.qualificationlanguage
+  fields:
+    name: Litauisch
+- model: core.qualificationlanguage
+  fields:
+    name: Lettisch
+- model: core.qualificationlanguage
+  fields:
+    name: Estnisch

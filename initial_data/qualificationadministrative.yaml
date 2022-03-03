@@ -1,0 +1,9 @@
+- model: core.qualificationadministrative
+  fields:
+    name: Bürokaufmann/-frau
+- model: core.qualificationadministrative
+  fields:
+    name: Personalverwaltung
+- model: core.qualificationadministrative
+  fields:
+    name: Buchhalter/-in
