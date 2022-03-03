@@ -1,0 +1,11 @@
+Kontoaktivierung
+
+Sehr geehrte(r) {{ user.first_name }} {{ user.last_name }},
+
+wir freuen uns sehr, dass Sie sich anmelden.
+
+
+https://www.{{ site }}/accounts/activate/{{ activation_key }}/
+
+Herzliche Grüße,
+

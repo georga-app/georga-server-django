@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load static %}
+{% block main_content %}
+<p>Wollen Sie uns helfen und zum Team gehören? Hier können Sie sich registrieren, wenn Sie volljährig sind. Sie können angeben, für welche Tätigkeiten wir Sie im Bedarfsfall ansprechen dürfen. Auch Unternehmen können sich übrigens registrieren. <b>Wenn Sie Material/Fahrzeuge Ihres Arbeitgebers verwenden können, registrieren Sie dies am besten über den Link "Als Unternehmen registrieren".</b> Bei außerordentlichen Notfällen erhalten Sie dann einen Hilfeaufruf per E-Mail oder SMS. Ob Sie diesem Aufruf folgen, entscheiden Sie selbst.</p>
+<p><a href="../../faq/">FAQ</a></p>
+<p>&nbsp;</p>
+{# Assumes you setup the password_reset view in your URLconf #}
+{#<p><a href="{% url 'password_reset' %}">Passwort vergessen</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;#}
+<p><a href="../../accounts/register/">Als Einzelperson registrieren</a>&emsp;|&emsp;
+<a href="../../accounts/company_register/">Als Unternehmen registrieren</a></p>
+<br />
+<p><a href="../../imprint/">Impressum</a>&emsp;|&emsp;
+   <a href="../../data_protection/">Datenschutz</a>&emsp;|&emsp;
+    <a href="https://www.github.com/stoffels-it/call_for_volunteers"><img src="{% static 'img/cotocat_50.jpg' %}" />Quelltext der Software auf Github</a></p>
+{% endblock %}

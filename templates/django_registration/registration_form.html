@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% load crispy_forms_tags %}
+{% crispy sign_up_form sign_up_form.helper %}
+
+{% block main_content %}
+<a href="{{ site }}">zurück zur Hauptseite</a>
+<br />
+<br />
+<br />
+  <h2>Als Einzelperson registrieren</h2>
+  <form method="post">
+    {% csrf_token %}
+    <div class="form-row">
+	<div class="form-group col-sm-2 mb-0">
+	    {{ form.title|as_crispy_field }}
+	</div>
+	<div class="form-group col-sm-4 mb-0">
+	    {{ form.firstname|as_crispy_field }}
+	</div>
+	<div class="form-group col-sm-4 mb-0">
+	    {{ form.lastname|as_crispy_field }}
+	</div>
+    </div>
+    <div class="form-row">
+	<div class="form-group col-sm-6 mb-0">
+    	    {{ form.email|as_crispy_field }}
+	</div>
+	<div class="form-group col-sm-4 mb-0">
+    	    {{ form.expiration_date|as_crispy_field }}
+	</div>
+    </div>
+    <div class="form-row">
+	<div class="form-group col-sm-6 mb-0">
+    	    {{ form.private_phone|as_crispy_field }}
+	</div>
+	<div class="form-group col-sm-4 mb-0">
+    	    {{ form.mobile_phone|as_crispy_field }}
+	</div>
+    </div>
+    <div class="form-row">
+	<div class="form-group col-sm-12 mb-0">
+	    <div><b>Zu welchen Zeiten wären Sie vorwiegend zum Helfen verfügbar?<br /></b>
+		    Optional. Kann später angepasst werden.
+	    </div>
+	</div>
+	<div class="form-group col-sm-2 mb-0">
+	    {{ form.possible_work_times_mon|as_crispy_field }}
+	</div>
+	<div class="form-group col-sm-2 mb-0">
+	    {{ form.possible_work_times_tue|as_crispy_field }}
+	</div>
+	<div class="form-group col-sm-2 mb-0">
+	    {{ form.possible_work_times_wed|as_crispy_field }}
+	</div>
+	<div class="form-group col-sm-2 mb-0">
+	    {{ form.possible_work_times_thu|as_crispy_field }}
+	</div>
+	<div class="form-group col-sm-2 mb-0">
+	    {{ form.possible_work_times_fri|as_crispy_field }}
+	</div>
+	<div class="form-group col-sm-2 mb-0">
+	    {{ form.possible_work_times_sat|as_crispy_field }}
+	</div>
+	<div class="form-group col-sm-2 mb-0">
+	    {{ form.possible_work_times_sun|as_crispy_field }}
+	</div>
+    </div>
+    <div class="form-row">
+	<div class="form-group col-sm-4 mb-0">
+	    {{ form.street|as_crispy_field }}
+	</div>
+	<div class="form-group col-sm-2 mb-0">
+	    {{ form.number|as_crispy_field }}
+	</div>
+    </div>
+    <div class="form-row">
+	<div class="form-group col-sm-2 mb-0">
+	    {{ form.postal_code|as_crispy_field }}
+	</div>
+	<div class="form-group col-sm-6 mb-0">
+	    {{ form.city|as_crispy_field }}
+	</div>
+    </div>
+    <div class="form-row">
+	<div class="form-group col-sm-4">
+	    {{ form.drk_honorary|as_crispy_field }}
+	</div>
+	<div class="form-group col-sm-4">
+	    {{ form.drk_employee|as_crispy_field }}
+	</div>
+	<div class="form-group col-sm-4">
+	    {{ form.drk_home|as_crispy_field }}
+	</div>
+    </div>
+    <div class="form-row">
+	<div class="form-group col-sm-10 mb-0">
+	    {{ form.occupation|as_crispy_field }}
+	</div>
+    </div>
+    <div class="form-row">
+	<div class="form-group col-sm-6 mb-0">
+	    {{ form.available_for_cleaning|as_crispy_field }}
+	</div>
+	<div class="form-group col-sm-6 mb-0">
+	    {{ form.only_job_related_topics|as_crispy_field }}
+	</div>
+    </div>
+    <div class="form-row">
+	<div class="form-group col-sm-4 mb-0">
+	    {{ form.qualifications_language|as_crispy_field }}
+	</div>
+	<div class="form-group col-sm-4 mb-0">
+	    {{ form.qualifications_license|as_crispy_field }}
+	</div>
+	<div class="form-group col-sm-4 mb-0">
+	    {{ form.qualifications_health|as_crispy_field }}
+	</div>
+    </div>
+    <div class="form-row">
+	<div class="form-group col-sm-4 mb-0">
+	    {{ form.qualifications_technical|as_crispy_field }}
+	</div>
+	<div class="form-group col-sm-4 mb-0">
+	    {{ form.qualifications_administrative|as_crispy_field }}
+	</div>
+	<div class="form-group col-sm-4 mb-0">
+	    {{ form.qualification_specific|as_crispy_field }}
+	</div>
+    </div>
+    <div class="form-row">
+	<div class="form-group col-sm-6 mb-0">
+	    {{ form.restrictions|as_crispy_field }}
+	</div>
+	<div class="form-group col-sm-6 mb-0">
+	    {{ form.restriction_specific|as_crispy_field }}
+	</div>
+    </div>
+    <div class="form-row">
+	<div class="form-group col-sm-6 mb-0">
+	    {{ form.help_operations|as_crispy_field }}
+	</div>
+	<div class="form-group col-sm-6 mb-0">
+	    {{ form.help_description|as_crispy_field }}
+	</div>
+    </div>
+    <br />
+    <br />
+    <div class="form-row">
+	<div class="form-group col-sm-10 mb-0">
+	    {{ form.tos|as_crispy_field }}
+	</div>
+    </div>
+    <br />
+    <br />
+    <button type="submit" class="btn btn-primary">Registrieren</button>
+  </form>
+{% endblock %}
