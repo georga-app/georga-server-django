@@ -1,14 +1,15 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block main_content %}
-    <p><a href="{{ request.get_host() }}">zurück zur Hauptseite</a></p>
+    <p><a href="{% url 'index' %}">zurück zur Hauptseite</a></p>
 
     <h4>Anbieterkennung nach § 5 TMG</h4>
 
     <p>Organisation mit Adresse</p>
 
     <p>
-        <a href="https://www.github.com/georga-app">
+        <a href="{{ GITHUB_URL }}">
             <img src="{% static 'img/octocat_50.jpg' %}"/>Code auf Github</a>
     </p>
 {% endblock %}
