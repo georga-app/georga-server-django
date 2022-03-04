@@ -3,6 +3,7 @@ import uuid
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.db.models import CharField
+from phonenumber_field.modelfields import PhoneNumberField
 
 WEEKDAYS = [
     (1, ("Monday")),
@@ -150,19 +151,19 @@ class Person(AbstractUser):
         verbose_name="Verfügbarkeitszeiten für Hilfe",
         related_name="general_work_availability",
     )
-    company_phone = CharField(
+    company_phone = PhoneNumberField(
         null=True,
         blank=True,
         max_length=20,
         verbose_name="Geschäftsnummer Festnetz",
     )
-    company_phone_mobile = CharField(
+    company_phone_mobile = PhoneNumberField(
         null=True,
         blank=True,
         max_length=20,
         verbose_name="Geschäftsnummer Mobil",
     )
-    emergency_phone = CharField(
+    emergency_phone = PhoneNumberField(
         null=True,
         blank=True,
         max_length=20,
@@ -202,13 +203,13 @@ class Person(AbstractUser):
         blank=True,
         verbose_name="Ort",
     )
-    private_phone = CharField(
+    private_phone = PhoneNumberField(
         null=True,
         blank=True,
         max_length=20,
         verbose_name="Festnetznummer",
     )
-    mobile_phone = CharField(
+    mobile_phone = PhoneNumberField(
         null=True,
         blank=True,
         max_length=20,

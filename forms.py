@@ -1,14 +1,13 @@
 import datetime
 import logging
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 from django_registration.forms import RegistrationFormUniqueEmail, RegistrationFormTermsOfService
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
-from phone_field import PhoneFormField
-from .models import *
+from phonenumber_field.formfields import PhoneNumberField
+
+from .models import Person, QualificationLanguage, QualificationTechnical, QualificationHealth, QualificationLicense, QualificationAdministrative, Restriction, HelpOperation, GeneralWorkAvailability
 
 logger = logging.getLogger('forms')
 
@@ -16,6 +15,7 @@ general_work_widget = forms.MultiWidget(widgets=[
     forms.CheckboxSelectMultiple,
     forms.CheckboxSelectMultiple
 ]),
+
 
 class SignUpForm(RegistrationFormUniqueEmail, RegistrationFormTermsOfService):
     def __init__(self, *args, **kwargs):
@@ -34,7 +34,6 @@ class SignUpForm(RegistrationFormUniqueEmail, RegistrationFormTermsOfService):
             "min": (datetime.date.today() + datetime.timedelta(days=1)).isoformat()
         })
 
-
     password1 = forms.CharField(
         max_length=30,
         required=False,
@@ -47,12 +46,12 @@ class SignUpForm(RegistrationFormUniqueEmail, RegistrationFormTermsOfService):
         label="Password2",
         help_text="Optionale Angabe",
     )
-    #company = forms.CharField(
+    # company = forms.CharField(
     #    max_length=50,
     #    required=False,
     #    label="Firmenname",
     #    help_text="Erforderlich",
-    #)
+    # )
     title = forms.ChoiceField(
         label="Anrede",
         required=False,
@@ -88,7 +87,7 @@ class SignUpForm(RegistrationFormUniqueEmail, RegistrationFormTermsOfService):
         label="Festnetznummer",
         help_text="Optional.",
     )
-    mobile_phone = forms.CharField(
+    mobile_phone = PhoneNumberField(
         label="Mobilnummer",
         help_text="Optional.",
     )
@@ -122,7 +121,7 @@ class SignUpForm(RegistrationFormUniqueEmail, RegistrationFormTermsOfService):
         max_length=50,
         required=False,
         label="Beruf / Branche",
-        help_text="Angestellt, Student (Fach, Semster), Freiberuflich? - Freiwillige Angabe",
+        help_text="Angestellt, Student (Fach, Semester), Freiberuflich? - Freiwillige Angabe",
     )
     qualifications_language = forms.MultipleChoiceField(
         widget=forms.CheckboxSelectMultiple,
@@ -200,7 +199,7 @@ class SignUpForm(RegistrationFormUniqueEmail, RegistrationFormTermsOfService):
     )
     possible_work_times_mon = forms.MultipleChoiceField(
         widget=forms.CheckboxSelectMultiple,
-        choices = (
+        choices=(
             (1, "vormittags"),
             (2, "nachmittags"),
             (3, "abends"),
@@ -210,7 +209,7 @@ class SignUpForm(RegistrationFormUniqueEmail, RegistrationFormTermsOfService):
     )
     possible_work_times_tue = forms.MultipleChoiceField(
         widget=forms.CheckboxSelectMultiple,
-        choices = (
+        choices=(
             (1, "vormittags"),
             (2, "nachmittags"),
             (3, "abends"),
@@ -220,7 +219,7 @@ class SignUpForm(RegistrationFormUniqueEmail, RegistrationFormTermsOfService):
     )
     possible_work_times_wed = forms.MultipleChoiceField(
         widget=forms.CheckboxSelectMultiple,
-        choices = (
+        choices=(
             (1, "vormittags"),
             (2, "nachmittags"),
             (3, "abends"),
@@ -230,7 +229,7 @@ class SignUpForm(RegistrationFormUniqueEmail, RegistrationFormTermsOfService):
     )
     possible_work_times_thu = forms.MultipleChoiceField(
         widget=forms.CheckboxSelectMultiple,
-        choices = (
+        choices=(
             (1, "vormittags"),
             (2, "nachmittags"),
             (3, "abends"),
@@ -240,7 +239,7 @@ class SignUpForm(RegistrationFormUniqueEmail, RegistrationFormTermsOfService):
     )
     possible_work_times_fri = forms.MultipleChoiceField(
         widget=forms.CheckboxSelectMultiple,
-        choices = (
+        choices=(
             (1, "vormittags"),
             (2, "nachmittags"),
             (3, "abends"),
@@ -250,7 +249,7 @@ class SignUpForm(RegistrationFormUniqueEmail, RegistrationFormTermsOfService):
     )
     possible_work_times_sat = forms.MultipleChoiceField(
         widget=forms.CheckboxSelectMultiple,
-        choices = (
+        choices=(
             (1, "vormittags"),
             (2, "nachmittags"),
             (3, "abends"),
@@ -260,7 +259,7 @@ class SignUpForm(RegistrationFormUniqueEmail, RegistrationFormTermsOfService):
     )
     possible_work_times_sun = forms.MultipleChoiceField(
         widget=forms.CheckboxSelectMultiple,
-        choices = (
+        choices=(
             (1, "vormittags"),
             (2, "nachmittags"),
             (3, "abends"),
@@ -270,12 +269,12 @@ class SignUpForm(RegistrationFormUniqueEmail, RegistrationFormTermsOfService):
     )
     drk_honorary = forms.BooleanField(
         widget=forms.CheckboxInput,
-        label= "Ehrenamtliches Mitglied vom DRK",
+        label="Ehrenamtliches Mitglied vom DRK",
         required=False,
     )
     drk_employee = forms.BooleanField(
         widget=forms.CheckboxInput,
-        label= "Hauptamtlich (angestellt) tätig beim DRK",
+        label="Hauptamtlich (angestellt) tätig beim DRK",
         required=False,
     )
     drk_home = forms.CharField(
@@ -299,10 +298,9 @@ class SignUpForm(RegistrationFormUniqueEmail, RegistrationFormTermsOfService):
     )
     tos = forms.BooleanField(
         widget=forms.CheckboxInput,
-        label= "Ich habe die <a href='https://www.drk-team-bonn.de/data_protection/'>Datenschutzerklärung</a> zur Kenntnis genommen. Ich willige ein, dass meine Angaben und Daten zur Beantwortung meiner Anfrage elektronisch erhoben und gespeichert werden.",
+        label="Ich habe die <a href='https://www.drk-team-bonn.de/data_protection/'>Datenschutzerklärung</a> zur Kenntnis genommen. Ich willige ein, dass meine Angaben und Daten zur Beantwortung meiner Anfrage elektronisch erhoben und gespeichert werden.",
         error_messages={'required': "Die Registrierung erfordert eine Bestätigung der Datenschutzerklärung."},
     )
-
 
     field_order = [
         'title',
@@ -344,11 +342,11 @@ class SignUpForm(RegistrationFormUniqueEmail, RegistrationFormTermsOfService):
             'restrictions',
             'restriction_specific',
             'tos',
-            #'captcha',
+            # 'captcha',
         )
 
     def save(self, commit=True):
-        #person = super(SignUpForm, self).save(commit=commit)
+        # person = super(SignUpForm, self).save(commit=commit)
         person = Person()
         person.title = self.cleaned_data['title']
         person.email = self.cleaned_data['email']
@@ -383,7 +381,7 @@ class SignUpForm(RegistrationFormUniqueEmail, RegistrationFormTermsOfService):
             person.mobile_phone = self.cleaned_data['mobile_phone']
         except Exception as e:
             pass
-        #if commit:
+        # if commit:
         person.save()
         try:
             person.qualification_specific = self.cleaned_data['qualification_specific']
@@ -598,7 +596,7 @@ class SignUpForm(RegistrationFormUniqueEmail, RegistrationFormTermsOfService):
         except Exception as e:
             pass
 
-        #if commit:
+        # if commit:
         person.save()
         return person
 
@@ -610,38 +608,38 @@ class SignUpForm(RegistrationFormUniqueEmail, RegistrationFormTermsOfService):
 
 
 class CompanySignUpForm(SignUpForm):
-
     company = forms.CharField(
         max_length=50,
         required=True,
         label="Firmenname",
         help_text="Erforderlich",
     )
-    company_phone = PhoneFormField(
+    company_phone = PhoneNumberField(
         required=False,
         label="Festnetznummer",
         help_text="Optional",
     )
-    company_phone_mobile = PhoneFormField(
+    company_phone_mobile = PhoneNumberField(
         required=False,
         label="Mobilnummer",
         help_text="Optional",
     )
-    emergency_phone = PhoneFormField(
+    emergency_phone = PhoneNumberField(
         required=False,
         label="Notfallnummer",
         help_text="Optionale. Notfall-Rufnummer, falls möglich.",
     )
-    #opening_times_mon = forms.MultipleChoiceField(
+
+    # opening_times_mon = forms.MultipleChoiceField(
     #    widget=forms.MultiWidget(widgets=[
     #    forms.DateInput(format='%d/%m/%Y'),
     #    forms.DateInput(format='%d/%m/%Y')
     #    ]),
     #    required=False,
     #    label="Montag",
-    #)
+    # )
     def save(self, commit=True):
-        #person = super(CompanySignUpForm, self).save(commit=True)
+        # person = super(CompanySignUpForm, self).save(commit=True)
         person = Person()
         person.title = self.cleaned_data['title']
         person.company = self.cleaned_data['company']
@@ -659,7 +657,6 @@ class CompanySignUpForm(SignUpForm):
         person.city = self.cleaned_data['city']
         person.occupation = self.cleaned_data['occupation']
         person.help_description = self.cleaned_data['help_description']
-        #if commit:
+        # if commit:
         person.save()
         return person
-
