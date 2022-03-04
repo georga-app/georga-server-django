@@ -1,11 +1,17 @@
 {% extends "base.html" %}
 
 {% block main_content %}
-  <h2>Kontoaktivierung</h2>
-{% if activation_error and activation_error.code == 'already_activated' %}
-  <p>Ihr Benutzerkontos ist bereits aktiviert. Bitte kontaktieren Sie bei Schwierigkeiten <mya></mya>.</p>
-{% else %}
-  <p>Bei der Aktivierung des Benutzerkontos ist etwas schief gegangen. Bitte kontaktieren Sie bei Schwierigkeiten <mya></mya>.</p>
-  <p>Fehler: {{ activation_error.message }} (Code: <tt>{{ activation_error.code }}</tt>)</p>
-{% endif %}
+    <h2>Kontoaktivierung</h2>
+    {% if activation_error and activation_error.code == 'already_activated' %}
+        <p>Ihr Benutzerkontos ist bereits aktiviert. Bitte kontaktieren Sie bei Schwierigkeiten
+            <mya></mya>
+            .
+        </p>
+    {% else %}
+        <p>Bei der Aktivierung des Benutzerkontos ist etwas schief gegangen. Bitte kontaktieren Sie bei Schwierigkeiten
+            <mya></mya>
+            .
+        </p>
+        <p>Fehler: {{ activation_error.message }} (Code: <tt>{{ activation_error.code }}</tt>)</p>
+    {% endif %}
 {% endblock %}

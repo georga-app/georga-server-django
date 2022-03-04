@@ -3,85 +3,85 @@
 {% load crispy_forms_tags %}
 
 {% block main_content %}
-<a href="https://www.drk-team-bonn.de/">zurück zur Hauptseite</a>
-<br />
-<br />
-<br />
-  <h2>Als Unternehmen registrieren</h2>
-  <form method="post">
-    {% csrf_token %}
-    <div class="form-row">
-	<div class="form-group col-sm-6 mb-0">
-	    {{ form.company|as_crispy_field }}
-	</div>
-    </div>
-    <div>Ansprechpartner</div>
-    <div class="form-row">
-	<div class="form-group col-sm-2 mb-0">
-	    {{ form.title|as_crispy_field }}
-	</div>
-	<div class="form-group col-sm-4 mb-0">
-	    {{ form.firstname|as_crispy_field }}
-	</div>
-	<div class="form-group col-sm-4 mb-0">
-	    {{ form.lastname|as_crispy_field }}
-	</div>
-    </div>
-    <div class="form-row">
-	<div class="form-group col-sm-6 mb-0">
-    	    {{ form.email|as_crispy_field }}
-	</div>
-	<div class="form-group col-sm-4 mb-0">
-    	    {{ form.expiration_date|as_crispy_field }}
-	</div>
-    <div class="form-row">
-	<div class="form-group col-sm-6 mb-0">
-	    {{ form.company_phone|as_crispy_field }}
-	</div>
-	<div class="form-group col-sm-6 mb-0">
-	    {{ form.company_phone_mobile|as_crispy_field }}
-	</div>
-	<div class="form-group col-sm-6 mb-0">
-	    {{ form.emergency_phone|as_crispy_field }}
-	</div>
-    </div>
-    </div>
-    <div class="form-row">
-	<div class="form-group col-sm-4 mb-0">
-	    {{ form.street|as_crispy_field }}
-	</div>
-	<div class="form-group col-sm-2 mb-0">
-	    {{ form.number|as_crispy_field }}
-	</div>
-    </div>
-    <div class="form-row">
-	<div class="form-group col-sm-2 mb-0">
-	    {{ form.postal_code|as_crispy_field }}
-	</div>
-	<div class="form-group col-sm-6 mb-0">
-	    {{ form.city|as_crispy_field }}
-	</div>
-    </div>
-    <div class="form-row">
-	<div class="form-group col-sm-10 mb-0">
-	    {{ form.occupation|as_crispy_field }}
-	</div>
-    </div>
-    <div class="form-row">
-	<div class="form-group col-sm-6 mb-0">
-	    {{ form.help_description|as_crispy_field }}
-	</div>
-    </div>
-    <br />
-    <br />
-    <div class="form-row">
-	<div class="form-group col-sm-10 mb-0">
-	    {{ form.tos|as_crispy_field }}
-	</div>
-    </div>
-    <br />
-    <br />
+    <a href="/">zurück zur Hauptseite</a>
+    <br/>
+    <br/>
+    <br/>
+    <h2>Als Unternehmen registrieren</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-row">
+            <div class="form-group col-sm-6 mb-0">
+                {{ form.company|as_crispy_field }}
+            </div>
+        </div>
+        <div>Ansprechpartner</div>
+        <div class="form-row">
+            <div class="form-group col-sm-2 mb-0">
+                {{ form.title|as_crispy_field }}
+            </div>
+            <div class="form-group col-sm-4 mb-0">
+                {{ form.firstname|as_crispy_field }}
+            </div>
+            <div class="form-group col-sm-4 mb-0">
+                {{ form.lastname|as_crispy_field }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-sm-6 mb-0">
+                {{ form.email|as_crispy_field }}
+            </div>
+            <div class="form-group col-sm-4 mb-0">
+                {{ form.expiration_date|as_crispy_field }}
+            </div>
+            <div class="form-row">
+                <div class="form-group col-sm-6 mb-0">
+                    {{ form.company_phone|as_crispy_field }}
+                </div>
+                <div class="form-group col-sm-6 mb-0">
+                    {{ form.company_phone_mobile|as_crispy_field }}
+                </div>
+                <div class="form-group col-sm-6 mb-0">
+                    {{ form.emergency_phone|as_crispy_field }}
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-sm-4 mb-0">
+                {{ form.street|as_crispy_field }}
+            </div>
+            <div class="form-group col-sm-2 mb-0">
+                {{ form.number|as_crispy_field }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-sm-2 mb-0">
+                {{ form.postal_code|as_crispy_field }}
+            </div>
+            <div class="form-group col-sm-6 mb-0">
+                {{ form.city|as_crispy_field }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-sm-10 mb-0">
+                {{ form.occupation|as_crispy_field }}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-sm-6 mb-0">
+                {{ form.help_description|as_crispy_field }}
+            </div>
+        </div>
+        <br/>
+        <br/>
+        <div class="form-row">
+            <div class="form-group col-sm-10 mb-0">
+                {{ form.tos|as_crispy_field }}
+            </div>
+        </div>
+        <br/>
+        <br/>
 
-    <button type="submit" class="btn btn-primary">Registrieren</button>
-  </form>
+        <button type="submit" class="btn btn-primary">Registrieren</button>
+    </form>
 {% endblock %}

@@ -1,13 +1,17 @@
 {% extends "base.html" %}
 
 {% block main_content %}
-  <h2>Registrierung</h2>
-  <p>Die Registrierung ist nicht möglich. Bitte kontaktieren Sie bei Schwierigkeiten <mya></mya>.</p>
-{% if errors %}
-  <p>Die folgenden Fehler sind aufgetreten:</p><ul>
-{% for field, error in errors.items %}
-    <li><tt>{{ field }}</tt>: {{ error }}</li>
-{% endfor %}
-  </ul>
-{% endif %}
+    <h2>Registrierung</h2>
+    <p>Die Registrierung ist nicht möglich. Bitte kontaktieren Sie bei Schwierigkeiten
+        <mya></mya>
+        .
+    </p>
+    {% if errors %}
+        <p>Die folgenden Fehler sind aufgetreten:</p>
+        <ul>
+            {% for field, error in errors.items %}
+                <li><tt>{{ field }}</tt>: {{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 {% endblock %}

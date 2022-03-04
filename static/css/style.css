@@ -1,0 +1,64 @@
+body {
+    font-family: "Arial", Fallback, sans-serif;
+    color: black;
+    font-size: 1rem;
+}
+
+.center {
+    margin: auto;
+    max-width: 800px;
+    margin-top: 5%;
+    padding: 8px;
+    margin-bottom: 5%;
+}
+
+.logo {
+    float: right;
+}
+
+.title {
+    display: inline-block;
+}
+
+.header {
+    display: block;
+}
+
+h1 {
+    color: #e46450;
+}
+h2 {
+    color: #e46450;
+}
+h3 {
+    color: #e46450;
+}
+h4 {
+    color: #e46450;
+}
+h5 {
+    color: #e46450;
+}
+
+a, a:hover {
+    color: #0075a9;
+}
+
+label {
+    font-weight: bold;
+}
+
+.form-check > label {
+    font-weight: normal;
+}
+
+.custom-checkbox > label {
+    font-weight: normal;
+}
+
+.phone-field-ext { display: none; }
+#id_private_phone_1 { display: none; }
+#id_mobile_phone_1 { display: none; }
+#id_emergency_phone_1 { display: none; }
+#id_company_phone_1 { display: none; }
+#id_company_phone_mobile_1 { display: none; }
