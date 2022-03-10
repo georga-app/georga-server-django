@@ -13,5 +13,5 @@ COPY examplefiles/settings.py /code/publicsite/publicsite/settings.py
 COPY examplefiles/urls.py /code/publicsite/publicsite/urls.py
 
 WORKDIR /code/publicsite/
-
-ENTRYPOINT /startup.sh
+RUN chmod +x /startup.sh && chmod +x /code/publicsite/call_for_volunteers/scripts/*
+CMD /startup.sh
