@@ -1,54 +1,54 @@
-- model: core.qualificationlicense
+- model: call_for_volunteers.qualificationlicense
   fields:
     name: Führerschein B
-- model: core.qualificationlicense
+- model: call_for_volunteers.qualificationlicense
   fields:
     name: Führerschein BE
-- model: core.qualificationlicense
+- model: call_for_volunteers.qualificationlicense
   fields:
     name: Führerschein E
-- model: core.qualificationlicense
+- model: call_for_volunteers.qualificationlicense
   fields:
     name: Führerschein D1
-- model: core.qualificationlicense
+- model: call_for_volunteers.qualificationlicense
   fields:
     name: Führerschein D1E
-- model: core.qualificationlicense
+- model: call_for_volunteers.qualificationlicense
   fields:
     name: Führerschein D
-- model: core.qualificationlicense
+- model: call_for_volunteers.qualificationlicense
   fields:
     name: Führerschein DE
-- model: core.qualificationlicense
+- model: call_for_volunteers.qualificationlicense
   fields:
     name: Führerschein C1
-- model: core.qualificationlicense
+- model: call_for_volunteers.qualificationlicense
   fields:
     name: Führerschein C1E
-- model: core.qualificationlicense
+- model: call_for_volunteers.qualificationlicense
   fields:
     name: Führerschein CE
-- model: core.qualificationlicense
+- model: call_for_volunteers.qualificationlicense
   fields:
     name: Führerschein C
-- model: core.qualificationlicense
+- model: call_for_volunteers.qualificationlicense
   fields:
     name: Führerschein A2
-- model: core.qualificationlicense
+- model: call_for_volunteers.qualificationlicense
   fields:
     name: Führerschein A1
-- model: core.qualificationlicense
+- model: call_for_volunteers.qualificationlicense
   fields:
     name: Führerschein Boot
-- model: core.qualificationlicense
+- model: call_for_volunteers.qualificationlicense
   fields:
     name: Führerschein A
-- model: core.qualificationlicense
+- model: call_for_volunteers.qualificationlicense
   fields:
     name: Führerschein AM
-- model: core.qualificationlicense
+- model: call_for_volunteers.qualificationlicense
   fields:
     name: Führerschein L
-- model: core.qualificationlicense
+- model: call_for_volunteers.qualificationlicense
   fields:
     name: Führerschein T

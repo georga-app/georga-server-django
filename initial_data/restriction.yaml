@@ -1,6 +1,6 @@
-- model: core.restriction
+- model: call_for_volunteers.restriction
   fields:
     name: kein schweres Heben
-- model: core.restriction
+- model: call_for_volunteers.restriction
   fields:
     name: kein leichtes Heben

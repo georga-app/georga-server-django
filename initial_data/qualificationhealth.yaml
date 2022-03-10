@@ -1,15 +1,15 @@
-- model: core.qualificationhealth
+- model: call_for_volunteers.qualificationhealth
   fields:
     name: Rettungsdienst-Qualifikation (unten eintragen)
-- model: core.qualificationhealth
+- model: call_for_volunteers.qualificationhealth
   fields:
     name: Examinierte Pflegekraft
-- model: core.qualificationhealth
+- model: call_for_volunteers.qualificationhealth
   fields:
     name: Gesundheits- und Krankenpfleger/in
-- model: core.qualificationhealth
+- model: call_for_volunteers.qualificationhealth
   fields:
     name: Medizinisch Technische Assistenz
-- model: core.qualificationhealth
+- model: call_for_volunteers.qualificationhealth
   fields:
     name: Mediziner/in
