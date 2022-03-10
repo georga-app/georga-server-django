@@ -17,4 +17,4 @@ jobs:
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag call_for_volunteers:$(date +%s)
     - name: Run tests
-      run: docker run -it call_for_volunteers:$(date +%s) "/code/publicsite/call_for_volunteers/scripts/tests.sh"
+      run: docker run call_for_volunteers:$(date +%s) "/code/publicsite/call_for_volunteers/scripts/tests.sh"
