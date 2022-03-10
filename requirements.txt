@@ -1,4 +1,4 @@
-Django==4.0.3
+Django==3.2.12
 psycopg2==2.9.3
 python-dotenv==0.19.2
 PyYAML==6.0
@@ -6,3 +6,8 @@ django-crispy-forms==1.14.0
 django-phonenumber-field==6.1.0
 phonenumbers==8.12.44
 django-registration==3.2
+djangorestframework==3.13.1
+Markdown==3.3.6
+django-filter==21.1
+drf-spectacular==0.21.2
+graphene-django==2.15.0
