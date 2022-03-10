@@ -1,21 +1,21 @@
-- model: core.qualificationtechnical
+- model: call_for_volunteers.qualificationtechnical
   fields:
-    name: Informationstechnik 
-- model: core.qualificationtechnical
+    name: Informationstechnik
+- model: call_for_volunteers.qualificationtechnical
   fields:
     name: Kommunikationstechnik
-- model: core.qualificationtechnical
+- model: call_for_volunteers.qualificationtechnical
   fields:
     name: Kleine Amateurfunklizenz
-- model: core.qualificationtechnical
+- model: call_for_volunteers.qualificationtechnical
   fields:
     name: Große Amateurfunklizenz
-- model: core.qualificationtechnical
+- model: call_for_volunteers.qualificationtechnical
   fields:
     name: Amateurfunkzeugnis der Klasse E
-- model: core.qualificationtechnical
+- model: call_for_volunteers.qualificationtechnical
   fields:
     name: Amateurfunkzeugnis der Klasse A
-- model: core.qualificationtechnical
+- model: call_for_volunteers.qualificationtechnical
   fields:
     name: Eigene Amateurfunkstation

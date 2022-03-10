@@ -1,18 +1,18 @@
-- model: core.helpoperation
+- model: call_for_volunteers.helpoperation
   fields:
     name: Einkaufen
-- model: core.helpoperation
+- model: call_for_volunteers.helpoperation
   fields:
     name: Haushalt
-- model: core.helpoperation
+- model: call_for_volunteers.helpoperation
   fields:
     name: Handwerkliche Tätigkeit
-- model: core.helpoperation
+- model: call_for_volunteers.helpoperation
   fields:
     name: Fahrdienst - eigener PKW
-- model: core.helpoperation
+- model: call_for_volunteers.helpoperation
   fields:
     name: Fahrdienst - eigener Transporter
-- model: core.helpoperation
+- model: call_for_volunteers.helpoperation
   fields:
     name: Fahrdienst - gestelltes Fahrzeug

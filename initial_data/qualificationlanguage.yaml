@@ -1,66 +1,66 @@
-- model: core.qualificationlanguage
+- model: call_for_volunteers.qualificationlanguage
   fields:
     name: Englisch
-- model: core.qualificationlanguage
+- model: call_for_volunteers.qualificationlanguage
   fields:
     name: Französisch
-- model: core.qualificationlanguage
+- model: call_for_volunteers.qualificationlanguage
   fields:
     name: Spanisch
-- model: core.qualificationlanguage
+- model: call_for_volunteers.qualificationlanguage
   fields:
     name: Arabisch
-- model: core.qualificationlanguage
+- model: call_for_volunteers.qualificationlanguage
   fields:
     name: Türkisch
-- model: core.qualificationlanguage
+- model: call_for_volunteers.qualificationlanguage
   fields:
     name: Polnisch
-- model: core.qualificationlanguage
+- model: call_for_volunteers.qualificationlanguage
   fields:
     name: Kurdisch
-- model: core.qualificationlanguage
+- model: call_for_volunteers.qualificationlanguage
   fields:
     name: Italienisch
-- model: core.qualificationlanguage
+- model: call_for_volunteers.qualificationlanguage
   fields:
     name: Griechisch
-- model: core.qualificationlanguage
+- model: call_for_volunteers.qualificationlanguage
   fields:
     name: Niederländisch
-- model: core.qualificationlanguage
+- model: call_for_volunteers.qualificationlanguage
   fields:
     name: Serbisch
-- model: core.qualificationlanguage
+- model: call_for_volunteers.qualificationlanguage
   fields:
     name: Kroatisch
-- model: core.qualificationlanguage
+- model: call_for_volunteers.qualificationlanguage
   fields:
     name: Ukrainisch
-- model: core.qualificationlanguage
+- model: call_for_volunteers.qualificationlanguage
   fields:
     name: Russisch
-- model: core.qualificationlanguage
+- model: call_for_volunteers.qualificationlanguage
   fields:
     name: Rumänisch
-- model: core.qualificationlanguage
+- model: call_for_volunteers.qualificationlanguage
   fields:
     name: Ungarisch
-- model: core.qualificationlanguage
+- model: call_for_volunteers.qualificationlanguage
   fields:
     name: Slowakisch
-- model: core.qualificationlanguage
+- model: call_for_volunteers.qualificationlanguage
   fields:
     name: Tschechisch
-- model: core.qualificationlanguage
+- model: call_for_volunteers.qualificationlanguage
   fields:
     name: Polnisch
-- model: core.qualificationlanguage
+- model: call_for_volunteers.qualificationlanguage
   fields:
     name: Litauisch
-- model: core.qualificationlanguage
+- model: call_for_volunteers.qualificationlanguage
   fields:
     name: Lettisch
-- model: core.qualificationlanguage
+- model: call_for_volunteers.qualificationlanguage
   fields:
     name: Estnisch
