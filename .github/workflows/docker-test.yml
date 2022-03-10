@@ -15,6 +15,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag call_for_volunteers:$(date +%s)
+      run: docker build . --file Dockerfile --tag call_for_volunteers:latest
     - name: Run tests
-      run: docker run call_for_volunteers:$(date +%s) "/code/publicsite/call_for_volunteers/scripts/tests.sh"
+      run: docker run call_for_volunteers:latest "/code/publicsite/call_for_volunteers/scripts/tests.sh"
