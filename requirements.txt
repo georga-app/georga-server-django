@@ -6,7 +6,7 @@ django-crispy-forms==1.14.0
 django-phonenumber-field==6.1.0
 phonenumbers==8.12.44
 django-registration==3.2
-rest_framework==3.13.1
+djangorestframework==3.13.1
 Markdown==3.3.6
 django-filter==21.1
 drf-spectacular==0.21.2
