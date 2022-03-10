@@ -133,6 +133,11 @@ STATICFILES_DIRS = [
     BASE_DIR / "call_for_volunteers/static",
 ]
 
+AUTHENTICATION_BACKENDS = [
+    "graphql_jwt.backends.JSONWebTokenBackend",
+    "django.contrib.auth.backends.ModelBackend",
+]
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
@@ -153,5 +158,8 @@ SITE_ID = 1
 
 # GraphQL
 GRAPHENE = {
-    "SCHEMA": "call_for_volunteers.schema_graphql.schema"
+    "SCHEMA": "call_for_volunteers.schema_graphql.schema",
+    "MIDDLEWARE": [
+        "graphql_jwt.middleware.JSONWebTokenMiddleware",
+    ],
 }

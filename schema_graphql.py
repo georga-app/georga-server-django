@@ -1,6 +1,8 @@
 import graphene
+import graphql_jwt
 from django.core.exceptions import ValidationError
 from graphene_django import DjangoObjectType
+from graphql_jwt.decorators import login_required
 
 from call_for_volunteers.models import Person, QualificationLanguage
 
@@ -170,18 +172,34 @@ class Query(graphene.ObjectType):
     persons = graphene.List(PersonType)
     qualification_languages = graphene.List(QualificationLanguageType)
 
+    @login_required
     def resolve_persons(root, info):
         return Person.objects.all()
 
     def resolve_qualification_languages(root, info):
         return QualificationLanguage.objects.all()
 
+    viewer = graphene.Field(PersonType)
+
+    def resolve_viewer(self, info, **kwargs):
+        user = info.context.user
+        if not user.is_authenticated:
+            raise Exception("Authentication credentials were not provided")
+        return user
+
 
 class Mutation(graphene.ObjectType):
+    # Authorization
+    token_auth = graphql_jwt.ObtainJSONWebToken.Field()
+    verify_token = graphql_jwt.Verify.Field()
+    refresh_token = graphql_jwt.Refresh.Field()
+
+    # Persons
     create_person = CreatePerson.Field()
     update_person = UpdatePerson.Field()
     delete_person = DeletePerson.Field()
 
+    # Qualification language
     create_qualification_language = CreateQualificationLanguage.Field()
     update_qualification_language = UpdateQualificationLanguage.Field()
     delete_qualification_language = DeleteQualificationLanguage.Field()
