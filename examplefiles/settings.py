@@ -39,6 +39,9 @@ INSTALLED_APPS = [
     # Packages
     'crispy_forms',
     'phonenumber_field',
+
+    # GraphQL
+    'graphene_django',
 ]
 
 # Crispy forms
@@ -147,3 +150,8 @@ PHONENUMBER_DEFAULT_FORMAT = os.getenv('PHONENUMBER_DEFAULT_FORMAT', 'INTERNATIO
 REPOSITORY_URL = "https://github.com/stoffels-it/call_for_volunteers"
 
 SITE_ID = 1
+
+# GraphQL
+GRAPHENE = {
+    "SCHEMA": "call_for_volunteers.schema_graphql.schema"
+}
