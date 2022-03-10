@@ -8,7 +8,21 @@ from .forms import SignUpForm, CompanySignUpForm
 from .views import index, imprint, data_protection, faq, SignUpView, CompanyRegistrationView
 
 router = routers.DefaultRouter()
-router.register(r'users', viewsets.PersonViewSet)
+router.register(r'persons', viewsets.PersonViewSet)
+router.register(r'generalWorkAvailability', viewsets.GeneralWorkAvailabilityViewSet)
+router.register(r'openingTime', viewsets.OpeningTimeViewSet)
+router.register(r'singlePersonUptime', viewsets.SinglePersonUptimeViewSet)
+router.register(r'helpOperation', viewsets.HelpOperationViewSet)
+router.register(r'actionCategory', viewsets.ActionCategoryViewSet)
+router.register(r'qualificationTechnical', viewsets.QualificationTechnicalViewSet)
+router.register(r'qualificationLanguage', viewsets.QualificationLanguageViewSet)
+router.register(r'qualificationLicense', viewsets.QualificationLicenseViewSet)
+router.register(r'qualificationHealth', viewsets.QualificationHealthViewSet)
+router.register(r'qualificationAdministrative', viewsets.QualificationAdministrativeViewSet)
+router.register(r'restriction', viewsets.RestrictionViewSet)
+router.register(r'equipmentProvided', viewsets.EquipmentProvidedViewSet)
+router.register(r'equipmentSelf', viewsets.EquipmentSelfViewSet)
+router.register(r'publicationCategory', viewsets.PublicationCategoryViewSet)
 
 urlpatterns = [
     path('', index, name='index'),
