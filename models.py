@@ -2,7 +2,6 @@ import uuid
 
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from django.db.models import CharField
 from phonenumber_field.modelfields import PhoneNumberField
 
 WEEKDAYS = [
@@ -132,21 +131,18 @@ class Person(AbstractUser):
     )
     opening_times = models.ManyToManyField(
         'OpeningTime',
-        null=True,
         blank=True,
         verbose_name="Geschäftszeiten",
         related_name="opening_times",
     )
     emergency_opening_times = models.ManyToManyField(
         'OpeningTime',
-        null=True,
         blank=True,
         verbose_name="Geschäftliche Notdienstzeiten",
         related_name="emergency_opening_times",
     )
     possible_work_times = models.ManyToManyField(
         'GeneralWorkAvailability',
-        null=True,
         blank=True,
         verbose_name="Verfügbarkeitszeiten für Hilfe",
         related_name="general_work_availability",
@@ -171,7 +167,6 @@ class Person(AbstractUser):
     )
     help_operations = models.ManyToManyField(
         'HelpOperation',
-        null=True,
         blank=True,
     )
     help_description = models.TextField(
