@@ -1,8 +1,10 @@
 import graphene
 import graphql_jwt
 from django.core.exceptions import ValidationError
+from graphene import relay
 from graphene_django import DjangoObjectType
-from graphql_jwt.decorators import login_required
+from graphene_django.filter import DjangoFilterConnectionField
+from graphql_jwt.decorators import login_required, staff_member_required
 
 from call_for_volunteers.models import Person, QualificationLanguage
 
@@ -12,6 +14,13 @@ class QualificationLanguageType(DjangoObjectType):
     class Meta:
         model = QualificationLanguage
         fields = '__all__'
+        filter_fields = ['id', 'name']
+        interfaces = (relay.Node,)
+
+    @classmethod
+    @login_required
+    def get_queryset(cls, queryset, info):
+        return super().get_queryset(queryset, info)
 
 
 class QualificationLanguageInput(graphene.InputObjectType):
@@ -24,6 +33,7 @@ class CreateQualificationLanguage(graphene.Mutation):
     class Arguments:
         qualification_language_data = QualificationLanguageInput(required=True)
 
+    @staff_member_required
     def mutate(self, info, qualification_language_data=None):
         qualification_language = QualificationLanguage()
         for k, v in qualification_language_data.items():
@@ -41,6 +51,7 @@ class UpdateQualificationLanguage(graphene.Mutation):
         id = graphene.ID()
         qualification_language_data = QualificationLanguageInput(required=True)
 
+    @staff_member_required
     def mutate(self, info, id=None, qualification_language_data=None):
         qualification_language = QualificationLanguage.objects.get(pk=id)
 
@@ -63,6 +74,7 @@ class DeleteQualificationLanguage(graphene.Mutation):
     class Arguments:
         id = graphene.ID()
 
+    @staff_member_required
     def mutate(self, info, id=None):
         qualification_language = QualificationLanguage.objects.get(pk=id)
         if qualification_language is not None:
@@ -75,7 +87,13 @@ class PersonType(DjangoObjectType):
     class Meta:
         model = Person
         fields = '__all__'
+        filter_fields = ['username']
+        interfaces = (relay.Node,)
 
+    @classmethod
+    @login_required
+    def get_queryset(cls, queryset, info):
+        return super().get_queryset(queryset, info)
 
 class PersonInput(graphene.InputObjectType):
     email = graphene.String(required=False)
@@ -94,12 +112,12 @@ class CreatePerson(graphene.Mutation):
     def mutate(self, info, person_data=None):
         person = Person()
 
-        person.username = person_data.email
-        person.password = "NOT_SET"
         for k, v in person_data.items():
             if v is not None:
                 setattr(person, k, v)
 
+        person.username = person_data.email
+        person.set_unusable_password()
         # Save for creating relationships to other objects
         try:
             person.full_clean()
@@ -134,9 +152,7 @@ class UpdatePerson(graphene.Mutation):
         person = Person.objects.get(pk=id)
 
         for k, v in person_data.items():
-            if (k == 'password') and (v is not None):
-                person.set_password(person_data.password)
-            else:
+            if v is not None and k is not 'password':
                 setattr(person, k, v)
 
         for i in person_data.qualification_languages:
@@ -168,24 +184,24 @@ class DeletePerson(graphene.Mutation):
         return DeletePerson(ok=True)
 
 
+class ChangePasswordPerson(graphene.Mutation):
+    person = graphene.Field(PersonType)
+
+    class Arguments:
+        id = graphene.ID()
+        password = graphene.String()
+
+    def mutate(self, info, id=None, password=None):
+        person = Person.objects.get(pk=id)
+        if password is not None:
+            person.set_password(password)
+            person.save()
+        return ChangePasswordPerson(person=person)
+
+
 class Query(graphene.ObjectType):
-    persons = graphene.List(PersonType)
-    qualification_languages = graphene.List(QualificationLanguageType)
-
-    @login_required
-    def resolve_persons(root, info):
-        return Person.objects.all()
-
-    def resolve_qualification_languages(root, info):
-        return QualificationLanguage.objects.all()
-
-    viewer = graphene.Field(PersonType)
-
-    def resolve_viewer(self, info, **kwargs):
-        user = info.context.user
-        if not user.is_authenticated:
-            raise Exception("Authentication credentials were not provided")
-        return user
+    all_persons = DjangoFilterConnectionField(PersonType)
+    all_qualification_languages = DjangoFilterConnectionField(QualificationLanguageType)
 
 
 class Mutation(graphene.ObjectType):
