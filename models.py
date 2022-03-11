@@ -211,34 +211,34 @@ class Person(AbstractUser):
         max_length=20,
         verbose_name="Mobilnummer",
     )
-    expiration_date = models.DateField(
-        null=True,
-        blank=True,
-        default=None,
-        verbose_name="Registriert bleiben bis",
-    )
+    # expiration_date = models.DateField(
+    #     null=True,
+    #     blank=True,
+    #     default=None,
+    #     verbose_name="Registriert bleiben bis",
+    # )
     remark = models.CharField(
         max_length=1000,
         null=True,
         blank=True,
         verbose_name="Anmerkungen",
     )
-    drk_honorary = models.BooleanField(
-        null=True,
-        blank=True,
-        verbose_name="DRK Ehrenamt",
-    )
-    drk_employee = models.BooleanField(
-        null=True,
-        blank=True,
-        verbose_name="DRK Hauptamt",
-    )
-    drk_home = models.CharField(
-        max_length=50,
-        null=True,
-        blank=True,
-        verbose_name="DRK-Zugehörigkeit",
-    )
+    # drk_honorary = models.BooleanField(
+    #     null=True,
+    #     blank=True,
+    #     verbose_name="DRK Ehrenamt",
+    # )
+    # drk_employee = models.BooleanField(
+    #     null=True,
+    #     blank=True,
+    #     verbose_name="DRK Hauptamt",
+    # )
+    # drk_home = models.CharField(
+    #     max_length=50,
+    #     null=True,
+    #     blank=True,
+    #     verbose_name="DRK-Zugehörigkeit",
+    # )
 
     ANSWER_TOPICS = [
         ('undefiniert', 'undefiniert'),
