@@ -6,7 +6,7 @@ from graphene_django import DjangoObjectType
 from graphene_django.filter import DjangoFilterConnectionField
 from graphql_jwt.decorators import login_required, staff_member_required
 
-from call_for_volunteers.models import Person, QualificationLanguage
+from call_for_volunteers.models import Person, QualificationLanguage, HelpOperation, ActionCategory, QualificationTechnical, QualificationLicense, QualificationHealth, QualificationAdministrative, Restriction, EquipmentProvided, EquipmentSelf
 
 
 # QualificationLanguage
@@ -199,10 +199,144 @@ class ChangePasswordPerson(graphene.Mutation):
         return ChangePasswordPerson(person=person)
 
 
+# HelpOperation
+class HelpOperationType(DjangoObjectType):
+    class Meta:
+        model = HelpOperation
+        fields = '__all__'
+        filter_fields = ['id']
+        interfaces = (relay.Node,)
+
+    @classmethod
+    @login_required
+    def get_queryset(cls, queryset, info):
+        return super().get_queryset(queryset, info)
+
+
+# ActionCategory
+class ActionCategoryType(DjangoObjectType):
+    class Meta:
+        model = ActionCategory
+        fields = '__all__'
+        filter_fields = ['id']
+        interfaces = (relay.Node,)
+
+    @classmethod
+    @login_required
+    def get_queryset(cls, queryset, info):
+        return super().get_queryset(queryset, info)
+
+
+# QualificationTechnical
+class QualificationTechnicalType(DjangoObjectType):
+    class Meta:
+        model = QualificationTechnical
+        fields = '__all__'
+        filter_fields = ['id']
+        interfaces = (relay.Node,)
+
+    @classmethod
+    @login_required
+    def get_queryset(cls, queryset, info):
+        return super().get_queryset(queryset, info)
+
+
+# QualificationLicense
+class QualificationLicenseType(DjangoObjectType):
+    class Meta:
+        model = QualificationLicense
+        fields = '__all__'
+        filter_fields = ['id']
+        interfaces = (relay.Node,)
+
+    @classmethod
+    @login_required
+    def get_queryset(cls, queryset, info):
+        return super().get_queryset(queryset, info)
+
+
+# QualificationHealth
+class QualificationHealthType(DjangoObjectType):
+    class Meta:
+        model = QualificationHealth
+        fields = '__all__'
+        filter_fields = ['id']
+        interfaces = (relay.Node,)
+
+    @classmethod
+    @login_required
+    def get_queryset(cls, queryset, info):
+        return super().get_queryset(queryset, info)
+
+
+# QualificationAdministrative
+class QualificationAdministrativeType(DjangoObjectType):
+    class Meta:
+        model = QualificationAdministrative
+        fields = '__all__'
+        filter_fields = ['id']
+        interfaces = (relay.Node,)
+
+    @classmethod
+    @login_required
+    def get_queryset(cls, queryset, info):
+        return super().get_queryset(queryset, info)
+
+
+# Restriction
+class RestrictionType(DjangoObjectType):
+    class Meta:
+        model = Restriction
+        fields = '__all__'
+        filter_fields = ['id']
+        interfaces = (relay.Node,)
+
+    @classmethod
+    @login_required
+    def get_queryset(cls, queryset, info):
+        return super().get_queryset(queryset, info)
+
+
+# EquipmentProvided
+class EquipmentProvidedType(DjangoObjectType):
+    class Meta:
+        model = EquipmentProvided
+        fields = '__all__'
+        filter_fields = ['id']
+        interfaces = (relay.Node,)
+
+    @classmethod
+    @login_required
+    def get_queryset(cls, queryset, info):
+        return super().get_queryset(queryset, info)
+
+
+# EquipmentSelf
+class EquipmentSelfType(DjangoObjectType):
+    class Meta:
+        model = EquipmentSelf
+        fields = '__all__'
+        filter_fields = ['id']
+        interfaces = (relay.Node,)
+
+    @classmethod
+    @login_required
+    def get_queryset(cls, queryset, info):
+        return super().get_queryset(queryset, info)
+
+
 class Query(graphene.ObjectType):
     all_persons = DjangoFilterConnectionField(PersonType)
     all_qualification_languages = DjangoFilterConnectionField(QualificationLanguageType)
-
+    all_help_operations = DjangoFilterConnectionField(QualificationLanguageType)
+    all_action_categories = DjangoFilterConnectionField(ActionCategoryType)
+    all_qualifications_technical = DjangoFilterConnectionField(QualificationTechnicalType)
+    all_qualifications_license = DjangoFilterConnectionField(QualificationLicenseType)
+    all_qualifications_health = DjangoFilterConnectionField(QualificationHealthType)
+    all_qualifications_administrative = DjangoFilterConnectionField(QualificationAdministrativeType)
+    all_restrictions = DjangoFilterConnectionField(RestrictionType)
+    all_equipment_provided = DjangoFilterConnectionField(EquipmentProvidedType)
+    all_equipment_self = DjangoFilterConnectionField(EquipmentSelfType)
 
 class Mutation(graphene.ObjectType):
     # Authorization
