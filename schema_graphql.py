@@ -7,6 +7,7 @@ from graphene_django import DjangoObjectType
 from graphene_django.filter import DjangoFilterConnectionField
 from graphql_jwt.decorators import login_required, staff_member_required
 
+from call_for_volunteers.email import Email
 from call_for_volunteers.models import Person, QualificationLanguage, HelpOperation, ActionCategory, QualificationTechnical, QualificationLicense, QualificationHealth, QualificationAdministrative, Restriction, EquipmentProvided, EquipmentSelf
 from publicsite import settings
 
@@ -259,6 +260,21 @@ class ActivatePerson(graphene.Mutation):
         return ActivatePerson(person=person)
 
 
+class ActivatePersonRequest(graphene.Mutation):
+    done = graphene.Boolean()
+
+    class Arguments:
+        email = graphene.String()
+
+    def mutate(self, info, email=None):
+        if email is not None:
+            person = Person.objects.get(email=email)
+            if person is not None:
+                if person.is_active is False:
+                    Email.send_activation_email(person)
+        return ResetPasswordRequest(done=True)
+
+
 class ResetPasswordToken(graphene.Mutation):
     person = graphene.Field(PersonType)
 
@@ -270,13 +286,30 @@ class ResetPasswordToken(graphene.Mutation):
         payload = jwt.decode(token, settings.GRAPHQL_JWT['JWT_PUBLIC_KEY'], algorithms=["RS256"])
         if payload.get('sub') == 'password_reset':
             person = Person.objects.get(pk=payload.get('uid'))
-            if person.password == "":
+            if person.password_modified.timestamp() < payload.get('iat'):
                 person.set_password(password)
                 person.save()
+            else:
+                person = None
         else:
             person = None
 
-        return ActivatePerson(person=person)
+        return ResetPasswordToken(person=person)
+
+
+class ResetPasswordRequest(graphene.Mutation):
+    done = graphene.Boolean()
+
+    class Arguments:
+        email = graphene.String()
+
+    def mutate(self, info, email=None):
+        if email is not None:
+            print(email)
+            person = Person.objects.get(email=email)
+            if person is not None:
+                Email.send_password_reset_email(person)
+        return ResetPasswordRequest(done=True)
 
 
 # HelpOperation
@@ -418,6 +451,7 @@ class Query(graphene.ObjectType):
     all_equipment_provided = DjangoFilterConnectionField(EquipmentProvidedType)
     all_equipment_self = DjangoFilterConnectionField(EquipmentSelfType)
 
+
 class Mutation(graphene.ObjectType):
     # Authorization
     token_auth = graphql_jwt.ObtainJSONWebToken.Field()
@@ -432,6 +466,9 @@ class Mutation(graphene.ObjectType):
     change_password = ChangePasswordPerson.Field()
     register_person = RegisterPerson.Field()
     activate_person = ActivatePerson.Field()
+    request_password = ResetPasswordRequest.Field()
+    reset_password = ResetPasswordToken.Field()
+    request_activation = ActivatePersonRequest.Field()
 
     # Qualification language
     create_qualification_language = CreateQualificationLanguage.Field()
