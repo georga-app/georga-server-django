@@ -348,6 +348,10 @@ class Mutation(graphene.ObjectType):
     create_person = CreatePerson.Field()
     update_person = UpdatePerson.Field()
     delete_person = DeletePerson.Field()
+    # Person Flows
+    change_password = ChangePasswordPerson.Field()
+    register_person = RegisterPerson.Field()
+    activate_person = ActivatePerson.Field()
 
     # Qualification language
     create_qualification_language = CreateQualificationLanguage.Field()
