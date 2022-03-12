@@ -1,5 +1,6 @@
 import graphene
 import graphql_jwt
+import jwt
 from django.core.exceptions import ValidationError
 from graphene import relay
 from graphene_django import DjangoObjectType
@@ -7,6 +8,7 @@ from graphene_django.filter import DjangoFilterConnectionField
 from graphql_jwt.decorators import login_required, staff_member_required
 
 from call_for_volunteers.models import Person, QualificationLanguage, HelpOperation, ActionCategory, QualificationTechnical, QualificationLicense, QualificationHealth, QualificationAdministrative, Restriction, EquipmentProvided, EquipmentSelf
+from publicsite import settings
 
 
 # QualificationLanguage
@@ -94,6 +96,7 @@ class PersonType(DjangoObjectType):
     @login_required
     def get_queryset(cls, queryset, info):
         return super().get_queryset(queryset, info)
+
 
 class PersonInput(graphene.InputObjectType):
     email = graphene.String(required=False)
@@ -197,6 +200,83 @@ class ChangePasswordPerson(graphene.Mutation):
             person.set_password(password)
             person.save()
         return ChangePasswordPerson(person=person)
+
+
+class RegisterPerson(graphene.Mutation):
+    person = graphene.Field(PersonType)
+
+    class Arguments:
+        person_data = PersonInput(required=True)
+
+    def mutate(self, info, person_data=None):
+        person = Person()
+
+        for k, v in person_data.items():
+            if v is not None:
+                setattr(person, k, v)
+
+        person.username = person_data.email
+        person.set_unusable_password()
+        # Save for creating relationships to other objects
+        try:
+            person.full_clean()
+            person.save()
+        except ValidationError as e:
+            raise Exception(e)
+
+        if isinstance(person_data.qualification_languages, list):
+            for i in person_data.qualification_languages:
+                try:
+                    ql = QualificationLanguage.objects.get(pk=i)
+                    person.qualifications_language.add(ql)
+                except Exception as e:
+                    pass
+
+        try:
+            person.full_clean()
+            person.save()
+            person.send_activation_email()
+            return CreatePerson(person=person)
+
+        except ValidationError as e:
+            raise Exception(e)
+
+
+class ActivatePerson(graphene.Mutation):
+    person = graphene.Field(PersonType)
+
+    class Arguments:
+        token = graphene.String()
+
+    def mutate(self, info, token=None):
+        payload = jwt.decode(token, settings.GRAPHQL_JWT['JWT_PUBLIC_KEY'], algorithms=["RS256"])
+        if payload.get('sub') == 'activation':
+            person = Person.objects.get(pk=payload.get('uid'))
+            person.is_active = True
+            person.save()
+        else:
+            person = None
+        return ActivatePerson(person=person)
+
+
+class ResetPasswordToken(graphene.Mutation):
+    person = graphene.Field(PersonType)
+
+    class Arguments:
+        token = graphene.String()
+        password = graphene.String()
+
+    def mutate(self, info, token=None, password=None):
+        payload = jwt.decode(token, settings.GRAPHQL_JWT['JWT_PUBLIC_KEY'], algorithms=["RS256"])
+        if payload.get('sub') == 'password_reset':
+            person = Person.objects.get(pk=payload.get('uid'))
+            if person.password == "":
+                person.set_password(password)
+                person.save()
+        else:
+            person = None
+
+        return ActivatePerson(person=person)
 
 
 # HelpOperation
