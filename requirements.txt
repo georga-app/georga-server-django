@@ -8,3 +8,4 @@ phonenumbers==8.12.44
 django-registration==3.2
 graphene-django==2.15.0
 django-graphql-jwt==0.3.4
+django-filter==21.1

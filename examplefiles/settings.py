@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 
     # GraphQL
     'graphene_django',
+    'django_filters'
 ]
 
 # Crispy forms
