@@ -1,5 +1,3 @@
-import uuid
-
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils import timezone
@@ -257,8 +255,8 @@ class Person(AbstractUser):
     )
     is_active = models.BooleanField(null=True, blank=True)
 
-    poll_uuid = models.UUIDField(
-        unique=True, default=uuid.uuid4, editable=False)
+    # poll_uuid = models.UUIDField(
+    #     unique=True, default=uuid.uuid4, editable=False)
 
     def __name__(self):
         return self.email

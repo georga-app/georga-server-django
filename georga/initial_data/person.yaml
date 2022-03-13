@@ -1,0 +1,13 @@
+- model: georga.person
+  fields:
+    password: pbkdf2_sha256$260000$sxk0T7HBdwtwc4DpShdcYX$7i46OQncyXeLwcwTN2793/ElMNRDz/E3kdhrtxOKyQQ=
+    last_login: null
+    is_superuser: true
+    username: admin
+    first_name: 'Admin'
+    last_name: 'admin'
+    is_staff: true
+    date_joined: 2022-03-13 16:13:36.048326+00:00
+    email: admin@georga.app
+    password_modified: 2022-03-13 16:13:36.048338+00:00
+# Password: verysafePassword
