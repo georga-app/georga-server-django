@@ -1,0 +1,66 @@
+- model: georga.qualificationlanguage
+  fields:
+    name: Englisch
+- model: georga.qualificationlanguage
+  fields:
+    name: Französisch
+- model: georga.qualificationlanguage
+  fields:
+    name: Spanisch
+- model: georga.qualificationlanguage
+  fields:
+    name: Arabisch
+- model: georga.qualificationlanguage
+  fields:
+    name: Türkisch
+- model: georga.qualificationlanguage
+  fields:
+    name: Polnisch
+- model: georga.qualificationlanguage
+  fields:
+    name: Kurdisch
+- model: georga.qualificationlanguage
+  fields:
+    name: Italienisch
+- model: georga.qualificationlanguage
+  fields:
+    name: Griechisch
+- model: georga.qualificationlanguage
+  fields:
+    name: Niederländisch
+- model: georga.qualificationlanguage
+  fields:
+    name: Serbisch
+- model: georga.qualificationlanguage
+  fields:
+    name: Kroatisch
+- model: georga.qualificationlanguage
+  fields:
+    name: Ukrainisch
+- model: georga.qualificationlanguage
+  fields:
+    name: Russisch
+- model: georga.qualificationlanguage
+  fields:
+    name: Rumänisch
+- model: georga.qualificationlanguage
+  fields:
+    name: Ungarisch
+- model: georga.qualificationlanguage
+  fields:
+    name: Slowakisch
+- model: georga.qualificationlanguage
+  fields:
+    name: Tschechisch
+- model: georga.qualificationlanguage
+  fields:
+    name: Polnisch
+- model: georga.qualificationlanguage
+  fields:
+    name: Litauisch
+- model: georga.qualificationlanguage
+  fields:
+    name: Lettisch
+- model: georga.qualificationlanguage
+  fields:
+    name: Estnisch

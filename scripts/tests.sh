@@ -2,4 +2,4 @@
 
 $(dirname "$0")/migrate.sh
 
-python /code/publicsite/manage.py test
+python /code/manage.py test

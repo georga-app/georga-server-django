@@ -7,8 +7,20 @@ from graphene_django import DjangoObjectType
 from graphene_django.filter import DjangoFilterConnectionField
 from graphql_jwt.decorators import login_required, staff_member_required
 
-from call_for_volunteers.models import Person, QualificationLanguage, HelpOperation, ActionCategory, QualificationTechnical, QualificationLicense, QualificationHealth, QualificationAdministrative, Restriction, EquipmentProvided, EquipmentSelf
-from publicsite import settings
+from .models import (
+    Person,
+    QualificationLanguage,
+    HelpOperation,
+    ActionCategory,
+    QualificationTechnical,
+    QualificationLicense,
+    QualificationHealth,
+    QualificationAdministrative,
+    Restriction,
+    EquipmentProvided,
+    EquipmentSelf,
+)
+from . import settings
 
 
 # QualificationLanguage
@@ -43,7 +55,8 @@ class CreateQualificationLanguage(graphene.Mutation):
                 setattr(qualification_language, k, v)
 
         qualification_language.save()
-        return CreateQualificationLanguage(qualification_language=qualification_language)
+        return CreateQualificationLanguage(
+            qualification_language=qualification_language)
 
 
 class UpdateQualificationLanguage(graphene.Mutation):
@@ -64,7 +77,8 @@ class UpdateQualificationLanguage(graphene.Mutation):
         try:
             qualification_language.full_clean()
             qualification_language.save()
-            return UpdateQualificationLanguage(qualification_language=qualification_language)
+            return UpdateQualificationLanguage(
+                qualification_language=qualification_language)
 
         except ValidationError as e:
             raise Exception(e)
@@ -132,7 +146,7 @@ class CreatePerson(graphene.Mutation):
             try:
                 ql = QualificationLanguage.objects.get(pk=i)
                 person.qualifications_language.add(ql)
-            except Exception as e:
+            except Exception:
                 pass
 
         try:
@@ -155,14 +169,14 @@ class UpdatePerson(graphene.Mutation):
         person = Person.objects.get(pk=id)
 
         for k, v in person_data.items():
-            if v is not None and k is not 'password':
+            if v is not None and k != 'password':
                 setattr(person, k, v)
 
         for i in person_data.qualification_languages:
             try:
                 ql = QualificationLanguage.objects.get(pk=i)
                 person.qualifications_language.add(ql)
-            except Exception as e:
+            except Exception:
                 pass
 
         try:
@@ -229,7 +243,7 @@ class RegisterPerson(graphene.Mutation):
                 try:
                     ql = QualificationLanguage.objects.get(pk=i)
                     person.qualifications_language.add(ql)
-                except Exception as e:
+                except Exception:
                     pass
 
         try:
@@ -249,7 +263,9 @@ class ActivatePerson(graphene.Mutation):
         token = graphene.String()
 
     def mutate(self, info, token=None):
-        payload = jwt.decode(token, settings.GRAPHQL_JWT['JWT_PUBLIC_KEY'], algorithms=["RS256"])
+        payload = jwt.decode(
+            token, settings.GRAPHQL_JWT['JWT_PUBLIC_KEY'],
+            algorithms=["RS256"])
         if payload.get('sub') == 'activation':
             person = Person.objects.get(pk=payload.get('uid'))
             person.is_active = True
@@ -267,7 +283,9 @@ class ResetPasswordToken(graphene.Mutation):
         password = graphene.String()
 
     def mutate(self, info, token=None, password=None):
-        payload = jwt.decode(token, settings.GRAPHQL_JWT['JWT_PUBLIC_KEY'], algorithms=["RS256"])
+        payload = jwt.decode(
+            token, settings.GRAPHQL_JWT['JWT_PUBLIC_KEY'],
+            algorithms=["RS256"])
         if payload.get('sub') == 'password_reset':
             person = Person.objects.get(pk=payload.get('uid'))
             if person.password == "":
@@ -406,17 +424,29 @@ class EquipmentSelfType(DjangoObjectType):
 
 
 class Query(graphene.ObjectType):
-    all_persons = DjangoFilterConnectionField(PersonType)
-    all_qualification_languages = DjangoFilterConnectionField(QualificationLanguageType)
-    all_help_operations = DjangoFilterConnectionField(QualificationLanguageType)
-    all_action_categories = DjangoFilterConnectionField(ActionCategoryType)
-    all_qualifications_technical = DjangoFilterConnectionField(QualificationTechnicalType)
-    all_qualifications_license = DjangoFilterConnectionField(QualificationLicenseType)
-    all_qualifications_health = DjangoFilterConnectionField(QualificationHealthType)
-    all_qualifications_administrative = DjangoFilterConnectionField(QualificationAdministrativeType)
-    all_restrictions = DjangoFilterConnectionField(RestrictionType)
-    all_equipment_provided = DjangoFilterConnectionField(EquipmentProvidedType)
-    all_equipment_self = DjangoFilterConnectionField(EquipmentSelfType)
+    all_persons = DjangoFilterConnectionField(
+        PersonType)
+    all_qualification_languages = DjangoFilterConnectionField(
+        QualificationLanguageType)
+    all_help_operations = DjangoFilterConnectionField(
+        QualificationLanguageType)
+    all_action_categories = DjangoFilterConnectionField(
+        ActionCategoryType)
+    all_qualifications_technical = DjangoFilterConnectionField(
+        QualificationTechnicalType)
+    all_qualifications_license = DjangoFilterConnectionField(
+        QualificationLicenseType)
+    all_qualifications_health = DjangoFilterConnectionField(
+        QualificationHealthType)
+    all_qualifications_administrative = DjangoFilterConnectionField(
+        QualificationAdministrativeType)
+    all_restrictions = DjangoFilterConnectionField(
+        RestrictionType)
+    all_equipment_provided = DjangoFilterConnectionField(
+        EquipmentProvidedType)
+    all_equipment_self = DjangoFilterConnectionField(
+        EquipmentSelfType)
+
 
 class Mutation(graphene.ObjectType):
     # Authorization

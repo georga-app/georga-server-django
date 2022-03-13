@@ -254,7 +254,8 @@ class Person(AbstractUser):
     )
     is_active = models.BooleanField(null=True, blank=True)
 
-    poll_uuid = models.UUIDField(unique=True, default=uuid.uuid4, editable=False)
+    poll_uuid = models.UUIDField(
+        unique=True, default=uuid.uuid4, editable=False)
 
     def __name__(self):
         return self.email
@@ -401,7 +402,8 @@ class EquipmentSelf(models.Model):
 
 # class PublicationCategory(models.Model):
 #     title = models.CharField(max_length=30, null=True, blank=True)
-#     slug = models.CharField(max_length=30, unique=True, null=False, blank=False)
+#     slug = models.CharField(
+#         max_length=30, unique=True, null=False, blank=False)
 #
 #     def __str__(self):
 #         return '%s' % self.title
@@ -415,12 +417,15 @@ class EquipmentSelf(models.Model):
 #
 #
 # class MixinPublication(models.Model):
-#     title = models.CharField(max_length=60, unique=True, null=False, blank=False, default="none")
-#     slug = models.CharField(max_length=60, unique=True, null=False, blank=False)
+#     title = models.CharField(max_length=60, unique=True, null=False,
+#         blank=False, default="none")
+#     slug = models.CharField(max_length=60, unique=True, null=False,
+#         blank=False)
 #     body = models.TextField()
 #     posted = models.DateField(db_index=True, auto_now_add=True)
 #
-#     # topic = models.ForeignKey(PublicationCategory, on_delete=models.SET_NULL, null=True, blank=False)
+#     # topic = models.ForeignKey(PublicationCategory,
+#     #     on_delete=models.SET_NULL, null=True, blank=False)
 #
 #     class Meta:
 #         abstract = True

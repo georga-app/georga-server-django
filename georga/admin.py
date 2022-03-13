@@ -1,7 +1,19 @@
 from django.contrib import admin
 
 # Register your models here.
-from call_for_volunteers.models import Person, HelpOperation, ActionCategory, EquipmentSelf, EquipmentProvided, Restriction, QualificationAdministrative, QualificationHealth, QualificationLicense, QualificationLanguage, QualificationTechnical
+from .models import (
+    Person,
+    HelpOperation,
+    ActionCategory,
+    EquipmentSelf,
+    EquipmentProvided,
+    Restriction,
+    QualificationAdministrative,
+    QualificationHealth,
+    QualificationLicense,
+    QualificationLanguage,
+    QualificationTechnical,
+)
 
 admin.site.register(Person)
 admin.site.register(HelpOperation)

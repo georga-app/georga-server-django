@@ -19,7 +19,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-$!1l6w48lauk$*fmhbrqanz6#^s&4$@z-4^e6we4@hzlzxa6h!')
+SECRET_KEY = os.getenv(
+    'SECRET_KEY',
+    'django-insecure-$!1l6w48lauk$*fmhbrqanz6#^s&4$@z-4^e6we4@hzlzxa6h!')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
@@ -27,7 +29,7 @@ DEBUG = os.getenv('DEBUG', 'False') == 'True'
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost 127.0.0.1').split(' ')
 
 INSTALLED_APPS = [
-    'call_for_volunteers',
+    'georga',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -58,19 +60,19 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'publicsite.urls'
+ROOT_URLCONF = 'georga.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            BASE_DIR / 'call_for_volunteers/templates',
+            BASE_DIR / 'georga/templates',
             BASE_DIR / 'templates',
         ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
-                'call_for_volunteers.context_processor.main',
+                'georga.context_processor.main',
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
@@ -80,7 +82,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'publicsite.wsgi.application'
+WSGI_APPLICATION = 'georga.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
@@ -88,29 +90,29 @@ WSGI_APPLICATION = 'publicsite.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": os.getenv('DB_ENGINE', 'django.db.backends.postgresql'),
+        "HOST": os.getenv('DB_HOST', '127.0.0.1'),
+        "PORT": os.getenv('DB_PORT', '5432'),
         "NAME": os.getenv('DB_NAME', 'django'),
         "USER": os.getenv('DB_USER', 'django'),
         "PASSWORD": os.getenv('DB_PASSWORD', 'django'),
-        "HOST": os.getenv('DB_HOST', '127.0.0.1'),
-        "PORT": os.getenv('DB_PORT', '5432'),
     }
 }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
-
+password_validation = 'django.contrib.auth.password_validation'
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        'NAME': f'${password_validation}.UserAttributeSimilarityValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'NAME': f'${password_validation}.MinimumLengthValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        'NAME': f'${password_validation}.CommonPasswordValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        'NAME': f'${password_validation}.NumericPasswordValidator',
     },
 ]
 
@@ -131,7 +133,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [
-    BASE_DIR / "call_for_volunteers/static",
+    BASE_DIR / "georga/static",
 ]
 
 AUTHENTICATION_BACKENDS = [
@@ -144,22 +146,24 @@ AUTHENTICATION_BACKENDS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL = 'call_for_volunteers.Person'
+AUTH_USER_MODEL = 'georga.Person'
 
 # Registration (django-registration)
 ACCOUNT_ACTIVATION_DAYS = 7
 
 # Phonenumber fields (django-phonenumber-field)
-PHONENUMBER_DEFAULT_REGION = os.getenv('PHONENUMBER_DEFAULT_REGION', 'DE')
-PHONENUMBER_DEFAULT_FORMAT = os.getenv('PHONENUMBER_DEFAULT_FORMAT', 'INTERNATIONAL')
+PHONENUMBER_DEFAULT_REGION = os.getenv(
+    'PHONENUMBER_DEFAULT_REGION', 'DE')
+PHONENUMBER_DEFAULT_FORMAT = os.getenv(
+    'PHONENUMBER_DEFAULT_FORMAT', 'INTERNATIONAL')
 
-REPOSITORY_URL = "https://github.com/stoffels-it/call_for_volunteers"
+REPOSITORY_URL = "https://github.com/georga-app/georga-server-django"
 
 SITE_ID = 1
 
 # GraphQL
 GRAPHENE = {
-    "SCHEMA": "call_for_volunteers.schema_graphql.schema",
+    "SCHEMA": "georga.schema_graphql.schema",
     "MIDDLEWARE": [
         "graphql_jwt.middleware.JSONWebTokenMiddleware",
     ],
