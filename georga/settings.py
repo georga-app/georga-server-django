@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.sites',
 
     # Packages
-    'crispy_forms',
     'phonenumber_field',
 
     # GraphQL
@@ -148,9 +147,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'georga.Person'
 
-# Registration (django-registration)
-ACCOUNT_ACTIVATION_DAYS = 7
-
 # Phonenumber fields (django-phonenumber-field)
 PHONENUMBER_DEFAULT_REGION = os.getenv(
     'PHONENUMBER_DEFAULT_REGION', 'DE')
@@ -168,3 +164,27 @@ GRAPHENE = {
         "graphql_jwt.middleware.JSONWebTokenMiddleware",
     ],
 }
+# Email settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = os.getenv('EMAIL_HOST', '')
+EMAIL_PORT = os.getenv('EMAIL_PORT', '')
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'False') == 'True'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
+EMAIL_SENDER = os.getenv('EMAIL_SENDER', '')
+
+# JWT
+JWT_PRIVATE = os.getenv('JWT_PRIVATE_KEY', '')
+JWT_PUBLIC = os.getenv('JWT_PUBLIC_KEY', '')
+
+GRAPHQL_JWT = {
+    'JWT_ALGORITHM': "RS256",
+    'JWT_ISSUER': 'GeoRGA',
+    'JWT_PUBLIC_KEY': os.getenv('JWT_PUBLIC_KEY', ''),
+    'JWT_PRIVATE_KEY': os.getenv('JWT_PRIVATE_KEY', ''),
+}
+
+ACTIVATION_URL = os.getenv("ACTIVATION_URL", '')
+ACTIVATION_DAYS = os.getenv('ACCOUNT_ACTIVATION_DAYS', '7')
+
+PASSWORD_URL = os.getenv('PASSWORD_URL', '')

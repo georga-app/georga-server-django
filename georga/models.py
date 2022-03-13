@@ -2,6 +2,7 @@ import uuid
 
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.utils import timezone
 from phonenumber_field.modelfields import PhoneNumberField
 
 
@@ -57,6 +58,8 @@ class Person(AbstractUser):
     )
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
+
+    password_modified = models.DateTimeField(default=timezone.now)
 
     TITLES = [
         ('herr', 'Herr'),
@@ -263,6 +266,10 @@ class Person(AbstractUser):
     def __str__(self):
         return self.email
 
+    def set_password(self, raw_password):
+        super().set_password(raw_password)
+        self.password_modified = timezone.now()
+
     class Meta:
         verbose_name = "Registrierter Helfer"
         verbose_name_plural = "Registrierte Helfer"
@@ -399,6 +406,7 @@ class EquipmentSelf(models.Model):
     class Meta:
         verbose_name = "Ausstattung mitzubringen"
         verbose_name_plural = "Ausstattungen mitzubringen"
+
 
 # class PublicationCategory(models.Model):
 #     title = models.CharField(max_length=30, null=True, blank=True)

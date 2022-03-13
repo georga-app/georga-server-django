@@ -10,9 +10,9 @@ from . import settings
 class Email:
 
     @staticmethod
-    def send_activation_email(self):
+    def send_activation_email(user):
         payload = {
-            'uid': self.id,
+            'uid': user.id,
             'exp':
                 datetime.now(tz=timezone.utc) +
                 timedelta(days=settings.ACTIVATION_DAYS),
@@ -28,43 +28,41 @@ class Email:
         email = EmailMessage(
             render_to_string(
                 template_name='georga/activation_email_subject.html',
-                context={'user': self}),
+                context={'user': user}),
             render_to_string(
                 template_name='georga/activation_email.html',
                 context={
-                    'user': self, 'activation_url': activation_url,
+                    'user': user, 'activation_url': activation_url,
                     'activation_token': activation_token}),
             settings.EMAIL_SENDER,
-            [self.email],
-            headers={'Message-ID': 'foo'},
+            [user.email],
+            headers={},
         )
         email.send()
 
     @staticmethod
-    def send_password_reset_email(self):
+    def send_password_reset_email(user):
         payload = {
-            'uid': self.id,
+            'uid': user.id,
             'exp': datetime.now(tz=timezone.utc) + timedelta(days=1),
             'iat': datetime.now(tz=timezone.utc),
             'sub': 'password_reset',
         }
 
-        activation_url = settings.ACTIVATION_URL
-        activation_token = jwt.encode(
+        url = settings.PASSWORD_URL
+        token = jwt.encode(
             payload, settings.GRAPHQL_JWT['JWT_PRIVATE_KEY'],
             algorithm="RS256")
 
         email = EmailMessage(
             render_to_string(
                 template_name='georga/password_reset_email_subject.html',
-                context={'user': self}),
+                context={'user': user}),
             render_to_string(
                 template_name='georga/password_reset_email.html',
-                context={
-                    'user': self, 'url': activation_url,
-                    'token': activation_token}),
+                context={'user': user, 'url': url, 'token': token}),
             settings.EMAIL_SENDER,
-            [self.email],
-            headers={'Message-ID': 'foo'},
+            [user.email],
         )
-        email.send()
+        print(email.send())
+        print("Send")
