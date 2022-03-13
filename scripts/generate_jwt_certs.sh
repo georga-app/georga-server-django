@@ -1,4 +1,6 @@
 #!/bin/bash
 
-openssl genrsa  -out ../keys/wtRS256.pem 4096
-openssl rsa -in ../keys/jwtRS256.pem -pubout -out ../keys/jwtRS256_pub.pem
+KEYDIR=$(dirname "$0")/../keys
+mkdir -p $KEYDIR
+openssl genrsa -out $KEYDIR/jwtRS256.pem 4096
+openssl rsa -in $KEYDIR/jwtRS256.pem -pubout -out $KEYDIR/jwtRS256_pub.pem
