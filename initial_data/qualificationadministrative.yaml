@@ -1,9 +1,0 @@
-- model: call_for_volunteers.qualificationadministrative
-  fields:
-    name: Bürokaufmann/-frau
-- model: call_for_volunteers.qualificationadministrative
-  fields:
-    name: Personalverwaltung
-- model: call_for_volunteers.qualificationadministrative
-  fields:
-    name: Buchhalter/-in

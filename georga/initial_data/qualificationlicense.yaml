@@ -1,0 +1,54 @@
+- model: georga.qualificationlicense
+  fields:
+    name: Führerschein B
+- model: georga.qualificationlicense
+  fields:
+    name: Führerschein BE
+- model: georga.qualificationlicense
+  fields:
+    name: Führerschein E
+- model: georga.qualificationlicense
+  fields:
+    name: Führerschein D1
+- model: georga.qualificationlicense
+  fields:
+    name: Führerschein D1E
+- model: georga.qualificationlicense
+  fields:
+    name: Führerschein D
+- model: georga.qualificationlicense
+  fields:
+    name: Führerschein DE
+- model: georga.qualificationlicense
+  fields:
+    name: Führerschein C1
+- model: georga.qualificationlicense
+  fields:
+    name: Führerschein C1E
+- model: georga.qualificationlicense
+  fields:
+    name: Führerschein CE
+- model: georga.qualificationlicense
+  fields:
+    name: Führerschein C
+- model: georga.qualificationlicense
+  fields:
+    name: Führerschein A2
+- model: georga.qualificationlicense
+  fields:
+    name: Führerschein A1
+- model: georga.qualificationlicense
+  fields:
+    name: Führerschein Boot
+- model: georga.qualificationlicense
+  fields:
+    name: Führerschein A
+- model: georga.qualificationlicense
+  fields:
+    name: Führerschein AM
+- model: georga.qualificationlicense
+  fields:
+    name: Führerschein L
+- model: georga.qualificationlicense
+  fields:
+    name: Führerschein T

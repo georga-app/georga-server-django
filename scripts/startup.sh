@@ -1,7 +1,5 @@
 #!/bin/bash
 
-export MIGRATE=True
-python /code/publicsite/manage.py migrate
-export MIGRATE=False
+$(dirname "$0")/migrate.sh
 
-python /code/publicsite/manage.py runserver
+python /code/manage.py runserver 0.0.0.0:8000

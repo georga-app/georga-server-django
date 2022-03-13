@@ -1,5 +1,5 @@
 #!/bin/bash
 
 export MIGRATE=True
-python /code/publicsite/manage.py migrate
+python /code/manage.py migrate
 export MIGRATE=False

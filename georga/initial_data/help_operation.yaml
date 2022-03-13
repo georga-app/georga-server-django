@@ -1,0 +1,18 @@
+- model: georga.helpoperation
+  fields:
+    name: Einkaufen
+- model: georga.helpoperation
+  fields:
+    name: Haushalt
+- model: georga.helpoperation
+  fields:
+    name: Handwerkliche Tätigkeit
+- model: georga.helpoperation
+  fields:
+    name: Fahrdienst - eigener PKW
+- model: georga.helpoperation
+  fields:
+    name: Fahrdienst - eigener Transporter
+- model: georga.helpoperation
+  fields:
+    name: Fahrdienst - gestelltes Fahrzeug
