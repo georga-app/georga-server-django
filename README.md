@@ -4,6 +4,8 @@
 
 
 ## Install for development
+Generate the certs for JWT `./scripts/generate_jwt_certs.sh`
+
 Execute the migration in your DB `python manage.py migrate`
 
 Load the demo data `python manage.py loaddata georga/initial_data/*`
