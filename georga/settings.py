@@ -171,7 +171,14 @@ EMAIL_SENDER = os.getenv('DJANGO_EMAIL_SENDER', '')
 
 # JWT
 JWT_PRIVATE = os.getenv('DJANGO_JWT_PRIVATE_KEY', '')
+if JWT_PRIVATE:
+    with open(JWT_PRIVATE) as f:
+        JWT_PRIVATE = "".join(f.readlines())
 JWT_PUBLIC = os.getenv('DJANGO_JWT_PUBLIC_KEY', '')
+if JWT_PUBLIC:
+    with open(JWT_PUBLIC) as f:
+        JWT_PUBLIC = "".join(f.readlines())
+        print(JWT_PUBLIC)
 
 GRAPHQL_JWT = {
     'JWT_ALGORITHM': "RS256",
