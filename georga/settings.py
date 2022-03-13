@@ -20,13 +20,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv(
-    'SECRET_KEY',
+    'DJANGO_SECRET_KEY',
     'django-insecure-$!1l6w48lauk$*fmhbrqanz6#^s&4$@z-4^e6we4@hzlzxa6h!')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', 'False') == 'True'
+DEBUG = os.getenv('DJANGO_DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost 127.0.0.1').split(' ')
+ALLOWED_HOSTS = os.getenv(
+    'DJANGO_ALLOWED_HOSTS', 'localhost 127.0.0.1').split(' ')
 
 INSTALLED_APPS = [
     'georga',
@@ -88,12 +89,13 @@ WSGI_APPLICATION = 'georga.wsgi.application'
 
 DATABASES = {
     "default": {
-        "ENGINE": os.getenv('DB_ENGINE', 'django.db.backends.postgresql'),
-        "HOST": os.getenv('DB_HOST', '127.0.0.1'),
-        "PORT": os.getenv('DB_PORT', '5432'),
-        "NAME": os.getenv('DB_NAME', 'django'),
-        "USER": os.getenv('DB_USER', 'django'),
-        "PASSWORD": os.getenv('DB_PASSWORD', 'django'),
+        "ENGINE": os.getenv(
+            'DJANGO_DATABASE_ENGINE', 'django.db.backends.postgresql'),
+        "HOST": os.getenv('DATABASE_HOST', '127.0.0.1'),
+        "PORT": os.getenv('DATABASE_PORT', '5432'),
+        "NAME": os.getenv('DATABASE_NAME', 'django'),
+        "USER": os.getenv('DATABASE_USER', 'django'),
+        "PASSWORD": os.getenv('DATABASE_PASSWORD', 'django'),
     }
 }
 
@@ -149,9 +151,9 @@ AUTH_USER_MODEL = 'georga.Person'
 
 # Phonenumber fields (django-phonenumber-field)
 PHONENUMBER_DEFAULT_REGION = os.getenv(
-    'PHONENUMBER_DEFAULT_REGION', 'DE')
+    'DJANGO_PHONENUMBER_DEFAULT_REGION', 'DE')
 PHONENUMBER_DEFAULT_FORMAT = os.getenv(
-    'PHONENUMBER_DEFAULT_FORMAT', 'INTERNATIONAL')
+    'DJANGO_PHONENUMBER_DEFAULT_FORMAT', 'INTERNATIONAL')
 
 REPOSITORY_URL = "https://github.com/georga-app/georga-server-django"
 
@@ -166,25 +168,25 @@ GRAPHENE = {
 }
 # Email settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = os.getenv('EMAIL_HOST', '')
-EMAIL_PORT = os.getenv('EMAIL_PORT', '')
-EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'False') == 'True'
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
-EMAIL_SENDER = os.getenv('EMAIL_SENDER', '')
+EMAIL_HOST = os.getenv('DJANGO_EMAIL_HOST', '')
+EMAIL_PORT = os.getenv('DJANGO_EMAIL_PORT', '')
+EMAIL_USE_TLS = os.getenv('DJANGO_EMAIL_USE_TLS', 'False') == 'True'
+EMAIL_HOST_USER = os.getenv('DJANGO_EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.environ.get('DJANGO_EMAIL_HOST_PASSWORD', '')
+EMAIL_SENDER = os.getenv('DJANGO_EMAIL_SENDER', '')
 
 # JWT
-JWT_PRIVATE = os.getenv('JWT_PRIVATE_KEY', '')
-JWT_PUBLIC = os.getenv('JWT_PUBLIC_KEY', '')
+JWT_PRIVATE = os.getenv('DJANGO_JWT_PRIVATE_KEY', '')
+JWT_PUBLIC = os.getenv('DJANGO_JWT_PUBLIC_KEY', '')
 
 GRAPHQL_JWT = {
     'JWT_ALGORITHM': "RS256",
     'JWT_ISSUER': 'GeoRGA',
-    'JWT_PUBLIC_KEY': os.getenv('JWT_PUBLIC_KEY', ''),
-    'JWT_PRIVATE_KEY': os.getenv('JWT_PRIVATE_KEY', ''),
+    'JWT_PUBLIC_KEY': JWT_PUBLIC,
+    'JWT_PRIVATE_KEY': JWT_PRIVATE,
 }
 
-ACTIVATION_URL = os.getenv("ACTIVATION_URL", '')
-ACTIVATION_DAYS = os.getenv('ACCOUNT_ACTIVATION_DAYS', '7')
+ACTIVATION_URL = os.getenv("DJANGO_ACTIVATION_URL", '')
+ACTIVATION_DAYS = os.getenv('DJANGO_ACCOUNT_ACTIVATION_DAYS', '7')
 
-PASSWORD_URL = os.getenv('PASSWORD_URL', '')
+PASSWORD_URL = os.getenv('DJANGO_PASSWORD_URL', '')
