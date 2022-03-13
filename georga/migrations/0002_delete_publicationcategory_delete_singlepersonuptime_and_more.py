@@ -8,7 +8,7 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
     dependencies = [
-        ('call_for_volunteers', '0001_initial'),
+        ('georga', '0001_initial'),
     ]
 
     operations = [
@@ -86,7 +86,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='person',
             name='help_operations',
-            field=models.ManyToManyField(blank=True, to='call_for_volunteers.helpoperation'),
+            field=models.ManyToManyField(blank=True, to='georga.helpoperation'),
         ),
         migrations.AlterField(
             model_name='person',
