@@ -29,8 +29,8 @@ In GraphiQL you find the api docs in the top right corner.
 
 #### Obtain an JWT
 ```
-mutation{
-  tokenAuth(email:"admin@georga.app", password:"verysafePassword"){
+mutation {
+  tokenAuth(email:"admin@georga.app", password:"verysafePassword") {
     payload
     refreshExpiresIn
     token
@@ -44,15 +44,15 @@ To query data from the server you need to send an Header including your JWT with
 In GraphiQL you can archive this by setting in the bottom left under `Request Headers` this:
 ```
 {
-  "Authorization": "JWT YOUR_TOKEN"
+  "Authorization": "JWT <YOUR_TOKEN>"
 }
 ```
 And then execute the query:
 ```
 query {
-  allPersons{
-    edges{
-      node{
+  allPersons {
+    edges {
+      node {
         email
       }
     }
