@@ -286,7 +286,7 @@ class ActivatePersonRequest(graphene.Mutation):
         if email is not None:
             person = Person.objects.get(email=email)
             if person is not None:
-                if person.is_active is False:
+                if not person.is_active:
                     Email.send_activation_email(person)
         return ResetPasswordRequest(done=True)
 
