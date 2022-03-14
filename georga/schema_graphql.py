@@ -153,6 +153,7 @@ class CreatePerson(graphene.Mutation):
         try:
             person.full_clean()
             person.save()
+            Email.send_activation_email(person)
             return CreatePerson(person=person)
 
         except ValidationError as e:
