@@ -7,4 +7,4 @@ phonenumbers==8.12.44
 graphene-django==2.15.0
 django-graphql-jwt==0.3.4
 django-filter==21.1
-cryptography==36.0.1
+cryptography==36.0.2
