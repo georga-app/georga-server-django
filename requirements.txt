@@ -1,6 +1,6 @@
 Django==3.2.12
 psycopg2==2.9.3
-python-dotenv==0.19.2
+python-dotenv==0.20.0
 PyYAML==6.0
 django-phonenumber-field==6.1.0
 phonenumbers==8.12.45
