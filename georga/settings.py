@@ -44,7 +44,8 @@ INSTALLED_APPS = [
 
     # GraphQL
     'graphene_django',
-    'django_filters'
+    'django_filters',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -77,6 +78,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'georga.wsgi.application'
+ASGI_APPLICATION = 'georga.asgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
@@ -190,3 +192,14 @@ ACTIVATION_URL = os.getenv("DJANGO_ACTIVATION_URL", '')
 ACTIVATION_DAYS = int(os.getenv('DJANGO_ACCOUNT_ACTIVATION_DAYS', '7'))
 
 PASSWORD_URL = os.getenv('DJANGO_PASSWORD_URL', '')
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [
+                (os.getenv('REDIS_HOST', '127.0.0.1'), int(os.getenv('REDIS_PORT', '6379')))
+            ],
+        },
+    },
+}
