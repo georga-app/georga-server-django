@@ -1,51 +1,9 @@
+import uuid
+
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils import timezone
 from phonenumber_field.modelfields import PhoneNumberField
-
-
-# WEEKDAYS = [
-#     (1, ("Monday")),
-#     (2, ("Tuesday")),
-#     (3, ("Wednesday")),
-#     (4, ("Thursday")),
-#     (5, ("Friday")),
-#     (6, ("Saturday")),
-#     (7, ("Sunday")),
-# ]
-
-
-# class GeneralWorkAvailability(models.Model):
-#     weekday = models.IntegerField(
-#         choices=WEEKDAYS,
-#         unique=False)
-#     forenoon = models.BooleanField()
-#     afternoon = models.BooleanField()
-#     evening = models.BooleanField()
-
-
-# class OpeningTime(models.Model):
-#     weekday = models.IntegerField(
-#         choices=WEEKDAYS,
-#         unique=False)
-#     from_hour = models.TimeField()
-#     to_hour = models.TimeField()
-
-
-# class SinglePersonUptime(models.Model):
-#     weekday = models.IntegerField(
-#         choices=WEEKDAYS,
-#         unique=True)
-#     DAYTIMES = [
-#         ('vormittags', 'Vormittags'),
-#         ('nachmittags', 'Nachmittags'),
-#         ('abends', 'Abends'),
-#     ]
-#     daytime = models.CharField(
-#         max_length=11,
-#         choices=DAYTIMES,
-#         blank=True,
-#     )
 
 
 class Person(AbstractUser):
@@ -65,6 +23,7 @@ class Person(AbstractUser):
         ('divers', 'Divers'),
         ('none', 'Keine'),
     ]
+
     title = models.CharField(
         max_length=6,
         choices=TITLES,
@@ -76,170 +35,117 @@ class Person(AbstractUser):
         blank=True,
         verbose_name="Sprachkenntnisse",
     )
+
     qualifications_technical = models.ManyToManyField(
         'QualificationTechnical',
         blank=True,
         verbose_name="Qualifikationen Technisch",
     )
+
     qualifications_license = models.ManyToManyField(
         'QualificationLicense',
         blank=True,
         verbose_name="Führerscheine",
     )
+
     qualifications_health = models.ManyToManyField(
         'QualificationHealth',
         blank=True,
         verbose_name="Qualifikationen Gesundheitswesen",
     )
+
     qualifications_administrative = models.ManyToManyField(
         'QualificationAdministrative',
         blank=True,
         verbose_name="Qualifikationen Verwaltung",
     )
+
     qualification_specific = models.CharField(
         max_length=60,
         null=True,
         blank=True,
         verbose_name="Qualif. Details",
     )
+
     restrictions = models.ManyToManyField(
         'Restriction',
         blank=True,
         verbose_name="Einschränkung",
     )
+
     restriction_specific = models.CharField(
         max_length=60,
         null=True,
         blank=True,
         verbose_name="Einschränkung Details",
     )
+
     occupation = models.CharField(
         max_length=50,
         null=True,
         blank=True,
         verbose_name="Beruf",
     )
-    # company = models.CharField(
-    #     max_length=50,
-    #     null=True,
-    #     blank=True,
-    #     verbose_name="Firma",
-    # )
-    # position_in_company = models.CharField(
-    #     max_length=50,
-    #     null=True,
-    #     blank=True,
-    #     verbose_name="Position im Unternehmen",
-    # )
-    # opening_times = models.ManyToManyField(
-    #     'OpeningTime',
-    #     blank=True,
-    #     verbose_name="Geschäftszeiten",
-    #     related_name="opening_times",
-    # )
-    # emergency_opening_times = models.ManyToManyField(
-    #     'OpeningTime',
-    #     blank=True,
-    #     verbose_name="Geschäftliche Notdienstzeiten",
-    #     related_name="emergency_opening_times",
-    # )
-    # possible_work_times = models.ManyToManyField(
-    #     'GeneralWorkAvailability',
-    #     blank=True,
-    #     verbose_name="Verfügbarkeitszeiten für Hilfe",
-    #     related_name="general_work_availability",
-    # )
-    # company_phone = PhoneNumberField(
-    #     null=True,
-    #     blank=True,
-    #     max_length=20,
-    #     verbose_name="Geschäftsnummer Festnetz",
-    # )
-    # company_phone_mobile = PhoneNumberField(
-    #     null=True,
-    #     blank=True,
-    #     max_length=20,
-    #     verbose_name="Geschäftsnummer Mobil",
-    # )
-    # emergency_phone = PhoneNumberField(
-    #     null=True,
-    #     blank=True,
-    #     max_length=20,
-    #     verbose_name="Notfall-Rufnummer",
-    # )
+
     help_operations = models.ManyToManyField(
         'HelpOperation',
         blank=True,
     )
+
     help_description = models.TextField(
         max_length=300,
         null=True,
         blank=True,
     )
+
     street = models.CharField(
         max_length=50,
         null=True,
         blank=True,
         verbose_name="Straße",
     )
+
     number = models.CharField(
         max_length=8,
         null=True,
         blank=True,
         verbose_name="Hausnr.",
     )
+
     postal_code = models.CharField(
         max_length=5,
         null=True,
         blank=True,
         verbose_name="PLZ",
     )
+
     city = models.CharField(
         max_length=50,
         null=True,
         blank=True,
         verbose_name="Ort",
     )
+
     private_phone = PhoneNumberField(
         null=True,
         blank=True,
         max_length=20,
         verbose_name="Festnetznummer",
     )
+
     mobile_phone = PhoneNumberField(
         null=True,
         blank=True,
         max_length=20,
         verbose_name="Mobilnummer",
     )
-    # expiration_date = models.DateField(
-    #     null=True,
-    #     blank=True,
-    #     default=None,
-    #     verbose_name="Registriert bleiben bis",
-    # )
+
     remark = models.CharField(
         max_length=1000,
         null=True,
         blank=True,
         verbose_name="Anmerkungen",
     )
-    # drk_honorary = models.BooleanField(
-    #     null=True,
-    #     blank=True,
-    #     verbose_name="DRK Ehrenamt",
-    # )
-    # drk_employee = models.BooleanField(
-    #     null=True,
-    #     blank=True,
-    #     verbose_name="DRK Hauptamt",
-    # )
-    # drk_home = models.CharField(
-    #     max_length=50,
-    #     null=True,
-    #     blank=True,
-    #     verbose_name="DRK-Zugehörigkeit",
-    # )
 
     ANSWER_TOPICS = [
         ('undefiniert', 'undefiniert'),
@@ -254,9 +160,6 @@ class Person(AbstractUser):
         verbose_name="Einsatz nur für eigene Fachtätigkeiten",
     )
     is_active = models.BooleanField(null=True, blank=True)
-
-    # poll_uuid = models.UUIDField(
-    #     unique=True, default=uuid.uuid4, editable=False)
 
     def __name__(self):
         return self.email
@@ -406,32 +309,44 @@ class EquipmentSelf(models.Model):
         verbose_name_plural = "Ausstattungen mitzubringen"
 
 
-# class PublicationCategory(models.Model):
-#     title = models.CharField(max_length=30, null=True, blank=True)
-#     slug = models.CharField(
-#         max_length=30, unique=True, null=False, blank=False)
-#
-#     def __str__(self):
-#         return '%s' % self.title
-#
-#     def __unicode__(self):
-#         return '%s' % self.title
-#
-#     class Meta:
-#         verbose_name = "Artikelkategorie"
-#         verbose_name_plural = "Artikelkategorien"
-#
-#
-# class MixinPublication(models.Model):
-#     title = models.CharField(max_length=60, unique=True, null=False,
-#         blank=False, default="none")
-#     slug = models.CharField(max_length=60, unique=True, null=False,
-#         blank=False)
-#     body = models.TextField()
-#     posted = models.DateField(db_index=True, auto_now_add=True)
-#
-#     # topic = models.ForeignKey(PublicationCategory,
-#     #     on_delete=models.SET_NULL, null=True, blank=False)
-#
-#     class Meta:
-#         abstract = True
+class Location(models.Model):
+    address = models.CharField(max_length=200)
+
+    class Meta:
+        verbose_name = "Einsatzort"
+        verbose_name_plural = "Einsatzorte"
+
+
+class PollChoice(models.Model):
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True)
+
+    start_time = models.DateTimeField()
+    end_time = models.DateTimeField()
+
+    max_participants = models.IntegerField(default=1)
+
+    persons = models.ManyToManyField(to=Person, blank=True)
+
+    class Meta:
+        verbose_name = "Umfrageoption"
+        verbose_name_plural = "Umfrageoptionen"
+
+
+class Poll(models.Model):
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True)
+
+    title = models.CharField(max_length=200)
+    description = models.CharField(max_length=2000)
+    choices = models.ManyToManyField(to=PollChoice, blank=True)
+    location = models.ForeignKey(to=Location, on_delete=models.DO_NOTHING, null=True,blank=True)
+
+    PollStyles = [
+        ('default', 'default'),
+        # (1, 'timetable')
+    ]
+
+    style = models.CharField(choices=PollStyles, default='default', max_length=20)
+
+    class Meta:
+        verbose_name = "Umfrage"
+        verbose_name_plural = "Umfragen"

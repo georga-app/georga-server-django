@@ -13,6 +13,9 @@ from .models import (
     QualificationLicense,
     QualificationLanguage,
     QualificationTechnical,
+    Location,
+    Poll,
+    PollChoice,
 )
 
 admin.site.register(Person)
@@ -26,3 +29,6 @@ admin.site.register(QualificationAdministrative)
 admin.site.register(Restriction)
 admin.site.register(EquipmentProvided)
 admin.site.register(EquipmentSelf)
+admin.site.register(Location)
+admin.site.register(Poll)
+admin.site.register(PollChoice)

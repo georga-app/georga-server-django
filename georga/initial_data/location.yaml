@@ -1,0 +1,4 @@
+- model: georga.location
+  pk: 1
+  fields:
+    address: EAS

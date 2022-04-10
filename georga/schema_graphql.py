@@ -8,6 +8,7 @@ from graphene_django import DjangoObjectType
 from graphene_django.filter import DjangoFilterConnectionField
 from graphql_jwt.decorators import login_required, staff_member_required
 
+from . import settings
 from .email import Email
 from .models import (
     Person,
@@ -20,9 +21,8 @@ from .models import (
     QualificationAdministrative,
     Restriction,
     EquipmentProvided,
-    EquipmentSelf,
+    EquipmentSelf, Location, Poll, PollChoice,
 )
-from . import settings
 
 
 # QualificationLanguage
@@ -458,6 +458,48 @@ class EquipmentSelfType(DjangoObjectType):
         return super().get_queryset(queryset, info)
 
 
+# Location
+class LocationType(DjangoObjectType):
+    class Meta:
+        model = Location
+        fields = '__all__'
+        filter_fields = ['address']
+        interfaces = (relay.Node,)
+
+    @classmethod
+    @login_required
+    def get_queryset(cls, queryset, info):
+        return super().get_queryset(queryset, info)
+
+
+# Location
+class PollType(DjangoObjectType):
+    class Meta:
+        model = Poll
+        fields = '__all__'
+        filter_fields = ['uuid']
+        interfaces = (relay.Node,)
+
+    @classmethod
+    @login_required
+    def get_queryset(cls, queryset, info):
+        return super().get_queryset(queryset, info)
+
+
+# Location
+class PollChoiceType(DjangoObjectType):
+    class Meta:
+        model = PollChoice
+        fields = '__all__'
+        filter_fields = ['uuid']
+        interfaces = (relay.Node,)
+
+    @classmethod
+    @login_required
+    def get_queryset(cls, queryset, info):
+        return super().get_queryset(queryset, info)
+
+
 class Query(graphene.ObjectType):
     all_persons = DjangoFilterConnectionField(
         PersonType)
@@ -481,6 +523,9 @@ class Query(graphene.ObjectType):
         EquipmentProvidedType)
     all_equipment_self = DjangoFilterConnectionField(
         EquipmentSelfType)
+    all_locations = DjangoFilterConnectionField(LocationType)
+    all_polls = DjangoFilterConnectionField(PollType)
+    all_poll_choices = DjangoFilterConnectionField(PollChoiceType)
 
 
 class Mutation(graphene.ObjectType):

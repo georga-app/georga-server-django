@@ -1,0 +1,16 @@
+- model: georga.pollchoice
+  pk: 45b48372-4a03-4024-9ec9-7212ebfc53cf
+  fields:
+    start_time: 2022-04-10 10:00:00+00:00
+    end_time: 2022-04-10 12:00:00+00:00
+    max_participants: 4
+    persons: []
+- model: georga.poll
+  pk: c83c8860-e5e2-4ceb-aa6d-b4d6fb10ccb6
+  fields:
+    title: Uf
+    description: Besch
+    location: 1
+    style: default
+    choices:
+    - 45b48372-4a03-4024-9ec9-7212ebfc53cf
