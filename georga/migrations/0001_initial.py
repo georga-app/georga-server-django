@@ -5,7 +5,6 @@ import django.contrib.auth.validators
 from django.db import migrations, models
 import django.utils.timezone
 import phonenumber_field.modelfields
-import uuid
 
 
 class Migration(migrations.Migration):

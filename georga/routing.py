@@ -1,5 +1,5 @@
 import channels_graphql_ws
-from django.urls import re_path, path
+from django.urls import path
 
 
 # Websocket endpoints

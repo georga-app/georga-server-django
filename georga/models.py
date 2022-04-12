@@ -338,7 +338,7 @@ class Poll(models.Model):
     title = models.CharField(max_length=200)
     description = models.CharField(max_length=2000)
     choices = models.ManyToManyField(to=PollChoice, blank=True)
-    location = models.ForeignKey(to=Location, on_delete=models.DO_NOTHING, null=True,blank=True)
+    location = models.ForeignKey(to=Location, on_delete=models.DO_NOTHING, null=True, blank=True)
 
     PollStyles = [
         ('default', 'default'),
