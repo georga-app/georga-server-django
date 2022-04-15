@@ -1,0 +1,21 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "server",
+            "type": "python",
+            "request": "attach",
+            "pathMappings": [
+                {
+                    "localRoot": "${workspaceFolder}",
+                    "remoteRoot": "/code"
+                }
+            ],
+            "port": 51000,
+            "host": "localhost",
+            "django": true,
+            "justMyCode": false,
+            "subProcess": true,
+        }
+    ]
+}
