@@ -59,3 +59,24 @@ query {
   }
 }
 ```
+
+#### Test Subscriptions
+
+Note: GraphiQL does not support subscriptions.
+Use another desktop client like Altair or Playground instead.
+
+```
+subscription {
+  mySubscription(arg1: "arg1", arg2: "arg2") {
+    event
+  }
+}
+```
+
+To test push messages, connect to a django shell and broadcast some messages:
+
+```
+python manage.py shell
+from georga.schema_graphql import MySubscription
+MySubscription.broadcast(group="group42", payload="test")
+```
