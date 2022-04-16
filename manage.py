@@ -23,14 +23,12 @@ def main():
 
 if __name__ == '__main__':
 
-    # from django.conf import settings
-
     # enable ptvsd debugging (needs open port 51000)
-    if True:  # settings.DEBUG:
+    if int(os.environ.get("DEBUG_PTVSD", 0)):
         try:
             if True:  # os.environ.get('RUN_MAIN') or os.environ.get('WERKZEUG_RUN_MAIN'):
                 import ptvsd
-                ptvsd.enable_attach(address = ('0.0.0.0', 51000))
+                ptvsd.enable_attach(address=('0.0.0.0', 51000))
                 # uncomment these two lines, if you need to debug initialization code:
                 # ptvsd.wait_for_attach()
                 # ptvsd.break_into_debugger()
