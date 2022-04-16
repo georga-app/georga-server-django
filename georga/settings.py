@@ -27,7 +27,10 @@ SECRET_KEY = os.getenv(
 DEBUG = os.getenv('DJANGO_DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = os.getenv(
-    'DJANGO_ALLOWED_HOSTS', 'localhost 127.0.0.1 10.0.2.2').split(' ')
+    'DJANGO_ALLOWED_HOSTS', 'localhost 127.0.0.1 10.0.2.2 georga.test').split(' ')
+
+CORS_ALLOWED_ORIGINS = os.getenv(
+    'DJANGO_CORS_ALLOWED_ORIGINS', 'http://georga.test:3000').split(' ')
 
 INSTALLED_APPS = [
     'georga',
@@ -40,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
 
     # Packages
+    'corsheaders',
     'phonenumber_field',
 
     # GraphQL
@@ -51,6 +55,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',

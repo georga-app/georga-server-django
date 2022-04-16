@@ -11,4 +11,5 @@ cryptography==36.0.2
 channels==3.0.4
 channels-redis==3.4.0
 django-channels-graphql-ws==0.9.1
+django-cors-headers==3.11.0
 ptvsd==4.3.2
