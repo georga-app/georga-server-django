@@ -2,6 +2,9 @@ import channels_graphql_ws
 import graphene
 import graphql_jwt
 import jwt
+from django import forms
+from django.contrib.auth.password_validation import validate_password
+from graphene_django.forms.mutation import DjangoModelFormMutation
 from django.core.exceptions import ValidationError
 from graphene import relay
 from graphene_django import DjangoObjectType
@@ -219,44 +222,35 @@ class ChangePasswordPerson(graphene.Mutation):
         return ChangePasswordPerson(person=person)
 
 
-class RegisterPerson(graphene.Mutation):
+class RegisterPersonForm(forms.ModelForm):
+    class Meta:
+        model = Person
+        fields = ('email', 'password', 'first_name', 'last_name', 'mobile_phone', 'qualifications_language')
+
+    def clean_password(self):
+        password = self.cleaned_data['password']
+        validate_password(password)
+        return password
+
+    def save(self, commit=True):
+        self.full_clean()
+        person = super().save(commit=False)
+        person.username = self.cleaned_data["email"]
+        person.set_password(self.cleaned_data["password"])
+        # person.set_unusable_password()
+        if commit:
+            person.save()
+            self.save_m2m()
+        Email.send_activation_email(person)
+        return person
+
+
+class RegisterPerson(DjangoModelFormMutation):
     person = graphene.Field(PersonType)
 
-    class Arguments:
-        person_data = PersonInput(required=True)
-
-    def mutate(self, info, person_data=None):
-        person = Person()
-
-        for k, v in person_data.items():
-            if v is not None:
-                setattr(person, k, v)
-
-        person.username = person_data.email
-        person.set_unusable_password()
-        # Save for creating relationships to other objects
-        try:
-            person.full_clean()
-            person.save()
-        except ValidationError as e:
-            raise Exception(e)
-
-        if isinstance(person_data.qualification_languages, list):
-            for i in person_data.qualification_languages:
-                try:
-                    ql = QualificationLanguage.objects.get(pk=i)
-                    person.qualifications_language.add(ql)
-                except Exception:
-                    pass
-
-        try:
-            person.full_clean()
-            person.save()
-            person.send_activation_email()
-            return CreatePerson(person=person)
-
-        except ValidationError as e:
-            raise Exception(e)
+    class Meta:
+        form_class = RegisterPersonForm
+        exclude_fields = ('id',)
 
 
 class ActivatePerson(graphene.Mutation):
