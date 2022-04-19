@@ -24,7 +24,7 @@ You can login under /admin/ with the user `admin@georga.app` and `verysafePasswo
 
 ### GraphQL
 
-When you open http://localhost:8000/graphql you will be presented with GraphiQL an in-browser GraphQL client. 
+When you open http://localhost:8000/graphql you will be presented with GraphiQL an in-browser GraphQL client.
 In GraphiQL you find the api docs in the top right corner.
 
 #### Obtain an JWT
