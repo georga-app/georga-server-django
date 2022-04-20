@@ -108,7 +108,9 @@ class PersonType(DjangoObjectType):
     class Meta:
         model = Person
         fields = '__all__'
-        filter_fields = ['username']
+        filter_fields = {
+            'email': ['icontains']
+        }
         interfaces = (relay.Node,)
 
     @classmethod
