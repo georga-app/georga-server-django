@@ -7,7 +7,7 @@ phonenumbers==8.12.46
 graphene-django==2.15.0
 django-graphql-jwt==0.3.4
 django-filter==21.1
-cryptography==36.0.2
+cryptography==37.0.1
 channels==3.0.4
 channels-redis==3.4.0
 django-channels-graphql-ws==0.9.1
