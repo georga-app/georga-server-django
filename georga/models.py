@@ -1,12 +1,27 @@
 import uuid
+import functools
 
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils import timezone
 from phonenumber_field.modelfields import PhoneNumberField
+from graphql_relay import to_global_id
 
 
-class Person(AbstractUser):
+class MixinUUIDs(models.Model):
+    """Public facing UUIDs."""
+    class Meta:
+        abstract = True
+    # uuid for web/app clients
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False)
+
+    # global relay id
+    @functools.cached_property
+    def gid(self):
+        return to_global_id(f"{self._meta.object_name}Type", self.uuid)
+
+
+class Person(MixinUUIDs, AbstractUser):
     email = models.EmailField(
         'email address',
         blank=False,
@@ -176,7 +191,7 @@ class Person(AbstractUser):
         verbose_name_plural = "Registrierte Helfer"
 
 
-class HelpOperation(models.Model):
+class HelpOperation(MixinUUIDs, models.Model):
     name = models.CharField(max_length=50, null=True, blank=True)
 
     def __str__(self):
@@ -190,7 +205,7 @@ class HelpOperation(models.Model):
         verbose_name_plural = "Hilfstätigkeit"
 
 
-class ActionCategory(models.Model):
+class ActionCategory(MixinUUIDs, models.Model):
     name = models.CharField(max_length=30, null=True, blank=True)
 
     def __str__(self):
@@ -219,7 +234,7 @@ class MixinQualification(models.Model):
         verbose_name_plural = "Qualifikationen"
 
 
-class QualificationTechnical(MixinQualification, models.Model):
+class QualificationTechnical(MixinQualification, MixinUUIDs, models.Model):
     def __str__(self):
         return '%s' % self.name
 
@@ -231,7 +246,7 @@ class QualificationTechnical(MixinQualification, models.Model):
         verbose_name_plural = "Technische Qualifikationen"
 
 
-class QualificationLanguage(MixinQualification, models.Model):
+class QualificationLanguage(MixinQualification, MixinUUIDs, models.Model):
     def __str__(self):
         return '%s' % self.name
 
@@ -240,7 +255,7 @@ class QualificationLanguage(MixinQualification, models.Model):
         verbose_name_plural = "Sprachkenntnisse"
 
 
-class QualificationLicense(MixinQualification, models.Model):
+class QualificationLicense(MixinQualification, MixinUUIDs, models.Model):
     def __str__(self):
         return '%s' % self.name
 
@@ -249,7 +264,7 @@ class QualificationLicense(MixinQualification, models.Model):
         verbose_name_plural = "Führerscheine"
 
 
-class QualificationHealth(MixinQualification, models.Model):
+class QualificationHealth(MixinQualification, MixinUUIDs, models.Model):
     def __str__(self):
         return '%s' % self.name
 
@@ -258,7 +273,7 @@ class QualificationHealth(MixinQualification, models.Model):
         verbose_name_plural = "Qualifikationen Gesundheitswesen"
 
 
-class QualificationAdministrative(MixinQualification, models.Model):
+class QualificationAdministrative(MixinQualification, MixinUUIDs, models.Model):
     def __str__(self):
         return '%s' % self.name
 
@@ -267,7 +282,7 @@ class QualificationAdministrative(MixinQualification, models.Model):
         verbose_name_plural = "Qualifikationen Verwaltung"
 
 
-class Restriction(models.Model):
+class Restriction(MixinUUIDs, models.Model):
     name = models.CharField(max_length=50, null=True, blank=True)
 
     def __str__(self):
@@ -281,7 +296,7 @@ class Restriction(models.Model):
         verbose_name_plural = "Einschränkungen"
 
 
-class EquipmentProvided(models.Model):
+class EquipmentProvided(MixinUUIDs, models.Model):
     name = models.CharField(max_length=30, null=True, blank=True)
 
     def __str__(self):
@@ -295,7 +310,7 @@ class EquipmentProvided(models.Model):
         verbose_name_plural = "Ausstattungen durch HiOrg"
 
 
-class EquipmentSelf(models.Model):
+class EquipmentSelf(MixinUUIDs, models.Model):
     name = models.CharField(max_length=30, null=True, blank=True)
 
     def __str__(self):
@@ -309,7 +324,7 @@ class EquipmentSelf(models.Model):
         verbose_name_plural = "Ausstattungen mitzubringen"
 
 
-class Location(models.Model):
+class Location(MixinUUIDs, models.Model):
     address = models.CharField(max_length=200)
 
     class Meta:
@@ -317,9 +332,7 @@ class Location(models.Model):
         verbose_name_plural = "Einsatzorte"
 
 
-class PollChoice(models.Model):
-    uuid = models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True)
-
+class PollChoice(MixinUUIDs, models.Model):
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
 
@@ -332,9 +345,7 @@ class PollChoice(models.Model):
         verbose_name_plural = "Umfrageoptionen"
 
 
-class Poll(models.Model):
-    uuid = models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True)
-
+class Poll(MixinUUIDs, models.Model):
     title = models.CharField(max_length=200)
     description = models.CharField(max_length=2000)
     choices = models.ManyToManyField(to=PollChoice, blank=True)

@@ -5,6 +5,7 @@ from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 
 from . import settings
+from .auth import jwt_encode
 
 
 class Email:
@@ -12,7 +13,7 @@ class Email:
     @staticmethod
     def send_activation_email(user):
         payload = {
-            'uid': user.id,
+            'uid': str(user.uuid),
             'exp':
                 datetime.now(tz=timezone.utc) +
                 timedelta(days=settings.ACTIVATION_DAYS),
@@ -21,9 +22,7 @@ class Email:
         }
 
         activation_url = settings.ACTIVATION_URL
-        activation_token = jwt.encode(
-            payload, settings.GRAPHQL_JWT['JWT_PRIVATE_KEY'],
-            algorithm="RS256")
+        activation_token = jwt_encode(payload)
 
         email = EmailMessage(
             render_to_string(
@@ -43,16 +42,14 @@ class Email:
     @staticmethod
     def send_password_reset_email(user):
         payload = {
-            'uid': user.id,
+            'uid': str(user.uuid),
             'exp': datetime.now(tz=timezone.utc) + timedelta(days=1),
             'iat': datetime.now(tz=timezone.utc),
             'sub': 'password_reset',
         }
 
         url = settings.PASSWORD_URL
-        token = jwt.encode(
-            payload, settings.GRAPHQL_JWT['JWT_PRIVATE_KEY'],
-            algorithm="RS256")
+        token = jwt.encode(payload)
 
         email = EmailMessage(
             render_to_string(
@@ -64,5 +61,4 @@ class Email:
             settings.EMAIL_SENDER,
             [user.email],
         )
-        print(email.send())
-        print("Send")
+        email.send()

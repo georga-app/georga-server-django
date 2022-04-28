@@ -3,12 +3,12 @@ from django.urls import path
 
 
 # Websocket endpoints
-from georga import schema_graphql
+from georga import schemas
 
 
 class MyGraphqlWsConsumer(channels_graphql_ws.GraphqlWsConsumer):
     """Channels WebSocket consumer which provides GraphQL API."""
-    schema = schema_graphql.schema
+    schema = schemas.schema
 
     # Uncomment to send keepalive message every 42 seconds.
     # send_keepalive_every = 42

@@ -61,7 +61,6 @@ query {
 ```
 
 #### Test Subscriptions
-
 Note: GraphiQL does not support subscriptions.
 Use another desktop client like Altair or Playground instead.
 
@@ -77,6 +76,15 @@ To test push messages, connect to a django shell and broadcast some messages:
 
 ```
 python manage.py shell
-from georga.schema_graphql import MySubscription
-MySubscription.broadcast(group="group42", payload="test")
+from georga.schema_graphql import TestSubscription
+TestSubscription.broadcast(group="group42", payload="test")
 ```
+
+#### Relay
+Relay is a [specification](https://relay.dev/docs/guides/graphql-server-specification/)
+to provide a consistent interface for global identification and pagination.
+See also [graphene python docs](https://docs.graphene-python.org/en/latest/relay/).
+
+In all graphql requests, the id field is masked by the relay global ID,
+which is a base64 coded string `<model>:<uuid>`.
+

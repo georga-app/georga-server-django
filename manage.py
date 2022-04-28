@@ -7,8 +7,8 @@ import dotenv
 
 
 def main():
-    dotenv.load_dotenv()
     """Run administrative tasks."""
+    dotenv.load_dotenv()
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'georga.settings')
     try:
         from django.core.management import execute_from_command_line
@@ -39,4 +39,18 @@ if __name__ == '__main__':
             else:
                 print('ptvsd debugging not possible:' + str(ex))
 
+    # drop into pdb on error
+    if int(os.environ.get("DEBUG_PDB", 0)):
+        def info(type, value, tb):
+            if hasattr(sys, 'ps1') or not sys.stderr.isatty():
+                sys.__excepthook__(type, value, tb)
+            else:
+                import traceback
+                import pdb
+                traceback.print_exception(type, value, tb)
+                print
+                pdb.post_mortem(tb)
+        sys.excepthook = info
+
+    # start
     main()

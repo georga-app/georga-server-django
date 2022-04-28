@@ -3,7 +3,7 @@ from graphene_django.views import GraphQLView
 from django.contrib import admin
 from django.views.decorators.csrf import csrf_exempt
 
-from .schema_graphql import schema
+from .schemas import schema
 
 urlpatterns = [
     # GraphQL

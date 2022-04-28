@@ -161,7 +161,9 @@ SITE_ID = 1
 
 # GraphQL
 GRAPHENE = {
-    "SCHEMA": "georga.schema_graphql.schema",
+    "ATOMIC_MUTATIONS": True,
+    "CAMELCASE_ERRORS": True,
+    "SCHEMA": "georga.schemas.schema",
     "MIDDLEWARE": [
         "graphql_jwt.middleware.JSONWebTokenMiddleware",
     ],
@@ -190,6 +192,7 @@ GRAPHQL_JWT = {
     'JWT_ISSUER': 'GeoRGA',
     'JWT_PUBLIC_KEY': JWT_PUBLIC,
     'JWT_PRIVATE_KEY': JWT_PRIVATE,
+    'JWT_ALLOW_ANY_HANDLER': 'georga.auth.handled_allow_any',
 }
 
 ACTIVATION_URL = os.getenv("DJANGO_ACTIVATION_URL", '')

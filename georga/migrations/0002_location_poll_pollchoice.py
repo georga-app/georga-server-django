@@ -27,7 +27,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='PollChoice',
             fields=[
-                ('uuid', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('uuid', models.UUIDField(default=uuid.uuid4, editable=False, serialize=False)),
                 ('start_time', models.DateTimeField()),
                 ('end_time', models.DateTimeField()),
                 ('max_participants', models.IntegerField(default=1)),
@@ -41,7 +42,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Poll',
             fields=[
-                ('uuid', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('uuid', models.UUIDField(default=uuid.uuid4, editable=False, serialize=False)),
                 ('title', models.CharField(max_length=200)),
                 ('description', models.CharField(max_length=2000)),
                 ('style', models.CharField(choices=[('default', 'default')], default='default', max_length=20)),
