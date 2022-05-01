@@ -1,4 +1,5 @@
 # from django.core.exceptions import ValidationError
+from django.db.models import ManyToManyField, ManyToManyRel, ManyToOneRel
 from django.forms.models import model_to_dict
 from django.forms import (
     ModelForm, ModelChoiceField, ModelMultipleChoiceField,
@@ -7,12 +8,14 @@ from django.forms import (
 from django.contrib.auth.password_validation import validate_password
 
 from graphql_relay import from_global_id
-
 from graphene import Schema, ObjectType, List, ID, String, NonNull
 from graphene.relay import Node
+from graphene.types.dynamic import Dynamic
 
 from graphene_django import DjangoObjectType
+from graphene_django.fields import DjangoListField, DjangoConnectionField
 from graphene_django.filter import DjangoFilterConnectionField
+from graphene_django.converter import convert_django_field
 from graphene_django.forms import GlobalIDMultipleChoiceField
 from graphene_django.forms.mutation import DjangoModelFormMutation
 
@@ -42,6 +45,37 @@ from .models import (
 
 
 # Subclasses ==================================================================
+
+@convert_django_field.register(ManyToManyField)
+@convert_django_field.register(ManyToManyRel)
+@convert_django_field.register(ManyToOneRel)
+def convert_field_to_list_or_connection(field, registry=None):
+    """
+    Dynamic connection field conversion to UUIDDjangoFilterConnectionField.
+
+    UUIDs:
+    - Resolves connection to UUIDDjangoFilterConnectionField.
+    """
+    model = field.related_model
+
+    def dynamic_type():
+        _type = registry.get_type_for_model(model)
+        if not _type:
+            return
+        description = (
+            field.help_text
+            if isinstance(field, ManyToManyField)
+            else field.field.help_text
+        )
+        if _type._meta.connection:
+            if _type._meta.filter_fields or _type._meta.filterset_class:
+                # resolve connection to UUIDDjangoFilterConnectionField
+                return UUIDDjangoFilterConnectionField(
+                    _type, required=True, description=description)
+            return DjangoConnectionField(_type, required=True, description=description)
+        return DjangoListField(_type, required=True, description=description)
+    return Dynamic(dynamic_type)
+
 
 class UUIDModelForm(ModelForm):
     """
