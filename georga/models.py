@@ -176,6 +176,12 @@ class Person(MixinUUIDs, AbstractUser):
     )
     is_active = models.BooleanField(null=True, blank=True)
 
+    roles = models.ManyToManyField(to=Role, null=True, blank=True)
+    #geolocation
+    activity_range_km = models.IntegerField(default=0)
+    organization = models.ForeignKey(to=Device, on_delete=models.CASCADE, null=True, blank=True)
+    resources_provided = models.ManyToManyField(to=Resource, null=True, blank=True)
+
     def __name__(self):
         return self.email
 
@@ -189,6 +195,51 @@ class Person(MixinUUIDs, AbstractUser):
     class Meta:
         verbose_name = "Registrierter Helfer"
         verbose_name_plural = "Registrierte Helfer"
+
+
+class Device(MixinUUIDs, models.Model):
+    device_string = models.CharField(max_length=50, null=False, blank=False)
+    os_version = models.CharField(max_length=35, null=False, blank=False)
+    app_version = models.CharField(max_length=15, null=False, blank=False)
+    push_token = models.UUIDField(default=uuid.uuid4, editable=False)
+
+
+class Resource(MixinUUIDs, models.Model):
+    description = models.CharField(max_length=50, null=False, blank=False)
+    personal_hint = models.CharField(max_length=50, null=False, blank=False)
+
+
+class Organization(MixinUUIDs, models.Model):
+    name = models.CharField(max_length=50, null=False, blank=False)
+
+
+class Project(MixinUUIDs, models.Model):
+    organization = models.ForeignKey(to=Organization, on_delete=models.DO_NOTHING, null=False, blank=False)
+    name = models.CharField(max_length=50, null=False, blank=False)
+
+
+class ActionType(MixinUUIDs, models.Model):
+    name = models.CharField(max_length=50, null=False, blank=False)
+    description = models.CharField(max_length=50, null=False, blank=False)
+
+
+class Action(MixinUUIDs, models.Model):
+    project = models.ForeignKey(to=Project, on_delete=models.DO_NOTHING, null=False, blank=False)
+    action_type = models.ForeignKey(to=ActionType, on_delete=models.DO_NOTHING, null=False, blank=False)
+    roles_required = models.ManyToManyField(to=Role, null=True, blank=True)
+    roles_desirable = models.ManyToManyField(to=Role, null=True, blank=True)
+    resources_required = models.ManyToManyField(to=Ressource, null=True, blank=True)
+    resources_desirable = models.ManyToManyField(to=Ressource, null=True, blank=True)
+    persons_registered = models.ManyToManyField(to=Person, null=True, blank=True)
+    persons_participated = models.ManyToManyField(to=Person, null=True, blank=True)
+    #geolocation
+    postal_address_name = models.CharField(max_length=50, null=True, blank=True)
+    postal_address_street = models.CharField(max_length=50, null=True, blank=True)
+    postal_address_zip_code = models.CharField(max_length=50, null=True, blank=True)
+    postal_address_city = models.CharField(max_length=50, null=True, blank=True)
+    postal_address_country = models.CharField(max_length=50, null=True, blank=True)
+    start_time = models.DateTimeField()
+    end_time = models.DateTimeField()
 
 
 class HelpOperation(MixinUUIDs, models.Model):
