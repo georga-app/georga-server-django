@@ -215,6 +215,7 @@ class UUIDDjangoModelFormMutation(DjangoModelFormMutation):
     - Removes schema id field if Meta.only_fields is given and does not contain it.
     - Removes object return schema field if other schema fields are defined.
     - Sets id schema field required if not specified in Meta.required_fields.
+    - Deletes kwargs for graphql variables defined but not passed
     """
     class Meta:
         abstract = True
@@ -246,7 +247,8 @@ class UUIDDjangoModelFormMutation(DjangoModelFormMutation):
 
     @classmethod
     def get_form_kwargs(cls, root, info, **input):
-        kwargs = {"data": input}
+        # delete kwargs for graphql variables defined but not passed
+        kwargs = {"data": {key: value for key, value in input.items() if value is not None}}
 
         # replace model form id arg with model form uuid arg
         global_id = input.pop("id", None)
