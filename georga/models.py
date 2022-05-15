@@ -33,16 +33,16 @@ class Person(MixinUUIDs, AbstractUser):
     password_modified = models.DateTimeField(default=timezone.now)
 
     TITLES = [
-        ('herr', 'Herr'),
-        ('frau', 'Frau'),
-        ('divers', 'Divers'),
-        ('none', 'Keine'),
+        ('HERR', 'Herr'),
+        ('FRAU', 'Frau'),
+        ('DIVERS', 'Divers'),
+        ('NONE', 'Keine'),
     ]
 
     title = models.CharField(
         max_length=6,
         choices=TITLES,
-        default='none',
+        default='NONE',
     )
 
     qualifications_language = models.ManyToManyField(
@@ -352,11 +352,11 @@ class Poll(MixinUUIDs, models.Model):
     location = models.ForeignKey(to=Location, on_delete=models.DO_NOTHING, null=True, blank=True)
 
     PollStyles = [
-        ('default', 'default'),
+        ('DEFAULT', 'default'),
         # (1, 'timetable')
     ]
 
-    style = models.CharField(choices=PollStyles, default='default', max_length=20)
+    style = models.CharField(choices=PollStyles, default='DEFAULT', max_length=20)
 
     class Meta:
         verbose_name = "Umfrage"
