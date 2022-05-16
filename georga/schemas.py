@@ -553,8 +553,10 @@ class PersonModelForm(UUIDModelForm):
 
     def save(self, commit=True):
         person = super().save(commit=False)
-        person.username = self.cleaned_data["email"]
-        person.set_password(self.cleaned_data["password"])
+        if 'email' in self.changed_data:
+            person.username = self.cleaned_data["email"]
+        if 'password' in self.changed_data:
+            person.set_password(self.cleaned_data["password"])
         if commit:
             person.save()
             self.save_m2m()
