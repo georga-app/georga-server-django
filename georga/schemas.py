@@ -903,7 +903,7 @@ class QualificationLanguageType(UUIDDjangoObjectType):
         model = QualificationLanguage
         fields = qualification_language_ro_fields + qualification_language_rw_fields
         filter_fields = qualification_language_filter_fields
-        permissions = [login_required]
+        permissions = []
 
 
 # forms
