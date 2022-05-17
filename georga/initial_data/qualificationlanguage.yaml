@@ -54,9 +54,6 @@
     name: Tschechisch
 - model: georga.qualificationlanguage
   fields:
-    name: Polnisch
-- model: georga.qualificationlanguage
-  fields:
     name: Litauisch
 - model: georga.qualificationlanguage
   fields:
