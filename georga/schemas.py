@@ -263,7 +263,7 @@ class UUIDDjangoModelFormMutation(DjangoModelFormMutation):
                 continue
             if isinstance(field.type, ID):
                 kwargs["data"][name] = from_global_id(input[name])[1]
-            if isinstance(field.type, List) and field.type.of_type == ID:
+            if isinstance(field.type, List) and field.type.of_type == ID and input[name]:
                 kwargs["data"][name] = [from_global_id(id)[1] for id in input[name]]
 
         return kwargs
