@@ -263,8 +263,8 @@ class Action(MixinUUIDs, models.Model):
     action_type = models.ForeignKey(to='ActionType', on_delete=models.DO_NOTHING, null=False, blank=False)
     roles_required = models.ManyToManyField(to='Role', null=True, blank=True, related_name='roles_required')
     roles_desirable = models.ManyToManyField(to='Role', null=True, blank=True, related_name='roles_desirable')
-    resources_required = models.ManyToManyField(to='Ressource', null=True, blank=True, related_name='resources_required')
-    resources_desirable = models.ManyToManyField(to='Ressource', null=True, blank=True, related_name='resources_desirable')
+    resources_required = models.ManyToManyField(to='Resource', null=True, blank=True, related_name='resources_required')
+    resources_desirable = models.ManyToManyField(to='Resource', null=True, blank=True, related_name='resources_desirable')
     persons_registered = models.ManyToManyField(to='Person', null=True, blank=True, related_name='persons_registered')
     persons_participated = models.ManyToManyField(to='Person', null=True, blank=True, related_name='persons_participated')
     #geolocation
