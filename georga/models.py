@@ -176,11 +176,11 @@ class Person(MixinUUIDs, AbstractUser):
     )
     is_active = models.BooleanField(null=True, blank=True)
 
-    roles = models.ManyToManyField(to='Role', null=True, blank=True)
-    #geolocation
+    roles = models.ManyToManyField(to='Role', blank=True)
+    # geolocation
     activity_range_km = models.IntegerField(default=0)
     organization = models.ForeignKey(to='Device', on_delete=models.CASCADE, null=True, blank=True)
-    resources_provided = models.ManyToManyField(to='Resource', null=True, blank=True)
+    resources_provided = models.ManyToManyField(to='Resource', blank=True)
 
     def __name__(self):
         return self.email
@@ -261,13 +261,13 @@ class ActionType(MixinUUIDs, models.Model):
 class Action(MixinUUIDs, models.Model):
     project = models.ForeignKey(to='Project', on_delete=models.DO_NOTHING, null=False, blank=False)
     action_type = models.ForeignKey(to='ActionType', on_delete=models.DO_NOTHING, null=False, blank=False)
-    roles_required = models.ManyToManyField(to='Role', null=True, blank=True, related_name='roles_required')
-    roles_desirable = models.ManyToManyField(to='Role', null=True, blank=True, related_name='roles_desirable')
-    resources_required = models.ManyToManyField(to='Resource', null=True, blank=True, related_name='resources_required')
-    resources_desirable = models.ManyToManyField(to='Resource', null=True, blank=True, related_name='resources_desirable')
-    persons_registered = models.ManyToManyField(to='Person', null=True, blank=True, related_name='persons_registered')
-    persons_participated = models.ManyToManyField(to='Person', null=True, blank=True, related_name='persons_participated')
-    #geolocation
+    roles_required = models.ManyToManyField(to='Role', blank=True, related_name='roles_required')
+    roles_desirable = models.ManyToManyField(to='Role', blank=True, related_name='roles_desirable')
+    resources_required = models.ManyToManyField(to='Resource', blank=True, related_name='resources_required')
+    resources_desirable = models.ManyToManyField(to='Resource', blank=True, related_name='resources_desirable')
+    persons_registered = models.ManyToManyField(to='Person', blank=True, related_name='persons_registered')
+    persons_participated = models.ManyToManyField(to='Person', blank=True, related_name='persons_participated')
+    # geolocation
     title = models.CharField(max_length=50, null=False, blank=False)
     postal_address_name = models.CharField(max_length=50, null=True, blank=True)
     postal_address_street = models.CharField(max_length=50, null=True, blank=True)
