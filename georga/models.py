@@ -179,8 +179,8 @@ class Person(MixinUUIDs, AbstractUser):
     roles = models.ManyToManyField(to='Role', null=True, blank=True)
     #geolocation
     activity_range_km = models.IntegerField(default=0)
-    organization = models.ForeignKey(to=Device, on_delete=models.CASCADE, null=True, blank=True)
-    resources_provided = models.ManyToManyField(to=Resource, null=True, blank=True)
+    organization = models.ForeignKey(to='Device', on_delete=models.CASCADE, null=True, blank=True)
+    resources_provided = models.ManyToManyField(to='Resource', null=True, blank=True)
 
     def __name__(self):
         return self.email
@@ -235,7 +235,7 @@ class Organization(MixinUUIDs, models.Model):
 
 
 class Project(MixinUUIDs, models.Model):
-    organization = models.ForeignKey(to=Organization, on_delete=models.DO_NOTHING, null=False, blank=False)
+    organization = models.ForeignKey(to='Organization', on_delete=models.DO_NOTHING, null=False, blank=False)
     name = models.CharField(max_length=50, null=False, blank=False)
 
     def __str__(self):
@@ -259,14 +259,14 @@ class ActionType(MixinUUIDs, models.Model):
 
 
 class Action(MixinUUIDs, models.Model):
-    project = models.ForeignKey(to=Project, on_delete=models.DO_NOTHING, null=False, blank=False)
-    action_type = models.ForeignKey(to=ActionType, on_delete=models.DO_NOTHING, null=False, blank=False)
+    project = models.ForeignKey(to='Project', on_delete=models.DO_NOTHING, null=False, blank=False)
+    action_type = models.ForeignKey(to='ActionType', on_delete=models.DO_NOTHING, null=False, blank=False)
     roles_required = models.ManyToManyField(to='Role', null=True, blank=True)
     roles_desirable = models.ManyToManyField(to='Role', null=True, blank=True)
-    resources_required = models.ManyToManyField(to=Ressource, null=True, blank=True)
-    resources_desirable = models.ManyToManyField(to=Ressource, null=True, blank=True)
-    persons_registered = models.ManyToManyField(to=Person, null=True, blank=True)
-    persons_participated = models.ManyToManyField(to=Person, null=True, blank=True)
+    resources_required = models.ManyToManyField(to='Ressource', null=True, blank=True)
+    resources_desirable = models.ManyToManyField(to='Ressource', null=True, blank=True)
+    persons_registered = models.ManyToManyField(to='Person', null=True, blank=True)
+    persons_participated = models.ManyToManyField(to='Person', null=True, blank=True)
     #geolocation
     title = models.CharField(max_length=50, null=False, blank=False)
     postal_address_name = models.CharField(max_length=50, null=True, blank=True)
@@ -443,7 +443,7 @@ class PollChoice(MixinUUIDs, models.Model):
 
     max_participants = models.IntegerField(default=1)
 
-    persons = models.ManyToManyField(to=Person, blank=True)
+    persons = models.ManyToManyField(to='Person', blank=True)
 
     class Meta:
         verbose_name = "Umfrageoption"
@@ -453,8 +453,8 @@ class PollChoice(MixinUUIDs, models.Model):
 class Poll(MixinUUIDs, models.Model):
     title = models.CharField(max_length=200)
     description = models.CharField(max_length=2000)
-    choices = models.ManyToManyField(to=PollChoice, blank=True)
-    location = models.ForeignKey(to=Location, on_delete=models.DO_NOTHING, null=True, blank=True)
+    choices = models.ManyToManyField(to='PollChoice', blank=True)
+    location = models.ForeignKey(to='Location', on_delete=models.DO_NOTHING, null=True, blank=True)
 
     PollStyles = [
         ('default', 'default'),
