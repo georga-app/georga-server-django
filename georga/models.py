@@ -203,24 +203,59 @@ class Device(MixinUUIDs, models.Model):
     app_version = models.CharField(max_length=15, null=False, blank=False)
     push_token = models.UUIDField(default=uuid.uuid4, editable=False)
 
+    def __str__(self):
+        return '%s' % self.device_string
+
+    class Meta:
+        verbose_name = "Client-Gerät"
+        verbose_name_plural = "Client-Geräte"
+
 
 class Resource(MixinUUIDs, models.Model):
     description = models.CharField(max_length=50, null=False, blank=False)
     personal_hint = models.CharField(max_length=50, null=False, blank=False)
 
+    def __str__(self):
+        return '%s' % self.description
+
+    class Meta:
+        verbose_name = "Ressource"
+        verbose_name_plural = "Ressourcen"
+
 
 class Organization(MixinUUIDs, models.Model):
     name = models.CharField(max_length=50, null=False, blank=False)
+
+    def __str__(self):
+        return '%s' % self.name
+
+    class Meta:
+        verbose_name = "Trägerorganisation"
+        verbose_name_plural = "Trägerorganisationen"
 
 
 class Project(MixinUUIDs, models.Model):
     organization = models.ForeignKey(to=Organization, on_delete=models.DO_NOTHING, null=False, blank=False)
     name = models.CharField(max_length=50, null=False, blank=False)
 
+    def __str__(self):
+        return '%s' % self.name
+
+    class Meta:
+        verbose_name = "Einsatzprojekt"
+        verbose_name_plural = "Einsatzprojekte"
+
 
 class ActionType(MixinUUIDs, models.Model):
     name = models.CharField(max_length=50, null=False, blank=False)
     description = models.CharField(max_length=50, null=False, blank=False)
+
+    def __str__(self):
+        return '%s' % self.name
+
+    class Meta:
+        verbose_name = "Einsatzaktionstyp"
+        verbose_name_plural = "Einsatzaktionstypen"
 
 
 class Action(MixinUUIDs, models.Model):
@@ -233,6 +268,7 @@ class Action(MixinUUIDs, models.Model):
     persons_registered = models.ManyToManyField(to=Person, null=True, blank=True)
     persons_participated = models.ManyToManyField(to=Person, null=True, blank=True)
     #geolocation
+    title = models.CharField(max_length=50, null=False, blank=False)
     postal_address_name = models.CharField(max_length=50, null=True, blank=True)
     postal_address_street = models.CharField(max_length=50, null=True, blank=True)
     postal_address_zip_code = models.CharField(max_length=50, null=True, blank=True)
@@ -240,6 +276,13 @@ class Action(MixinUUIDs, models.Model):
     postal_address_country = models.CharField(max_length=50, null=True, blank=True)
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
+
+    def __str__(self):
+        return '%s' % self.title
+
+    class Meta:
+        verbose_name = "Einsatzaktion"
+        verbose_name_plural = "Einsatzaktionen"
 
 
 class HelpOperation(MixinUUIDs, models.Model):
@@ -345,6 +388,17 @@ class Restriction(MixinUUIDs, models.Model):
     class Meta:
         verbose_name = "Einschränkung"
         verbose_name_plural = "Einschränkungen"
+
+
+class Role(MixinUUIDs, models.Model):
+    description = models.CharField(max_length=50, null=False, blank=False)
+
+    def __str__(self):
+        return '%s' % self.description
+
+    class Meta:
+        verbose_name = "Einsatzrolle"
+        verbose_name_plural = "Einsatzrollen"
 
 
 class EquipmentProvided(MixinUUIDs, models.Model):
