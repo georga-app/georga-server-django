@@ -1,3 +1,5 @@
+from datetime import datetime
+
 # from django.core.exceptions import ValidationError
 from django.db.models import ManyToManyField, ManyToManyRel, ManyToOneRel
 from django.forms.models import model_to_dict
@@ -8,7 +10,7 @@ from django.forms import (
 from django.contrib.auth.password_validation import validate_password
 
 from graphql_relay import from_global_id
-from graphene import Schema, ObjectType, List, ID, String, NonNull
+from graphene import Schema, ObjectType, List, ID, String, NonNull, Mutation as GrapheneMutation
 from graphene.relay import Node
 from graphene.types.dynamic import Dynamic
 
@@ -1051,7 +1053,8 @@ class TestSubscription(GQLSubscription):
     notification_queue_limit = 64
 
     # Subscription payload.
-    event = String()
+    message = String()
+    time = String()
 
     class Arguments:
         """That is how subscription arguments are defined."""
@@ -1063,7 +1066,7 @@ class TestSubscription(GQLSubscription):
         """Called when user subscribes."""
 
         # Return the list of subscription group names.
-        return ["group42"]
+        return ["TestSubscriptionEvents"]
 
     @staticmethod
     def publish(payload, info, arg1, arg2):
@@ -1075,7 +1078,23 @@ class TestSubscription(GQLSubscription):
         # client. For example, this allows to avoid notifications for
         # the actions made by this particular client.
 
-        return TestSubscription(event="Something has happened!")
+        return TestSubscription(
+            message=f"{payload}",
+            time=datetime.now().strftime("%d.%m.%Y %H:%M:%S")
+        )
+
+
+class TestSubscriptionEventMutation(GrapheneMutation):
+    class Arguments:
+        message = String(required=True)
+
+    response = String()
+
+    @classmethod
+    def mutate(cls, root, info, message):
+        print(f"New message broadcasted: {message}")
+        TestSubscription.broadcast(group="TestSubscriptionEvents", payload=message)
+        return TestSubscriptionEventMutation(response="OK")
 
 
 # Schema ======================================================================
@@ -1134,6 +1153,9 @@ class Mutation(ObjectType):
     create_qualification_language = CreateQualificationLanguageMutation.Field()
     update_qualification_language = UpdateQualificationLanguageMutation.Field()
     delete_qualification_language = DeleteQualificationLanguageMutation.Field()
+
+    # TestSubscription
+    test_subscription_event = TestSubscriptionEventMutation.Field()
 
 
 class Subscription(ObjectType):

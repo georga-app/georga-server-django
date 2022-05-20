@@ -75,9 +75,9 @@ subscription {
 To test push messages, connect to a django shell and broadcast some messages:
 
 ```
-python manage.py shell
-from georga.schema_graphql import TestSubscription
-TestSubscription.broadcast(group="group42", payload="test")
+./manage.py shell
+from georga.schemas import TestSubscription
+TestSubscription.broadcast(group="TestSubscriptionEvents", payload="message")
 ```
 
 #### Relay
