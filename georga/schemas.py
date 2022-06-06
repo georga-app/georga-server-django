@@ -1284,6 +1284,7 @@ project_wo_fields = [
 ]
 project_rw_fields = [
     'name',
+    'organization',
 ]
 project_filter_fields = {
     'id': LOOKUPS_ID,
@@ -1346,6 +1347,7 @@ action_type_wo_fields = [
 ]
 action_type_rw_fields = [
     'name',
+    'description',
 ]
 action_type_filter_fields = {
     'id': LOOKUPS_ID,
@@ -1407,7 +1409,22 @@ action_ro_fields = [
 action_wo_fields = [
 ]
 action_rw_fields = [
-    'name',
+    'project',
+    'action_type',
+    'roles_required',
+    'roles_desirable',
+    'resources_required',
+    'resources_desirable',
+    'persons_registered',
+    'persons_participated',
+    'title',
+    'postal_address_name',
+    'postal_address_street',
+    'postal_address_zip_code',
+    'postal_address_city',
+    'postal_address_country',
+    'start_time',
+    'end_time',
 ]
 action_filter_fields = {
     'id': LOOKUPS_ID,
@@ -1469,7 +1486,7 @@ role_ro_fields = [
 role_wo_fields = [
 ]
 role_rw_fields = [
-    'name',
+    'description',
 ]
 role_filter_fields = {
     'id': LOOKUPS_ID,
