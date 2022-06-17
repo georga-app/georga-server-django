@@ -6,7 +6,7 @@ django-phonenumber-field==6.1.0
 phonenumbers==8.12.49
 graphene-django==2.15.0
 django-graphql-jwt==0.3.4
-django-filter==21.1
+django-filter==22.1
 cryptography==37.0.2
 channels==3.0.4
 channels-redis==3.4.0
