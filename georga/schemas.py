@@ -42,7 +42,7 @@ from .models import (
     QualificationLanguage,
     QualificationLicense,
     QualificationTechnical,
-    Restriction,
+    Restriction, Device, Resource, Organization, Project, ActionType, Action, Role,
 )
 
 
@@ -76,6 +76,7 @@ def convert_field_to_list_or_connection(field, registry=None):
                     _type, required=True, description=description)
             return DjangoConnectionField(_type, required=True, description=description)
         return DjangoListField(_type, required=True, description=description)
+
     return Dynamic(dynamic_type)
 
 
@@ -92,6 +93,7 @@ class UUIDModelForm(ModelForm):
     Bugfixes:
     - Fixes bug of saving fields present in form but not in request data.
     """
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -126,6 +128,7 @@ class UUIDDjangoObjectType(DjangoObjectType):
     - Adds relay.Node interface if not specified in Meta.interfaces.
     - Sets permissions for query specified in Meta.permissions.
     """
+
     class Meta:
         abstract = True
 
@@ -166,6 +169,7 @@ class UUIDDjangoFilterConnectionField(DjangoFilterConnectionField):
     Bugfixes:
     - Fixes a bug that converts model id fields to graphene.Float schema fields.
     """
+
     @property
     def filtering_args(self):
         # fix a bug that converts model id fields to graphene.Float schema fields
@@ -179,12 +183,12 @@ class UUIDDjangoFilterConnectionField(DjangoFilterConnectionField):
 
     @classmethod
     def resolve_queryset(
-        cls, connection, iterable, info, args, filtering_args, filterset_class
+            cls, connection, iterable, info, args, filtering_args, filterset_class
     ):
         # move queryset id arg to uuid arg
         if 'id' in args:
             _, args['uuid'] = from_global_id(args['id'])
-            del(args['id'])
+            del (args['id'])
 
         # insert uuid to filter field predicate string for forgein models
         for name, _filter in filterset_class.base_filters.items():
@@ -219,6 +223,7 @@ class UUIDDjangoModelFormMutation(DjangoModelFormMutation):
     - Sets id schema field required if not specified in Meta.required_fields.
     - Deletes kwargs for graphql variables defined but not passed
     """
+
     class Meta:
         abstract = True
 
@@ -240,7 +245,7 @@ class UUIDDjangoModelFormMutation(DjangoModelFormMutation):
 
         # remove object return schema field if other schema fields are defined
         if len(cls._meta.fields) > 3:
-            del(cls._meta.fields[cls._meta.return_field_name])
+            del (cls._meta.fields[cls._meta.return_field_name])
 
         # set id schema field required if not specified in Meta.required_fields
         id_field = getattr(cls.Input, 'id', False)
@@ -305,7 +310,6 @@ LOOKUPS_DATETIME = [
     'second', 'second__gt', 'second__gte', 'second__lt', 'second__lte',
     'isnull',
 ]
-
 
 # Models ======================================================================
 
@@ -431,7 +435,41 @@ class HelpOperationType(UUIDDjangoObjectType):
 
 
 # forms
+
+class HelpOperationModelForm(UUIDModelForm):
+    class Meta:
+        model = HelpOperation
+        fields = help_operation_wo_fields + help_operation_rw_fields
+
+
 # cud mutations
+class CreateHelpOperationMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = HelpOperationModelForm
+        exclude_fields = ['id']
+        permissions = [staff_member_required]
+
+
+class UpdateHelpOperationMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = HelpOperationModelForm
+        required_fields = ['id']
+        permissions = [login_required]
+
+
+class DeleteHelpOperationMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = HelpOperationModelForm
+        only_fields = ['id']
+        permissions = [staff_member_required]
+
+    @classmethod
+    def perform_mutate(cls, form, info):
+        help_operation = form.instance
+        help_operation.delete()
+        return cls(help_operation=help_operation, errors=[])
+
+
 # flow mutations
 
 
@@ -942,6 +980,7 @@ class DeleteQualificationLanguageMutation(UUIDDjangoModelFormMutation):
         qualification_language.delete()
         return cls(qualification_language=qualification_language, errors=[])
 
+
 # flow mutations
 
 
@@ -1044,6 +1083,462 @@ class RestrictionType(UUIDDjangoObjectType):
 # flow mutations
 
 
+# Device ----------------------------------------------------------------------
+
+# fields
+device_ro_fields = [
+    'uuid',
+    'push_token',
+]
+device_wo_fields = [
+]
+device_rw_fields = [
+    'device_string',
+    'os_version',
+    'app_version',
+
+]
+device_filter_fields = {
+    'id': LOOKUPS_ID,
+    'uuid': LOOKUPS_ID
+}
+
+
+# types
+class DeviceType(UUIDDjangoObjectType):
+    class Meta:
+        model = Device
+        fields = device_ro_fields + device_rw_fields
+        filter_fields = device_filter_fields
+        permissions = [login_required]
+
+
+# forms
+
+class DeviceModelForm(UUIDModelForm):
+    class Meta:
+        model = Device
+        fields = device_wo_fields + device_rw_fields
+
+
+# cud mutations
+class CreateDeviceMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = DeviceModelForm
+        exclude_fields = ['id']
+        permissions = [staff_member_required]
+
+
+class UpdateDeviceMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = DeviceModelForm
+        required_fields = ['id']
+        permissions = [login_required]
+
+
+class DeleteDeviceMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = DeviceModelForm
+        only_fields = ['id']
+        permissions = [staff_member_required]
+
+    @classmethod
+    def perform_mutate(cls, form, info):
+        device = form.instance
+        device.delete()
+        return cls(device=device, errors=[])
+
+
+# Resource ----------------------------------------------------------------------
+
+# fields
+resource_ro_fields = [
+    'uuid',
+]
+resource_wo_fields = [
+]
+resource_rw_fields = [
+    'description',
+    'personal_hint',
+]
+resource_filter_fields = {
+    'id': LOOKUPS_ID,
+    'uuid': LOOKUPS_ID
+}
+
+
+# types
+class ResourceType(UUIDDjangoObjectType):
+    class Meta:
+        model = Resource
+        fields = resource_ro_fields + resource_rw_fields
+        filter_fields = resource_filter_fields
+        permissions = [login_required]
+
+
+# forms
+
+class ResourceModelForm(UUIDModelForm):
+    class Meta:
+        model = Resource
+        fields = resource_wo_fields + resource_rw_fields
+
+
+# cud mutations
+class CreateResourceMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = ResourceModelForm
+        exclude_fields = ['id']
+        permissions = [staff_member_required]
+
+
+class UpdateResourceMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = ResourceModelForm
+        required_fields = ['id']
+        permissions = [login_required]
+
+
+class DeleteResourceMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = ResourceModelForm
+        only_fields = ['id']
+        permissions = [staff_member_required]
+
+    @classmethod
+    def perform_mutate(cls, form, info):
+        resource = form.instance
+        resource.delete()
+        return cls(resource=resource, errors=[])
+
+
+# Organization ----------------------------------------------------------------------
+
+# fields
+organization_ro_fields = [
+    'uuid',
+]
+organization_wo_fields = [
+]
+organization_rw_fields = [
+    'name',
+]
+organization_filter_fields = {
+    'id': LOOKUPS_ID,
+    'uuid': LOOKUPS_ID
+}
+
+
+# types
+class OrganizationType(UUIDDjangoObjectType):
+    class Meta:
+        model = Organization
+        fields = organization_ro_fields + organization_rw_fields
+        filter_fields = organization_filter_fields
+        permissions = [login_required]
+
+
+# forms
+
+class OrganizationModelForm(UUIDModelForm):
+    class Meta:
+        model = Organization
+        fields = organization_wo_fields + organization_rw_fields
+
+
+# cud mutations
+class CreateOrganizationMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = OrganizationModelForm
+        exclude_fields = ['id']
+        permissions = [staff_member_required]
+
+
+class UpdateOrganizationMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = OrganizationModelForm
+        required_fields = ['id']
+        permissions = [login_required]
+
+
+class DeleteOrganizationMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = OrganizationModelForm
+        only_fields = ['id']
+        permissions = [staff_member_required]
+
+    @classmethod
+    def perform_mutate(cls, form, info):
+        organization = form.instance
+        organization.delete()
+        return cls(organization=organization, errors=[])
+
+
+# Project ----------------------------------------------------------------------
+
+# fields
+project_ro_fields = [
+    'uuid',
+]
+project_wo_fields = [
+]
+project_rw_fields = [
+    'name',
+    'organization',
+]
+project_filter_fields = {
+    'id': LOOKUPS_ID,
+    'uuid': LOOKUPS_ID
+}
+
+
+# types
+class ProjectType(UUIDDjangoObjectType):
+    class Meta:
+        model = Project
+        fields = project_ro_fields + project_rw_fields
+        filter_fields = project_filter_fields
+        permissions = [login_required]
+
+
+# forms
+
+class ProjectModelForm(UUIDModelForm):
+    class Meta:
+        model = Project
+        fields = project_wo_fields + project_rw_fields
+
+
+# cud mutations
+class CreateProjectMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = ProjectModelForm
+        exclude_fields = ['id']
+        permissions = [staff_member_required]
+
+
+class UpdateProjectMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = ProjectModelForm
+        required_fields = ['id']
+        permissions = [login_required]
+
+
+class DeleteProjectMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = ProjectModelForm
+        only_fields = ['id']
+        permissions = [staff_member_required]
+
+    @classmethod
+    def perform_mutate(cls, form, info):
+        project = form.instance
+        project.delete()
+        return cls(project=project, errors=[])
+
+
+# ActionType ----------------------------------------------------------------------
+
+# fields
+action_type_ro_fields = [
+    'uuid',
+]
+action_type_wo_fields = [
+]
+action_type_rw_fields = [
+    'name',
+    'description',
+]
+action_type_filter_fields = {
+    'id': LOOKUPS_ID,
+    'uuid': LOOKUPS_ID
+}
+
+
+# types
+class ActionTypeType(UUIDDjangoObjectType):
+    class Meta:
+        model = ActionType
+        fields = action_type_ro_fields + action_type_rw_fields
+        filter_fields = action_type_filter_fields
+        permissions = [login_required]
+
+
+# forms
+
+class ActionTypeModelForm(UUIDModelForm):
+    class Meta:
+        model = ActionType
+        fields = action_type_wo_fields + action_type_rw_fields
+
+
+# cud mutations
+class CreateActionTypeMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = ActionTypeModelForm
+        exclude_fields = ['id']
+        permissions = [staff_member_required]
+
+
+class UpdateActionTypeMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = ActionTypeModelForm
+        required_fields = ['id']
+        permissions = [login_required]
+
+
+class DeleteActionTypeMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = ActionTypeModelForm
+        only_fields = ['id']
+        permissions = [staff_member_required]
+
+    @classmethod
+    def perform_mutate(cls, form, info):
+        action_type = form.instance
+        action_type.delete()
+        return cls(action_type=action_type, errors=[])
+
+
+# Action ----------------------------------------------------------------------
+
+# fields
+action_ro_fields = [
+    'uuid',
+]
+action_wo_fields = [
+]
+action_rw_fields = [
+    'project',
+    'action_type',
+    'roles_required',
+    'roles_desirable',
+    'resources_required',
+    'resources_desirable',
+    'persons_registered',
+    'persons_participated',
+    'title',
+    'postal_address_name',
+    'postal_address_street',
+    'postal_address_zip_code',
+    'postal_address_city',
+    'postal_address_country',
+    'start_time',
+    'end_time',
+]
+action_filter_fields = {
+    'id': LOOKUPS_ID,
+    'uuid': LOOKUPS_ID
+}
+
+
+# types
+class ActionModelType(UUIDDjangoObjectType):
+    class Meta:
+        model = Action
+        fields = action_ro_fields + action_rw_fields
+        filter_fields = action_filter_fields
+        permissions = [login_required]
+
+
+# forms
+
+class ActionModelForm(UUIDModelForm):
+    class Meta:
+        model = Action
+        fields = action_wo_fields + action_rw_fields
+
+
+# cud mutations
+class CreateActionMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = ActionModelForm
+        exclude_fields = ['id']
+        permissions = [staff_member_required]
+
+
+class UpdateActionMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = ActionModelForm
+        required_fields = ['id']
+        permissions = [login_required]
+
+
+class DeleteActionMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = ActionModelForm
+        only_fields = ['id']
+        permissions = [staff_member_required]
+
+    @classmethod
+    def perform_mutate(cls, form, info):
+        action = form.instance
+        action.delete()
+        return cls(action=action, errors=[])
+
+
+# Role ----------------------------------------------------------------------
+
+# fields
+role_ro_fields = [
+    'uuid',
+]
+role_wo_fields = [
+]
+role_rw_fields = [
+    'description',
+]
+role_filter_fields = {
+    'id': LOOKUPS_ID,
+    'uuid': LOOKUPS_ID
+}
+
+
+# types
+class RoleType(UUIDDjangoObjectType):
+    class Meta:
+        model = Role
+        fields = role_ro_fields + role_rw_fields
+        filter_fields = role_filter_fields
+        permissions = [login_required]
+
+
+# forms
+
+class RoleModelForm(UUIDModelForm):
+    class Meta:
+        model = Role
+        fields = role_wo_fields + role_rw_fields
+
+
+# cud mutations
+class CreateRoleMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = RoleModelForm
+        exclude_fields = ['id']
+        permissions = [staff_member_required]
+
+
+class UpdateRoleMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = RoleModelForm
+        required_fields = ['id']
+        permissions = [login_required]
+
+
+class DeleteRoleMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = RoleModelForm
+        only_fields = ['id']
+        permissions = [staff_member_required]
+
+    @classmethod
+    def perform_mutate(cls, form, info):
+        role = form.instance
+        role.delete()
+        return cls(role=role, errors=[])
+
+
 # Subscriptions ===============================================================
 
 class TestSubscription(GQLSubscription):
@@ -1129,6 +1624,13 @@ class Query(ObjectType):
         QualificationTechnicalType)
     all_restrictions = UUIDDjangoFilterConnectionField(
         RestrictionType)
+    all_devices = UUIDDjangoFilterConnectionField(DeviceType)
+    all_resources = UUIDDjangoFilterConnectionField(ResourceType)
+    all_organisations = UUIDDjangoFilterConnectionField(OrganizationType)
+    all_actions = UUIDDjangoFilterConnectionField(ActionModelType)
+    all_action_types = UUIDDjangoFilterConnectionField(ActionTypeType)
+    all_projects = UUIDDjangoFilterConnectionField(ProjectType)
+    all_roles = UUIDDjangoFilterConnectionField(RoleType)
 
 
 class Mutation(ObjectType):
@@ -1153,6 +1655,34 @@ class Mutation(ObjectType):
     create_qualification_language = CreateQualificationLanguageMutation.Field()
     update_qualification_language = UpdateQualificationLanguageMutation.Field()
     delete_qualification_language = DeleteQualificationLanguageMutation.Field()
+    # Device
+    create_device = CreateDeviceMutation.Field()
+    update_device = UpdateDeviceMutation.Field()
+    delete_device = DeleteDeviceMutation.Field()
+    # Resources
+    create_resource = CreateResourceMutation.Field()
+    update_resource = UpdateResourceMutation.Field()
+    delete_resource = DeleteResourceMutation.Field()
+    # Organisations
+    create_organisation = CreateOrganizationMutation.Field()
+    update_organisation = UpdateOrganizationMutation.Field()
+    delete_organisation = DeleteOrganizationMutation.Field()
+    # Actions
+    create_action = CreateActionMutation.Field()
+    update_action = UpdateActionMutation.Field()
+    delete_action = DeleteActionMutation.Field()
+    # ActionTypes
+    create_action_type = CreateActionTypeMutation.Field()
+    update_action_type = UpdateActionTypeMutation.Field()
+    delete_action_type = DeleteActionTypeMutation.Field()
+    # Projects
+    create_project = CreateProjectMutation.Field()
+    update_project = UpdateProjectMutation.Field()
+    delete_project = DeleteProjectMutation.Field()
+    # Roles
+    create_role = CreateRoleMutation.Field()
+    update_role = UpdateRoleMutation.Field()
+    delete_role = DeleteRoleMutation.Field()
 
     # TestSubscription
     test_subscription_event = TestSubscriptionEventMutation.Field()
