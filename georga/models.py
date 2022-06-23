@@ -33,16 +33,16 @@ class Person(MixinUUIDs, AbstractUser):
     password_modified = models.DateTimeField(default=timezone.now)
 
     TITLES = [
-        ('herr', 'Herr'),
-        ('frau', 'Frau'),
-        ('divers', 'Divers'),
-        ('none', 'Keine'),
+        ('HERR', 'Herr'),
+        ('FRAU', 'Frau'),
+        ('DIVERS', 'Divers'),
+        ('NONE', 'Keine'),
     ]
 
     title = models.CharField(
         max_length=6,
         choices=TITLES,
-        default='none',
+        default='NONE',
     )
 
     qualifications_language = models.ManyToManyField(
