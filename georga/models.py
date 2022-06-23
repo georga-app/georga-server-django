@@ -405,7 +405,7 @@ class Restriction(MixinUUIDs, models.Model):
         return '%s' % self.name
 
     class Meta:
-        verbose_name = "restrictions"
+        verbose_name = "restriction"
         verbose_name_plural = "restrictions"
         # TODO: translate: Einschränkung
 
