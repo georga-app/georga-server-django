@@ -8,7 +8,7 @@
     last_name: 'admin'
     is_staff: true
     date_joined: 2022-03-13 16:13:36.048326+00:00
-    email: admin@georga.app
+    email: admin@georga.test
     password_modified: 2022-03-13 16:13:36.048338+00:00
     is_active: true
 # Password: verysafePassword
