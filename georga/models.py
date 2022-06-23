@@ -193,8 +193,9 @@ class Person(MixinUUIDs, AbstractUser):
         self.password_modified = timezone.now()
 
     class Meta:
-        verbose_name = "Registrierter Helfer"
-        verbose_name_plural = "Registrierte Helfer"
+        verbose_name = "registered helper"
+        verbose_name_plural = "registered helpers"
+        # TODO: translation: Registrierter Helfer
 
 
 class Device(MixinUUIDs, models.Model):
@@ -207,8 +208,9 @@ class Device(MixinUUIDs, models.Model):
         return '%s' % self.device_string
 
     class Meta:
-        verbose_name = "Client-Gerät"
-        verbose_name_plural = "Client-Geräte"
+        verbose_name = "client device"
+        verbose_name_plural = "client devices"
+        # TODO: translation: Client-Gerät
 
 
 class Resource(MixinUUIDs, models.Model):
@@ -219,8 +221,9 @@ class Resource(MixinUUIDs, models.Model):
         return '%s' % self.description
 
     class Meta:
-        verbose_name = "Ressource"
-        verbose_name_plural = "Ressourcen"
+        verbose_name = "ressource"
+        verbose_name_plural = "ressources"
+        # TODO: translation: Ressource
 
 
 class Organization(MixinUUIDs, models.Model):
@@ -230,8 +233,9 @@ class Organization(MixinUUIDs, models.Model):
         return '%s' % self.name
 
     class Meta:
-        verbose_name = "Trägerorganisation"
-        verbose_name_plural = "Trägerorganisationen"
+        verbose_name = "organization"
+        verbose_name_plural = "organizations"
+        # TODO: translation: Organisation
 
 
 class Project(MixinUUIDs, models.Model):
@@ -242,11 +246,25 @@ class Project(MixinUUIDs, models.Model):
         return '%s' % self.name
 
     class Meta:
-        verbose_name = "Einsatzprojekt"
-        verbose_name_plural = "Einsatzprojekte"
+        verbose_name = "project"
+        verbose_name_plural = "projects"
+        # TODO: translation: Projekt
 
 
-class ActionType(MixinUUIDs, models.Model):
+class Deployment(MixinUUIDs, models.Model):
+    organization = models.ForeignKey(to='Organization', on_delete=models.DO_NOTHING, null=False, blank=False)
+    name = models.CharField(max_length=50, null=False, blank=False)
+
+    def __str__(self):
+        return '%s' % self.name
+
+    class Meta:
+        verbose_name = "deployment"
+        verbose_name_plural = "deployments"
+        # TODO: translate: Einsatz
+
+
+class TaskType(MixinUUIDs, models.Model):
     name = models.CharField(max_length=50, null=False, blank=False)
     description = models.CharField(max_length=50, null=False, blank=False)
 
@@ -254,11 +272,13 @@ class ActionType(MixinUUIDs, models.Model):
         return '%s' % self.name
 
     class Meta:
-        verbose_name = "Einsatzaktionstyp"
-        verbose_name_plural = "Einsatzaktionstypen"
+        verbose_name = "task type"
+        verbose_name_plural = "task types"
+        # TODO: translate: Aufgabentyp
 
 
-class Action(MixinUUIDs, models.Model):
+
+class Task(MixinUUIDs, models.Model):
     project = models.ForeignKey(to='Project', on_delete=models.DO_NOTHING, null=False, blank=False)
     action_type = models.ForeignKey(to='ActionType', on_delete=models.DO_NOTHING, null=False, blank=False)
     roles_required = models.ManyToManyField(to='Role', null=True, blank=True, related_name='roles_required')
@@ -281,38 +301,34 @@ class Action(MixinUUIDs, models.Model):
         return '%s' % self.title
 
     class Meta:
-        verbose_name = "Einsatzaktion"
-        verbose_name_plural = "Einsatzaktionen"
+        verbose_name = "task"
+        verbose_name_plural = "tasks"
+        # TODO: translate: Aufgabe
 
 
-class HelpOperation(MixinUUIDs, models.Model):
-    name = models.CharField(max_length=50, null=True, blank=True)
-
-    def __str__(self):
-        return '%s' % self.name
-
-    def __unicode__(self):
-        return '%s' % self.name
+class Schedule(MixinUUIDs, models.Model):
+    task = models.ForeignKey(to='Task', on_delete=models.CASCADE, null=False, blank=False)
+    start_time = models.DateTimeField()
+    end_time = models.DateTimeField()
 
     class Meta:
-        verbose_name = "Hilfstätigkeit"
-        verbose_name_plural = "Hilfstätigkeit"
+        verbose_name = "schedule"
+        verbose_name_plural = "schedules"
+        # TODO: translate: Schichtplan
 
 
-class ActionCategory(MixinUUIDs, models.Model):
-    name = models.CharField(max_length=30, null=True, blank=True)
-
-    def __str__(self):
-        return '%s' % self.name
-
-    def __unicode__(self):
-        return '%s' % self.name
+class timeslot(MixinUUIDs, models.Model):
+    schedule = models.ForeignKey(to='Schedule', on_delete=models.CASCADE, null=False, blank=False)
+    start_time = models.DateTimeField()
+    end_time = models.DateTimeField()
 
     class Meta:
-        verbose_name = "Einsatzkategorie"
-        verbose_name_plural = "Einsatzkategorien"
+        verbose_name = "timeslot"
+        verbose_name_plural = "timeslots"
+        # TODO: translate: Schichtplan
 
 
+# TODO: Only use qualification and categorize by foreign key?
 class MixinQualification(models.Model):
     name = models.CharField(max_length=50, null=True, blank=True)
 
@@ -324,8 +340,9 @@ class MixinQualification(models.Model):
 
     class Meta:
         abstract = True
-        verbose_name = "Qualifikation"
-        verbose_name_plural = "Qualifikationen"
+        verbose_name = "qualification"
+        verbose_name_plural = "qualification"
+        # TODO: translate: Qualifikation
 
 
 class QualificationTechnical(MixinQualification, MixinUUIDs, models.Model):
@@ -365,6 +382,7 @@ class QualificationHealth(MixinQualification, MixinUUIDs, models.Model):
     class Meta:
         verbose_name = "Qualifikation Gesundheitswesen"
         verbose_name_plural = "Qualifikationen Gesundheitswesen"
+        # TODO: translate
 
 
 class QualificationAdministrative(MixinQualification, MixinUUIDs, models.Model):
@@ -372,8 +390,9 @@ class QualificationAdministrative(MixinQualification, MixinUUIDs, models.Model):
         return '%s' % self.name
 
     class Meta:
-        verbose_name = "Qualifikation Verwaltung"
-        verbose_name_plural = "Qualifikationen Verwaltung"
+        verbose_name = "qualification administrative"
+        verbose_name_plural = "qualifications administrative"
+        # TODO: translate: Qualifikation Verwaltung
 
 
 class Restriction(MixinUUIDs, models.Model):
@@ -386,8 +405,9 @@ class Restriction(MixinUUIDs, models.Model):
         return '%s' % self.name
 
     class Meta:
-        verbose_name = "Einschränkung"
-        verbose_name_plural = "Einschränkungen"
+        verbose_name = "restrictions"
+        verbose_name_plural = "restrictions"
+        # TODO: translate: Einschränkung
 
 
 class Role(MixinUUIDs, models.Model):
@@ -397,9 +417,9 @@ class Role(MixinUUIDs, models.Model):
         return '%s' % self.description
 
     class Meta:
-        verbose_name = "Einsatzrolle"
-        verbose_name_plural = "Einsatzrollen"
-
+        verbose_name = "role"
+        verbose_name_plural = "roles"
+        # TODO: translate: Einsatzrolle
 
 class EquipmentProvided(MixinUUIDs, models.Model):
     name = models.CharField(max_length=30, null=True, blank=True)
@@ -411,8 +431,9 @@ class EquipmentProvided(MixinUUIDs, models.Model):
         return '%s' % self.name
 
     class Meta:
-        verbose_name = "Ausstattung durch HiOrg"
-        verbose_name_plural = "Ausstattungen durch HiOrg"
+        verbose_name = "equipment provided by organization"
+        verbose_name_plural = "equipments provided by organization"
+        # TODO: translate: Ausstattung durch Organisation
 
 
 class EquipmentSelf(MixinUUIDs, models.Model):
@@ -425,16 +446,28 @@ class EquipmentSelf(MixinUUIDs, models.Model):
         return '%s' % self.name
 
     class Meta:
-        verbose_name = "Ausstattung mitzubringen"
-        verbose_name_plural = "Ausstattungen mitzubringen"
+        verbose_name = "own equipment"
+        verbose_name_plural = "own equipments"
+        # TODO: translate: Eigene Ausstattung
 
 
 class Location(MixinUUIDs, models.Model):
     address = models.CharField(max_length=200)
 
     class Meta:
-        verbose_name = "Einsatzort"
-        verbose_name_plural = "Einsatzorte"
+        verbose_name = "location"
+        verbose_name_plural = "locations"
+        # TODO: translate: Ort
+
+
+class LocationType(MixinUUIDs, models.Model):
+    name = models.CharField(max_length=50)
+
+    class Meta:
+        verbose_name = "location type"
+        verbose_name_plural = "location types"
+        # TODO: translate: Einsatzort-Typ
+        # e.g. deployment location
 
 
 class PollChoice(MixinUUIDs, models.Model):
@@ -446,8 +479,9 @@ class PollChoice(MixinUUIDs, models.Model):
     persons = models.ManyToManyField(to='Person', blank=True)
 
     class Meta:
-        verbose_name = "Umfrageoption"
-        verbose_name_plural = "Umfrageoptionen"
+        verbose_name = "poll choices"
+        verbose_name_plural = "poll choices"
+        # TODO: translate: Umfrageoption
 
 
 class Poll(MixinUUIDs, models.Model):
@@ -464,5 +498,6 @@ class Poll(MixinUUIDs, models.Model):
     style = models.CharField(choices=PollStyles, default='default', max_length=20)
 
     class Meta:
-        verbose_name = "Umfrage"
-        verbose_name_plural = "Umfragen"
+        verbose_name = "poll"
+        verbose_name_plural = "polls"
+        # TODO: translate: Umfrage
