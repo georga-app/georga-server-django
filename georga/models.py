@@ -469,35 +469,3 @@ class LocationType(MixinUUIDs, models.Model):
         # TODO: translate: Einsatzort-Typ
         # e.g. deployment location
 
-
-class PollChoice(MixinUUIDs, models.Model):
-    start_time = models.DateTimeField()
-    end_time = models.DateTimeField()
-
-    max_participants = models.IntegerField(default=1)
-
-    persons = models.ManyToManyField(to='Person', blank=True)
-
-    class Meta:
-        verbose_name = "poll choices"
-        verbose_name_plural = "poll choices"
-        # TODO: translate: Umfrageoption
-
-
-class Poll(MixinUUIDs, models.Model):
-    title = models.CharField(max_length=200)
-    description = models.CharField(max_length=2000)
-    choices = models.ManyToManyField(to='PollChoice', blank=True)
-    location = models.ForeignKey(to='Location', on_delete=models.DO_NOTHING, null=True, blank=True)
-
-    PollStyles = [
-        ('default', 'default'),
-        # (1, 'timetable')
-    ]
-
-    style = models.CharField(choices=PollStyles, default='default', max_length=20)
-
-    class Meta:
-        verbose_name = "poll"
-        verbose_name_plural = "polls"
-        # TODO: translate: Umfrage
