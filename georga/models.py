@@ -453,6 +453,7 @@ class EquipmentSelf(MixinUUIDs, models.Model):
 
 class Location(MixinUUIDs, models.Model):
     address = models.CharField(max_length=200)
+    location_type = models.ForeignKey(to='LocationType', on_delete=models.CASCADE, null=True, blank=True)
 
     class Meta:
         verbose_name = "location"
@@ -469,3 +470,23 @@ class LocationType(MixinUUIDs, models.Model):
         # TODO: translate: Einsatzort-Typ
         # e.g. deployment location
 
+
+class Notification(MixinUUIDs, models.Model):
+    title = models.CharField(max_length=50)
+    contents = models.CharField(max_length=1000)
+    notification_type = models.ForeignKey(to='NotificationType', on_delete=models.CASCADE, null=True, blank=True)
+    PRIORITY = [
+        ('DISTURB', 'disturb'),
+        ('ONAPPCALL', 'on app call'),
+        ('ONNEWS', 'on reading news actively'),
+    ]
+    priority = models.CharField(max_length=8, choices=PRIORITY, default='ONNEWS')
+
+
+class NotificationType(MixinUUIDs, models.Model):
+    name = models.CharField(max_length=50)
+
+    class Meta:
+        verbose_name = "notification type"
+        verbose_name_plural = "notification types"
+        # TODO: translate: Benachrichtigungstyp
