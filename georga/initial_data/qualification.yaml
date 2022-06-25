@@ -1,0 +1,85 @@
+- model: georga.qualification
+  fields:
+    name: Englisch
+    qualification_type: language
+- model: georga.qualification
+  fields:
+    name: Französisch
+    qualification_type: language
+- model: georga.qualification
+  fields:
+    name: Spanisch
+    qualification_type: language
+- model: georga.qualification
+  fields:
+    name: Arabisch
+    qualification_type: language
+- model: georga.qualification
+  fields:
+    name: Türkisch
+    qualification_type: language
+- model: georga.qualification
+  fields:
+    name: Polnisch
+    qualification_type: language
+- model: georga.qualification
+  fields:
+    name: Kurdisch
+    qualification_type: language
+- model: georga.qualification
+  fields:
+    name: Italienisch
+    qualification_type: language
+- model: georga.qualification
+  fields:
+    name: Griechisch
+    qualification_type: language
+- model: georga.qualification
+  fields:
+    name: Niederländisch
+    qualification_type: language
+- model: georga.qualification
+  fields:
+    name: Serbisch
+    qualification_type: language
+- model: georga.qualification
+  fields:
+    name: Kroatisch
+    qualification_type: language
+- model: georga.qualification
+  fields:
+    name: Ukrainisch
+    qualification_type: language
+- model: georga.qualification
+  fields:
+    name: Russisch
+    qualification_type: language
+- model: georga.qualification
+  fields:
+    name: Rumänisch
+    qualification_type: language
+- model: georga.qualification
+  fields:
+    name: Ungarisch
+    qualification_type: language
+- model: georga.qualification
+  fields:
+    name: Slowakisch
+    qualification_type: language
+- model: georga.qualification
+  fields:
+    name: Tschechisch
+    qualification_type: language
+- model: georga.qualification
+  fields:
+    name: Litauisch
+    qualification_type: language
+- model: georga.qualification
+  fields:
+    name: Lettisch
+    qualification_type: language
+- model: georga.qualification
+  fields:
+    name: Estnisch
+    qualification_type: language
+

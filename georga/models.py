@@ -328,9 +328,9 @@ class timeslot(MixinUUIDs, models.Model):
         # TODO: translate: Schichtplan
 
 
-# TODO: Only use qualification and categorize by foreign key?
-class MixinQualification(models.Model):
+class Qualification(MixinUUIDs, models.Model):
     name = models.CharField(max_length=50, null=True, blank=True)
+    qualification_type = models.ForeignKey(to='LocationType', on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return '%s' % self.name
@@ -345,7 +345,9 @@ class MixinQualification(models.Model):
         # TODO: translate: Qualifikation
 
 
-class QualificationTechnical(MixinQualification, MixinUUIDs, models.Model):
+class QualificationType(MixinUUIDs, models.Model):
+    name = models.CharField(max_length=50, null=True, blank=True)
+
     def __str__(self):
         return '%s' % self.name
 
@@ -353,46 +355,9 @@ class QualificationTechnical(MixinQualification, MixinUUIDs, models.Model):
         return '%s' % self.name
 
     class Meta:
-        verbose_name = "Technische Qualifikation"
-        verbose_name_plural = "Technische Qualifikationen"
-
-
-class QualificationLanguage(MixinQualification, MixinUUIDs, models.Model):
-    def __str__(self):
-        return '%s' % self.name
-
-    class Meta:
-        verbose_name = "Sprachkenntnis"
-        verbose_name_plural = "Sprachkenntnisse"
-
-
-class QualificationLicense(MixinQualification, MixinUUIDs, models.Model):
-    def __str__(self):
-        return '%s' % self.name
-
-    class Meta:
-        verbose_name = "Führerschein"
-        verbose_name_plural = "Führerscheine"
-
-
-class QualificationHealth(MixinQualification, MixinUUIDs, models.Model):
-    def __str__(self):
-        return '%s' % self.name
-
-    class Meta:
-        verbose_name = "Qualifikation Gesundheitswesen"
-        verbose_name_plural = "Qualifikationen Gesundheitswesen"
-        # TODO: translate
-
-
-class QualificationAdministrative(MixinQualification, MixinUUIDs, models.Model):
-    def __str__(self):
-        return '%s' % self.name
-
-    class Meta:
-        verbose_name = "qualification administrative"
-        verbose_name_plural = "qualifications administrative"
-        # TODO: translate: Qualifikation Verwaltung
+        verbose_name = "qualification type"
+        verbose_name_plural = "qualification types"
+        # TODO: translate: Qualifikationstyp
 
 
 class Restriction(MixinUUIDs, models.Model):
