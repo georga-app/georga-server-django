@@ -82,7 +82,6 @@ class Person(MixinUUIDs, AbstractUser):
 
     task_categories_agreed = models.ManyToManyField(
         'TaskCategory',
-        null=True,
         blank=True,
         verbose_name=_("agreement to task categories"),
     )
@@ -160,7 +159,6 @@ class Person(MixinUUIDs, AbstractUser):
 
     roles_agreed = models.ManyToManyField(
         to='Role',
-        null=True,
         blank=True,
         verbose_name=_("agreement to roles"),
     )
@@ -175,21 +173,18 @@ class Person(MixinUUIDs, AbstractUser):
 
     organizations_subscribed = models.ManyToManyField(
         to='Organization',
-        null=False,
         blank=False,
         verbose_name=_("organizations subscribed to"),
     )
 
     devices = models.ManyToManyField(
         to='Device',
-        null=True,
         blank=True,
         verbose_name=_("devices"),
     )
 
     resources_provided = models.ManyToManyField(
         to='Resource',
-        null=True,
         blank=True,
         verbose_name=_("resources provided")
     )
@@ -279,12 +274,12 @@ class Deployment(MixinUUIDs, models.Model):
 class Task(MixinUUIDs, models.Model):
     project = models.ForeignKey(to='Project', on_delete=models.DO_NOTHING, null=False, blank=False)
     task_category = models.ForeignKey(to='TaskCategory', on_delete=models.DO_NOTHING, null=False, blank=False)
-    roles_required = models.ManyToManyField(to='Role', null=True, blank=True, related_name='roles_required')
-    roles_desirable = models.ManyToManyField(to='Role', null=True, blank=True, related_name='roles_desirable')
-    resources_required = models.ManyToManyField(to='Resource', null=True, blank=True, related_name='resources_required')
-    resources_desirable = models.ManyToManyField(to='Resource', null=True, blank=True, related_name='resources_desirable')
-    persons_registered = models.ManyToManyField(to='Person', null=True, blank=True, related_name='persons_registered')
-    persons_participated = models.ManyToManyField(to='Person', null=True, blank=True, related_name='persons_participated')
+    roles_required = models.ManyToManyField(to='Role', blank=True, related_name='roles_required')
+    roles_desirable = models.ManyToManyField(to='Role', blank=True, related_name='roles_desirable')
+    resources_required = models.ManyToManyField(to='Resource', blank=True, related_name='resources_required')
+    resources_desirable = models.ManyToManyField(to='Resource', blank=True, related_name='resources_desirable')
+    persons_registered = models.ManyToManyField(to='Person', blank=True, related_name='persons_registered')
+    persons_participated = models.ManyToManyField(to='Person', blank=True, related_name='persons_participated')
     #geolocation
     title = models.CharField(max_length=50, null=False, blank=False)
     postal_address_name = models.CharField(max_length=50, null=True, blank=True)
