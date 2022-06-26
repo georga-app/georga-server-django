@@ -4,6 +4,7 @@ import functools
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils import timezone
+from django.utils.translation import gettext as _
 from phonenumber_field.modelfields import PhoneNumberField
 from graphql_relay import to_global_id
 
@@ -25,7 +26,7 @@ class Person(MixinUUIDs, AbstractUser):
     email = models.EmailField(
         'email address',
         blank=False,
-        unique=True
+        unique=True,
     )
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
@@ -43,120 +44,155 @@ class Person(MixinUUIDs, AbstractUser):
         max_length=6,
         choices=TITLES,
         default='NONE',
+        verbose_name=_("title"),
     )
 
     qualifications = models.ManyToManyField(
         'Qualification',
         blank=True,
-        verbose_name="qualification",
+        verbose_name=_("qualification"),
     )
 
     qualification_specific = models.CharField(
         max_length=60,
         null=True,
         blank=True,
-        verbose_name="Qualif. Details",
+        verbose_name=_("qualification details"),
     )
 
     restrictions = models.ManyToManyField(
         'Restriction',
         blank=True,
-        verbose_name="Einschränkung",
+        verbose_name=_("restrictions"),
     )
 
     restriction_specific = models.CharField(
         max_length=60,
         null=True,
         blank=True,
-        verbose_name="Einschränkung Details",
+        verbose_name=_("restriction details"),
     )
 
     occupation = models.CharField(
         max_length=50,
         null=True,
         blank=True,
-        verbose_name="Beruf",
+        verbose_name=_("occupation"),
     )
 
     task_categories_agreed = models.ManyToManyField(
         'TaskCategory',
+        null=True,
         blank=True,
+        verbose_name=_("agreement to task categories"),
     )
 
     task_category_description = models.TextField(
         max_length=300,
         null=True,
         blank=True,
+        verbose_name=_("task category details"),
     )
 
     street = models.CharField(
         max_length=50,
         null=True,
         blank=True,
-        verbose_name="Straße",
+        verbose_name=_("street"),
     )
 
     number = models.CharField(
         max_length=8,
         null=True,
         blank=True,
-        verbose_name="Hausnr.",
+        verbose_name=_("street number"),
     )
 
     postal_code = models.CharField(
         max_length=5,
         null=True,
         blank=True,
-        verbose_name="PLZ",
+        verbose_name=_("postal code"),
     )
 
     city = models.CharField(
         max_length=50,
         null=True,
         blank=True,
-        verbose_name="Ort",
+        verbose_name=_("address - city"),
     )
 
     private_phone = PhoneNumberField(
         null=True,
         blank=True,
         max_length=20,
-        verbose_name="Festnetznummer",
+        verbose_name=_("fixed telephone"),
     )
 
     mobile_phone = PhoneNumberField(
         null=True,
         blank=True,
         max_length=20,
-        verbose_name="Mobilnummer",
+        verbose_name=_("mobile phone"),
     )
 
     remark = models.CharField(
         max_length=1000,
         null=True,
         blank=True,
-        verbose_name="Anmerkungen",
+        verbose_name=_("remarks"),
     )
 
     ANSWER_TOPICS = [
-        ('undefiniert', 'undefiniert'),
-        ('unbedingt', 'unbedingt'),
-        ('nicht nur', 'nicht nur'),
+        ('UNDEFINED', _("undefined")),
+        ('ABSOLUTE', _("absolute")),
+        ('NOTONLY', _("not only")),
     ]
     only_job_related_topics = models.CharField(
-        max_length=11,
+        max_length=9,
         choices=ANSWER_TOPICS,
         null=True,
         blank=True,
-        verbose_name="Einsatz nur für eigene Fachtätigkeiten",
+        verbose_name=_("commitment only for job-related topics"),
+        # "Einsatz nur für eigene Fachtätigkeiten"
     )
     is_active = models.BooleanField(null=True, blank=True)
 
-    roles = models.ManyToManyField(to='Role', null=True, blank=True)
+    roles_agreed = models.ManyToManyField(
+        to='Role',
+        null=True,
+        blank=True,
+        verbose_name=_("agreement to roles"),
+    )
+
     #geolocation
-    activity_range_km = models.IntegerField(default=0)
-    organization = models.ForeignKey(to='Device', on_delete=models.CASCADE, null=True, blank=True)
-    resources_provided = models.ManyToManyField(to='Resource', null=True, blank=True)
+    activity_radius_km = models.IntegerField(
+        default=0,
+        null=True,
+        blank=True,
+        verbose_name=_("agreement to activity radius in km"),
+    )
+
+    organizations_subscribed = models.ManyToManyField(
+        to='Organization',
+        null=False,
+        blank=False,
+        verbose_name=_("organizations subscribed to"),
+    )
+
+    devices = models.ManyToManyField(
+        to='Device',
+        null=True,
+        blank=True,
+        verbose_name=_("devices"),
+    )
+
+    resources_provided = models.ManyToManyField(
+        to='Resource',
+        null=True,
+        blank=True,
+        verbose_name=_("resources provided")
+    )
 
     def __name__(self):
         return self.email
@@ -169,8 +205,8 @@ class Person(MixinUUIDs, AbstractUser):
         self.password_modified = timezone.now()
 
     class Meta:
-        verbose_name = "registered helper"
-        verbose_name_plural = "registered helpers"
+        verbose_name = _("registered helper")
+        verbose_name_plural = _("registered helpers")
         # TODO: translation: Registrierter Helfer
 
 
@@ -184,8 +220,8 @@ class Device(MixinUUIDs, models.Model):
         return '%s' % self.device_string
 
     class Meta:
-        verbose_name = "client device"
-        verbose_name_plural = "client devices"
+        verbose_name = _("client device")
+        verbose_name_plural = _("client devices")
         # TODO: translation: Client-Gerät
 
 
@@ -197,8 +233,8 @@ class Resource(MixinUUIDs, models.Model):
         return '%s' % self.description
 
     class Meta:
-        verbose_name = "ressource"
-        verbose_name_plural = "ressources"
+        verbose_name = _("resource")
+        verbose_name_plural = _("resources")
         # TODO: translation: Ressource
 
 
@@ -209,8 +245,8 @@ class Organization(MixinUUIDs, models.Model):
         return '%s' % self.name
 
     class Meta:
-        verbose_name = "organization"
-        verbose_name_plural = "organizations"
+        verbose_name = _("organization")
+        verbose_name_plural = _("organizations")
         # TODO: translation: Organisation
 
 
@@ -222,8 +258,8 @@ class Project(MixinUUIDs, models.Model):
         return '%s' % self.name
 
     class Meta:
-        verbose_name = "project"
-        verbose_name_plural = "projects"
+        verbose_name = _("project")
+        verbose_name_plural = _("projects")
         # TODO: translation: Projekt
 
 
@@ -235,8 +271,8 @@ class Deployment(MixinUUIDs, models.Model):
         return '%s' % self.name
 
     class Meta:
-        verbose_name = "deployment"
-        verbose_name_plural = "deployments"
+        verbose_name = _("deployment")
+        verbose_name_plural = _("deployments")
         # TODO: translate: Einsatz
 
 
@@ -263,8 +299,8 @@ class Task(MixinUUIDs, models.Model):
         return '%s' % self.title
 
     class Meta:
-        verbose_name = "task"
-        verbose_name_plural = "tasks"
+        verbose_name = _("task")
+        verbose_name_plural = _("tasks")
         # TODO: translate: Aufgabe
 
 
@@ -276,8 +312,8 @@ class TaskCategory(MixinUUIDs, models.Model):
         return '%s' % self.name
 
     class Meta:
-        verbose_name = "task category"
-        verbose_name_plural = "task categories"
+        verbose_name = _("task category")
+        verbose_name_plural = _("task categories")
         # TODO: translate: Aufgabentyp
 
 
@@ -287,8 +323,8 @@ class Schedule(MixinUUIDs, models.Model):
     end_time = models.DateTimeField()
 
     class Meta:
-        verbose_name = "schedule"
-        verbose_name_plural = "schedules"
+        verbose_name = _("schedule")
+        verbose_name_plural = _("schedules")
         # TODO: translate: Schichtplan
 
 
@@ -298,8 +334,8 @@ class Timeslot(MixinUUIDs, models.Model):
     end_time = models.DateTimeField()
 
     class Meta:
-        verbose_name = "timeslot"
-        verbose_name_plural = "timeslots"
+        verbose_name = _("timeslot")
+        verbose_name_plural = _("timeslots")
         # TODO: translate: Schichtplan
 
 
@@ -314,8 +350,8 @@ class Qualification(MixinUUIDs, models.Model):
         return '%s' % self.name
 
     class Meta:
-        verbose_name = "qualification"
-        verbose_name_plural = "qualification"
+        verbose_name = _("qualification")
+        verbose_name_plural = _("qualification")
         # TODO: translate: Qualifikation
 
 
@@ -329,8 +365,8 @@ class QualificationCategory(MixinUUIDs, models.Model):
         return '%s' % self.name
 
     class Meta:
-        verbose_name = "qualification category"
-        verbose_name_plural = "qualification categories"
+        verbose_name = _("qualification category")
+        verbose_name_plural = _("qualification categories")
         # TODO: translate: Qualifikationstyp
 
 
@@ -344,8 +380,8 @@ class Restriction(MixinUUIDs, models.Model):
         return '%s' % self.name
 
     class Meta:
-        verbose_name = "restriction"
-        verbose_name_plural = "restrictions"
+        verbose_name = _("restriction")
+        verbose_name_plural = _("restrictions")
         # TODO: translate: Einschränkung
 
 
@@ -356,8 +392,8 @@ class Role(MixinUUIDs, models.Model):
         return '%s' % self.description
 
     class Meta:
-        verbose_name = "role"
-        verbose_name_plural = "roles"
+        verbose_name = _("role")
+        verbose_name_plural = _("roles")
         # TODO: translate: Einsatzrolle
 
 
@@ -371,8 +407,8 @@ class EquipmentProvided(MixinUUIDs, models.Model):
         return '%s' % self.name
 
     class Meta:
-        verbose_name = "equipment provided by organization"
-        verbose_name_plural = "equipments provided by organization"
+        verbose_name = _("equipment provided by organization")
+        verbose_name_plural = _("equipments provided by organization")
         # TODO: translate: Ausstattung durch Organisation
 
 
@@ -386,8 +422,8 @@ class EquipmentSelf(MixinUUIDs, models.Model):
         return '%s' % self.name
 
     class Meta:
-        verbose_name = "own equipment"
-        verbose_name_plural = "own equipments"
+        verbose_name = _("own equipment")
+        verbose_name_plural = _("own equipments")
         # TODO: translate: Eigene Ausstattung
 
 
@@ -396,8 +432,8 @@ class Location(MixinUUIDs, models.Model):
     location_category = models.ForeignKey(to='LocationCategory', on_delete=models.CASCADE, null=True, blank=True)
 
     class Meta:
-        verbose_name = "location"
-        verbose_name_plural = "locations"
+        verbose_name = _("location")
+        verbose_name_plural = _("locations")
         # TODO: translate: Ort
 
 
@@ -405,8 +441,8 @@ class LocationCategory(MixinUUIDs, models.Model):
     name = models.CharField(max_length=50)
 
     class Meta:
-        verbose_name = "location category"
-        verbose_name_plural = "location categories"
+        verbose_name = _("location category")
+        verbose_name_plural = _("location categories")
         # TODO: translate: Einsatzort-Typ
         # e.g. deployment location
 
@@ -427,6 +463,6 @@ class NotificationCategory(MixinUUIDs, models.Model):
     name = models.CharField(max_length=50)
 
     class Meta:
-        verbose_name = "notification category"
-        verbose_name_plural = "notification categories"
+        verbose_name = _("notification category")
+        verbose_name_plural = _("notification categories")
         # TODO: translate: Benachrichtigungstyp
