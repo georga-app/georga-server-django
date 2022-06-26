@@ -45,34 +45,10 @@ class Person(MixinUUIDs, AbstractUser):
         default='NONE',
     )
 
-    qualifications_language = models.ManyToManyField(
-        'QualificationLanguage',
+    qualifications = models.ManyToManyField(
+        'Qualification',
         blank=True,
-        verbose_name="Sprachkenntnisse",
-    )
-
-    qualifications_technical = models.ManyToManyField(
-        'QualificationTechnical',
-        blank=True,
-        verbose_name="Qualifikationen Technisch",
-    )
-
-    qualifications_license = models.ManyToManyField(
-        'QualificationLicense',
-        blank=True,
-        verbose_name="Führerscheine",
-    )
-
-    qualifications_health = models.ManyToManyField(
-        'QualificationHealth',
-        blank=True,
-        verbose_name="Qualifikationen Gesundheitswesen",
-    )
-
-    qualifications_administrative = models.ManyToManyField(
-        'QualificationAdministrative',
-        blank=True,
-        verbose_name="Qualifikationen Verwaltung",
+        verbose_name="qualification",
     )
 
     qualification_specific = models.CharField(
@@ -102,12 +78,12 @@ class Person(MixinUUIDs, AbstractUser):
         verbose_name="Beruf",
     )
 
-    help_operations = models.ManyToManyField(
-        'HelpOperation',
+    task_types_agreed = models.ManyToManyField(
+        'TaskType',
         blank=True,
     )
 
-    help_description = models.TextField(
+    task_type_description = models.TextField(
         max_length=300,
         null=True,
         blank=True,
@@ -280,7 +256,7 @@ class TaskType(MixinUUIDs, models.Model):
 
 class Task(MixinUUIDs, models.Model):
     project = models.ForeignKey(to='Project', on_delete=models.DO_NOTHING, null=False, blank=False)
-    action_type = models.ForeignKey(to='ActionType', on_delete=models.DO_NOTHING, null=False, blank=False)
+    task_type = models.ForeignKey(to='TaskType', on_delete=models.DO_NOTHING, null=False, blank=False)
     roles_required = models.ManyToManyField(to='Role', null=True, blank=True, related_name='roles_required')
     roles_desirable = models.ManyToManyField(to='Role', null=True, blank=True, related_name='roles_desirable')
     resources_required = models.ManyToManyField(to='Resource', null=True, blank=True, related_name='resources_required')
@@ -317,7 +293,7 @@ class Schedule(MixinUUIDs, models.Model):
         # TODO: translate: Schichtplan
 
 
-class timeslot(MixinUUIDs, models.Model):
+class Timeslot(MixinUUIDs, models.Model):
     schedule = models.ForeignKey(to='Schedule', on_delete=models.CASCADE, null=False, blank=False)
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
