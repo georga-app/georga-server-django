@@ -29,20 +29,26 @@ from channels_graphql_ws import Subscription as GQLSubscription
 from .auth import jwt_decode
 from .email import Email
 from .models import (
-    ActionCategory,
-    EquipmentProvided,
-    EquipmentSelf,
-    HelpOperation,
-    Location,
     Person,
-    Poll,
-    PollChoice,
-    QualificationAdministrative,
-    QualificationHealth,
-    QualificationLanguage,
-    QualificationLicense,
-    QualificationTechnical,
-    Restriction, Device, Resource, Organization, Project, ActionType, Action, Role,
+    Device,
+    Resource,
+    Organization,
+    Project,
+    Deployment,
+    Task,
+    TaskCategory,
+    Schedule,
+    Timeslot,
+    Qualification,
+    QualificationCategory,
+    Restriction,
+    Role,
+    EquipmentSelf,
+    EquipmentProvided,
+    Location,
+    LocationCategory,
+    Notification,
+    NotificationCategory,
 )
 
 
@@ -313,17 +319,17 @@ LOOKUPS_DATETIME = [
 
 # Models ======================================================================
 
-# ActionCategory --------------------------------------------------------------
+# TaskCategory --------------------------------------------------------------
 
 # fields
-action_category_ro_fields = [
+task_category_ro_fields = [
     'uuid',
 ]
-action_category_wo_fields = []
-action_category_rw_fields = [
+task_category_wo_fields = []
+task_category_rw_fields = [
     'name',
 ]
-action_category_filter_fields = {
+task_category_filter_fields = {
     'id': LOOKUPS_ID,
     'uuid': LOOKUPS_ID,
     'name': LOOKUPS_STRING,
@@ -331,11 +337,11 @@ action_category_filter_fields = {
 
 
 # types
-class ActionCategoryType(UUIDDjangoObjectType):
+class TaskCategoryType(UUIDDjangoObjectType):
     class Meta:
-        model = ActionCategory
-        fields = action_category_ro_fields + action_category_rw_fields
-        filter_fields = action_category_filter_fields
+        model = TaskCategory
+        fields = task_category_ro_fields + task_category_rw_fields
+        filter_fields = task_category_filter_fields
         permissions = [login_required]
 
 
@@ -406,79 +412,11 @@ class EquipmentSelfType(UUIDDjangoObjectType):
 # flow mutations
 
 
-# HelpOperation ---------------------------------------------------------------
-
-# fields
-help_operation_ro_fields = [
-    'uuid',
-    'person_set',
-]
-help_operation_wo_fields = []
-help_operation_rw_fields = [
-    'name',
-]
-help_operation_filter_fields = {
-    'id': LOOKUPS_ID,
-    'uuid': LOOKUPS_ID,
-    'name': LOOKUPS_STRING,
-    'person': LOOKUPS_CONNECTION,
-}
-
-
-# types
-class HelpOperationType(UUIDDjangoObjectType):
-    class Meta:
-        model = HelpOperation
-        fields = help_operation_ro_fields + help_operation_rw_fields
-        filter_fields = help_operation_filter_fields
-        permissions = [login_required]
-
-
-# forms
-
-class HelpOperationModelForm(UUIDModelForm):
-    class Meta:
-        model = HelpOperation
-        fields = help_operation_wo_fields + help_operation_rw_fields
-
-
-# cud mutations
-class CreateHelpOperationMutation(UUIDDjangoModelFormMutation):
-    class Meta:
-        form_class = HelpOperationModelForm
-        exclude_fields = ['id']
-        permissions = [staff_member_required]
-
-
-class UpdateHelpOperationMutation(UUIDDjangoModelFormMutation):
-    class Meta:
-        form_class = HelpOperationModelForm
-        required_fields = ['id']
-        permissions = [login_required]
-
-
-class DeleteHelpOperationMutation(UUIDDjangoModelFormMutation):
-    class Meta:
-        form_class = HelpOperationModelForm
-        only_fields = ['id']
-        permissions = [staff_member_required]
-
-    @classmethod
-    def perform_mutate(cls, form, info):
-        help_operation = form.instance
-        help_operation.delete()
-        return cls(help_operation=help_operation, errors=[])
-
-
-# flow mutations
-
-
 # Location --------------------------------------------------------------------
 
 # fields
 location_ro_fields = [
     'uuid',
-    'poll_set',
 ]
 location_wo_fields = []
 location_rw_fields = [
@@ -488,7 +426,6 @@ location_filter_fields = {
     'id': LOOKUPS_ID,
     'uuid': LOOKUPS_ID,
     'address': LOOKUPS_STRING,
-    'poll': LOOKUPS_CONNECTION,
 }
 
 
@@ -522,17 +459,11 @@ person_rw_fields = [
     'last_name',
     'email',
     'title',
-    'qualifications_language',
-    'qualifications_technical',
-    'qualifications_license',
-    'qualifications_health',
-    'qualifications_administrative',
+    'qualifications',
     'qualification_specific',
     'restrictions',
     'restriction_specific',
     'occupation',
-    'help_operations',
-    'help_description',
     'street',
     'number',
     'postal_code',
@@ -550,17 +481,11 @@ person_filter_fields = {
     'last_name': LOOKUPS_STRING,
     'email': LOOKUPS_STRING,
     'title': LOOKUPS_ENUM,
-    'qualifications_language': LOOKUPS_CONNECTION,
-    'qualifications_technical': LOOKUPS_CONNECTION,
-    'qualifications_license': LOOKUPS_CONNECTION,
-    'qualifications_health': LOOKUPS_CONNECTION,
-    'qualifications_administrative': LOOKUPS_CONNECTION,
+    'qualifications': LOOKUPS_CONNECTION,
     'qualification_specific': LOOKUPS_STRING,
     'restrictions': LOOKUPS_CONNECTION,
     'restriction_specific': LOOKUPS_STRING,
     'occupation': LOOKUPS_STRING,
-    'help_operations': LOOKUPS_CONNECTION,
-    'help_description': LOOKUPS_STRING,
     'street': LOOKUPS_STRING,
     'number': LOOKUPS_STRING,
     'postal_code': LOOKUPS_STRING,
@@ -774,96 +699,18 @@ class ResetPasswordMutation(UUIDDjangoModelFormMutation):
         return cls(id=person.gid, errors=[])
 
 
-# Poll ------------------------------------------------------------------------
+# Qualification -------------------------------------------------------
 
 # fields
-poll_ro_fields = [
-    'uuid',
-]
-poll_wo_fields = []
-poll_rw_fields = [
-    'title',
-    'description',
-    'choices',
-    'location',
-    'style',
-]
-poll_filter_fields = {
-    'id': LOOKUPS_ID,
-    'uuid': LOOKUPS_ID,
-    'title': LOOKUPS_STRING,
-    'description': LOOKUPS_STRING,
-    'choices': LOOKUPS_CONNECTION,
-    'location': LOOKUPS_ID,
-    'style': LOOKUPS_ENUM,
-}
-
-
-# types
-class PollType(UUIDDjangoObjectType):
-    class Meta:
-        model = Poll
-        fields = poll_ro_fields + poll_rw_fields
-        filter_fields = poll_filter_fields
-        permissions = [login_required]
-
-
-# forms
-# cud mutations
-# flow mutations
-
-
-# PollChoice ------------------------------------------------------------------
-
-# fields
-poll_choice_ro_fields = [
-    'uuid',
-    'poll_set',
-]
-poll_choice_wo_fields = []
-poll_choice_rw_fields = [
-    'start_time',
-    'end_time',
-    'max_participants',
-    'persons',
-]
-poll_choice_filter_fields = {
-    'id': LOOKUPS_ID,
-    'uuid': LOOKUPS_ID,
-    'start_time': LOOKUPS_DATETIME,
-    'end_time': LOOKUPS_DATETIME,
-    'max_participants': LOOKUPS_INT,
-    'persons': LOOKUPS_CONNECTION,
-    'poll': LOOKUPS_CONNECTION,
-}
-
-
-# types
-class PollChoiceType(UUIDDjangoObjectType):
-    class Meta:
-        model = PollChoice
-        fields = poll_choice_ro_fields + poll_choice_rw_fields
-        filter_fields = poll_choice_filter_fields
-        permissions = [login_required]
-
-
-# forms
-# cud mutations
-# flow mutations
-
-
-# QualificationAdministrative -------------------------------------------------
-
-# fields
-qualification_administrative_ro_fields = [
+qualification_ro_fields = [
     'uuid',
     'person_set',
 ]
-qualification_administrative_wo_fields = []
-qualification_administrative_rw_fields = [
+qualification_wo_fields = []
+qualification_rw_fields = [
     'name',
 ]
-qualification_administrative_filter_fields = {
+qualification_filter_fields = {
     'id': LOOKUPS_ID,
     'uuid': LOOKUPS_ID,
     'name': LOOKUPS_STRING,
@@ -872,181 +719,49 @@ qualification_administrative_filter_fields = {
 
 
 # types
-class QualificationAdministrativeType(UUIDDjangoObjectType):
+class QualificationType(UUIDDjangoObjectType):
     class Meta:
-        model = QualificationAdministrative
-        fields = qualification_administrative_ro_fields + qualification_administrative_rw_fields
-        filter_fields = qualification_administrative_filter_fields
-        permissions = [login_required]
-
-
-# forms
-# cud mutations
-# flow mutations
-
-
-# QualificationHealth ---------------------------------------------------------
-
-# fields
-qualification_health_ro_fields = [
-    'uuid',
-    'person_set',
-]
-qualification_health_wo_fields = []
-qualification_health_rw_fields = [
-    'name',
-]
-qualification_health_filter_fields = {
-    'id': LOOKUPS_ID,
-    'uuid': LOOKUPS_ID,
-    'name': LOOKUPS_STRING,
-    'person': LOOKUPS_CONNECTION,
-}
-
-
-# types
-class QualificationHealthType(UUIDDjangoObjectType):
-    class Meta:
-        model = QualificationHealth
-        fields = qualification_health_ro_fields + qualification_health_rw_fields
-        filter_fields = qualification_health_filter_fields
-        permissions = [login_required]
-
-
-# forms
-# cud mutations
-# flow mutations
-
-
-# QualificationLanguage -------------------------------------------------------
-
-# fields
-qualification_language_ro_fields = [
-    'uuid',
-    'person_set',
-]
-qualification_language_wo_fields = []
-qualification_language_rw_fields = [
-    'name',
-]
-qualification_language_filter_fields = {
-    'id': LOOKUPS_ID,
-    'uuid': LOOKUPS_ID,
-    'name': LOOKUPS_STRING,
-    'person': LOOKUPS_CONNECTION,
-}
-
-
-# types
-class QualificationLanguageType(UUIDDjangoObjectType):
-    class Meta:
-        model = QualificationLanguage
-        fields = qualification_language_ro_fields + qualification_language_rw_fields
-        filter_fields = qualification_language_filter_fields
+        model = Qualification
+        fields = qualification_ro_fields + qualification_rw_fields
+        filter_fields = qualification_filter_fields
         permissions = []
 
 
 # forms
-class QualificationLanguageModelForm(UUIDModelForm):
+class QualificationModelForm(UUIDModelForm):
     class Meta:
-        model = QualificationLanguage
-        fields = qualification_language_wo_fields + qualification_language_rw_fields
+        model = Qualification
+        fields = qualification_wo_fields + qualification_rw_fields
 
 
 # cud mutations
-class CreateQualificationLanguageMutation(UUIDDjangoModelFormMutation):
+class CreateQualificationMutation(UUIDDjangoModelFormMutation):
     class Meta:
-        form_class = QualificationLanguageModelForm
+        form_class = QualificationModelForm
         exclude_fields = ['id']
         permissions = [staff_member_required]
 
 
-class UpdateQualificationLanguageMutation(UUIDDjangoModelFormMutation):
+class UpdateQualificationMutation(UUIDDjangoModelFormMutation):
     class Meta:
-        form_class = QualificationLanguageModelForm
+        form_class = QualificationModelForm
         required_fields = ['id']
         permissions = [login_required]
 
 
-class DeleteQualificationLanguageMutation(UUIDDjangoModelFormMutation):
+class DeleteQualificationMutation(UUIDDjangoModelFormMutation):
     class Meta:
-        form_class = QualificationLanguageModelForm
+        form_class = QualificationModelForm
         only_fields = ['id']
         permissions = [staff_member_required]
 
     @classmethod
     def perform_mutate(cls, form, info):
-        qualification_language = form.instance
-        qualification_language.delete()
-        return cls(qualification_language=qualification_language, errors=[])
+        qualification = form.instance
+        qualification.delete()
+        return cls(qualification=qualification, errors=[])
 
 
-# flow mutations
-
-
-# QualificationLicense --------------------------------------------------------
-
-# fields
-qualification_license_ro_fields = [
-    'uuid',
-    'person_set',
-]
-qualification_license_wo_fields = []
-qualification_license_rw_fields = [
-    'name',
-]
-qualification_license_filter_fields = {
-    'id': LOOKUPS_ID,
-    'uuid': LOOKUPS_ID,
-    'name': LOOKUPS_STRING,
-    'person': LOOKUPS_CONNECTION,
-}
-
-
-# types
-class QualificationLicenseType(UUIDDjangoObjectType):
-    class Meta:
-        model = QualificationLicense
-        fields = qualification_license_ro_fields + qualification_license_rw_fields
-        filter_fields = qualification_license_filter_fields
-        permissions = [login_required]
-
-
-# forms
-# cud mutations
-# flow mutations
-
-
-# QualificationTechnical ------------------------------------------------------
-
-# fields
-qualification_technical_ro_fields = [
-    'uuid',
-    'person_set',
-]
-qualification_technical_wo_fields = []
-qualification_technical_rw_fields = [
-    'name',
-]
-qualification_technical_filter_fields = {
-    'id': LOOKUPS_ID,
-    'uuid': LOOKUPS_ID,
-    'name': LOOKUPS_STRING,
-    'person': LOOKUPS_CONNECTION,
-}
-
-
-# types
-class QualificationTechnicalType(UUIDDjangoObjectType):
-    class Meta:
-        model = QualificationTechnical
-        fields = qualification_technical_ro_fields + qualification_technical_rw_fields
-        filter_fields = qualification_technical_filter_fields
-        permissions = [login_required]
-
-
-# forms
-# cud mutations
 # flow mutations
 
 
@@ -1337,80 +1052,80 @@ class DeleteProjectMutation(UUIDDjangoModelFormMutation):
         return cls(project=project, errors=[])
 
 
-# ActionType ----------------------------------------------------------------------
+# TaskCategory ----------------------------------------------------------------------
 
 # fields
-action_type_ro_fields = [
+task_category_ro_fields = [
     'uuid',
 ]
-action_type_wo_fields = [
+task_category_wo_fields = [
 ]
-action_type_rw_fields = [
+task_category_rw_fields = [
     'name',
     'description',
 ]
-action_type_filter_fields = {
+task_category_filter_fields = {
     'id': LOOKUPS_ID,
     'uuid': LOOKUPS_ID
 }
 
 
 # types
-class ActionTypeType(UUIDDjangoObjectType):
+class TaskCategoryType(UUIDDjangoObjectType):
     class Meta:
-        model = ActionType
-        fields = action_type_ro_fields + action_type_rw_fields
-        filter_fields = action_type_filter_fields
+        model = TaskCategory
+        fields = task_category_ro_fields + task_category_rw_fields
+        filter_fields = task_category_filter_fields
         permissions = [login_required]
 
 
 # forms
 
-class ActionTypeModelForm(UUIDModelForm):
+class TaskCategoryModelForm(UUIDModelForm):
     class Meta:
-        model = ActionType
-        fields = action_type_wo_fields + action_type_rw_fields
+        model = TaskCategory
+        fields = task_category_wo_fields + task_category_rw_fields
 
 
 # cud mutations
-class CreateActionTypeMutation(UUIDDjangoModelFormMutation):
+class CreateTaskCategoryMutation(UUIDDjangoModelFormMutation):
     class Meta:
-        form_class = ActionTypeModelForm
+        form_class = TaskCategoryModelForm
         exclude_fields = ['id']
         permissions = [staff_member_required]
 
 
-class UpdateActionTypeMutation(UUIDDjangoModelFormMutation):
+class UpdateTaskCategoryMutation(UUIDDjangoModelFormMutation):
     class Meta:
-        form_class = ActionTypeModelForm
+        form_class = TaskCategoryModelForm
         required_fields = ['id']
         permissions = [login_required]
 
 
-class DeleteActionTypeMutation(UUIDDjangoModelFormMutation):
+class DeleteTaskCategoryMutation(UUIDDjangoModelFormMutation):
     class Meta:
-        form_class = ActionTypeModelForm
+        form_class = TaskCategoryModelForm
         only_fields = ['id']
         permissions = [staff_member_required]
 
     @classmethod
     def perform_mutate(cls, form, info):
-        action_type = form.instance
-        action_type.delete()
-        return cls(action_type=action_type, errors=[])
+        task_category = form.instance
+        task_category.delete()
+        return cls(task_category=task_category, errors=[])
 
 
-# Action ----------------------------------------------------------------------
+# Task ----------------------------------------------------------------------
 
 # fields
-action_ro_fields = [
+task_ro_fields = [
     'uuid',
 ]
-action_wo_fields = [
+task_wo_fields = [
 ]
-action_rw_fields = [
+task_rw_fields = [
     'project',
-    'action_type',
+    'task_category',
     'roles_required',
     'roles_desirable',
     'resources_required',
@@ -1426,55 +1141,55 @@ action_rw_fields = [
     'start_time',
     'end_time',
 ]
-action_filter_fields = {
+task_filter_fields = {
     'id': LOOKUPS_ID,
     'uuid': LOOKUPS_ID
 }
 
 
 # types
-class ActionModelType(UUIDDjangoObjectType):
+class TaskModelType(UUIDDjangoObjectType):
     class Meta:
-        model = Action
-        fields = action_ro_fields + action_rw_fields
-        filter_fields = action_filter_fields
+        model = Task
+        fields = task_ro_fields + task_rw_fields
+        filter_fields = task_filter_fields
         permissions = [login_required]
 
 
 # forms
 
-class ActionModelForm(UUIDModelForm):
+class TaskModelForm(UUIDModelForm):
     class Meta:
-        model = Action
-        fields = action_wo_fields + action_rw_fields
+        model = Task
+        fields = task_wo_fields + task_rw_fields
 
 
 # cud mutations
-class CreateActionMutation(UUIDDjangoModelFormMutation):
+class CreateTaskMutation(UUIDDjangoModelFormMutation):
     class Meta:
-        form_class = ActionModelForm
+        form_class = TaskModelForm
         exclude_fields = ['id']
         permissions = [staff_member_required]
 
 
-class UpdateActionMutation(UUIDDjangoModelFormMutation):
+class UpdateTaskMutation(UUIDDjangoModelFormMutation):
     class Meta:
-        form_class = ActionModelForm
+        form_class = TaskModelForm
         required_fields = ['id']
         permissions = [login_required]
 
 
-class DeleteActionMutation(UUIDDjangoModelFormMutation):
+class DeleteTaskMutation(UUIDDjangoModelFormMutation):
     class Meta:
-        form_class = ActionModelForm
+        form_class = TaskModelForm
         only_fields = ['id']
         permissions = [staff_member_required]
 
     @classmethod
     def perform_mutate(cls, form, info):
-        action = form.instance
-        action.delete()
-        return cls(action=action, errors=[])
+        task = form.instance
+        task.delete()
+        return cls(task=task, errors=[])
 
 
 # Role ----------------------------------------------------------------------
@@ -1571,7 +1286,7 @@ class TestSubscription(GQLSubscription):
         # invocation (see below). You can return `MySubscription.SKIP`
         # if you wish to suppress the notification to a particular
         # client. For example, this allows to avoid notifications for
-        # the actions made by this particular client.
+        # the tasks made by this particular client.
 
         return TestSubscription(
             message=f"{payload}",
@@ -1596,39 +1311,25 @@ class TestSubscriptionEventMutation(GrapheneMutation):
 
 class Query(ObjectType):
     node = Node.Field()
-    all_action_categories = UUIDDjangoFilterConnectionField(
-        ActionCategoryType)
+    all_task_categories = UUIDDjangoFilterConnectionField(
+        TaskCategoryType)
     all_equipment_provided = UUIDDjangoFilterConnectionField(
         EquipmentProvidedType)
     all_equipment_self = UUIDDjangoFilterConnectionField(
         EquipmentSelfType)
-    all_help_operations = UUIDDjangoFilterConnectionField(
-        HelpOperationType)
     all_locations = UUIDDjangoFilterConnectionField(
         LocationType)
     all_persons = UUIDDjangoFilterConnectionField(
         PersonType)
-    all_polls = UUIDDjangoFilterConnectionField(
-        PollType)
-    all_poll_choices = UUIDDjangoFilterConnectionField(
-        PollChoiceType)
-    all_qualifications_administrative = UUIDDjangoFilterConnectionField(
-        QualificationAdministrativeType)
-    all_qualifications_health = UUIDDjangoFilterConnectionField(
-        QualificationHealthType)
-    all_qualifications_language = UUIDDjangoFilterConnectionField(
-        QualificationLanguageType)
-    all_qualifications_license = UUIDDjangoFilterConnectionField(
-        QualificationLicenseType)
-    all_qualifications_technical = UUIDDjangoFilterConnectionField(
-        QualificationTechnicalType)
+    all_qualifications = UUIDDjangoFilterConnectionField(
+        QualificationType)
     all_restrictions = UUIDDjangoFilterConnectionField(
         RestrictionType)
     all_devices = UUIDDjangoFilterConnectionField(DeviceType)
     all_resources = UUIDDjangoFilterConnectionField(ResourceType)
     all_organisations = UUIDDjangoFilterConnectionField(OrganizationType)
-    all_actions = UUIDDjangoFilterConnectionField(ActionModelType)
-    all_action_types = UUIDDjangoFilterConnectionField(ActionTypeType)
+    all_tasks = UUIDDjangoFilterConnectionField(TaskModelType)
+    all_task_types = UUIDDjangoFilterConnectionField(TaskCategoryType)
     all_projects = UUIDDjangoFilterConnectionField(ProjectType)
     all_roles = UUIDDjangoFilterConnectionField(RoleType)
 
@@ -1651,10 +1352,10 @@ class Mutation(ObjectType):
     request_password = RequestPasswordMutation.Field()
     reset_password = ResetPasswordMutation.Field()
 
-    # QualificationLanguage
-    create_qualification_language = CreateQualificationLanguageMutation.Field()
-    update_qualification_language = UpdateQualificationLanguageMutation.Field()
-    delete_qualification_language = DeleteQualificationLanguageMutation.Field()
+    # Qualification
+    create_qualification = CreateQualificationMutation.Field()
+    update_qualification = UpdateQualificationMutation.Field()
+    delete_qualification = DeleteQualificationMutation.Field()
     # Device
     create_device = CreateDeviceMutation.Field()
     update_device = UpdateDeviceMutation.Field()
@@ -1667,14 +1368,14 @@ class Mutation(ObjectType):
     create_organisation = CreateOrganizationMutation.Field()
     update_organisation = UpdateOrganizationMutation.Field()
     delete_organisation = DeleteOrganizationMutation.Field()
-    # Actions
-    create_action = CreateActionMutation.Field()
-    update_action = UpdateActionMutation.Field()
-    delete_action = DeleteActionMutation.Field()
-    # ActionTypes
-    create_action_type = CreateActionTypeMutation.Field()
-    update_action_type = UpdateActionTypeMutation.Field()
-    delete_action_type = DeleteActionTypeMutation.Field()
+    # Tasks
+    create_task = CreateTaskMutation.Field()
+    update_task = UpdateTaskMutation.Field()
+    delete_task = DeleteTaskMutation.Field()
+    # TaskCategories
+    create_task_category = CreateTaskCategoryMutation.Field()
+    update_task_category = UpdateTaskCategoryMutation.Field()
+    delete_task_category = DeleteTaskCategoryMutation.Field()
     # Projects
     create_project = CreateProjectMutation.Field()
     update_project = UpdateProjectMutation.Field()
