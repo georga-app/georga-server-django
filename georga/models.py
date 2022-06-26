@@ -78,12 +78,12 @@ class Person(MixinUUIDs, AbstractUser):
         verbose_name="Beruf",
     )
 
-    task_types_agreed = models.ManyToManyField(
-        'TaskType',
+    task_categories_agreed = models.ManyToManyField(
+        'TaskCategory',
         blank=True,
     )
 
-    task_type_description = models.TextField(
+    task_category_description = models.TextField(
         max_length=300,
         null=True,
         blank=True,
@@ -242,7 +242,7 @@ class Deployment(MixinUUIDs, models.Model):
 
 class Task(MixinUUIDs, models.Model):
     project = models.ForeignKey(to='Project', on_delete=models.DO_NOTHING, null=False, blank=False)
-    task_type = models.ForeignKey(to='TaskType', on_delete=models.DO_NOTHING, null=False, blank=False)
+    task_category = models.ForeignKey(to='TaskCategory', on_delete=models.DO_NOTHING, null=False, blank=False)
     roles_required = models.ManyToManyField(to='Role', null=True, blank=True, related_name='roles_required')
     roles_desirable = models.ManyToManyField(to='Role', null=True, blank=True, related_name='roles_desirable')
     resources_required = models.ManyToManyField(to='Resource', null=True, blank=True, related_name='resources_required')
@@ -268,7 +268,7 @@ class Task(MixinUUIDs, models.Model):
         # TODO: translate: Aufgabe
 
 
-class TaskType(MixinUUIDs, models.Model):
+class TaskCategory(MixinUUIDs, models.Model):
     name = models.CharField(max_length=50, null=False, blank=False)
     description = models.CharField(max_length=50, null=False, blank=False)
 
@@ -276,8 +276,8 @@ class TaskType(MixinUUIDs, models.Model):
         return '%s' % self.name
 
     class Meta:
-        verbose_name = "task type"
-        verbose_name_plural = "task types"
+        verbose_name = "task category"
+        verbose_name_plural = "task categories"
         # TODO: translate: Aufgabentyp
 
 
@@ -305,7 +305,7 @@ class Timeslot(MixinUUIDs, models.Model):
 
 class Qualification(MixinUUIDs, models.Model):
     name = models.CharField(max_length=50, null=True, blank=True)
-    qualification_type = models.ForeignKey(to='LocationType', on_delete=models.CASCADE, null=True, blank=True)
+    qualification_category = models.ForeignKey(to='LocationCategory', on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return '%s' % self.name
@@ -314,13 +314,12 @@ class Qualification(MixinUUIDs, models.Model):
         return '%s' % self.name
 
     class Meta:
-        abstract = True
         verbose_name = "qualification"
         verbose_name_plural = "qualification"
         # TODO: translate: Qualifikation
 
 
-class QualificationType(MixinUUIDs, models.Model):
+class QualificationCategory(MixinUUIDs, models.Model):
     name = models.CharField(max_length=50, null=True, blank=True)
 
     def __str__(self):
@@ -330,8 +329,8 @@ class QualificationType(MixinUUIDs, models.Model):
         return '%s' % self.name
 
     class Meta:
-        verbose_name = "qualification type"
-        verbose_name_plural = "qualification types"
+        verbose_name = "qualification category"
+        verbose_name_plural = "qualification categories"
         # TODO: translate: Qualifikationstyp
 
 
@@ -394,7 +393,7 @@ class EquipmentSelf(MixinUUIDs, models.Model):
 
 class Location(MixinUUIDs, models.Model):
     address = models.CharField(max_length=200)
-    location_type = models.ForeignKey(to='LocationType', on_delete=models.CASCADE, null=True, blank=True)
+    location_category = models.ForeignKey(to='LocationCategory', on_delete=models.CASCADE, null=True, blank=True)
 
     class Meta:
         verbose_name = "location"
@@ -402,12 +401,12 @@ class Location(MixinUUIDs, models.Model):
         # TODO: translate: Ort
 
 
-class LocationType(MixinUUIDs, models.Model):
+class LocationCategory(MixinUUIDs, models.Model):
     name = models.CharField(max_length=50)
 
     class Meta:
-        verbose_name = "location type"
-        verbose_name_plural = "location types"
+        verbose_name = "location category"
+        verbose_name_plural = "location categories"
         # TODO: translate: Einsatzort-Typ
         # e.g. deployment location
 
@@ -415,7 +414,7 @@ class LocationType(MixinUUIDs, models.Model):
 class Notification(MixinUUIDs, models.Model):
     title = models.CharField(max_length=50)
     contents = models.CharField(max_length=1000)
-    notification_type = models.ForeignKey(to='NotificationType', on_delete=models.CASCADE, null=True, blank=True)
+    notification_category = models.ForeignKey(to='NotificationCategory', on_delete=models.CASCADE, null=True, blank=True)
     PRIORITY = [
         ('DISTURB', 'disturb'),
         ('ONAPPCALL', 'on app call'),
@@ -424,10 +423,10 @@ class Notification(MixinUUIDs, models.Model):
     priority = models.CharField(max_length=8, choices=PRIORITY, default='ONNEWS')
 
 
-class NotificationType(MixinUUIDs, models.Model):
+class NotificationCategory(MixinUUIDs, models.Model):
     name = models.CharField(max_length=50)
 
     class Meta:
-        verbose_name = "notification type"
-        verbose_name_plural = "notification types"
+        verbose_name = "notification category"
+        verbose_name_plural = "notification categories"
         # TODO: translate: Benachrichtigungstyp
