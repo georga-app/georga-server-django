@@ -240,20 +240,6 @@ class Deployment(MixinUUIDs, models.Model):
         # TODO: translate: Einsatz
 
 
-class TaskType(MixinUUIDs, models.Model):
-    name = models.CharField(max_length=50, null=False, blank=False)
-    description = models.CharField(max_length=50, null=False, blank=False)
-
-    def __str__(self):
-        return '%s' % self.name
-
-    class Meta:
-        verbose_name = "task type"
-        verbose_name_plural = "task types"
-        # TODO: translate: Aufgabentyp
-
-
-
 class Task(MixinUUIDs, models.Model):
     project = models.ForeignKey(to='Project', on_delete=models.DO_NOTHING, null=False, blank=False)
     task_type = models.ForeignKey(to='TaskType', on_delete=models.DO_NOTHING, null=False, blank=False)
@@ -280,6 +266,19 @@ class Task(MixinUUIDs, models.Model):
         verbose_name = "task"
         verbose_name_plural = "tasks"
         # TODO: translate: Aufgabe
+
+
+class TaskType(MixinUUIDs, models.Model):
+    name = models.CharField(max_length=50, null=False, blank=False)
+    description = models.CharField(max_length=50, null=False, blank=False)
+
+    def __str__(self):
+        return '%s' % self.name
+
+    class Meta:
+        verbose_name = "task type"
+        verbose_name_plural = "task types"
+        # TODO: translate: Aufgabentyp
 
 
 class Schedule(MixinUUIDs, models.Model):
@@ -361,6 +360,7 @@ class Role(MixinUUIDs, models.Model):
         verbose_name = "role"
         verbose_name_plural = "roles"
         # TODO: translate: Einsatzrolle
+
 
 class EquipmentProvided(MixinUUIDs, models.Model):
     name = models.CharField(max_length=30, null=True, blank=True)
