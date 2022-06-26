@@ -14,7 +14,10 @@ class MixinUUIDs(models.Model):
     class Meta:
         abstract = True
     # uuid for web/app clients
-    uuid = models.UUIDField(default=uuid.uuid4, editable=False)
+    uuid = models.UUIDField(
+        default=uuid.uuid4,
+        editable=False,
+    )
 
     # global relay id
     @functools.cached_property
@@ -155,7 +158,10 @@ class Person(MixinUUIDs, AbstractUser):
         verbose_name=_("commitment only for job-related topics"),
         # "Einsatz nur für eigene Fachtätigkeiten"
     )
-    is_active = models.BooleanField(null=True, blank=True)
+    is_active = models.BooleanField(
+        null=True,
+        blank=True,
+    )
 
     roles_agreed = models.ManyToManyField(
         to='Role',
@@ -206,10 +212,25 @@ class Person(MixinUUIDs, AbstractUser):
 
 
 class Device(MixinUUIDs, models.Model):
-    device_string = models.CharField(max_length=50, null=False, blank=False)
-    os_version = models.CharField(max_length=35, null=False, blank=False)
-    app_version = models.CharField(max_length=15, null=False, blank=False)
-    push_token = models.UUIDField(default=uuid.uuid4, editable=False)
+    device_string = models.CharField(
+        max_length=50,
+        null=False,
+        blank=False,
+    )
+    os_version = models.CharField(
+        max_length=35,
+        null=False,
+        blank=False,
+    )
+    app_version = models.CharField(
+        max_length=15,
+        null=False,
+        blank=False,
+    )
+    push_token = models.UUIDField(
+        default=uuid.uuid4,
+        editable=False,
+    )
 
     def __str__(self):
         return '%s' % self.device_string
@@ -221,8 +242,16 @@ class Device(MixinUUIDs, models.Model):
 
 
 class Resource(MixinUUIDs, models.Model):
-    description = models.CharField(max_length=50, null=False, blank=False)
-    personal_hint = models.CharField(max_length=50, null=False, blank=False)
+    description = models.CharField(
+        max_length=50,
+        null=False,
+        blank=False,
+    )
+    personal_hint = models.CharField(
+        max_length=50,
+        null=False,
+        blank=False,
+    )
 
     def __str__(self):
         return '%s' % self.description
@@ -234,7 +263,11 @@ class Resource(MixinUUIDs, models.Model):
 
 
 class Organization(MixinUUIDs, models.Model):
-    name = models.CharField(max_length=50, null=False, blank=False)
+    name = models.CharField(
+        max_length=50,
+        null=False,
+        blank=False,
+    )
 
     def __str__(self):
         return '%s' % self.name
@@ -246,8 +279,17 @@ class Organization(MixinUUIDs, models.Model):
 
 
 class Project(MixinUUIDs, models.Model):
-    organization = models.ForeignKey(to='Organization', on_delete=models.DO_NOTHING, null=False, blank=False)
-    name = models.CharField(max_length=50, null=False, blank=False)
+    organization = models.ForeignKey(
+        to='Organization',
+        on_delete=models.DO_NOTHING,
+        null=False,
+        blank=False,
+    )
+    name = models.CharField(
+        max_length=50,
+        null=False,
+        blank=False,
+    )
 
     def __str__(self):
         return '%s' % self.name
@@ -259,8 +301,17 @@ class Project(MixinUUIDs, models.Model):
 
 
 class Deployment(MixinUUIDs, models.Model):
-    organization = models.ForeignKey(to='Organization', on_delete=models.DO_NOTHING, null=False, blank=False)
-    name = models.CharField(max_length=50, null=False, blank=False)
+    organization = models.ForeignKey(
+        to='Organization',
+        on_delete=models.DO_NOTHING,
+        null=False,
+        blank=False,
+    )
+    name = models.CharField(
+        max_length=50,
+        null=False,
+        blank=False,
+    )
 
     def __str__(self):
         return '%s' % self.name
@@ -272,21 +323,79 @@ class Deployment(MixinUUIDs, models.Model):
 
 
 class Task(MixinUUIDs, models.Model):
-    project = models.ForeignKey(to='Project', on_delete=models.DO_NOTHING, null=False, blank=False)
-    task_category = models.ForeignKey(to='TaskCategory', on_delete=models.DO_NOTHING, null=False, blank=False)
-    roles_required = models.ManyToManyField(to='Role', blank=True, related_name='roles_required')
-    roles_desirable = models.ManyToManyField(to='Role', blank=True, related_name='roles_desirable')
-    resources_required = models.ManyToManyField(to='Resource', blank=True, related_name='resources_required')
-    resources_desirable = models.ManyToManyField(to='Resource', blank=True, related_name='resources_desirable')
-    persons_registered = models.ManyToManyField(to='Person', blank=True, related_name='persons_registered')
-    persons_participated = models.ManyToManyField(to='Person', blank=True, related_name='persons_participated')
+    project = models.ForeignKey(
+        to='Project',
+        on_delete=models.DO_NOTHING,
+        null=False,
+        blank=False,
+    )
+    task_category = models.ForeignKey(
+        to='TaskCategory',
+        on_delete=models.DO_NOTHING,
+        null=False,
+        blank=False,
+    )
+    roles_required = models.ManyToManyField(
+        to='Role',
+        blank=True,
+        related_name='roles_required',
+    )
+    roles_desirable = models.ManyToManyField(
+        to='Role',
+        blank=True,
+        related_name='roles_desirable',
+    )
+    resources_required = models.ManyToManyField(
+        to='Resource',
+        blank=True,
+        related_name='resources_required',
+    )
+    resources_desirable = models.ManyToManyField(
+        to='Resource',
+        blank=True,
+        related_name='resources_desirable',
+    )
+    persons_registered = models.ManyToManyField(
+        to='Person',
+        blank=True,
+        related_name='persons_registered',
+    )
+    persons_participated = models.ManyToManyField(
+        to='Person',
+        blank=True,
+        related_name='persons_participated',
+    )
     #geolocation
-    title = models.CharField(max_length=50, null=False, blank=False)
-    postal_address_name = models.CharField(max_length=50, null=True, blank=True)
-    postal_address_street = models.CharField(max_length=50, null=True, blank=True)
-    postal_address_zip_code = models.CharField(max_length=50, null=True, blank=True)
-    postal_address_city = models.CharField(max_length=50, null=True, blank=True)
-    postal_address_country = models.CharField(max_length=50, null=True, blank=True)
+    title = models.CharField(
+        max_length=50,
+        null=False,
+        blank=False,
+    )
+    postal_address_name = models.CharField(
+        max_length=50,
+        null=True,
+        blank=True,
+    )
+    postal_address_street = models.CharField(
+        max_length=50,
+        null=True,
+        blank=True,
+    )
+    postal_address_zip_code = models.CharField(
+        max_length=50,
+        null=True,
+        blank=True,
+    )
+    postal_address_city = models.CharField(
+        max_length=50,
+        null=True,
+        blank=True,
+    )
+    postal_address_country = models.CharField(
+        max_length=50,
+        null=True,
+        blank=True,
+    )
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
 
@@ -300,8 +409,15 @@ class Task(MixinUUIDs, models.Model):
 
 
 class TaskCategory(MixinUUIDs, models.Model):
-    name = models.CharField(max_length=50, null=False, blank=False)
-    description = models.CharField(max_length=50, null=False, blank=False)
+    name = models.CharField(
+        max_length=50,
+        null=False,
+        blank=False,
+    )
+    description = models.CharField(max_length=50,
+        null=False,
+        blank=False,
+    )
 
     def __str__(self):
         return '%s' % self.name
@@ -313,7 +429,12 @@ class TaskCategory(MixinUUIDs, models.Model):
 
 
 class Schedule(MixinUUIDs, models.Model):
-    task = models.ForeignKey(to='Task', on_delete=models.CASCADE, null=False, blank=False)
+    task = models.ForeignKey(
+        to='Task',
+        on_delete=models.CASCADE,
+        null=False,
+        blank=False,
+    )
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
 
@@ -324,7 +445,12 @@ class Schedule(MixinUUIDs, models.Model):
 
 
 class Timeslot(MixinUUIDs, models.Model):
-    schedule = models.ForeignKey(to='Schedule', on_delete=models.CASCADE, null=False, blank=False)
+    schedule = models.ForeignKey(
+        to='Schedule',
+        on_delete=models.CASCADE,
+        null=False,
+        blank=False,
+    )
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
 
@@ -335,8 +461,17 @@ class Timeslot(MixinUUIDs, models.Model):
 
 
 class Qualification(MixinUUIDs, models.Model):
-    name = models.CharField(max_length=50, null=True, blank=True)
-    qualification_category = models.ForeignKey(to='LocationCategory', on_delete=models.CASCADE, null=True, blank=True)
+    name = models.CharField(
+        max_length=50,
+        null=True,
+        blank=True,
+    )
+    qualification_category = models.ForeignKey(
+        to='LocationCategory',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+    )
 
     def __str__(self):
         return '%s' % self.name
@@ -351,7 +486,11 @@ class Qualification(MixinUUIDs, models.Model):
 
 
 class QualificationCategory(MixinUUIDs, models.Model):
-    name = models.CharField(max_length=50, null=True, blank=True)
+    name = models.CharField(
+        max_length=50,
+        null=True,
+        blank=True,
+    )
 
     def __str__(self):
         return '%s' % self.name
@@ -366,7 +505,11 @@ class QualificationCategory(MixinUUIDs, models.Model):
 
 
 class Restriction(MixinUUIDs, models.Model):
-    name = models.CharField(max_length=50, null=True, blank=True)
+    name = models.CharField(
+        max_length=50,
+        null=True,
+        blank=True,
+    )
 
     def __str__(self):
         return '%s' % self.name
@@ -381,7 +524,11 @@ class Restriction(MixinUUIDs, models.Model):
 
 
 class Role(MixinUUIDs, models.Model):
-    description = models.CharField(max_length=50, null=False, blank=False)
+    description = models.CharField(
+        max_length=50,
+        null=False,
+        blank=False,
+    )
 
     def __str__(self):
         return '%s' % self.description
@@ -393,7 +540,11 @@ class Role(MixinUUIDs, models.Model):
 
 
 class EquipmentProvided(MixinUUIDs, models.Model):
-    name = models.CharField(max_length=30, null=True, blank=True)
+    name = models.CharField(
+        max_length=30,
+        null=True,
+        blank=True,
+    )
 
     def __str__(self):
         return '%s' % self.name
@@ -408,7 +559,11 @@ class EquipmentProvided(MixinUUIDs, models.Model):
 
 
 class EquipmentSelf(MixinUUIDs, models.Model):
-    name = models.CharField(max_length=30, null=True, blank=True)
+    name = models.CharField(
+        max_length=30,
+        null=True,
+        blank=True,
+    )
 
     def __str__(self):
         return '%s' % self.name
@@ -424,7 +579,12 @@ class EquipmentSelf(MixinUUIDs, models.Model):
 
 class Location(MixinUUIDs, models.Model):
     address = models.CharField(max_length=200)
-    location_category = models.ForeignKey(to='LocationCategory', on_delete=models.CASCADE, null=True, blank=True)
+    location_category = models.ForeignKey(
+        to='LocationCategory',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+    )
 
     class Meta:
         verbose_name = _("location")
@@ -433,7 +593,9 @@ class Location(MixinUUIDs, models.Model):
 
 
 class LocationCategory(MixinUUIDs, models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(
+        max_length=50,
+    )
 
     class Meta:
         verbose_name = _("location category")
@@ -443,19 +605,34 @@ class LocationCategory(MixinUUIDs, models.Model):
 
 
 class Notification(MixinUUIDs, models.Model):
-    title = models.CharField(max_length=50)
-    contents = models.CharField(max_length=1000)
-    notification_category = models.ForeignKey(to='NotificationCategory', on_delete=models.CASCADE, null=True, blank=True)
+    title = models.CharField(
+        max_length=50,
+    )
+    contents = models.CharField(
+        max_length=1000,
+    )
+    notification_category = models.ForeignKey(
+        to='NotificationCategory',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+    )
     PRIORITY = [
         ('DISTURB', 'disturb'),
         ('ONAPPCALL', 'on app call'),
         ('ONNEWS', 'on reading news actively'),
     ]
-    priority = models.CharField(max_length=9, choices=PRIORITY, default='ONNEWS')
+    priority = models.CharField(
+        max_length=9,
+        choices=PRIORITY,
+        default='ONNEWS',
+    )
 
 
 class NotificationCategory(MixinUUIDs, models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(
+        max_length=50,
+    )
 
     class Meta:
         verbose_name = _("notification category")
