@@ -420,7 +420,7 @@ class Notification(MixinUUIDs, models.Model):
         ('ONAPPCALL', 'on app call'),
         ('ONNEWS', 'on reading news actively'),
     ]
-    priority = models.CharField(max_length=8, choices=PRIORITY, default='ONNEWS')
+    priority = models.CharField(max_length=9, choices=PRIORITY, default='ONNEWS')
 
 
 class NotificationCategory(MixinUUIDs, models.Model):
