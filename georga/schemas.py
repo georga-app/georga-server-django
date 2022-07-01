@@ -1,30 +1,26 @@
 from datetime import datetime
 
+import graphql_jwt
+from channels_graphql_ws import Subscription as GQLSubscription
+from django.contrib.auth.password_validation import validate_password
 # from django.core.exceptions import ValidationError
 from django.db.models import ManyToManyField, ManyToManyRel, ManyToOneRel
-from django.forms.models import model_to_dict
 from django.forms import (
     ModelForm, ModelChoiceField, ModelMultipleChoiceField,
     IntegerField, CharField, ChoiceField
 )
-from django.contrib.auth.password_validation import validate_password
-
-from graphql_relay import from_global_id
+from django.forms.models import model_to_dict
 from graphene import Schema, ObjectType, List, ID, String, NonNull, Mutation as GrapheneMutation
 from graphene.relay import Node
 from graphene.types.dynamic import Dynamic
-
 from graphene_django import DjangoObjectType
+from graphene_django.converter import convert_django_field
 from graphene_django.fields import DjangoListField, DjangoConnectionField
 from graphene_django.filter import DjangoFilterConnectionField
-from graphene_django.converter import convert_django_field
 from graphene_django.forms import GlobalIDMultipleChoiceField
 from graphene_django.forms.mutation import DjangoModelFormMutation
-
-import graphql_jwt
 from graphql_jwt.decorators import login_required, staff_member_required
-
-from channels_graphql_ws import Subscription as GQLSubscription
+from graphql_relay import from_global_id
 
 from .auth import jwt_decode
 from .email import Email
@@ -34,21 +30,21 @@ from .models import (
     Resource,
     Organization,
     Project,
-    Deployment,
     Task,
     TaskCategory,
-    Schedule,
-    Timeslot,
     Qualification,
-    QualificationCategory,
     Restriction,
     Role,
     EquipmentSelf,
     EquipmentProvided,
     Location,
+    Deployment,
+    Schedule,
+    Timeslot,
+    QualificationCategory,
     LocationCategory,
-    Notification,
     NotificationCategory,
+    Notification
 )
 
 
@@ -319,37 +315,6 @@ LOOKUPS_DATETIME = [
 
 # Models ======================================================================
 
-# TaskCategory --------------------------------------------------------------
-
-# fields
-task_category_ro_fields = [
-    'uuid',
-]
-task_category_wo_fields = []
-task_category_rw_fields = [
-    'name',
-]
-task_category_filter_fields = {
-    'id': LOOKUPS_ID,
-    'uuid': LOOKUPS_ID,
-    'name': LOOKUPS_STRING,
-}
-
-
-# types
-class TaskCategoryType(UUIDDjangoObjectType):
-    class Meta:
-        model = TaskCategory
-        fields = task_category_ro_fields + task_category_rw_fields
-        filter_fields = task_category_filter_fields
-        permissions = [login_required]
-
-
-# forms
-# cud mutations
-# flow mutations
-
-
 # EquipmentProvided -----------------------------------------------------------
 
 # fields
@@ -361,7 +326,6 @@ equipment_provided_rw_fields = [
     'name',
 ]
 equipment_provided_filter_fields = {
-    'id': LOOKUPS_ID,
     'uuid': LOOKUPS_ID,
     'name': LOOKUPS_STRING,
 }
@@ -392,7 +356,6 @@ equipment_self_rw_fields = [
     'name',
 ]
 equipment_self_filter_fields = {
-    'id': LOOKUPS_ID,
     'uuid': LOOKUPS_ID,
     'name': LOOKUPS_STRING,
 }
@@ -421,6 +384,7 @@ location_ro_fields = [
 location_wo_fields = []
 location_rw_fields = [
     'address',
+    'location_category',
 ]
 location_filter_fields = {
     'id': LOOKUPS_ID,
@@ -709,12 +673,10 @@ qualification_ro_fields = [
 qualification_wo_fields = []
 qualification_rw_fields = [
     'name',
+    'qualification_category',
 ]
 qualification_filter_fields = {
-    'id': LOOKUPS_ID,
     'uuid': LOOKUPS_ID,
-    'name': LOOKUPS_STRING,
-    'person': LOOKUPS_CONNECTION,
 }
 
 
@@ -770,17 +732,14 @@ class DeleteQualificationMutation(UUIDDjangoModelFormMutation):
 # fields
 restriction_ro_fields = [
     'uuid',
-    'person_set',
 ]
 restriction_wo_fields = []
 restriction_rw_fields = [
     'name',
 ]
 restriction_filter_fields = {
-    'id': LOOKUPS_ID,
     'uuid': LOOKUPS_ID,
     'name': LOOKUPS_STRING,
-    'person': LOOKUPS_CONNECTION,
 }
 
 
@@ -811,6 +770,7 @@ device_rw_fields = [
     'device_string',
     'os_version',
     'app_version',
+
 
 ]
 device_filter_fields = {
@@ -1148,7 +1108,7 @@ task_filter_fields = {
 
 
 # types
-class TaskModelType(UUIDDjangoObjectType):
+class TaskType(UUIDDjangoObjectType):
     class Meta:
         model = Task
         fields = task_ro_fields + task_rw_fields
@@ -1204,8 +1164,7 @@ role_rw_fields = [
     'description',
 ]
 role_filter_fields = {
-    'id': LOOKUPS_ID,
-    'uuid': LOOKUPS_ID
+    'uuid': LOOKUPS_ID,
 }
 
 
@@ -1253,6 +1212,447 @@ class DeleteRoleMutation(UUIDDjangoModelFormMutation):
         role.delete()
         return cls(role=role, errors=[])
 
+
+
+# Deployment ----------------------------------------------------------------------
+
+# fields
+deployment_ro_fields = [
+    'uuid',
+]
+deployment_wo_fields = [
+]
+deployment_rw_fields = [
+    'organization',
+    'name',
+]
+deployment_filter_fields = {
+    'uuid': LOOKUPS_ID,
+}
+
+
+# types
+class DeploymentType(UUIDDjangoObjectType):
+    class Meta:
+        model = Deployment
+        fields = deployment_ro_fields + deployment_rw_fields
+        filter_fields = deployment_filter_fields
+        permissions = [login_required]
+
+
+# forms
+
+class DeploymentModelForm(UUIDModelForm):
+    class Meta:
+        model = Deployment
+        fields = deployment_wo_fields + deployment_rw_fields
+
+
+# cud mutations
+class CreateDeploymentMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = DeploymentModelForm
+        exclude_fields = ['id']
+        permissions = [staff_member_required]
+
+
+class UpdateDeploymentMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = DeploymentModelForm
+        required_fields = ['id']
+        permissions = [login_required]
+
+
+class DeleteDeploymentMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = DeploymentModelForm
+        only_fields = ['id']
+        permissions = [staff_member_required]
+
+    @classmethod
+    def perform_mutate(cls, form, info):
+        deployment = form.instance
+        deployment.delete()
+        return cls(deployment=deployment, errors=[])
+
+
+
+# Schedule ----------------------------------------------------------------------
+
+# fields
+schedule_ro_fields = [
+    'uuid',
+]
+schedule_wo_fields = [
+]
+schedule_rw_fields = [
+    'task',
+    'start_time',
+    'end_time',
+]
+schedule_filter_fields = {
+    'uuid': LOOKUPS_ID,
+}
+
+
+# types
+class ScheduleType(UUIDDjangoObjectType):
+    class Meta:
+        model = Schedule
+        fields = schedule_ro_fields + schedule_rw_fields
+        filter_fields = schedule_filter_fields
+        permissions = [login_required]
+
+
+# forms
+
+class ScheduleModelForm(UUIDModelForm):
+    class Meta:
+        model = Schedule
+        fields = schedule_wo_fields + schedule_rw_fields
+
+
+# cud mutations
+class CreateScheduleMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = ScheduleModelForm
+        exclude_fields = ['id']
+        permissions = [staff_member_required]
+
+
+class UpdateScheduleMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = ScheduleModelForm
+        required_fields = ['id']
+        permissions = [login_required]
+
+
+class DeleteScheduleMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = ScheduleModelForm
+        only_fields = ['id']
+        permissions = [staff_member_required]
+
+    @classmethod
+    def perform_mutate(cls, form, info):
+        schedule = form.instance
+        schedule.delete()
+        return cls(scheudule=schedule, errors=[])
+    
+    
+
+# Timeslot ----------------------------------------------------------------------
+
+# fields
+timeslot_ro_fields = [
+    'uuid',
+]
+timeslot_wo_fields = [
+]
+timeslot_rw_fields = [
+    'schedule',
+    'start_time',
+    'end_time',
+]
+timeslot_filter_fields = {
+    'uuid': LOOKUPS_ID,
+}
+
+
+# types
+class TimeslotType(UUIDDjangoObjectType):
+    class Meta:
+        model = Timeslot
+        fields = timeslot_ro_fields + timeslot_rw_fields
+        filter_fields = timeslot_filter_fields
+        permissions = [login_required]
+
+
+# forms
+
+class TimeslotModelForm(UUIDModelForm):
+    class Meta:
+        model = Timeslot
+        fields = timeslot_wo_fields + timeslot_rw_fields
+
+
+# cud mutations
+class CreateTimeslotMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = TimeslotModelForm
+        exclude_fields = ['id']
+        permissions = [staff_member_required]
+
+
+class UpdateTimeslotMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = TimeslotModelForm
+        required_fields = ['id']
+        permissions = [login_required]
+
+
+class DeleteTimeslotMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = TimeslotModelForm
+        only_fields = ['id']
+        permissions = [staff_member_required]
+
+    @classmethod
+    def perform_mutate(cls, form, info):
+        timeslot = form.instance
+        timeslot.delete()
+        return cls(timeslot=timeslot, errors=[])
+
+
+
+# QualificationCategory ----------------------------------------------------------------------
+
+# fields
+qualification_category_ro_fields = [
+    'uuid',
+]
+qualification_category_wo_fields = [
+]
+qualification_category_rw_fields = [
+    'name',
+]
+qualification_category_filter_fields = {
+    'uuid': LOOKUPS_ID,
+}
+
+
+# types
+class QualificationCategoryType(UUIDDjangoObjectType):
+    class Meta:
+        model = QualificationCategory
+        fields = qualification_category_ro_fields + qualification_category_rw_fields
+        filter_fields = qualification_category_filter_fields
+        permissions = [login_required]
+
+
+# forms
+
+class QualificationCategoryModelForm(UUIDModelForm):
+    class Meta:
+        model = QualificationCategory
+        fields = qualification_category_wo_fields + qualification_category_rw_fields
+
+
+# cud mutations
+class CreateQualificationCategoryMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = QualificationCategoryModelForm
+        exclude_fields = ['id']
+        permissions = [staff_member_required]
+
+
+class UpdateQualificationCategoryMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = QualificationCategoryModelForm
+        required_fields = ['id']
+        permissions = [login_required]
+
+
+class DeleteQualificationCategoryMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = QualificationCategoryModelForm
+        only_fields = ['id']
+        permissions = [staff_member_required]
+
+    @classmethod
+    def perform_mutate(cls, form, info):
+        qualification_category = form.instance
+        qualification_category.delete()
+        return cls(qualification_category=qualification_category, errors=[])
+
+
+
+# LocationCategory ----------------------------------------------------------------------
+
+# fields
+location_category_ro_fields = [
+    'uuid',
+]
+location_category_wo_fields = [
+]
+location_category_rw_fields = [
+    'name',
+]
+location_category_filter_fields = {
+    'uuid': LOOKUPS_ID,
+}
+
+
+# types
+class LocationCategoryType(UUIDDjangoObjectType):
+    class Meta:
+        model = LocationCategory
+        fields = location_category_ro_fields + location_category_rw_fields
+        filter_fields = location_category_filter_fields
+        permissions = [login_required]
+
+
+# forms
+
+class LocationCategoryModelForm(UUIDModelForm):
+    class Meta:
+        model = LocationCategory
+        fields = location_category_wo_fields + location_category_rw_fields
+
+
+# cud mutations
+class CreateLocationCategoryMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = LocationCategoryModelForm
+        exclude_fields = ['id']
+        permissions = [staff_member_required]
+
+
+class UpdateLocationCategoryMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = LocationCategoryModelForm
+        required_fields = ['id']
+        permissions = [login_required]
+
+
+class DeleteLocationCategoryMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = LocationCategoryModelForm
+        only_fields = ['id']
+        permissions = [staff_member_required]
+
+    @classmethod
+    def perform_mutate(cls, form, info):
+        location_category = form.instance
+        location_category.delete()
+        return cls(location_category=location_category, errors=[])
+
+
+
+# Notification ----------------------------------------------------------------------
+
+# fields
+notification_ro_fields = [
+    'uuid',
+]
+notification_wo_fields = [
+]
+notification_rw_fields = [
+    'title',
+    'contents',
+    'notification_category',
+    'priority',
+]
+notification_filter_fields = {
+    'uuid': LOOKUPS_ID,
+}
+
+
+# types
+class NotificationType(UUIDDjangoObjectType):
+    class Meta:
+        model = Notification
+        fields = notification_ro_fields + notification_rw_fields
+        filter_fields = notification_filter_fields
+        permissions = [login_required]
+
+
+# forms
+
+class NotificationModelForm(UUIDModelForm):
+    class Meta:
+        model = Notification
+        fields = notification_wo_fields + notification_rw_fields
+
+
+# cud mutations
+class CreateNotificationMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = NotificationModelForm
+        exclude_fields = ['id']
+        permissions = [staff_member_required]
+
+
+class UpdateNotificationMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = NotificationModelForm
+        required_fields = ['id']
+        permissions = [login_required]
+
+
+class DeleteNotificationMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = NotificationModelForm
+        only_fields = ['id']
+        permissions = [staff_member_required]
+
+    @classmethod
+    def perform_mutate(cls, form, info):
+        notification = form.instance
+        notification.delete()
+        return cls(notification=notification, errors=[])
+
+
+
+# NotificationCategory ----------------------------------------------------------------------
+
+# fields
+notification_category_ro_fields = [
+    'uuid',
+]
+notification_category_wo_fields = [
+]
+notification_category_rw_fields = [
+    'name',
+]
+notification_category_filter_fields = {
+    'uuid': LOOKUPS_ID,
+}
+
+
+# types
+class NotificationCategoryType(UUIDDjangoObjectType):
+    class Meta:
+        model = NotificationCategory
+        fields = notification_category_ro_fields + notification_category_rw_fields
+        filter_fields = notification_category_filter_fields
+        permissions = [login_required]
+
+
+# forms
+
+class NotificationCategoryModelForm(UUIDModelForm):
+    class Meta:
+        model = NotificationCategory
+        fields = notification_category_wo_fields + notification_category_rw_fields
+
+
+# cud mutations
+class CreateNotificationCategoryMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = NotificationCategoryModelForm
+        exclude_fields = ['id']
+        permissions = [staff_member_required]
+
+
+class UpdateNotificationCategoryMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = NotificationCategoryModelForm
+        required_fields = ['id']
+        permissions = [login_required]
+
+
+class DeleteNotificationCategoryMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = NotificationCategoryModelForm
+        only_fields = ['id']
+        permissions = [staff_member_required]
+
+    @classmethod
+    def perform_mutate(cls, form, info):
+        notification_category = form.instance
+        notification_category.delete()
+        return cls(notification_category=notification_category, errors=[])
 
 # Subscriptions ===============================================================
 
@@ -1328,7 +1728,7 @@ class Query(ObjectType):
     all_devices = UUIDDjangoFilterConnectionField(DeviceType)
     all_resources = UUIDDjangoFilterConnectionField(ResourceType)
     all_organisations = UUIDDjangoFilterConnectionField(OrganizationType)
-    all_tasks = UUIDDjangoFilterConnectionField(TaskModelType)
+    all_tasks = UUIDDjangoFilterConnectionField(TaskType)
     all_task_types = UUIDDjangoFilterConnectionField(TaskCategoryType)
     all_projects = UUIDDjangoFilterConnectionField(ProjectType)
     all_roles = UUIDDjangoFilterConnectionField(RoleType)
