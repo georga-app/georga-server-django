@@ -169,7 +169,7 @@ class Person(MixinUUIDs, AbstractUser):
         verbose_name=_("agreement to roles"),
     )
 
-    #geolocation
+    # geolocation
     activity_radius_km = models.IntegerField(
         default=0,
         null=True,
@@ -365,7 +365,7 @@ class Task(MixinUUIDs, models.Model):
         blank=True,
         related_name='persons_participated',
     )
-    #geolocation
+    # geolocation
     title = models.CharField(
         max_length=50,
         null=False,
@@ -414,7 +414,8 @@ class TaskCategory(MixinUUIDs, models.Model):
         null=False,
         blank=False,
     )
-    description = models.CharField(max_length=50,
+    description = models.CharField(
+        max_length=50,
         null=False,
         blank=False,
     )
