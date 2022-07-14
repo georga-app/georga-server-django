@@ -37,14 +37,14 @@ class Person(MixinUUIDs, AbstractUser):
     password_modified = models.DateTimeField(default=timezone.now)
 
     TITLES = [
-        ('HERR', 'Herr'),
-        ('FRAU', 'Frau'),
-        ('DIVERS', 'Divers'),
-        ('NONE', 'Keine'),
+        ('MR', _('Mr.')),
+        ('MS', _('Ms.')),
+        ('MX', _('Mx.')),
+        ('NONE', _('None')),
     ]
 
     title = models.CharField(
-        max_length=6,
+        max_length=4,
         choices=TITLES,
         default='NONE',
         verbose_name=_("title"),
