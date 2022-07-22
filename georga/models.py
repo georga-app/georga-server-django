@@ -468,7 +468,7 @@ class Qualification(MixinUUIDs, models.Model):
         blank=True,
     )
     qualification_category = models.ForeignKey(
-        to='LocationCategory',
+        to='QualificationCategory',
         on_delete=models.CASCADE,
         null=True,
         blank=True,
@@ -601,7 +601,7 @@ class LocationCategory(MixinUUIDs, models.Model):
     class Meta:
         verbose_name = _("location category")
         verbose_name_plural = _("location categories")
-        # TODO: translate: Einsatzort-Typ
+        # TODO: translate: Einsatzort-Kategorie
         # e.g. deployment location
 
 

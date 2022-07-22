@@ -1,4 +1,14 @@
+- model: georga.locationcategory
+  pk: 0
+  fields:
+    name: earthquake site
+- model: georga.locationcategory
+  pk: 0
+  fields:
+    name: flood catastropy site
+    
 - model: georga.location
-  pk: 1
+  pk: 0
   fields:
     address: EAS
+    location_category: 0
