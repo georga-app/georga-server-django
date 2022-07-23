@@ -38,7 +38,7 @@
   pk: 9
   fields:
     name: homeless shelter
-    
+
 - model: georga.location
   pk: 1
   fields:
