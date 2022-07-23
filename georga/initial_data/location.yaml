@@ -1,14 +1,46 @@
 - model: georga.locationcategory
   pk: 0
   fields:
-    name: earthquake site
+    name: other
 - model: georga.locationcategory
-  pk: 0
+  pk: 1
   fields:
     name: flood catastropy site
+- model: georga.locationcategory
+  pk: 2
+  fields:
+    name: snowslide site 
+- model: georga.locationcategory
+  pk: 3
+  fields:
+    name: landslide site
+- model: georga.locationcategory
+  pk: 4
+  fields:
+    name: earthquake site
+- model: georga.locationcategory
+  pk: 5
+  fields:
+    name: refugee housing
+- model: georga.locationcategory
+  pk: 6
+  fields:
+    name: educational institution
+- model: georga.locationcategory
+  pk: 7
+  fields:
+    name: healthcate institution
+- model: georga.locationcategory
+  pk: 8
+  fields:
+    name: confessional institution
+- model: georga.locationcategory
+  pk: 9
+  fields:
+    name: homeless shelter
     
 - model: georga.location
-  pk: 0
+  pk: 1
   fields:
     address: EAS
     location_category: 0
