@@ -18,6 +18,10 @@
   fields:
     id: 4
     name: technical
+- model: georga.qualificationcategory
+  fields:
+    id: 5
+    name: general
 
 - model: georga.qualification
   fields:
@@ -290,3 +294,34 @@
     # Eigene Amateurfunkstation
     qualification_category: 4
 
+# former 'georga.helpoperation' model
+- model: georga.qualification
+  fields:
+    name: shopping
+    # Einkaufen
+    qualification_category: 5
+- model: georga.qualification
+  fields:
+    name: household
+    # Haushalt
+    qualification_category: 5
+- model: georga.qualification
+  fields:
+    name: craft activity
+    # Handwerkliche Tätigkeit
+    qualification_category: 5
+- model: georga.qualification
+  fields:
+    name: transport service - own car
+    # Fahrdienst - eigener PKW
+    qualification_category: 5
+- model: georga.qualification
+  fields:
+    name: transport service - own van
+    # Fahrdienst - eigener Transporter
+    qualification_category: 5
+- model: georga.qualification
+  fields:
+    name: transport service - provided vehicel
+    # Fahrdienst - gestelltes Fahrzeug
+    qualification_category: 5
