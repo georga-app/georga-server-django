@@ -1,0 +1,21 @@
+- model: georga.qualification_type
+  fields:
+    id: 0
+    name: language
+- model: georga.qualification_type
+  fields:
+    id: 1
+    name: license
+- model: georga.qualification_type
+  fields:
+    id: 1
+    name: administrative
+- model: georga.qualification_type
+  fields:
+    id: 1
+    name: health
+- model: georga.qualification_type
+  fields:
+    id: 1
+    name: technical
+
