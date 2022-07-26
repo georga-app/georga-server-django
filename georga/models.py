@@ -37,14 +37,14 @@ class Person(MixinUUIDs, AbstractUser):
     password_modified = models.DateTimeField(default=timezone.now)
 
     TITLES = [
-        ('HERR', 'Herr'),
-        ('FRAU', 'Frau'),
-        ('DIVERS', 'Divers'),
-        ('NONE', 'Keine'),
+        ('MR', _('Mr.')),
+        ('MS', _('Ms.')),
+        ('MX', _('Mx.')),
+        ('NONE', _('None')),
     ]
 
     title = models.CharField(
-        max_length=6,
+        max_length=4,
         choices=TITLES,
         default='NONE',
         verbose_name=_("title"),
@@ -468,7 +468,7 @@ class Qualification(MixinUUIDs, models.Model):
         blank=True,
     )
     qualification_category = models.ForeignKey(
-        to='LocationCategory',
+        to='QualificationCategory',
         on_delete=models.CASCADE,
         null=True,
         blank=True,
@@ -601,7 +601,7 @@ class LocationCategory(MixinUUIDs, models.Model):
     class Meta:
         verbose_name = _("location category")
         verbose_name_plural = _("location categories")
-        # TODO: translate: Einsatzort-Typ
+        # TODO: translate: Einsatzort-Kategorie
         # e.g. deployment location
 
 

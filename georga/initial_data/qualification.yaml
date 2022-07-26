@@ -1,217 +1,327 @@
-- model: georga.qualification
+- model: georga.qualificationcategory
   fields:
-    name: Englisch
-    qualification_type: 0
-- model: georga.qualification
+    id: 0
+    name: language
+- model: georga.qualificationcategory
   fields:
-    name: Französisch
-    qualification_type: 0
-- model: georga.qualification
+    id: 1
+    name: license
+- model: georga.qualificationcategory
   fields:
-    name: Spanisch
-    qualification_type: 0
-- model: georga.qualification
+    id: 2
+    name: administrative
+- model: georga.qualificationcategory
   fields:
-    name: Arabisch
-    qualification_type: 0
-- model: georga.qualification
+    id: 3
+    name: health
+- model: georga.qualificationcategory
   fields:
-    name: Türkisch
-    qualification_type: 0
-- model: georga.qualification
+    id: 4
+    name: technical
+- model: georga.qualificationcategory
   fields:
-    name: Polnisch
-    qualification_type: 0
-- model: georga.qualification
-  fields:
-    name: Kurdisch
-    qualification_type: 0
-- model: georga.qualification
-  fields:
-    name: Italienisch
-    qualification_type: 0
-- model: georga.qualification
-  fields:
-    name: Griechisch
-    qualification_type: 0
-- model: georga.qualification
-  fields:
-    name: Niederländisch
-    qualification_type: 0
-- model: georga.qualification
-  fields:
-    name: Serbisch
-    qualification_type: 0
-- model: georga.qualification
-  fields:
-    name: Kroatisch
-    qualification_type: 0
-- model: georga.qualification
-  fields:
-    name: Ukrainisch
-    qualification_type: 0
-- model: georga.qualification
-  fields:
-    name: Russisch
-    qualification_type: 0
-- model: georga.qualification
-  fields:
-    name: Rumänisch
-    qualification_type: 0
-- model: georga.qualification
-  fields:
-    name: Ungarisch
-    qualification_type: 0
-- model: georga.qualification
-  fields:
-    name: Slowakisch
-    qualification_type: 0
-- model: georga.qualification
-  fields:
-    name: Tschechisch
-    qualification_type: 0
-- model: georga.qualification
-  fields:
-    name: Litauisch
-    qualification_type: 0
-- model: georga.qualification
-  fields:
-    name: Lettisch
-    qualification_type: 0
-- model: georga.qualification
-  fields:
-    name: Estnisch
-    qualification_type: 0
-- model: georga.qualification
-  fields:
-    name: Führerschein B
-    qualification_type: 1
-- model: georga.qualification
-  fields:
-    name: Führerschein BE
-    qualification_type: 1
-- model: georga.qualification
-  fields:
-    name: Führerschein E
-    qualification_type: 1
-- model: georga.qualification
-  fields:
-    name: Führerschein D1
-    qualification_type: 1
-- model: georga.qualification
-  fields:
-    name: Führerschein D1E
-    qualification_type: 1
-- model: georga.qualification
-  fields:
-    name: Führerschein D
-    qualification_type: 1
-- model: georga.qualification
-  fields:
-    name: Führerschein DE
-    qualification_type: 1
-- model: georga.qualification
-  fields:
-    name: Führerschein C1
-    qualification_type: 1
-- model: georga.qualification
-  fields:
-    name: Führerschein C1E
-    qualification_type: 1
-- model: georga.qualification
-  fields:
-    name: Führerschein CE
-    qualification_type: 1
-- model: georga.qualification
-  fields:
-    name: Führerschein C
-    qualification_type: 1
-- model: georga.qualification
-  fields:
-    name: Führerschein A2
-    qualification_type: 1
-- model: georga.qualification
-  fields:
-    name: Führerschein A1
-    qualification_type: 1
-- model: georga.qualification
-  fields:
-    name: Führerschein Boot
-    qualification_type: 1
-- model: georga.qualification
-  fields:
-    name: Führerschein A
-    qualification_type: 1
-- model: georga.qualification
-  fields:
-    name: Führerschein AM
-    qualification_type: 1
-- model: georga.qualification
-  fields:
-    name: Führerschein L
-    qualification_type: 1
-- model: georga.qualificationlicense
-  fields:
-    name: Führerschein T
-    qualification_type: 1
-- model: georga.qualification
-  fields:
-    name: Bürokaufmann/-frau
-    qualification_type: 2
-- model: georga.qualification
-  fields:
-    name: Personalverwaltung
-    qualification_type: 2
-- model: georga.qualification
-  fields:
-    name: Buchhalter/-in
-    qualification_type: 2
-- model: georga.qualification
-  fields:
-    name: Rettungsdienst-Qualifikation (unten eintragen)
-    qualification_type: 3
-- model: georga.qualification
-  fields:
-    name: Examinierte Pflegekraft
-    qualification_type: 3
-- model: georga.qualification
-  fields:
-    name: Gesundheits- und Krankenpfleger/in
-    qualification_type: 3
-- model: georga.qualification
-  fields:
-    name: Medizinisch Technische Assistenz
-    qualification_type: 3
-- model: georga.qualification
-  fields:
-    name: Mediziner/in
-    qualification_type: 3
-- model: georga.qualification
-  fields:
-    name: Informationstechnik
-    qualification_type: 4
-- model: georga.qualification
-  fields:
-    name: Kommunikationstechnik
-    qualification_type: 4
-- model: georga.qualification
-  fields:
-    name: Kleine Amateurfunklizenz
-    qualification_type: 4
-- model: georga.qualification
-  fields:
-    name: Große Amateurfunklizenz
-    qualification_type: 4
-- model: georga.qualification
-  fields:
-    name: Amateurfunkzeugnis der Klasse E
-    qualification_type: 4
-- model: georga.qualification
-  fields:
-    name: Amateurfunkzeugnis der Klasse A
-    qualification_type: 4
-- model: georga.qualification
-  fields:
-    name: Eigene Amateurfunkstation
-    qualification_type: 4
+    id: 5
+    name: general
 
+- model: georga.qualification
+  fields:
+    name: English
+    # Englisch
+    qualification_category: 0
+- model: georga.qualification
+  fields:
+    name: French
+    # Französisch
+    qualification_category: 0
+- model: georga.qualification
+  fields:
+    name: Spanish
+    # Spanisch
+    qualification_category: 0
+- model: georga.qualification
+  fields:
+    name: Arabian
+    # Arabisch
+    qualification_category: 0
+- model: georga.qualification
+  fields:
+    name: Turkish
+    # Türkisch
+    qualification_category: 0
+- model: georga.qualification
+  fields:
+    name: Polnish
+    # Polnisch
+    qualification_category: 0
+- model: georga.qualification
+  fields:
+    name: Kurdish
+    # Kurdisch
+    qualification_category: 0
+- model: georga.qualification
+  fields:
+    name: Italian
+    # Italienisch
+    qualification_category: 0
+- model: georga.qualification
+  fields:
+    name: Greek
+    # Griechisch
+    qualification_category: 0
+- model: georga.qualification
+  fields:
+    name: Dutch
+    # Niederländisch
+    qualification_category: 0
+- model: georga.qualification
+  fields:
+    name: Serbian
+    # Serbisch
+    qualification_category: 0
+- model: georga.qualification
+  fields:
+    name: Croatian
+    # Kroatisch
+    qualification_category: 0
+- model: georga.qualification
+  fields:
+    name: Ukrainian
+    # Ukrainisch
+    qualification_category: 0
+- model: georga.qualification
+  fields:
+    name: Russian
+    # Russisch
+    qualification_category: 0
+- model: georga.qualification
+  fields:
+    name: Romanian
+    # Rumänisch
+    qualification_category: 0
+- model: georga.qualification
+  fields:
+    name: Hungarian
+    # Ungarisch
+    qualification_category: 0
+- model: georga.qualification
+  fields:
+    name: Slovakian
+    # Slowakisch
+    qualification_category: 0
+- model: georga.qualification
+  fields:
+    name: Czech
+    # Tschechisch
+    qualification_category: 0
+- model: georga.qualification
+  fields:
+    name: Lithuanian
+    # Litauisch
+    qualification_category: 0
+- model: georga.qualification
+  fields:
+    name: Latvian
+    # Lettisch
+    qualification_category: 0
+- model: georga.qualification
+  fields:
+    name: Estonian
+    # Estnisch
+    qualification_category: 0
+- model: georga.qualification
+  fields:
+    name: German drivers license class B
+    # Führerschein B
+    qualification_category: 1
+- model: georga.qualification
+  fields:
+    name: German drivers license class BE
+    # Führerschein BE
+    qualification_category: 1
+- model: georga.qualification
+  fields:
+    name: German drivers license class E
+    # Führerschein E
+    qualification_category: 1
+- model: German drivers license class 
+    # georga.qualification
+  fields:
+    name: German drivers license class D1
+    # Führerschein D1
+    qualification_category: 1
+- model: georga.qualification
+  fields:
+    name: German drivers license class D1E
+    # Führerschein D1E
+    qualification_category: 1
+- model: georga.qualification
+  fields:
+    name: German drivers license class E
+    # Führerschein D
+    qualification_category: 1
+- model: georga.qualification
+  fields:
+    name: German drivers license class DE
+    # Führerschein DE
+    qualification_category: 1
+- model: georga.qualification
+  fields:
+    name: German drivers license class C1
+    # Führerschein C1
+    qualification_category: 1
+- model: georga.qualification
+  fields:
+    name: German drivers license class C1E
+    # Führerschein C1E
+    qualification_category: 1
+- model: georga.qualification
+  fields:
+    name: German drivers license class CE
+    # Führerschein CE
+    qualification_category: 1
+- model: georga.qualification
+  fields:
+    name: German drivers license class C
+    # Führerschein C
+    qualification_category: 1
+- model: georga.qualification
+  fields:
+    name: German drivers license class A2
+    # Führerschein A2
+    qualification_category: 1
+- model: georga.qualification
+  fields:
+    name: German drivers license class A1
+    # Führerschein A1
+    qualification_category: 1
+- model: georga.qualification
+  fields:
+    name: Operating license for marine vessels
+    # Führerschein Boot
+    qualification_category: 1
+- model: georga.qualification
+  fields:
+    name: German drivers license class A
+    # Führerschein A
+    qualification_category: 1
+- model: georga.qualification
+  fields:
+    name: German drivers license class AM
+    # Führerschein AM
+    qualification_category: 1
+- model: georga.qualification
+  fields:
+    name: German drivers license class L
+    # Führerschein L
+    qualification_category: 1
+- model: georga.qualification
+  fields:
+    name: German drivers license class T
+    # Führerschein T
+    qualification_category: 1
+- model: georga.qualification
+  fields:
+    name: clerk
+    # Bürokaufmann/-frau
+    qualification_category: 2
+- model: georga.qualification
+  fields:
+    name: human resouces
+    # Personalverwaltung
+    qualification_category: 2
+- model: georga.qualification
+  fields:
+    name: accounting clerk
+    # Buchhalter/-in
+    qualification_category: 2
+- model: georga.qualification
+  fields:
+    name: emergency medical services
+    # Rettungsdienst-Qualifikation (unten eintragen)
+    qualification_category: 3
+- model: georga.qualification
+  fields:
+    name: nurse (exam)
+    # Examinierte Pflegekraft
+    qualification_category: 3
+# - model: georga.qualification               dupe? see nurse...
+#   fields:
+#     name: Gesundheits- und Krankenpfleger/in
+#     qualification_category: 3
+- model: georga.qualification
+  fields:
+    name: medical technical assistant
+    # Medizinisch Technische Assistenz
+    qualification_category: 3
+- model: georga.qualification
+  fields:
+    name: physician
+    # Mediziner/in
+    qualification_category: 3
+- model: georga.qualification
+  fields:
+    name: information technology
+    # Informationstechnik
+    qualification_category: 4
+- model: georga.qualification
+  fields:
+    name: communication technology
+    # Kommunikationstechnik
+    qualification_category: 4
+- model: georga.qualification
+  fields:
+    name: small amateur radio licence (German)
+    # Kleine Amateurfunklizenz
+    qualification_category: 4
+- model: georga.qualification
+  fields:
+    name: big amateur radio licence (German)
+    # Große Amateurfunklizenz
+    qualification_category: 4
+- model: georga.qualification
+  fields:
+    name: amateur radio licence class E (German)
+    # Amateurfunkzeugnis der Klasse E
+    qualification_category: 4
+- model: georga.qualification
+  fields:
+    name: amateur radio licence class A (German)
+    # Amateurfunkzeugnis der Klasse A
+    qualification_category: 4
+- model: georga.qualification
+  fields:
+    name: own amateur radio station
+    # Eigene Amateurfunkstation
+    qualification_category: 4
+
+# former 'georga.helpoperation' model
+- model: georga.qualification
+  fields:
+    name: shopping
+    # Einkaufen
+    qualification_category: 5
+- model: georga.qualification
+  fields:
+    name: household
+    # Haushalt
+    qualification_category: 5
+- model: georga.qualification
+  fields:
+    name: craft activity
+    # Handwerkliche Tätigkeit
+    qualification_category: 5
+- model: georga.qualification
+  fields:
+    name: transport service - own car
+    # Fahrdienst - eigener PKW
+    qualification_category: 5
+- model: georga.qualification
+  fields:
+    name: transport service - own van
+    # Fahrdienst - eigener Transporter
+    qualification_category: 5
+- model: georga.qualification
+  fields:
+    name: transport service - provided vehicel
+    # Fahrdienst - gestelltes Fahrzeug
+    qualification_category: 5
