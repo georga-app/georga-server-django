@@ -3,7 +3,7 @@ psycopg2==2.9.3
 python-dotenv==0.20.0
 PyYAML==6.0
 django-phonenumber-field==6.3.0
-phonenumbers==8.12.51
+phonenumbers==8.12.52
 graphene-django==2.15.0
 django-graphql-jwt==0.3.4
 django-filter==22.1
