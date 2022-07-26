@@ -143,8 +143,7 @@
     name: German drivers license class E
     # Führerschein E
     qualification_category: 1
-- model: German drivers license class 
-    # georga.qualification
+- model: georga.qualification 
   fields:
     name: German drivers license class D1
     # Führerschein D1
