@@ -1,9 +1,0 @@
-- model: georga.qualificationadministrative
-  fields:
-    name: Bürokaufmann/-frau
-- model: georga.qualificationadministrative
-  fields:
-    name: Personalverwaltung
-- model: georga.qualificationadministrative
-  fields:
-    name: Buchhalter/-in
