@@ -1,26 +1,32 @@
 - model: georga.qualificationcategory
   fields:
     id: 0
+    code: LANGUAGE
     name: language
 - model: georga.qualificationcategory
   fields:
     id: 1
+    code: LICENSE
     name: license
 - model: georga.qualificationcategory
   fields:
     id: 2
+    code: ADMINISTRATIVE
     name: administrative
 - model: georga.qualificationcategory
   fields:
     id: 3
+    code: HEALTH
     name: health
 - model: georga.qualificationcategory
   fields:
     id: 4
+    code: TECHNICAL
     name: technical
 - model: georga.qualificationcategory
   fields:
     id: 5
+    code: GENERAL
     name: general
 
 - model: georga.qualification
