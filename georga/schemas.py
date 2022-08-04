@@ -25,26 +25,26 @@ from graphql_relay import from_global_id
 from .auth import jwt_decode
 from .email import Email
 from .models import (
-    Person,
+    Deployment,
     Device,
-    Resource,
-    Organization,
-    Project,
-    Task,
-    TaskCategory,
-    Qualification,
-    Restriction,
-    Role,
     EquipmentSelf,
     EquipmentProvided,
     Location,
-    Deployment,
-    Schedule,
-    Timeslot,
-    QualificationCategory,
     LocationCategory,
     NotificationCategory,
-    Notification
+    Notification,
+    Organization,
+    Person,
+    Project,
+    Qualification,
+    QualificationCategory,
+    Resource,
+    Restriction,
+    Role,
+    Schedule,
+    Task,
+    TaskCategory,
+    Timeslot
 )
 
 
@@ -677,6 +677,7 @@ qualification_rw_fields = [
 ]
 qualification_filter_fields = {
     'uuid': LOOKUPS_ID,
+    'qualification_category': LOOKUPS_CONNECTION,
 }
 
 
