@@ -1717,6 +1717,8 @@ class Query(ObjectType):
         PersonType)
     all_qualifications = UUIDDjangoFilterConnectionField(
         QualificationType)
+    all_qualification_categories = UUIDDjangoFilterConnectionField(
+        QualificationCategoryType)
     all_restrictions = UUIDDjangoFilterConnectionField(
         RestrictionType)
     all_devices = UUIDDjangoFilterConnectionField(DeviceType)
