@@ -487,6 +487,10 @@ class Qualification(MixinUUIDs, models.Model):
 
 
 class QualificationCategory(MixinUUIDs, models.Model):
+    code = models.CharField(
+        max_length=15,
+    )
+
     name = models.CharField(
         max_length=50,
         null=True,

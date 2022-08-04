@@ -1407,14 +1407,18 @@ class DeleteTimeslotMutation(UUIDDjangoModelFormMutation):
 qualification_category_ro_fields = [
     'uuid',
     'name',
+    'code',
 ]
 qualification_category_wo_fields = [
 ]
 qualification_category_rw_fields = [
     'name',
+    'code',
 ]
 qualification_category_filter_fields = {
     'uuid': LOOKUPS_ID,
+    'name': LOOKUPS_STRING,
+    'code': LOOKUPS_STRING,
 }
 
 
