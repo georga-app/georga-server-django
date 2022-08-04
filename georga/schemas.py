@@ -1752,6 +1752,11 @@ class Mutation(ObjectType):
     create_qualification = CreateQualificationMutation.Field()
     update_qualification = UpdateQualificationMutation.Field()
     delete_qualification = DeleteQualificationMutation.Field()
+    # QualificationCategory
+    create_qualification_category = CreateQualificationCategoryMutation.Field()
+    update_qualification_category = UpdateQualificationCategoryMutation.Field()
+    delete_qualification_category = DeleteQualificationCategoryMutation.Field()
+
     # Device
     create_device = CreateDeviceMutation.Field()
     update_device = UpdateDeviceMutation.Field()
