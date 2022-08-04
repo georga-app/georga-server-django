@@ -493,6 +493,18 @@ class QualificationCategory(MixinUUIDs, models.Model):
         blank=True,
     )
 
+    SELECTION_TYPES = [
+        ('MULTISELECT', _('multiselect')),
+        ('SINGLESELECT', _('singleselect')),
+    ]
+
+    selection_type = models.CharField(
+        max_length=12,
+        choices=SELECTION_TYPES,
+        default='MULTISELECT',
+        verbose_name=_("selection type"),
+    )
+
     def __str__(self):
         return '%s' % self.name
 
