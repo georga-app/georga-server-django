@@ -1213,7 +1213,6 @@ class DeleteRoleMutation(UUIDDjangoModelFormMutation):
         return cls(role=role, errors=[])
 
 
-
 # Deployment ----------------------------------------------------------------------
 
 # fields
@@ -1274,7 +1273,6 @@ class DeleteDeploymentMutation(UUIDDjangoModelFormMutation):
         deployment = form.instance
         deployment.delete()
         return cls(deployment=deployment, errors=[])
-
 
 
 # Schedule ----------------------------------------------------------------------
@@ -1338,8 +1336,7 @@ class DeleteScheduleMutation(UUIDDjangoModelFormMutation):
         schedule = form.instance
         schedule.delete()
         return cls(scheudule=schedule, errors=[])
-    
-    
+
 
 # Timeslot ----------------------------------------------------------------------
 
@@ -1404,7 +1401,6 @@ class DeleteTimeslotMutation(UUIDDjangoModelFormMutation):
         return cls(timeslot=timeslot, errors=[])
 
 
-
 # QualificationCategory ----------------------------------------------------------------------
 
 # fields
@@ -1466,7 +1462,6 @@ class DeleteQualificationCategoryMutation(UUIDDjangoModelFormMutation):
         return cls(qualification_category=qualification_category, errors=[])
 
 
-
 # LocationCategory ----------------------------------------------------------------------
 
 # fields
@@ -1526,7 +1521,6 @@ class DeleteLocationCategoryMutation(UUIDDjangoModelFormMutation):
         location_category = form.instance
         location_category.delete()
         return cls(location_category=location_category, errors=[])
-
 
 
 # Notification ----------------------------------------------------------------------
@@ -1593,7 +1587,6 @@ class DeleteNotificationMutation(UUIDDjangoModelFormMutation):
         return cls(notification=notification, errors=[])
 
 
-
 # NotificationCategory ----------------------------------------------------------------------
 
 # fields
@@ -1653,6 +1646,7 @@ class DeleteNotificationCategoryMutation(UUIDDjangoModelFormMutation):
         notification_category = form.instance
         notification_category.delete()
         return cls(notification_category=notification_category, errors=[])
+
 
 # Subscriptions ===============================================================
 
