@@ -14,6 +14,13 @@ Start the server `python manage.py runserver`
 
 You can login under /admin/ with the user `admin@georga.app` and `verysafePassword`
 
+Further current testusers are:
+
+`simpleuser@georga.app` and `simpleuserPassword`
+
+`staffuser@georga.app` and `staffuserPassword` - is staff but not superuser
+
+
 ## Contribute
 
 
