@@ -301,14 +301,15 @@ class Project(MixinUUIDs, models.Model):
 
 
 class Deployment(MixinUUIDs, models.Model):
-    organization = models.ForeignKey(
-        to='Organization',
+    project = models.ForeignKey(
+        to='Project',
         on_delete=models.DO_NOTHING,
         null=False,
         blank=False,
+        default=0,
     )
     name = models.CharField(
-        max_length=50,
+        max_length=100,
         null=False,
         blank=False,
     )
@@ -323,11 +324,12 @@ class Deployment(MixinUUIDs, models.Model):
 
 
 class Task(MixinUUIDs, models.Model):
-    project = models.ForeignKey(
-        to='Project',
+    deployment = models.ForeignKey(
+        to='Deployment',
         on_delete=models.DO_NOTHING,
         null=False,
         blank=False,
+        default=0,
     )
     task_category = models.ForeignKey(
         to='TaskCategory',
@@ -367,9 +369,14 @@ class Task(MixinUUIDs, models.Model):
     )
     # geolocation
     title = models.CharField(
-        max_length=50,
+        max_length=100,
         null=False,
         blank=False,
+    )
+    description = models.CharField(
+        max_length=1000,
+        null=True,
+        blank=True,
     )
     postal_address_name = models.CharField(
         max_length=50,

@@ -324,7 +324,7 @@ deployment_ro_fields = [
 deployment_wo_fields = [
 ]
 deployment_rw_fields = [
-    'organization',
+    'project',
     'name',
 ]
 deployment_filter_fields = {
@@ -1397,7 +1397,7 @@ task_ro_fields = [
 task_wo_fields = [
 ]
 task_rw_fields = [
-    'project',
+    'deployment',
     'task_category',
     'roles_required',
     'roles_desirable',

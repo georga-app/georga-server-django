@@ -14,6 +14,13 @@ Start the server `python manage.py runserver`
 
 You can login under /admin/ with the user `admin@georga.app` and `verysafePassword`
 
+Further current testusers are:
+
+`simpleuser@georga.app` and `simpleuserPassword`
+
+`staffuser@georga.app` and `staffuserPassword` - is staff but not superuser
+
+
 ## Contribute
 
 
@@ -59,6 +66,16 @@ query {
   }
 }
 ```
+
+#### Initial and demo data
+For initial contents and/or demodata in the database, the yaml-files in folder initial_data can be used.
+
+Load the demo data `python manage.py loaddata georga/initial_data/*`
+
+For getting the password hash for a users' password, e.g. to insert it into demodata in initial_data/person.yaml the following custom management command can be used:
+
+`python manage.py get_pw_hash passwordstring`
+
 
 #### Test Subscriptions
 Note: GraphiQL does not support subscriptions.

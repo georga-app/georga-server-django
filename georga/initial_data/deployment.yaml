@@ -1,0 +1,70 @@
+- model: georga.deployment
+  pk: 0
+  fields:
+    name: "Betreuungsdienst Notunterkunft Hofstraße 2022"
+    project: 0
+- model: georga.deployment
+  pk: 1
+  fields:
+    name: "Betreuungsdienst Notunterkunft Lindenstraße 2022"
+    project: 0
+- model: georga.deployment
+  pk: 2
+  fields:
+    name: "Sanitätsdienst Fußball Lokalderby 06.08.2022"
+    project: 1
+- model: georga.deployment
+  pk: 3
+  fields:
+    name: "Sanitätsdienst Mozartkonzert Wien 07.08.2022"
+    project: 1
+- model: georga.deployment
+  pk: 4
+  fields:
+    name: "Hilfe für Behördengänge für Geflüchtete 2022-04"
+    project: 2
+- model: georga.deployment
+  pk: 5
+  fields:
+    name: "Sandsäcke füllen"
+    project: 3
+- model: georga.deployment
+  pk: 6
+  fields:
+    name: "Schlammräumung"
+    project: 3
+- model: georga.deployment
+  pk: 7
+  fields:
+    name: "Schlammräumung"
+    project: 4
+- model: georga.deployment
+  pk: 8
+  fields:
+    name: "Schlammräumung"
+    project: 5
+- model: georga.deployment
+  pk: 9
+  fields:
+    name: "Registrierung"
+    project: 6
+- model: georga.deployment
+  pk: 10
+  fields:
+    name: "Zuteilung Impfräume"
+    project: 6
+- model: georga.deployment
+  pk: 11
+  fields:
+    name: "Schiff zur Abfahrt rüsten April 2023"
+    project: 7
+- model: georga.deployment
+  pk: 12
+  fields:
+    name: "Cyber Cyber Cyberabwehr Bundestag 2023-01"
+    project: 8
+- model: georga.deployment
+  pk: 13
+  fields:
+    name: "Cyber Cyber Cyberabwehr KHs Luisenstift September 2022"
+    project: 8

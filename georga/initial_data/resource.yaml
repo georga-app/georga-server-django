@@ -1,0 +1,15 @@
+- model: georga.resource
+  pk: 0
+  fields:
+    description: "Schlammschüppe"
+    personal_hint: "Spende"
+- model: georga.resource
+  pk: 1
+  fields:
+    description: "Stiefel"
+    personal_hint: "brauch ich danach zurück"
+- model: georga.resource
+  pk: 2
+  fields:
+    description: "Tauchpumpe"
+    personal_hint: "kann verliehen werden im August"
