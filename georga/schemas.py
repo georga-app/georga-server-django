@@ -17,7 +17,7 @@ from graphene_django import DjangoObjectType
 from graphene_django.converter import convert_django_field
 from graphene_django.fields import DjangoListField, DjangoConnectionField
 from graphene_django.filter import DjangoFilterConnectionField
-from graphene_django.forms import GlobalIDMultipleChoiceField
+from graphene_django.forms import GlobalIDMultipleChoiceField, GlobalIDFormField
 from graphene_django.forms.mutation import DjangoModelFormMutation
 from graphql_jwt.decorators import login_required, staff_member_required
 from graphql_relay import from_global_id
@@ -194,7 +194,7 @@ class UUIDDjangoFilterConnectionField(DjangoFilterConnectionField):
 
         # insert uuid to filter field predicate string for forgein models
         for name, _filter in filterset_class.base_filters.items():
-            if isinstance(_filter.field, GlobalIDMultipleChoiceField):
+            if isinstance(_filter.field, (GlobalIDMultipleChoiceField, GlobalIDFormField)):
                 field_name = _filter.field_name
                 if '__uuid' not in field_name:
                     if "__" in field_name:
@@ -1117,6 +1117,7 @@ qualification_rw_fields = [
 ]
 qualification_filter_fields = {
     'uuid': LOOKUPS_ID,
+    'qualification_category': LOOKUPS_ID,
     'qualification_category__name': LOOKUPS_STRING,
     'qualification_category__code': LOOKUPS_STRING,
 }
