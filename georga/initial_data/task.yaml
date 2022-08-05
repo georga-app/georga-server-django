@@ -1,0 +1,250 @@
+- model: georga.taskcategory
+  pk: 0
+  fields:
+    name: "Dolmetscher"
+    description: "Dolmetscher für verschiedene Sprachen"
+- model: georga.taskcategory
+  pk: 1
+  fields:
+    name: "Betreuung"
+    description: "Dolmetscher für verschiedene Sprachen"
+- model: georga.taskcategory
+  pk: 2
+  fields:
+    name: "Sanitätsdienste"
+    description: "Verschieden medizinische Hilfen bei Sanitätsdiensten"
+- model: georga.taskcategory
+  pk: 3
+  fields:
+    name: "Hochwasserprävention"
+    description: "Verschiedene Hilfstätigkeiten bei angekündigtem Hochwasser"
+- model: georga.taskcategory
+  pk: 4
+  fields:
+    name: "Hilfsarbeiten nach Hochwasser"
+    description: "Verschiedene Hilfstätigkeiten zu Räumung, Reparatur und Wiederaufbau nach Hochwassern"
+- model: georga.taskcategory
+  pk: 5
+  fields:
+    name: "Organisationsthemen bei Betreuungseinsätzen"
+    description: "Registratur, Sortierung, Zuteilungen vor Ort"
+- model: georga.taskcategory
+  pk: 6
+  fields:
+    name: "Beladung - Hebetätigkeiten"
+    description: "Tätigkeiten bei der Beladung von Schiffen vor der Fahrt, die schweres Heben beinhalten"
+- model: georga.taskcategory
+  pk: 7
+  fields:
+    name: "Reinigungstätigkeiten"
+    description: "Tätigkeiten, die es erfordern, mit Reinigungsmitteln und -Material zu arbeiten"
+- model: georga.taskcategory
+  pk: 8
+  fields:
+    name: "Lebensmitteltätigkeiten"
+    description: "Tätigkeiten, die es erfordern, mit Lebensmitteln umzugehen"
+- model: georga.taskcategory
+  pk: 9
+  fields:
+    name: "Leichte Beladungstätigkeiten"
+    description: "Tätigkeiten bei der Beladung, die keine besonderen Materialien, Kenntnisse, Qualifikationen oder schweres Heben voraussetzen"
+- model: georga.taskcategory
+  pk: 10
+  fields:
+    name: "Bedrohungs- und Statusanalyse"
+    description: "Tätigkeiten bei Verdacht eines Cyber Cyber Cyberangriffs"
+# ##############
+- model: georga.task
+  pk: 0
+  fields:
+    title: "Dolmetscher Ukrainisch"
+    description: "Übersetzung zwischen Notunterkunft-Bewohnern und Betreuern"
+    deployment: 0
+    start_time: 2022-08-05 08:00:36.048326+00:00
+    task_category: 0
+- model: georga.task
+  pk: 1
+  fields:
+    title: "Registrierung"
+    description: "Registrierung jeglicher Besucher und Bewohnder"
+    deployment: 0
+    start_time: 2022-08-05 08:00:36.048326+00:00
+    task_category: 5
+- model: georga.task
+  pk: 2
+  fields:
+    title: "Dolmetscher Ukrainisch"
+    description: "Übersetzung zwischen Notunterkunft-Bewohnern und Betreuern"
+    deployment: 1
+    start_time: 2022-08-06 08:00:36.048326+00:00
+    task_category: 0
+- model: georga.task
+  pk: 3
+  fields:
+    title: "Registrierung"
+    description: "Registrierung jeglicher Besucher und Bewohnder"
+    deployment: 1
+    start_time: 2022-08-06 08:00:36.048326+00:00
+    task_category: 5
+- model: georga.task
+  pk: 4
+  fields:
+    title: "Rettungshelfer"
+    deployment: 2
+    start_time: 2022-08-07 08:00:36.048326+00:00
+    task_category: 2
+- model: georga.task
+  pk: 5
+  fields:
+    title: "Sanitäter"
+    deployment: 2
+    start_time: 2022-08-07 08:00:36.048326+00:00
+    task_category: 2
+- model: georga.task
+  pk: 6
+  fields:
+    title: "Rettungshelfer"
+    deployment: 3
+    start_time: 2022-08-08 08:00:36.048326+00:00
+    task_category: 2
+- model: georga.task
+  pk: 7
+  fields:
+    title: "Notarzt"
+    deployment: 3
+    start_time: 2022-08-08 08:00:36.048326+00:00
+    task_category: 2
+- model: georga.task
+  pk: 8
+  fields:
+    title: "Übersetzung Behördenformulare"
+    description: "Jeden Mo. Mi. und Do. gibt es nachmittags Treffen mit den Notunterkunft-Bewohnern zur gegenseitigen Hilfe beim Ausfüllen von Anträgen. Hierbei ist eine Unterstützung durch Dolmetscher wichtig."
+    deployment: 4
+    start_time: 2021-02-02 08:00:36.048326+00:00
+    task_category: 1
+- model: georga.task
+  pk: 9
+  fields:
+    title: "Begleitung und Übersetzung Behördengänge"
+    deployment: 4
+    start_time: 2021-02-05 08:00:36.048326+00:00
+    task_category: 1
+- model: georga.task
+  pk: 10
+  fields:
+    title: "Sandsäcke füllen"
+    deployment: 5
+    start_time: 2002-08-05 08:00:36.048326+00:00
+    task_category: 3
+- model: georga.task
+  pk: 11
+  fields:
+    title: "Schlammräumung"
+    deployment: 6
+    start_time: 2002-08-18 20:00:36.048326+00:00
+    task_category: 4
+- model: georga.task
+  pk: 12
+  fields:
+    title: "Schlammräumung"
+    deployment: 7
+    start_time: 1962-02-17 15:30:36.048326+00:00
+    task_category: 4
+- model: georga.task
+  pk: 13
+  fields:
+    title: "Schlammräumung"
+    deployment: 8
+    start_time: 2021-07-16 08:00:36.048326+00:00
+    task_category: 4
+- model: georga.task
+  pk: 14
+  fields:
+    title: "Registrierung"
+    deployment: 9
+    start_time: 2022-08-05 08:00:36.048326+00:00
+    task_category: 5
+- model: georga.task
+  pk: 15
+  fields:
+    title: "Zuteilung Impfräume"
+    deployment: 10
+    start_time: 2022-08-05 08:00:36.048326+00:00
+    task_category: 5
+- model: georga.task
+  pk: 16
+  fields:
+    title: "Neue Wäsche in Wohnräumen verteilen"
+    deployment: 11
+    start_time: 2022-08-05 08:00:36.048326+00:00
+    task_category: 9
+- model: georga.task
+  pk: 17
+  fields:
+    title: "Abgelaufene Lebensmittel aus Lagerräumen aussortieren"
+    deployment: 11
+    start_time: 2022-08-05 08:00:36.048326+00:00
+    task_category: 9
+- model: georga.task
+  pk: 18
+  fields:
+    title: "Neue Lebensmittel in Lagerräume füllen"
+    deployment: 11
+    start_time: 2022-08-05 08:00:36.048326+00:00
+    task_category: 6
+- model: georga.task
+  pk: 19
+  fields:
+    title: "Netzwerkgeräteprotokolle sichern"
+    deployment: 12
+    start_time: 2022-08-05 08:00:36.048326+00:00
+    task_category: 10
+- model: georga.task
+  pk: 20
+  fields:
+    title: "SSH-Zugriffsprotokolle sichern"
+    deployment: 12
+    start_time: 2022-08-05 08:00:36.048326+00:00
+    task_category: 10
+- model: georga.task
+  pk: 21
+  fields:
+    title: "Abgeflossene Datenstreams analysieren"
+    deployment: 12
+    start_time: 2022-08-05 08:00:36.048326+00:00
+    task_category: 10
+- model: georga.task
+  pk: 22
+  fields:
+    title: "Extern erreichbare Systeme und deren Softwarestände analysieren"
+    deployment: 12
+    start_time: 2022-08-05 08:00:36.048326+00:00
+    task_category: 10
+- model: georga.task
+  pk: 19
+  fields:
+    title: "Netzwerkgeräteprotokolle sichern"
+    deployment: 13
+    start_time: 2022-08-05 08:00:36.048326+00:00
+    task_category: 10
+- model: georga.task
+  pk: 20
+  fields:
+    title: "SSH-Zugriffsprotokolle sichern"
+    deployment: 13
+    start_time: 2022-08-05 08:00:36.048326+00:00
+    task_category: 10
+- model: georga.task
+  pk: 21
+  fields:
+    title: "Abgeflossene Datenstreams analysieren"
+    deployment: 13
+    start_time: 2022-08-05 08:00:36.048326+00:00
+    task_category: 10
+- model: georga.task
+  pk: 22
+  fields:
+    title: "Extern erreichbare Systeme und deren Softwarestände analysieren"
+    deployment: 13
+    start_time: 2022-08-05 08:00:36.048326+00:00
+    task_category: 10
