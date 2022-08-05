@@ -404,7 +404,10 @@ class Task(MixinUUIDs, models.Model):
         blank=True,
     )
     start_time = models.DateTimeField()
-    end_time = models.DateTimeField()
+    end_time = models.DateTimeField(
+        null=True,
+        blank=True,
+    )
 
     def __str__(self):
         return '%s' % self.title
@@ -422,9 +425,9 @@ class TaskCategory(MixinUUIDs, models.Model):
         blank=False,
     )
     description = models.CharField(
-        max_length=50,
-        null=False,
-        blank=False,
+        max_length=500,
+        null=True,
+        blank=True,
     )
 
     def __str__(self):
@@ -437,6 +440,12 @@ class TaskCategory(MixinUUIDs, models.Model):
 
 
 class Schedule(MixinUUIDs, models.Model):
+    title = models.CharField(
+        max_length=50,
+        null=False,
+        blank=False,
+        default='',
+    )
     task = models.ForeignKey(
         to='Task',
         on_delete=models.CASCADE,
