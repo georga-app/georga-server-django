@@ -1,20 +1,20 @@
 - model: georga.project
   pk: 0
   fields:
-    name: "Betreuung Notunterkünfte"
+    name: "Betreuungsdienst"
     organization: 0
 - model: georga.project
   pk: 1
   fields:
-    name: "Sanitätsdienst beim Fußballspiel"
+    name: "Sanitätsdienst"
     organization: 0
 - model: georga.project
   pk: 2
   fields:
-    name: "Schiff zur Abfahrt rüsten April 2023"
+    name: "Schiff zur Abfahrt rüsten"
     organization: 1
 - model: georga.project
   pk: 3
   fields:
-    name: "Notfalleinsatz Cyberabwehr Bundestag"
+    name: "Notfalleinsatz Cyberabwehr"
     organization: 2
