@@ -9,7 +9,7 @@
 - model: georga.locationcategory
   pk: 2
   fields:
-    name: snowslide site 
+    name: snowslide site
 - model: georga.locationcategory
   pk: 3
   fields:
