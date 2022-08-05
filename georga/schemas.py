@@ -1397,7 +1397,7 @@ task_ro_fields = [
 task_wo_fields = [
 ]
 task_rw_fields = [
-    'project',
+    'deployment',
     'task_category',
     'roles_required',
     'roles_desirable',
