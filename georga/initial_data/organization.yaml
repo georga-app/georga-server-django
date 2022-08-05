@@ -1,0 +1,12 @@
+- model: georga.organization
+  pk: 0
+  fields:
+    name: "Französischer Blauer Kreis"
+- model: georga.organization
+  pk: 1
+  fields:
+    name: "Seeaugen"
+- model: georga.organization
+  pk: 2
+  fields:
+    name: "Cyber Cyber Cyberhilfswerk"
