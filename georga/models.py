@@ -440,6 +440,12 @@ class TaskCategory(MixinUUIDs, models.Model):
 
 
 class Schedule(MixinUUIDs, models.Model):
+    title = models.CharField(
+        max_length=50,
+        null=False,
+        blank=False,
+        default='',
+    )
     task = models.ForeignKey(
         to='Task',
         on_delete=models.CASCADE,
