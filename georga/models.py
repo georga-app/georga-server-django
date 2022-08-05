@@ -301,14 +301,15 @@ class Project(MixinUUIDs, models.Model):
 
 
 class Deployment(MixinUUIDs, models.Model):
-    organization = models.ForeignKey(
-        to='Organization',
+    project = models.ForeignKey(
+        to='Project',
         on_delete=models.DO_NOTHING,
         null=False,
         blank=False,
+        default=0,
     )
     name = models.CharField(
-        max_length=50,
+        max_length=100,
         null=False,
         blank=False,
     )
