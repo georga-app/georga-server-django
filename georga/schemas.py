@@ -1195,7 +1195,7 @@ class QualificationCategoryType(UUIDDjangoObjectType):
         model = QualificationCategory
         fields = qualification_category_ro_fields + qualification_category_rw_fields
         filter_fields = qualification_category_filter_fields
-        permissions = [login_required]
+        permissions = []
 
 
 # forms
