@@ -1,0 +1,42 @@
+- model: georga.person
+  fields:
+    password: pbkdf2_sha256$260000$sxk0T7HBdwtwc4DpShdcYX$7i46OQncyXeLwcwTN2793/ElMNRDz/E3kdhrtxOKyQQ=
+    last_login: null
+    is_superuser: true
+    username: admin
+    first_name: 'Admin'
+    last_name: 'admin'
+    is_staff: true
+    date_joined: 2022-03-13 16:13:36.048326+00:00
+    email: admin@georga.test
+    password_modified: 2022-03-13 16:13:36.048338+00:00
+    is_active: true
+# Password: verysafePassword
+- model: georga.person
+  fields:
+    password: pbkdf2_sha256$260000$mS79S7xiwUAcp8fxZeoQfd$mmbMGxyOdsVRgsV1elC1xiZr86xrvMYnY+/oGau8uxM=
+    last_login: null
+    is_superuser: false
+    username: simpleuser
+    first_name: 'Simple'
+    last_name: 'User'
+    is_staff: false
+    date_joined: 2022-03-13 16:13:36.048326+00:00
+    email: simpleuser@georga.test
+    password_modified: 2022-03-13 16:13:36.048338+00:00
+    is_active: true
+# Password: simpleuserPassword
+- model: georga.person
+  fields:
+    password: pbkdf2_sha256$260000$fFZRD2Y4ayfiE5nJ6aV0re$tenrcqIOtu1UL/nj+u6hEz6dpzvsF2XU5jclREbWtNw=
+    last_login: null
+    is_superuser: false
+    username: staffuser
+    first_name: 'Staff'
+    last_name: 'User'
+    is_staff: true
+    date_joined: 2022-03-13 16:13:36.048326+00:00
+    email: staffuser@georga.test
+    password_modified: 2022-03-13 16:13:36.048338+00:00
+    is_active: true
+# Password: staffuserPassword
