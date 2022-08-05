@@ -1319,7 +1319,7 @@ class RestrictionType(UUIDDjangoObjectType):
         model = Restriction
         fields = restriction_ro_fields + restriction_rw_fields
         filter_fields = restriction_filter_fields
-        permissions = [login_required]
+        permissions = []
 
 
 # forms
