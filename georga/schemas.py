@@ -1117,7 +1117,8 @@ qualification_rw_fields = [
 ]
 qualification_filter_fields = {
     'uuid': LOOKUPS_ID,
-    'qualification_category': LOOKUPS_CONNECTION,
+    'qualification_category__name': LOOKUPS_STRING,
+    'qualification_category__code': LOOKUPS_STRING,
 }
 
 
