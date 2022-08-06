@@ -649,7 +649,7 @@ class LocationCategory(MixinUUIDs, models.Model):
 
 class Notification(MixinUUIDs, models.Model):
     title = models.CharField(
-        max_length=50,
+        max_length=100,
     )
     contents = models.CharField(
         max_length=1000,
@@ -674,7 +674,7 @@ class Notification(MixinUUIDs, models.Model):
 
 class NotificationCategory(MixinUUIDs, models.Model):
     name = models.CharField(
-        max_length=50,
+        max_length=100,
     )
 
     class Meta:
