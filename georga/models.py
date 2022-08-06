@@ -583,8 +583,9 @@ class Role(MixinUUIDs, models.Model):
 class EquipmentProvided(MixinUUIDs, models.Model):
     name = models.CharField(
         max_length=30,
-        null=True,
-        blank=True,
+        null=False,
+        blank=False,
+        default='',
     )
 
     def __str__(self):
@@ -602,8 +603,9 @@ class EquipmentProvided(MixinUUIDs, models.Model):
 class EquipmentSelf(MixinUUIDs, models.Model):
     name = models.CharField(
         max_length=30,
-        null=True,
-        blank=True,
+        null=False,
+        blank=False,
+        default='',
     )
 
     def __str__(self):
