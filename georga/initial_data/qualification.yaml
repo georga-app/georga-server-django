@@ -16,8 +16,8 @@
 - model: georga.qualificationcategory
   fields:
     id: 3
-    code: HEALTH
-    name: health
+    code: MEDICAL
+    name: medical
 - model: georga.qualificationcategory
   fields:
     id: 4
@@ -28,6 +28,12 @@
     id: 5
     code: GENERAL
     name: general
+- model: georga.qualificationcategory
+  fields:
+    id: 6
+    code: ADULT
+    name: adult
+    selection_type: SINGLESELECT
 
 - model: georga.qualification
   fields:
@@ -330,3 +336,11 @@
     name: transport service - provided vehicel
     # Fahrdienst - gestelltes Fahrzeug
     qualification_category: 5
+- model: georga.qualification
+  fields:
+    name: ja
+    qualification_category: 6
+- model: georga.qualification
+  fields:
+    name: nein
+    qualification_category: 6
