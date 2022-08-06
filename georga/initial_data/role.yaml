@@ -1,0 +1,20 @@
+- model: georga.role
+  pk: 0
+  fields:
+    title: "Notarzt"
+- model: georga.role
+  pk: 1
+  fields:
+    title: "Rettungshelfer"
+- model: georga.role
+  pk: 2
+  fields:
+    title: "Funker"
+- model: georga.role
+  pk: 4
+  fields:
+    title: "Personalverwaltung"
+- model: georga.role
+  pk: 5
+  fields:
+    title: "Gruppenführer"
