@@ -559,10 +559,16 @@ class Restriction(MixinUUIDs, models.Model):
 
 
 class Role(MixinUUIDs, models.Model):
-    description = models.CharField(
+    title = models.CharField(
         max_length=50,
         null=False,
         blank=False,
+        default='',
+    )
+    description = models.CharField(
+        max_length=50,
+        null=True,
+        blank=True,
     )
 
     def __str__(self):
