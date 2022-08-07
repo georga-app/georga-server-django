@@ -2,18 +2,22 @@
   pk: 0
   fields:
     title: "Notarzt"
+    qualifications_suitable: [41, 44]
 - model: georga.role
   pk: 1
   fields:
     title: "Rettungshelfer"
+    qualifications_suitable: [43]
 - model: georga.role
   pk: 2
   fields:
     title: "Funker"
+    qualifications_suitable: [47, 48, 49, 50, 51]
 - model: georga.role
   pk: 4
   fields:
     title: "Personalverwaltung"
+    qualifications_suitable: [38, 39, 40]
 - model: georga.role
   pk: 5
   fields:
