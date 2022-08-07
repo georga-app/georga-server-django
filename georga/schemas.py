@@ -40,7 +40,6 @@ from .models import (
     Resource,
     Restriction,
     Role,
-    Schedule,
     Task,
     TaskCategory,
     Timeslot
@@ -325,6 +324,7 @@ deployment_wo_fields = [
 deployment_rw_fields = [
     'project',
     'name',
+    'is_active',
 ]
 deployment_filter_fields = {
     'uuid': LOOKUPS_ID,
@@ -1215,6 +1215,7 @@ resource_wo_fields = [
 resource_rw_fields = [
     'description',
     'personal_hint',
+    'equipment_needed',
 ]
 resource_filter_fields = {
     'id': LOOKUPS_ID,
@@ -1307,6 +1308,8 @@ role_wo_fields = [
 ]
 role_rw_fields = [
     'description',
+    'is_template',
+    'qualifications_suitable',
 ]
 role_filter_fields = {
     'uuid': LOOKUPS_ID,
@@ -1369,8 +1372,7 @@ task_wo_fields = [
 task_rw_fields = [
     'deployment',
     'task_category',
-    'roles_required',
-    'roles_desirable',
+    'roles',
     'resources_required',
     'resources_desirable',
     'persons_registered',
@@ -1498,69 +1500,6 @@ class DeleteTaskCategoryMutation(UUIDDjangoModelFormMutation):
         return cls(task_category=task_category, errors=[])
 
 
-# Schedule ----------------------------------------------------------------------
-
-# fields
-schedule_ro_fields = [
-    'uuid',
-]
-schedule_wo_fields = [
-]
-schedule_rw_fields = [
-    'task',
-    'start_time',
-    'end_time',
-]
-schedule_filter_fields = {
-    'uuid': LOOKUPS_ID,
-}
-
-
-# types
-class ScheduleType(UUIDDjangoObjectType):
-    class Meta:
-        model = Schedule
-        fields = schedule_ro_fields + schedule_rw_fields
-        filter_fields = schedule_filter_fields
-        permissions = [login_required]
-
-
-# forms
-
-class ScheduleModelForm(UUIDModelForm):
-    class Meta:
-        model = Schedule
-        fields = schedule_wo_fields + schedule_rw_fields
-
-
-# cud mutations
-class CreateScheduleMutation(UUIDDjangoModelFormMutation):
-    class Meta:
-        form_class = ScheduleModelForm
-        exclude_fields = ['id']
-        permissions = [staff_member_required]
-
-
-class UpdateScheduleMutation(UUIDDjangoModelFormMutation):
-    class Meta:
-        form_class = ScheduleModelForm
-        required_fields = ['id']
-        permissions = [login_required]
-
-
-class DeleteScheduleMutation(UUIDDjangoModelFormMutation):
-    class Meta:
-        form_class = ScheduleModelForm
-        only_fields = ['id']
-        permissions = [staff_member_required]
-
-    @classmethod
-    def perform_mutate(cls, form, info):
-        schedule = form.instance
-        schedule.delete()
-        return cls(scheudule=schedule, errors=[])
-
-
 # Timeslot ----------------------------------------------------------------------
 
 # fields
@@ -1570,9 +1509,12 @@ timeslot_ro_fields = [
 timeslot_wo_fields = [
 ]
 timeslot_rw_fields = [
-    'schedule',
     'start_time',
     'end_time',
+    'enrollment_deadline',
+    'state',
+    'locations',
+    'roles',
 ]
 timeslot_filter_fields = {
     'uuid': LOOKUPS_ID,

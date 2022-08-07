@@ -10,7 +10,6 @@ from .models import (
     Deployment,
     Task,
     TaskCategory,
-    Schedule,
     Timeslot,
     Qualification,
     QualificationCategory,
@@ -31,7 +30,6 @@ admin.site.register(Project)
 admin.site.register(Deployment)
 admin.site.register(Task)
 admin.site.register(TaskCategory)
-admin.site.register(Schedule)
 admin.site.register(Timeslot)
 admin.site.register(Qualification)
 admin.site.register(QualificationCategory)

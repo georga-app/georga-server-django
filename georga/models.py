@@ -1,5 +1,6 @@
-import uuid
+from datetime import datetime
 import functools
+import uuid
 
 from django.contrib.auth.models import AbstractUser
 from django.db import models
@@ -537,28 +538,6 @@ class Role(MixinUUIDs, models.Model):
         # TODO: translate: Einsatzrolle
 
 
-class Schedule(MixinUUIDs, models.Model):
-    title = models.CharField(
-        max_length=50,
-        null=False,
-        blank=False,
-        default='',
-    )
-    task = models.ForeignKey(
-        to='Task',
-        on_delete=models.CASCADE,
-        null=False,
-        blank=False,
-    )
-    start_time = models.DateTimeField()
-    end_time = models.DateTimeField()
-
-    class Meta:
-        verbose_name = _("schedule")
-        verbose_name_plural = _("schedules")
-        # TODO: translate: Schichtplan
-
-
 class Task(MixinUUIDs, models.Model):
     deployment = models.ForeignKey(
         to='Deployment',
@@ -573,15 +552,10 @@ class Task(MixinUUIDs, models.Model):
         null=False,
         blank=False,
     )
-    roles_required = models.ManyToManyField(
+    roles = models.ManyToManyField(
         to='Role',
         blank=True,
-        related_name='roles_required',
-    )
-    roles_desirable = models.ManyToManyField(
-        to='Role',
-        blank=True,
-        related_name='roles_desirable',
+        related_name='task_roles',
     )
     resources_required = models.ManyToManyField(
         to='Resource',
@@ -603,7 +577,11 @@ class Task(MixinUUIDs, models.Model):
         blank=True,
         related_name='persons_participated',
     )
-    # geolocation
+    locations = models.ManyToManyField(
+        to='Location',
+        blank=True,
+        related_name='task_locations',
+    )
     title = models.CharField(
         max_length=100,
         null=False,
@@ -676,14 +654,32 @@ class TaskCategory(MixinUUIDs, models.Model):
 
 
 class Timeslot(MixinUUIDs, models.Model):
-    schedule = models.ForeignKey(
-        to='Schedule',
-        on_delete=models.CASCADE,
-        null=False,
-        blank=False,
-    )
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
+    STATES = [
+        ('DRAFT', 'draft'),
+        ('PUBLISHED', 'published'),
+        ('CANCELED', 'canceled'),
+        ('DELETED', 'deleted'),
+    ]
+    state = models.CharField(
+        max_length=9,
+        choices=STATES,
+        default='DRAFT',
+    )
+    enrollment_deadline = models.DateTimeField(
+        default=datetime.now,
+    )
+    locations = models.ManyToManyField(
+        to='Location',
+        blank=False,
+        related_name='timeslot_locations',
+    )
+    roles = models.ManyToManyField(
+        to='Role',
+        blank=True,
+        related_name='timeslot_roles',
+    )
 
     class Meta:
         verbose_name = _("timeslot")
