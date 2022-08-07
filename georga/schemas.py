@@ -1181,6 +1181,7 @@ qualification_category_wo_fields = [
 qualification_category_rw_fields = [
     'name',
     'code',
+    'selection_type',
 ]
 qualification_category_filter_fields = {
     'uuid': LOOKUPS_ID,

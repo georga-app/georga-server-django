@@ -681,4 +681,3 @@ class Timeslot(MixinUUIDs, models.Model):
         verbose_name = _("timeslot")
         verbose_name_plural = _("timeslots")
         # TODO: translate: Schichtplan
-
