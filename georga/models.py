@@ -38,7 +38,11 @@ class Deployment(MixinUUIDs, models.Model):
         null=False,
         blank=False,
     )
-
+    is_active = models.BooleanField(
+        null=True,
+        blank=True,
+        default=True,
+    )
     def __str__(self):
         return '%s' % self.name
 
@@ -78,14 +82,23 @@ class Device(MixinUUIDs, models.Model):
         # TODO: translation: Client-Gerät
 
 
-class EquipmentProvided(MixinUUIDs, models.Model):
+class Equipment(MixinUUIDs, models.Model):
     name = models.CharField(
         max_length=30,
         null=False,
         blank=False,
         default='',
     )
-
+    OWNER = [
+        ('SELF', 'person itself'),
+        ('ORG', 'provided by organisation'),
+        ('THIRDPARTY', 'other party'),
+    ]
+    owner = models.CharField(
+        max_length=10,
+        choices=OWNER,
+        default='ORG',
+    )
     def __str__(self):
         return '%s' % self.name
 
@@ -93,29 +106,9 @@ class EquipmentProvided(MixinUUIDs, models.Model):
         return '%s' % self.name
 
     class Meta:
-        verbose_name = _("equipment provided by organization")
-        verbose_name_plural = _("equipments provided by organization")
-        # TODO: translate: Ausstattung durch Organisation
-
-
-class EquipmentSelf(MixinUUIDs, models.Model):
-    name = models.CharField(
-        max_length=30,
-        null=False,
-        blank=False,
-        default='',
-    )
-
-    def __str__(self):
-        return '%s' % self.name
-
-    def __unicode__(self):
-        return '%s' % self.name
-
-    class Meta:
-        verbose_name = _("own equipment")
-        verbose_name_plural = _("own equipments")
-        # TODO: translate: Eigene Ausstattung
+        verbose_name = _("equipment")
+        verbose_name_plural = _("equipment")
+        # TODO: translate: Eigenes oder Material der Organisation
 
 
 class Location(MixinUUIDs, models.Model):
@@ -478,6 +471,11 @@ class Resource(MixinUUIDs, models.Model):
         null=False,
         blank=False,
     )
+    equipment_needed = models.ManyToManyField(
+        to='Equipment',
+        blank=True,
+        related_name='equipment_needed',
+    )
 
     def __str__(self):
         return '%s' % self.description
@@ -518,6 +516,16 @@ class Role(MixinUUIDs, models.Model):
         max_length=50,
         null=True,
         blank=True,
+    )
+    is_template = models.BooleanField(
+        null=True,
+        blank=True,
+        default = False,
+    )
+    qualifications_suitable = models.ManyToManyField(
+        to='Qualification',
+        blank=True,
+        related_name='qualifications_suitable',
     )
 
     def __str__(self):

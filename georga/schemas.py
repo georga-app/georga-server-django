@@ -27,8 +27,7 @@ from .email import Email
 from .models import (
     Deployment,
     Device,
-    EquipmentSelf,
-    EquipmentProvided,
+    Equipment,
     Location,
     LocationCategory,
     NotificationCategory,
@@ -444,58 +443,28 @@ class DeleteDeviceMutation(UUIDDjangoModelFormMutation):
         return cls(device=device, errors=[])
 
 
-# EquipmentProvided -----------------------------------------------------------
+# Equipment -----------------------------------------------------------
 
 # fields
-equipment_provided_ro_fields = [
+equipment_ro_fields = [
     'uuid',
 ]
-equipment_provided_wo_fields = []
-equipment_provided_rw_fields = [
+equipment_wo_fields = []
+equipment_rw_fields = [
     'name',
 ]
-equipment_provided_filter_fields = {
+equipment_filter_fields = {
     'uuid': LOOKUPS_ID,
     'name': LOOKUPS_STRING,
 }
 
 
 # types
-class EquipmentProvidedType(UUIDDjangoObjectType):
+class EquipmentType(UUIDDjangoObjectType):
     class Meta:
-        model = EquipmentProvided
-        fields = equipment_provided_ro_fields + equipment_provided_rw_fields
-        filter_fields = equipment_provided_filter_fields
-        permissions = [login_required]
-
-
-# forms
-# cud mutations
-# flow mutations
-
-
-# EquipmentSelf ---------------------------------------------------------------
-
-# fields
-equipment_self_ro_fields = [
-    'uuid',
-]
-equipment_self_wo_fields = []
-equipment_self_rw_fields = [
-    'name',
-]
-equipment_self_filter_fields = {
-    'uuid': LOOKUPS_ID,
-    'name': LOOKUPS_STRING,
-}
-
-
-# types
-class EquipmentSelfType(UUIDDjangoObjectType):
-    class Meta:
-        model = EquipmentSelf
-        fields = equipment_self_ro_fields + equipment_self_rw_fields
-        filter_fields = equipment_self_filter_fields
+        model = Equipment
+        fields = equipment_ro_fields + equipment_rw_fields
+        filter_fields = equipment_filter_fields
         permissions = [login_required]
 
 
@@ -1714,10 +1683,8 @@ class Query(ObjectType):
     node = Node.Field()
     all_task_categories = UUIDDjangoFilterConnectionField(
         TaskCategoryType)
-    all_equipment_provided = UUIDDjangoFilterConnectionField(
-        EquipmentProvidedType)
-    all_equipment_self = UUIDDjangoFilterConnectionField(
-        EquipmentSelfType)
+    all_equipment = UUIDDjangoFilterConnectionField(
+        EquipmentType)
     all_locations = UUIDDjangoFilterConnectionField(
         LocationType)
     all_persons = UUIDDjangoFilterConnectionField(
