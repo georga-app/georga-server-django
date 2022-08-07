@@ -1310,6 +1310,7 @@ role_rw_fields = [
     'description',
     'is_template',
     'qualifications_suitable',
+    'amount',
 ]
 role_filter_fields = {
     'uuid': LOOKUPS_ID,

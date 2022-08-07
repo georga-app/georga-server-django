@@ -513,6 +513,11 @@ class Role(MixinUUIDs, models.Model):
         blank=False,
         default='',
     )
+    amount = models.IntegerField(
+        null=True,
+        blank=True,
+        verbose_name=_("Amount of people desirable with this role"),
+    )
     description = models.CharField(
         max_length=50,
         null=True,
