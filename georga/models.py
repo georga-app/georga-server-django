@@ -682,7 +682,7 @@ class Timeslot(MixinUUIDs, models.Model):
     )
     roles = models.ManyToManyField(
         to='Role',
-        blank=True,
+        blank=False,
         related_name='timeslot_roles',
     )
 
