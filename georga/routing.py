@@ -1,13 +1,13 @@
-import channels_graphql_ws
+# import channels_graphql_ws
 from django.urls import path
 
 
 # Websocket endpoints
 from georga import schemas
 
-
+"""
 class MyGraphqlWsConsumer(channels_graphql_ws.GraphqlWsConsumer):
-    """Channels WebSocket consumer which provides GraphQL API."""
+    # Channels WebSocket consumer which provides GraphQL API.
     schema = schemas.schema
 
     # Uncomment to send keepalive message every 42 seconds.
@@ -17,11 +17,11 @@ class MyGraphqlWsConsumer(channels_graphql_ws.GraphqlWsConsumer):
     # strict_ordering = True
 
     async def on_connect(self, payload):
-        """New client connection handler."""
+        # New client connection handler.
         # You can `raise` from here to reject the connection.
         print("New client connected!")
 
-
+"""
 websocket_urlpatterns = [
-    path("graphql", MyGraphqlWsConsumer.as_asgi()),
+    # path("graphql", MyGraphqlWsConsumer.as_asgi()),
 ]

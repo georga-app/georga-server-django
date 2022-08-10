@@ -1,4 +1,4 @@
-Django==3.2.14
+Django==4.1
 psycopg2==2.9.3
 python-dotenv==0.20.0
 PyYAML==6.0
@@ -10,7 +10,6 @@ django-filter==22.1
 cryptography==37.0.4
 channels==3.0.5
 channels-redis==3.4.1
-django-channels-graphql-ws==0.9.1
 django-cors-headers==3.13.0
 ptvsd==4.3.2
 pdbpp==0.10.3

@@ -1,7 +1,6 @@
 from datetime import datetime
 
 import graphql_jwt
-from channels_graphql_ws import Subscription as GQLSubscription
 from django.contrib.auth.password_validation import validate_password
 # from django.core.exceptions import ValidationError
 from django.db.models import ManyToManyField, ManyToManyRel, ManyToOneRel
@@ -1568,9 +1567,9 @@ class DeleteTimeslotMutation(UUIDDjangoModelFormMutation):
 
 
 # Subscriptions ===============================================================
-
+"""
 class TestSubscription(GQLSubscription):
-    """Simple GraphQL subscription."""
+    # Simple GraphQL subscription.
 
     # Leave only latest 64 messages in the server queue.
     notification_queue_limit = 64
@@ -1580,20 +1579,20 @@ class TestSubscription(GQLSubscription):
     time = String()
 
     class Arguments:
-        """That is how subscription arguments are defined."""
+       #That is how subscription arguments are defined.
         arg1 = String()
         arg2 = String()
 
     @staticmethod
     def subscribe(root, info, arg1, arg2):
-        """Called when user subscribes."""
+        # Called when user subscribes.
 
         # Return the list of subscription group names.
         return ["TestSubscriptionEvents"]
 
     @staticmethod
     def publish(payload, info, arg1, arg2):
-        """Called to notify the client."""
+        # Called to notify the client.
 
         # Here `payload` contains the `payload` from the `broadcast()`
         # invocation (see below). You can return `MySubscription.SKIP`
@@ -1618,7 +1617,7 @@ class TestSubscriptionEventMutation(GrapheneMutation):
         print(f"New message broadcasted: {message}")
         TestSubscription.broadcast(group="TestSubscriptionEvents", payload=message)
         return TestSubscriptionEventMutation(response="OK")
-
+"""
 
 # Schema ======================================================================
 
@@ -1704,15 +1703,15 @@ class Mutation(ObjectType):
     delete_role = DeleteRoleMutation.Field()
 
     # TestSubscription
-    test_subscription_event = TestSubscriptionEventMutation.Field()
+    #test_subscription_event = TestSubscriptionEventMutation.Field()
 
-
+"""
 class Subscription(ObjectType):
     test_subscription = TestSubscription.Field()
-
+"""
 
 schema = Schema(
     query=Query,
     mutation=Mutation,
-    subscription=Subscription,
+#    subscription=Subscription,
 )
