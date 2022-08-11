@@ -10,6 +10,8 @@ from phonenumber_field.modelfields import PhoneNumberField
 from graphql_relay import to_global_id
 
 
+#--- MIXINS
+
 class MixinUUIDs(models.Model):
     """Public facing UUIDs."""
     class Meta:
@@ -25,6 +27,8 @@ class MixinUUIDs(models.Model):
     def gid(self):
         return to_global_id(f"{self._meta.object_name}Type", self.uuid)
 
+
+#--- CLASSES
 
 class Deployment(MixinUUIDs, models.Model):
     project = models.ForeignKey(
