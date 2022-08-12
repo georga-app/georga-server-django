@@ -9,8 +9,8 @@ from .models import (
     Project,
     Operation,
     Task,
-    TaskCategory,
-    Timeslot,
+    TaskField,
+    Shift,
     PersonProperty,
     PersonPropertyGroup,
     Role,
@@ -28,8 +28,8 @@ admin.site.register(Organization)
 admin.site.register(Project)
 admin.site.register(Operation)
 admin.site.register(Task)
-admin.site.register(TaskCategory)
-admin.site.register(Timeslot)
+admin.site.register(TaskField)
+admin.site.register(Shift)
 admin.site.register(PersonProperty)
 admin.site.register(PersonPropertyGroup)
 admin.site.register(Role)

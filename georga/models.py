@@ -74,7 +74,7 @@ class ACL(MixinUUIDs, models.Model):
 class Operation(MixinUUIDs, models.Model):
     project = models.ForeignKey(
         to='Project',
-        on_delete=models.DO_NOTHING,
+        on_delete=models.CASCADE,
         null=False,
         blank=False,
         default=0,
@@ -100,6 +100,13 @@ class Operation(MixinUUIDs, models.Model):
 
 
 class Device(MixinUUIDs, models.Model):
+    organization = models.ForeignKey(
+        to='Organization',
+        on_delete=models.CASCADE,
+        null=False,
+        blank=False,
+        default=0,
+    )
     device_string = models.CharField(
         max_length=50,
         null=False,
@@ -130,6 +137,13 @@ class Device(MixinUUIDs, models.Model):
 
 
 class Equipment(MixinUUIDs, models.Model):
+    organization = models.ForeignKey(
+        to='Organization',
+        on_delete=models.CASCADE,
+        null=False,
+        blank=False,
+        default=0,
+    )
     name = models.CharField(
         max_length=30,
         null=False,
@@ -138,7 +152,7 @@ class Equipment(MixinUUIDs, models.Model):
     )
     OWNER = [
         ('SELF', 'person itself'),
-        ('ORG', 'provided by organisation'),
+        ('ORG', 'provided by organization'),
         ('THIRDPARTY', 'other party'),
     ]
     owner = models.CharField(
@@ -160,6 +174,13 @@ class Equipment(MixinUUIDs, models.Model):
 
 
 class Location(MixinUUIDs, models.Model):
+    organization = models.ForeignKey(
+        to='Organization',
+        on_delete=models.CASCADE,
+        null=False,
+        blank=False,
+        default=0,
+    )
     address = models.CharField(max_length=200)
     location_category = models.ForeignKey(
         to='LocationCategory',
@@ -175,6 +196,13 @@ class Location(MixinUUIDs, models.Model):
 
 
 class LocationCategory(MixinUUIDs, models.Model):
+    organization = models.ForeignKey(
+        to='Organization',
+        on_delete=models.CASCADE,
+        null=False,
+        blank=False,
+        default=0,
+    )
     name = models.CharField(
         max_length=50,
     )
@@ -187,6 +215,13 @@ class LocationCategory(MixinUUIDs, models.Model):
 
 
 class Notification(MixinUUIDs, models.Model):
+    organization = models.ForeignKey(
+        to='Organization',
+        on_delete=models.CASCADE,
+        null=False,
+        blank=False,
+        default=0,
+    )
     title = models.CharField(
         max_length=100,
     )
@@ -212,6 +247,13 @@ class Notification(MixinUUIDs, models.Model):
 
 
 class NotificationCategory(MixinUUIDs, models.Model):
+    organization = models.ForeignKey(
+        to='Organization',
+        on_delete=models.CASCADE,
+        null=False,
+        blank=False,
+        default=0,
+    )
     name = models.CharField(
         max_length=100,
     )
@@ -283,17 +325,17 @@ class Person(MixinUUIDs, AbstractUser):
         verbose_name=_("occupation"),
     )
 
-    task_categories_agreed = models.ManyToManyField(
-        'TaskCategory',
+    task_fields_agreed = models.ManyToManyField(
+        'TaskField',
         blank=True,
-        verbose_name=_("agreement to task categories"),
+        verbose_name=_("agreement to task fields"),
     )
 
-    task_category_description = models.TextField(
+    task_field_note = models.TextField(
         max_length=300,
         null=True,
         blank=True,
-        verbose_name=_("task category details"),
+        verbose_name=_("task field note"),
     )
 
     street = models.CharField(
@@ -414,9 +456,10 @@ class Person(MixinUUIDs, AbstractUser):
 class Project(MixinUUIDs, models.Model):
     organization = models.ForeignKey(
         to='Organization',
-        on_delete=models.DO_NOTHING,
+        on_delete=models.CASCADE,
         null=False,
         blank=False,
+        default=0,
     )
     name = models.CharField(
         max_length=50,
@@ -434,6 +477,13 @@ class Project(MixinUUIDs, models.Model):
 
 
 class PersonProperty(MixinUUIDs, models.Model):
+    organization = models.ForeignKey(
+        to='Organization',
+        on_delete=models.CASCADE,
+        null=False,
+        blank=False,
+        default=0,
+    )
     name = models.CharField(
         max_length=50,
         null=True,
@@ -473,8 +523,15 @@ class PersonProperty(MixinUUIDs, models.Model):
 
 
 class PersonPropertyGroup(MixinUUIDs, models.Model):
+    organization = models.ForeignKey(
+        to='Organization',
+        on_delete=models.CASCADE,
+        null=False,
+        blank=False,
+        default=0,
+    )
     codename = models.CharField(
-        max_length=15,
+        max_length=30,
         default='',
         verbose_name=_("person propery group"),
     )
@@ -536,6 +593,13 @@ class Resource(MixinUUIDs, models.Model):
 
 
 class Role(MixinUUIDs, models.Model):
+    shift = models.ForeignKey(
+        to='Shift',
+        on_delete=models.CASCADE,
+        null=False,
+        blank=False,
+        default=0,
+    )
     title = models.CharField(
         max_length=50,
         null=False,
@@ -557,11 +621,6 @@ class Role(MixinUUIDs, models.Model):
         blank=True,
         default=False,
     )
-    person_properties = models.ManyToManyField(
-        to='PersonProperty',
-        blank=True,
-        related_name='person_properties',
-    )
 
     def __str__(self):
         return '%s' % self.description
@@ -572,16 +631,31 @@ class Role(MixinUUIDs, models.Model):
         # TODO: translate: Einsatzrolle
 
 
-class Task(MixinUUIDs, models.Model):
-    operation = models.ForeignKey(
-        to='Operation',
-        on_delete=models.DO_NOTHING,
+class RoleSpecification(MixinUUIDs, models.Model):
+    role = models.ForeignKey(
+        to='Role',
+        on_delete=models.CASCADE,
         null=False,
         blank=False,
         default=0,
     )
-    task_category = models.ForeignKey(
-        to='TaskCategory',
+    person_properties = models.ManyToManyField(
+        to='PersonProperty',
+        blank=True,
+        related_name='person_properties',
+    )
+
+
+class Task(MixinUUIDs, models.Model):
+    operation = models.ForeignKey(
+        to='Operation',
+        on_delete=models.CASCADE,
+        null=False,
+        blank=False,
+        default=0,
+    )
+    task_field = models.ForeignKey(
+        to='TaskField',
         on_delete=models.DO_NOTHING,
         null=False,
         blank=False,
@@ -666,7 +740,14 @@ class Task(MixinUUIDs, models.Model):
         # TODO: translate: Aufgabe
 
 
-class TaskCategory(MixinUUIDs, models.Model):
+class TaskField(MixinUUIDs, models.Model):
+    organization = models.ForeignKey(
+        to='Organization',
+        on_delete=models.CASCADE,
+        null=False,
+        blank=False,
+        default=0,
+    )
     name = models.CharField(
         max_length=50,
         null=False,
@@ -682,12 +763,12 @@ class TaskCategory(MixinUUIDs, models.Model):
         return '%s' % self.name
 
     class Meta:
-        verbose_name = _("task category")
-        verbose_name_plural = _("task categories")
+        verbose_name = _("task field")
+        verbose_name_plural = _("task fields")
         # TODO: translate: Aufgabentyp
 
 
-class Timeslot(MixinUUIDs, models.Model):
+class Shift(MixinUUIDs, models.Model):
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
     STATES = [
@@ -701,21 +782,28 @@ class Timeslot(MixinUUIDs, models.Model):
         choices=STATES,
         default='DRAFT',
     )
+    task = models.ForeignKey(
+        to='Task',
+        on_delete=models.CASCADE,
+        null=False,
+        blank=False,
+        default=0,
+    )
     enrollment_deadline = models.DateTimeField(
         default=datetime.now,
     )
     locations = models.ManyToManyField(
         to='Location',
         blank=False,
-        related_name='timeslot_locations',
+        related_name='shift_locations',
     )
     roles = models.ManyToManyField(
         to='Role',
         blank=False,
-        related_name='timeslot_roles',
+        related_name='shift_roles',
     )
 
     class Meta:
-        verbose_name = _("timeslot")
-        verbose_name_plural = _("timeslots")
-        # TODO: translate: Schichtplan
+        verbose_name = _("shift")
+        verbose_name_plural = _("shifts")
+        # TODO: translate: Schicht

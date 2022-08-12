@@ -11,6 +11,7 @@
     email: admin@georga.test
     password_modified: 2022-03-13 16:13:36.048338+00:00
     person_properties: [1, 4, 6, 9]
+    organizations_subscribed: [0, 1, 2]
     is_active: true
 # Password: verysafePassword
 - model: georga.person
@@ -25,6 +26,7 @@
     date_joined: 2022-03-13 16:13:36.048326+00:00
     email: simpleuser@georga.test
     password_modified: 2022-03-13 16:13:36.048338+00:00
+    organizations_subscribed: [0, 1, 2]
     is_active: true
 # Password: simpleuserPassword
 - model: georga.person
@@ -41,6 +43,7 @@
     email: staffuser@georga.test
     password_modified: 2022-03-13 16:13:36.048338+00:00
     person_properties: [2, 15, 20, 22]
+    organizations_subscribed: [0]
     is_active: true
 # Password: staffuserPassword
 - model: georga.person
@@ -57,6 +60,7 @@
     email: staffuser2@georga.test
     password_modified: 2022-03-13 16:13:36.048338+00:00
     person_properties: [3, 25]
+    organizations_subscribed: [1, 2]
     is_active: true
 # Password: staffuserPassword
 - model: georga.person
@@ -73,5 +77,6 @@
     email: staffuser3@georga.test
     password_modified: 2022-03-13 16:13:36.048338+00:00
     person_properties: [6, 9]
+    organizations_subscribed: [2]
     is_active: false
 # Password: staffuserPassword

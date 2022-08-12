@@ -2,33 +2,29 @@
   pk: 0
   fields:
     title: "Emergency physician"
-    person_properties: [41, 44]
     amount: 4
 - model: georga.role
   pk: 1
   fields:
     title: "Rescue worker"
-    person_properties: [43]
     amount: 3
 - model: georga.role
   pk: 2
   fields:
     title: "Radio operator"
-    person_properties: [47, 48, 49, 50, 51]
     amount: 1
 - model: georga.role
-  pk: 4
+  pk: 3
   fields:
     title: "Staff administration"
-    person_properties: [38, 39, 40]
     amount: 2
 - model: georga.role
-  pk: 5
+  pk: 4
   fields:
     title: "Group leader"
     amount: 1
 - model: georga.role
-  pk: 6
+  pk: 5
   fields:
     title: "Helpers without special qualification"
     amount: 5

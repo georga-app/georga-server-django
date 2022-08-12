@@ -3,34 +3,77 @@
     id: 0
     codename: LANGUAGE
     name: Language
+    organization: 0
 - model: georga.personpropertygroup
   fields:
     id: 1
-    codename: LICENSE
-    name: License
+    codename: LANGUAGE
+    name: Language
+    organization: 1
 - model: georga.personpropertygroup
   fields:
     id: 2
-    codename: ADMINISTRATIVE
-    name: Administrative
+    codename: LICENSE
+    name: License
+    organization: 0
 - model: georga.personpropertygroup
   fields:
     id: 3
-    codename: MEDICAL
-    name: Medical
+    codename: ADMINISTRATIVE
+    name: Administrative
+    organization: 1
 - model: georga.personpropertygroup
   fields:
     id: 4
-    codename: TECHNICAL
-    name: Technical
+    codename: ADMINISTRATIVE
+    name: Administrative
+    organization: 2
 - model: georga.personpropertygroup
   fields:
     id: 5
-    codename: GENERAL
-    name: General
+    codename: MEDICAL
+    name: Medical
+    organization: 0
 - model: georga.personpropertygroup
   fields:
     id: 6
+    codename: MEDICAL
+    name: Medical
+    organization: 1
+- model: georga.personpropertygroup
+  fields:
+    id: 7
+    codename: TECHNICAL
+    name: Technical
+    organization: 1
+- model: georga.personpropertygroup
+  fields:
+    id: 8
+    codename: TECHNICAL
+    name: Technical
+    organization: 2
+- model: georga.personpropertygroup
+  fields:
+    id: 9
+    codename: GENERAL
+    name: General
+    organization: 0
+- model: georga.personpropertygroup
+  fields:
+    id: 10
+    codename: GENERAL
+    name: General
+    organization: 1
+- model: georga.personpropertygroup
+  fields:
+    id: 11
+    codename: GENERAL
+    name: General
+    organization: 2
+- model: georga.personpropertygroup
+  fields:
+    id: 12
     codename: ADULT
     name: Adult
+    organization: 2
     selection_type: SINGLESELECT

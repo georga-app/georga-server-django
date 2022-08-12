@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('uuid', models.UUIDField(default=uuid.uuid4, editable=False)),
                 ('name', models.CharField(default='', max_length=30)),
-                ('owner', models.CharField(choices=[('SELF', 'person itself'), ('ORG', 'provided by organisation'), ('THIRDPARTY', 'other party')], default='ORG', max_length=10)),
+                ('owner', models.CharField(choices=[('SELF', 'person itself'), ('ORG', 'provided by organization'), ('THIRDPARTY', 'other party')], default='ORG', max_length=10)),
             ],
             options={
                 'verbose_name': 'equipment',

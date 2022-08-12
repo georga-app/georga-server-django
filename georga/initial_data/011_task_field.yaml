@@ -1,0 +1,55 @@
+- model: georga.taskfield
+  pk: 0
+  fields:
+    name: "Dolmetscher"
+    description: "Dolmetscher für verschiedene Sprachen"
+- model: georga.taskfield
+  pk: 1
+  fields:
+    name: "Betreuung"
+    description: "Dolmetscher für verschiedene Sprachen"
+- model: georga.taskfield
+  pk: 2
+  fields:
+    name: "Sanitätsdienste"
+    description: "Verschieden medizinische Hilfen bei Sanitätsdiensten"
+- model: georga.taskfield
+  pk: 3
+  fields:
+    name: "Hochwasserprävention"
+    description: "Verschiedene Hilfstätigkeiten bei angekündigtem Hochwasser"
+- model: georga.taskfield
+  pk: 4
+  fields:
+    name: "Hilfsarbeiten nach Hochwasser"
+    description: "Verschiedene Hilfstätigkeiten zu Räumung, Reparatur und Wiederaufbau nach Hochwassern"
+- model: georga.taskfield
+  pk: 5
+  fields:
+    name: "Organisationsthemen bei Betreuungseinsätzen"
+    description: "Registratur, Sortierung, Zuteilungen vor Ort"
+- model: georga.taskfield
+  pk: 6
+  fields:
+    name: "Beladung - Hebetätigkeiten"
+    description: "Tätigkeiten bei der Beladung von Schiffen vor der Fahrt, die schweres Heben beinhalten"
+- model: georga.taskfield
+  pk: 7
+  fields:
+    name: "Reinigungstätigkeiten"
+    description: "Tätigkeiten, die es erfordern, mit Reinigungsmitteln und -Material zu arbeiten"
+- model: georga.taskfield
+  pk: 8
+  fields:
+    name: "Lebensmitteltätigkeiten"
+    description: "Tätigkeiten, die es erfordern, mit Lebensmitteln umzugehen"
+- model: georga.taskfield
+  pk: 9
+  fields:
+    name: "Leichte Beladungstätigkeiten"
+    description: "Tätigkeiten bei der Beladung, die keine besonderen Materialien, Kenntnisse, Qualifikationen oder schweres Heben voraussetzen"
+- model: georga.taskfield
+  pk: 10
+  fields:
+    name: "Bedrohungs- und Statusanalyse"
+    description: "Tätigkeiten bei Verdacht eines Cyber Cyber Cyberangriffs"

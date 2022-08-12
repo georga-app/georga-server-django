@@ -1,0 +1,28 @@
+- model: georga.rolespecification
+  pk: 0
+  fields:
+    role: 0
+    person_properties: [41, 44]
+- model: georga.rolespecification
+  pk: 1
+  fields:
+    role: 1
+    person_properties: [43]
+- model: georga.rolespecification
+  pk: 2
+  fields:
+    role: 2
+    person_properties: [47, 48, 49, 50, 51]
+- model: georga.rolespecification
+  pk: 3
+  fields:
+    role: 3
+    person_properties: [38, 39, 40]
+- model: georga.rolespecification
+  pk: 4
+  fields:
+    role: 4
+- model: georga.rolespecification
+  pk: 5
+  fields:
+    role: 5

@@ -42,9 +42,10 @@ from .models import (
     PersonPropertyGroup,
     Resource,
     Role,
+    RoleSpecification,
     Task,
-    TaskCategory,
-    Timeslot
+    TaskField,
+    Shift
 )
 
 channel_layer = get_channel_layer()
@@ -1277,8 +1278,8 @@ role_wo_fields = [
 role_rw_fields = [
     'description',
     'is_template',
-    'person_properties',
     'amount',
+    'shift',
 ]
 role_filter_fields = {
     'uuid': LOOKUPS_ID,
@@ -1330,6 +1331,67 @@ class DeleteRoleMutation(UUIDDjangoModelFormMutation):
         return cls(role=role, errors=[])
 
 
+# RoleSpecification ----------------------------------------------------------------------
+
+# fields
+role_specification_ro_fields = [
+    'uuid',
+]
+role_specification_wo_fields = [
+]
+role_specification_rw_fields = [
+    'person_properties',
+]
+role_specification_filter_fields = {
+    'uuid': LOOKUPS_ID,
+}
+
+
+# types
+class RoleSpecificationType(UUIDDjangoObjectType):
+    class Meta:
+        model = RoleSpecification
+        fields = role_specification_ro_fields + role_specification_rw_fields
+        filter_fields = role_specification_filter_fields
+        permissions = [login_required]
+
+
+# forms
+
+class RoleSpecificationModelForm(UUIDModelForm):
+    class Meta:
+        model = RoleSpecification
+        fields = role_specification_wo_fields + role_specification_rw_fields
+
+
+# cud mutations
+class CreateRoleSpecificationMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = RoleSpecificationModelForm
+        exclude_fields = ['id']
+        permissions = [staff_member_required]
+
+
+class UpdateRoleSpecificationMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = RoleSpecificationModelForm
+        required_fields = ['id']
+        permissions = [login_required]
+
+
+class DeleteRoleSpecificationMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = RoleSpecificationModelForm
+        only_fields = ['id']
+        permissions = [staff_member_required]
+
+    @classmethod
+    def perform_mutate(cls, form, info):
+        role = form.instance
+        role.delete()
+        return cls(role_specification=role_specification, errors=[])
+
+
 # Task ----------------------------------------------------------------------
 
 # fields
@@ -1340,7 +1402,7 @@ task_wo_fields = [
 ]
 task_rw_fields = [
     'operation',
-    'task_category',
+    'task_field',
     'roles',
     'resources_required',
     'resources_desirable',
@@ -1406,78 +1468,78 @@ class DeleteTaskMutation(UUIDDjangoModelFormMutation):
         return cls(task=task, errors=[])
 
 
-# TaskCategory ----------------------------------------------------------------------
+# TaskField ----------------------------------------------------------------------
 
 # fields
-task_category_ro_fields = [
+task_field_ro_fields = [
     'uuid',
 ]
-task_category_wo_fields = [
+task_field_wo_fields = [
 ]
-task_category_rw_fields = [
+task_field_rw_fields = [
     'name',
     'description',
 ]
-task_category_filter_fields = {
+task_field_filter_fields = {
     'id': LOOKUPS_ID,
     'uuid': LOOKUPS_ID
 }
 
 
 # types
-class TaskCategoryType(UUIDDjangoObjectType):
+class TaskFieldType(UUIDDjangoObjectType):
     class Meta:
-        model = TaskCategory
-        fields = task_category_ro_fields + task_category_rw_fields
-        filter_fields = task_category_filter_fields
+        model = TaskField
+        fields = task_field_ro_fields + task_field_rw_fields
+        filter_fields = task_field_filter_fields
         permissions = [login_required]
 
 
 # forms
 
-class TaskCategoryModelForm(UUIDModelForm):
+class TaskFieldModelForm(UUIDModelForm):
     class Meta:
-        model = TaskCategory
-        fields = task_category_wo_fields + task_category_rw_fields
+        model = TaskField
+        fields = task_field_wo_fields + task_field_rw_fields
 
 
 # cud mutations
-class CreateTaskCategoryMutation(UUIDDjangoModelFormMutation):
+class CreateTaskFieldMutation(UUIDDjangoModelFormMutation):
     class Meta:
-        form_class = TaskCategoryModelForm
+        form_class = TaskFieldModelForm
         exclude_fields = ['id']
         permissions = [staff_member_required]
 
 
-class UpdateTaskCategoryMutation(UUIDDjangoModelFormMutation):
+class UpdateTaskFieldMutation(UUIDDjangoModelFormMutation):
     class Meta:
-        form_class = TaskCategoryModelForm
+        form_class = TaskFieldModelForm
         required_fields = ['id']
         permissions = [login_required]
 
 
-class DeleteTaskCategoryMutation(UUIDDjangoModelFormMutation):
+class DeleteTaskFieldMutation(UUIDDjangoModelFormMutation):
     class Meta:
-        form_class = TaskCategoryModelForm
+        form_class = TaskFieldModelForm
         only_fields = ['id']
         permissions = [staff_member_required]
 
     @classmethod
     def perform_mutate(cls, form, info):
-        task_category = form.instance
-        task_category.delete()
-        return cls(task_category=task_category, errors=[])
+        task_field = form.instance
+        task_field.delete()
+        return cls(task_field=task_field, errors=[])
 
 
-# Timeslot ----------------------------------------------------------------------
+# Shift ----------------------------------------------------------------------
 
 # fields
-timeslot_ro_fields = [
+shift_ro_fields = [
     'uuid',
 ]
-timeslot_wo_fields = [
+shift_wo_fields = [
 ]
-timeslot_rw_fields = [
+shift_rw_fields = [
     'start_time',
     'end_time',
     'enrollment_deadline',
@@ -1485,54 +1547,54 @@ timeslot_rw_fields = [
     'locations',
     'roles',
 ]
-timeslot_filter_fields = {
+shift_filter_fields = {
     'uuid': LOOKUPS_ID,
 }
 
 
 # types
-class TimeslotType(UUIDDjangoObjectType):
+class ShiftType(UUIDDjangoObjectType):
     class Meta:
-        model = Timeslot
-        fields = timeslot_ro_fields + timeslot_rw_fields
-        filter_fields = timeslot_filter_fields
+        model = Shift
+        fields = shift_ro_fields + shift_rw_fields
+        filter_fields = shift_filter_fields
         permissions = [login_required]
 
 
 # forms
 
-class TimeslotModelForm(UUIDModelForm):
+class ShiftModelForm(UUIDModelForm):
     class Meta:
-        model = Timeslot
-        fields = timeslot_wo_fields + timeslot_rw_fields
+        model = Shift
+        fields = shift_wo_fields + shift_rw_fields
 
 
 # cud mutations
-class CreateTimeslotMutation(UUIDDjangoModelFormMutation):
+class CreateShiftMutation(UUIDDjangoModelFormMutation):
     class Meta:
-        form_class = TimeslotModelForm
+        form_class = ShiftModelForm
         exclude_fields = ['id']
         permissions = [staff_member_required]
 
 
-class UpdateTimeslotMutation(UUIDDjangoModelFormMutation):
+class UpdateShiftMutation(UUIDDjangoModelFormMutation):
     class Meta:
-        form_class = TimeslotModelForm
+        form_class = ShiftModelForm
         required_fields = ['id']
         permissions = [login_required]
 
 
-class DeleteTimeslotMutation(UUIDDjangoModelFormMutation):
+class DeleteShiftMutation(UUIDDjangoModelFormMutation):
     class Meta:
-        form_class = TimeslotModelForm
+        form_class = ShiftModelForm
         only_fields = ['id']
         permissions = [staff_member_required]
 
     @classmethod
     def perform_mutate(cls, form, info):
-        timeslot = form.instance
-        timeslot.delete()
-        return cls(timeslot=timeslot, errors=[])
+        shift = form.instance
+        shift.delete()
+        return cls(shift=shift, errors=[])
 
 
 # Subscriptions ===============================================================
@@ -1560,8 +1622,8 @@ class TestSubscriptionEventMutation(graphene.Mutation):
 
 class Query(ObjectType):
     node = Node.Field()
-    all_task_categories = UUIDDjangoFilterConnectionField(
-        TaskCategoryType)
+    all_task_fields = UUIDDjangoFilterConnectionField(
+        TaskFieldType)
     all_equipment = UUIDDjangoFilterConnectionField(
         EquipmentType)
     all_locations = UUIDDjangoFilterConnectionField(
@@ -1570,13 +1632,12 @@ class Query(ObjectType):
         PersonType)
     all_person_properties = UUIDDjangoFilterConnectionField(
         PersonPropertyType)
-    all_person_property_categories = UUIDDjangoFilterConnectionField(
+    all_person_property_groups = UUIDDjangoFilterConnectionField(
         PersonPropertyGroupType)
     all_devices = UUIDDjangoFilterConnectionField(DeviceType)
     all_resources = UUIDDjangoFilterConnectionField(ResourceType)
-    all_organisations = UUIDDjangoFilterConnectionField(OrganizationType)
+    all_organizations = UUIDDjangoFilterConnectionField(OrganizationType)
     all_tasks = UUIDDjangoFilterConnectionField(TaskType)
-    all_task_types = UUIDDjangoFilterConnectionField(TaskCategoryType)
     all_projects = UUIDDjangoFilterConnectionField(ProjectType)
     all_roles = UUIDDjangoFilterConnectionField(RoleType)
 
@@ -1616,18 +1677,18 @@ class Mutation(ObjectType):
     create_resource = CreateResourceMutation.Field()
     update_resource = UpdateResourceMutation.Field()
     delete_resource = DeleteResourceMutation.Field()
-    # Organisations
-    create_organisation = CreateOrganizationMutation.Field()
-    update_organisation = UpdateOrganizationMutation.Field()
-    delete_organisation = DeleteOrganizationMutation.Field()
+    # Organizations
+    create_organization = CreateOrganizationMutation.Field()
+    update_organization = UpdateOrganizationMutation.Field()
+    delete_organization = DeleteOrganizationMutation.Field()
     # Tasks
     create_task = CreateTaskMutation.Field()
     update_task = UpdateTaskMutation.Field()
     delete_task = DeleteTaskMutation.Field()
-    # TaskCategories
-    create_task_category = CreateTaskCategoryMutation.Field()
-    update_task_category = UpdateTaskCategoryMutation.Field()
-    delete_task_category = DeleteTaskCategoryMutation.Field()
+    # TaskFields
+    create_task_field = CreateTaskFieldMutation.Field()
+    update_task_field = UpdateTaskFieldMutation.Field()
+    delete_task_field = DeleteTaskFieldMutation.Field()
     # Projects
     create_project = CreateProjectMutation.Field()
     update_project = UpdateProjectMutation.Field()
