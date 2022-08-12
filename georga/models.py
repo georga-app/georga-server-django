@@ -12,7 +12,7 @@ from phonenumber_field.modelfields import PhoneNumberField
 from graphql_relay import to_global_id
 
 
-#--- MIXINS
+# --- MIXINS
 
 class MixinUUIDs(models.Model):
     """Public facing UUIDs."""
@@ -31,7 +31,7 @@ class MixinUUIDs(models.Model):
         return to_global_id(f"{self._meta.object_name}Type", self.uuid)
 
 
-#--- CLASSES
+# --- CLASSES
 
 class ACL(MixinUUIDs, models.Model):
     content_type = models.ForeignKey(
@@ -89,6 +89,7 @@ class Deployment(MixinUUIDs, models.Model):
         blank=True,
         default=True,
     )
+
     def __str__(self):
         return '%s' % self.name
 
@@ -145,6 +146,7 @@ class Equipment(MixinUUIDs, models.Model):
         choices=OWNER,
         default='ORG',
     )
+
     def __str__(self):
         return '%s' % self.name
 
@@ -571,7 +573,7 @@ class Role(MixinUUIDs, models.Model):
     is_template = models.BooleanField(
         null=True,
         blank=True,
-        default = False,
+        default=False,
     )
     qualifications_suitable = models.ManyToManyField(
         to='Qualification',
