@@ -1,407 +1,374 @@
-- model: georga.qualificationcategory
-  fields:
-    id: 0
-    code: LANGUAGE
-    name: Language
-- model: georga.qualificationcategory
-  fields:
-    id: 1
-    code: LICENSE
-    name: License
-- model: georga.qualificationcategory
-  fields:
-    id: 2
-    code: ADMINISTRATIVE
-    name: Administrative
-- model: georga.qualificationcategory
-  fields:
-    id: 3
-    code: MEDICAL
-    name: Medical
-- model: georga.qualificationcategory
-  fields:
-    id: 4
-    code: TECHNICAL
-    name: Technical
-- model: georga.qualificationcategory
-  fields:
-    id: 5
-    code: GENERAL
-    name: General
-- model: georga.qualificationcategory
-  fields:
-    id: 6
-    code: ADULT
-    name: Adult
-    selection_type: SINGLESELECT
-
-- model: georga.qualification
+- model: georga.personproperty
   fields:
     id: 0
     name: English
     # Englisch
-    qualification_category: 0
-- model: georga.qualification
+    group: 0
+- model: georga.personproperty
   fields:
     id: 1
     name: French
     # Französisch
-    qualification_category: 0
-- model: georga.qualification
+    group: 0
+- model: georga.personproperty
   fields:
     id: 2
     name: Spanish
     # Spanisch
-    qualification_category: 0
-- model: georga.qualification
+    necessity: MANDATORY
+    group: 0
+- model: georga.personproperty
   fields:
     id: 3
     name: Arabian
     # Arabisch
-    qualification_category: 0
-- model: georga.qualification
+    necessity: MANDATORY
+    group: 0
+- model: georga.personproperty
   fields:
     id: 4
     name: Turkish
     # Türkisch
-    qualification_category: 0
-- model: georga.qualification
+    group: 0
+- model: georga.personproperty
   fields:
     id: 5
     name: Polnish
     # Polnisch
-    qualification_category: 0
-- model: georga.qualification
+    group: 0
+- model: georga.personproperty
   fields:
     id: 6
     name: Kurdish
     # Kurdisch
-    qualification_category: 0
-- model: georga.qualification
+    group: 0
+- model: georga.personproperty
   fields:
     id: 7
     name: Italian
     # Italienisch
-    qualification_category: 0
-- model: georga.qualification
+    group: 0
+- model: georga.personproperty
   fields:
     id: 8
     name: Greek
     # Griechisch
-    qualification_category: 0
-- model: georga.qualification
+    group: 0
+- model: georga.personproperty
   fields:
     id: 9
     name: Dutch
     # Niederländisch
-    qualification_category: 0
-- model: georga.qualification
+    group: 0
+- model: georga.personproperty
   fields:
     id: 10
     name: Serbian
     # Serbisch
-    qualification_category: 0
-- model: georga.qualification
+    group: 0
+- model: georga.personproperty
   fields:
     id: 11
     name: Croatian
     # Kroatisch
-    qualification_category: 0
-- model: georga.qualification
+    group: 0
+- model: georga.personproperty
   fields:
     id: 11
     name: Ukrainian
     # Ukrainisch
-    qualification_category: 0
-- model: georga.qualification
+    group: 0
+- model: georga.personproperty
   fields:
     id: 12
     name: Russian
     # Russisch
-    qualification_category: 0
-- model: georga.qualification
+    group: 0
+- model: georga.personproperty
   fields:
     id: 13
     name: Romanian
     # Rumänisch
-    qualification_category: 0
-- model: georga.qualification
+    group: 0
+- model: georga.personproperty
   fields:
     id: 14
     name: Hungarian
     # Ungarisch
-    qualification_category: 0
-- model: georga.qualification
+    group: 0
+- model: georga.personproperty
   fields:
     id: 15
     name: Slovakian
     # Slowakisch
-    qualification_category: 0
-- model: georga.qualification
+    group: 0
+- model: georga.personproperty
   fields:
     id: 16
     name: Czech
     # Tschechisch
-    qualification_category: 0
-- model: georga.qualification
+    group: 0
+- model: georga.personproperty
   fields:
     id: 17
     name: Lithuanian
     # Litauisch
-    qualification_category: 0
-- model: georga.qualification
+    group: 0
+- model: georga.personproperty
   fields:
     id: 18
     name: Latvian
     # Lettisch
-    qualification_category: 0
-- model: georga.qualification
+    group: 0
+- model: georga.personproperty
   fields:
     id: 19
     name: Estonian
     # Estnisch
-    qualification_category: 0
-- model: georga.qualification
+    group: 0
+- model: georga.personproperty
   fields:
     id: 20
     name: German drivers license class B
     # Führerschein B
-    qualification_category: 1
-- model: georga.qualification
+    group: 1
+- model: georga.personproperty
   fields:
     id: 21
     name: German drivers license class BE
     # Führerschein BE
-    qualification_category: 1
-- model: georga.qualification
+    group: 1
+- model: georga.personproperty
   fields:
     id: 22
     name: German drivers license class E
     # Führerschein E
-    qualification_category: 1
-- model: georga.qualification
+    group: 1
+- model: georga.personproperty
   fields:
     id: 23
     name: German drivers license class D1
     # Führerschein D1
-    qualification_category: 1
-- model: georga.qualification
+    group: 1
+- model: georga.personproperty
   fields:
     id: 24
     name: German drivers license class D1E
     # Führerschein D1E
-    qualification_category: 1
-- model: georga.qualification
+    group: 1
+- model: georga.personproperty
   fields:
     id: 25
     name: German drivers license class D
     # Führerschein D
-    qualification_category: 1
-- model: georga.qualification
+    group: 1
+- model: georga.personproperty
   fields:
     id: 26
     name: German drivers license class DE
     # Führerschein DE
-    qualification_category: 1
-- model: georga.qualification
+    group: 1
+- model: georga.personproperty
   fields:
     id: 27
     name: German drivers license class C1
     # Führerschein C1
-    qualification_category: 1
-- model: georga.qualification
+    group: 1
+- model: georga.personproperty
   fields:
     id: 28
     name: German drivers license class C1E
     # Führerschein C1E
-    qualification_category: 1
-- model: georga.qualification
+    group: 1
+- model: georga.personproperty
   fields:
     id: 29
     name: German drivers license class CE
     # Führerschein CE
-    qualification_category: 1
-- model: georga.qualification
+    group: 1
+- model: georga.personproperty
   fields:
     id: 30
     name: German drivers license class C
     # Führerschein C
-    qualification_category: 1
-- model: georga.qualification
+    group: 1
+- model: georga.personproperty
   fields:
     id: 31
     name: German drivers license class A2
     # Führerschein A2
-    qualification_category: 1
-- model: georga.qualification
+    group: 1
+- model: georga.personproperty
   fields:
     id: 32
     name: German drivers license class A1
     # Führerschein A1
-    qualification_category: 1
-- model: georga.qualification
+    group: 1
+- model: georga.personproperty
   fields:
     id: 33
     name: Operating license for marine vessels
     # Führerschein Boot
-    qualification_category: 1
-- model: georga.qualification
+    group: 1
+- model: georga.personproperty
   fields:
     id: 34
     name: German drivers license class A
     # Führerschein A
-    qualification_category: 1
-- model: georga.qualification
+    group: 1
+- model: georga.personproperty
   fields:
     id: 35
     name: German drivers license class AM
     # Führerschein AM
-    qualification_category: 1
-- model: georga.qualification
+    group: 1
+- model: georga.personproperty
   fields:
     id: 36
     name: German drivers license class L
     # Führerschein L
-    qualification_category: 1
-- model: georga.qualification
+    group: 1
+- model: georga.personproperty
   fields:
     id: 37
     name: German drivers license class T
     # Führerschein T
-    qualification_category: 1
-- model: georga.qualification
+    group: 1
+- model: georga.personproperty
   fields:
     id: 38
     name: Clerk
     # Bürokaufmann/-frau
-    qualification_category: 2
-- model: georga.qualification
+    group: 2
+- model: georga.personproperty
   fields:
     id: 39
     name: Human resouces
     # Personalverwaltung
-    qualification_category: 2
-- model: georga.qualification
+    group: 2
+- model: georga.personproperty
   fields:
     id: 40
     name: Accounting clerk
     # Buchhalter/-in
-    qualification_category: 2
-- model: georga.qualification
+    group: 2
+- model: georga.personproperty
   fields:
     id: 41
     name: Emergency medical services
     # Rettungsdienst-Qualifikation (unten eintragen)
-    qualification_category: 3
-- model: georga.qualification
+    group: 3
+- model: georga.personproperty
   fields:
     id: 42
     name: Nurse (exam)
     # Examinierte Pflegekraft
-    qualification_category: 3
-# - model: georga.qualification               dupe? see nurse...
+    group: 3
+# - model: georga.personproperty               dupe? see nurse...
 #   fields:
 #     name: Gesundheits- und Krankenpfleger/in
-#     qualification_category: 3
-- model: georga.qualification
+#     group: 3
+- model: georga.personproperty
   fields:
     id: 43
     name: Medical technical assistant
     # Medizinisch Technische Assistenz
-    qualification_category: 3
-- model: georga.qualification
+    group: 3
+- model: georga.personproperty
   fields:
     id: 44
     name: Physician
     # Mediziner/in
-    qualification_category: 3
-- model: georga.qualification
+    group: 3
+- model: georga.personproperty
   fields:
     id: 45
     name: Information technology
     # Informationstechnik
-    qualification_category: 4
-- model: georga.qualification
+    group: 4
+- model: georga.personproperty
   fields:
     id: 46
     name: Communication technology
     # Kommunikationstechnik
-    qualification_category: 4
-- model: georga.qualification
+    group: 4
+- model: georga.personproperty
   fields:
     id: 47
     name: Small amateur radio licence (German)
     # Kleine Amateurfunklizenz
-    qualification_category: 4
-- model: georga.qualification
+    group: 4
+- model: georga.personproperty
   fields:
     id: 48
     name: Big amateur radio licence (German)
     # Große Amateurfunklizenz
-    qualification_category: 4
-- model: georga.qualification
+    group: 4
+- model: georga.personproperty
   fields:
     id: 49
     name: Amateur radio licence class E (German)
     # Amateurfunkzeugnis der Klasse E
-    qualification_category: 4
-- model: georga.qualification
+    necessity: MANDATORY
+    group: 4
+- model: georga.personproperty
   fields:
     id: 50
     name: Amateur radio licence class A (German)
     # Amateurfunkzeugnis der Klasse A
-    qualification_category: 4
-- model: georga.qualification
+    group: 4
+- model: georga.personproperty
   fields:
     id: 51
     name: Own amateur radio station
     # Eigene Amateurfunkstation
-    qualification_category: 4
+    group: 4
 
 # former 'georga.helpoperation' model
-- model: georga.qualification
+- model: georga.personproperty
   fields:
     id: 52
     name: Shopping
     # Einkaufen
-    qualification_category: 5
-- model: georga.qualification
+    group: 5
+- model: georga.personproperty
   fields:
     id: 53
     name: Household
     # Haushalt
-    qualification_category: 5
-- model: georga.qualification
+    group: 5
+- model: georga.personproperty
   fields:
     id: 54
     name: Craft activity
     # Handwerkliche Tätigkeit
-    qualification_category: 5
-- model: georga.qualification
+    necessity: MANDATORY
+    group: 5
+- model: georga.personproperty
   fields:
     id: 55
     name: Transport service - own car
     # Fahrdienst - eigener PKW
-    qualification_category: 5
-- model: georga.qualification
+    group: 5
+- model: georga.personproperty
   fields:
     id: 56
     name: Transport service - own van
     # Fahrdienst - eigener Transporter
-    qualification_category: 5
-- model: georga.qualification
+    group: 5
+- model: georga.personproperty
   fields:
     id: 57
     name: Transport service - provided vehicle
     # Fahrdienst - gestelltes Fahrzeug
-    qualification_category: 5
-- model: georga.qualification
+    group: 5
+- model: georga.personproperty
   fields:
     id: 58
     name: yes
-    qualification_category: 6
-- model: georga.qualification
+    group: 6
+- model: georga.personproperty
   fields:
     id: 59
     name: no
-    qualification_category: 6
+    group: 6

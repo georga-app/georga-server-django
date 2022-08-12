@@ -1,8 +1,0 @@
-- model: georga.restriction
-  fields:
-    name: no heavy lifting
-    # kein schweres Heben
-- model: georga.restriction
-  fields:
-    name: no light lifting
-    # kein leichtes Heben

@@ -1,0 +1,36 @@
+- model: georga.personpropertygroup
+  fields:
+    id: 0
+    codename: LANGUAGE
+    name: Language
+- model: georga.personpropertygroup
+  fields:
+    id: 1
+    codename: LICENSE
+    name: License
+- model: georga.personpropertygroup
+  fields:
+    id: 2
+    codename: ADMINISTRATIVE
+    name: Administrative
+- model: georga.personpropertygroup
+  fields:
+    id: 3
+    codename: MEDICAL
+    name: Medical
+- model: georga.personpropertygroup
+  fields:
+    id: 4
+    codename: TECHNICAL
+    name: Technical
+- model: georga.personpropertygroup
+  fields:
+    id: 5
+    codename: GENERAL
+    name: General
+- model: georga.personpropertygroup
+  fields:
+    id: 6
+    codename: ADULT
+    name: Adult
+    selection_type: SINGLESELECT

@@ -2,25 +2,25 @@
   pk: 0
   fields:
     title: "Emergency physician"
-    qualifications_suitable: [41, 44]
+    person_properties: [41, 44]
     amount: 4
 - model: georga.role
   pk: 1
   fields:
     title: "Rescue worker"
-    qualifications_suitable: [43]
+    person_properties: [43]
     amount: 3
 - model: georga.role
   pk: 2
   fields:
     title: "Radio operator"
-    qualifications_suitable: [47, 48, 49, 50, 51]
+    person_properties: [47, 48, 49, 50, 51]
     amount: 1
 - model: georga.role
   pk: 4
   fields:
     title: "Staff administration"
-    qualifications_suitable: [38, 39, 40]
+    person_properties: [38, 39, 40]
     amount: 2
 - model: georga.role
   pk: 5
