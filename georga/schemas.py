@@ -28,24 +28,25 @@ from graphql_relay import from_global_id
 from .auth import jwt_decode
 from .email import Email
 from .models import (
-    Operation,
+    ACL,
     Device,
     Equipment,
     Location,
     LocationCategory,
-    NotificationCategory,
     Notification,
+    NotificationCategory,
+    Operation,
     Organization,
     Person,
-    Project,
     PersonProperty,
     PersonPropertyGroup,
+    Project,
     Resource,
     Role,
     RoleSpecification,
+    Shift,
     Task,
     TaskField,
-    Shift
 )
 
 channel_layer = get_channel_layer()
@@ -318,67 +319,68 @@ LOOKUPS_DATETIME = [
 
 # Models ======================================================================
 
-# Operation ----------------------------------------------------------------------
+# ACL ----------------------------------------------------------------------
 
 # fields
-operation_ro_fields = [
+acl_ro_fields = [
     'uuid',
+    'content_type',
+    'object_id',
 ]
-operation_wo_fields = [
+acl_wo_fields = [
 ]
-operation_rw_fields = [
-    'project',
-    'name',
-    'is_active',
+acl_rw_fields = [
+    'person',
+    'acl_string',
 ]
-operation_filter_fields = {
+acl_filter_fields = {
     'uuid': LOOKUPS_ID,
 }
 
 
 # types
-class OperationType(UUIDDjangoObjectType):
+class ACLType(UUIDDjangoObjectType):
     class Meta:
-        model = Operation
-        fields = operation_ro_fields + operation_rw_fields
-        filter_fields = operation_filter_fields
+        model = ACL
+        fields = acl_ro_fields + acl_rw_fields
+        filter_fields = acl_filter_fields
         permissions = [login_required]
 
 
 # forms
 
-class OperationModelForm(UUIDModelForm):
+class ACLModelForm(UUIDModelForm):
     class Meta:
-        model = Operation
-        fields = operation_wo_fields + operation_rw_fields
+        model = ACL
+        fields = acl_wo_fields + acl_rw_fields
 
 
 # cud mutations
-class CreateOperationMutation(UUIDDjangoModelFormMutation):
+class CreateACLMutation(UUIDDjangoModelFormMutation):
     class Meta:
-        form_class = OperationModelForm
+        form_class = ACLModelForm
         exclude_fields = ['id']
         permissions = [staff_member_required]
 
 
-class UpdateOperationMutation(UUIDDjangoModelFormMutation):
+class UpdateACLMutation(UUIDDjangoModelFormMutation):
     class Meta:
-        form_class = OperationModelForm
+        form_class = ACLModelForm
         required_fields = ['id']
         permissions = [login_required]
 
 
-class DeleteOperationMutation(UUIDDjangoModelFormMutation):
+class DeleteACLMutation(UUIDDjangoModelFormMutation):
     class Meta:
-        form_class = OperationModelForm
+        form_class = ACLModelForm
         only_fields = ['id']
         permissions = [staff_member_required]
 
     @classmethod
     def perform_mutate(cls, form, info):
-        operation = form.instance
-        operation.delete()
-        return cls(operation=operation, errors=[])
+        acl = form.instance
+        acl.delete()
+        return cls(acl=acl, errors=[])
 
 
 # Device ----------------------------------------------------------------------
@@ -391,6 +393,7 @@ device_ro_fields = [
 device_wo_fields = [
 ]
 device_rw_fields = [
+    'organization',
     'device_string',
     'os_version',
     'app_version',
@@ -456,6 +459,7 @@ equipment_ro_fields = [
 equipment_wo_fields = []
 equipment_rw_fields = [
     'name',
+    'organization',
 ]
 equipment_filter_fields = {
     'uuid': LOOKUPS_ID,
@@ -485,6 +489,7 @@ location_ro_fields = [
 ]
 location_wo_fields = []
 location_rw_fields = [
+    'organization',
     'address',
     'location_category',
 ]
@@ -519,6 +524,7 @@ location_category_wo_fields = [
 ]
 location_category_rw_fields = [
     'name',
+    'organization',
 ]
 location_category_filter_fields = {
     'uuid': LOOKUPS_ID,
@@ -579,6 +585,7 @@ notification_ro_fields = [
 notification_wo_fields = [
 ]
 notification_rw_fields = [
+    'organization',
     'title',
     'contents',
     'notification_category',
@@ -644,6 +651,7 @@ notification_category_wo_fields = [
 ]
 notification_category_rw_fields = [
     'name',
+    'organization',
 ]
 notification_category_filter_fields = {
     'uuid': LOOKUPS_ID,
@@ -693,6 +701,69 @@ class DeleteNotificationCategoryMutation(UUIDDjangoModelFormMutation):
         notification_category = form.instance
         notification_category.delete()
         return cls(notification_category=notification_category, errors=[])
+
+
+# Operation ----------------------------------------------------------------------
+
+# fields
+operation_ro_fields = [
+    'uuid',
+]
+operation_wo_fields = [
+]
+operation_rw_fields = [
+    'project',
+    'name',
+    'is_active',
+]
+operation_filter_fields = {
+    'uuid': LOOKUPS_ID,
+}
+
+
+# types
+class OperationType(UUIDDjangoObjectType):
+    class Meta:
+        model = Operation
+        fields = operation_ro_fields + operation_rw_fields
+        filter_fields = operation_filter_fields
+        permissions = [login_required]
+
+
+# forms
+
+class OperationModelForm(UUIDModelForm):
+    class Meta:
+        model = Operation
+        fields = operation_wo_fields + operation_rw_fields
+
+
+# cud mutations
+class CreateOperationMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = OperationModelForm
+        exclude_fields = ['id']
+        permissions = [staff_member_required]
+
+
+class UpdateOperationMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = OperationModelForm
+        required_fields = ['id']
+        permissions = [login_required]
+
+
+class DeleteOperationMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = OperationModelForm
+        only_fields = ['id']
+        permissions = [staff_member_required]
+
+    @classmethod
+    def perform_mutate(cls, form, info):
+        operation = form.instance
+        operation.delete()
+        return cls(operation=operation, errors=[])
 
 
 # Organization ----------------------------------------------------------------------
@@ -1007,69 +1078,6 @@ class ResetPasswordMutation(UUIDDjangoModelFormMutation):
         return cls(id=person.gid, errors=[])
 
 
-# Project ----------------------------------------------------------------------
-
-# fields
-project_ro_fields = [
-    'uuid',
-]
-project_wo_fields = [
-]
-project_rw_fields = [
-    'name',
-    'organization',
-]
-project_filter_fields = {
-    'id': LOOKUPS_ID,
-    'uuid': LOOKUPS_ID
-}
-
-
-# types
-class ProjectType(UUIDDjangoObjectType):
-    class Meta:
-        model = Project
-        fields = project_ro_fields + project_rw_fields
-        filter_fields = project_filter_fields
-        permissions = [login_required]
-
-
-# forms
-
-class ProjectModelForm(UUIDModelForm):
-    class Meta:
-        model = Project
-        fields = project_wo_fields + project_rw_fields
-
-
-# cud mutations
-class CreateProjectMutation(UUIDDjangoModelFormMutation):
-    class Meta:
-        form_class = ProjectModelForm
-        exclude_fields = ['id']
-        permissions = [staff_member_required]
-
-
-class UpdateProjectMutation(UUIDDjangoModelFormMutation):
-    class Meta:
-        form_class = ProjectModelForm
-        required_fields = ['id']
-        permissions = [login_required]
-
-
-class DeleteProjectMutation(UUIDDjangoModelFormMutation):
-    class Meta:
-        form_class = ProjectModelForm
-        only_fields = ['id']
-        permissions = [staff_member_required]
-
-    @classmethod
-    def perform_mutate(cls, form, info):
-        project = form.instance
-        project.delete()
-        return cls(project=project, errors=[])
-
-
 # PersonProperty -------------------------------------------------------
 
 # fields
@@ -1079,6 +1087,7 @@ person_property_ro_fields = [
 ]
 person_property_wo_fields = []
 person_property_rw_fields = [
+    'organization',
     'name',
     'group',
     'necessity',
@@ -1148,6 +1157,7 @@ person_property_group_wo_fields = [
 ]
 person_property_group_rw_fields = [
     'name',
+    'organization',
     'codename',
     'selection_type',
 ]
@@ -1203,6 +1213,69 @@ class DeletePersonPropertyGroupMutation(UUIDDjangoModelFormMutation):
         return cls(person_property_group=person_property_group, errors=[])
 
 
+# Project ----------------------------------------------------------------------
+
+# fields
+project_ro_fields = [
+    'uuid',
+]
+project_wo_fields = [
+]
+project_rw_fields = [
+    'name',
+    'organization',
+]
+project_filter_fields = {
+    'id': LOOKUPS_ID,
+    'uuid': LOOKUPS_ID
+}
+
+
+# types
+class ProjectType(UUIDDjangoObjectType):
+    class Meta:
+        model = Project
+        fields = project_ro_fields + project_rw_fields
+        filter_fields = project_filter_fields
+        permissions = [login_required]
+
+
+# forms
+
+class ProjectModelForm(UUIDModelForm):
+    class Meta:
+        model = Project
+        fields = project_wo_fields + project_rw_fields
+
+
+# cud mutations
+class CreateProjectMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = ProjectModelForm
+        exclude_fields = ['id']
+        permissions = [staff_member_required]
+
+
+class UpdateProjectMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = ProjectModelForm
+        required_fields = ['id']
+        permissions = [login_required]
+
+
+class DeleteProjectMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = ProjectModelForm
+        only_fields = ['id']
+        permissions = [staff_member_required]
+
+    @classmethod
+    def perform_mutate(cls, form, info):
+        project = form.instance
+        project.delete()
+        return cls(project=project, errors=[])
+
+
 # Resource ----------------------------------------------------------------------
 
 # fields
@@ -1215,6 +1288,8 @@ resource_rw_fields = [
     'description',
     'personal_hint',
     'equipment_needed',
+    'shift',
+    'amount',
 ]
 resource_filter_fields = {
     'id': LOOKUPS_ID,
@@ -1276,6 +1351,7 @@ role_ro_fields = [
 role_wo_fields = [
 ]
 role_rw_fields = [
+    'title',
     'description',
     'is_template',
     'amount',
@@ -1340,6 +1416,7 @@ role_specification_ro_fields = [
 role_specification_wo_fields = [
 ]
 role_specification_rw_fields = [
+    'role',
     'person_properties',
 ]
 role_specification_filter_fields = {
@@ -1392,6 +1469,72 @@ class DeleteRoleSpecificationMutation(UUIDDjangoModelFormMutation):
         return cls(role_specification=role_specification, errors=[])
 
 
+# Shift ----------------------------------------------------------------------
+
+# fields
+shift_ro_fields = [
+    'uuid',
+]
+shift_wo_fields = [
+]
+shift_rw_fields = [
+    'task',
+    'start_time',
+    'end_time',
+    'enrollment_deadline',
+    'state',
+    'locations',
+]
+shift_filter_fields = {
+    'uuid': LOOKUPS_ID,
+}
+
+
+# types
+class ShiftType(UUIDDjangoObjectType):
+    class Meta:
+        model = Shift
+        fields = shift_ro_fields + shift_rw_fields
+        filter_fields = shift_filter_fields
+        permissions = [login_required]
+
+
+# forms
+
+class ShiftModelForm(UUIDModelForm):
+    class Meta:
+        model = Shift
+        fields = shift_wo_fields + shift_rw_fields
+
+
+# cud mutations
+class CreateShiftMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = ShiftModelForm
+        exclude_fields = ['id']
+        permissions = [staff_member_required]
+
+
+class UpdateShiftMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = ShiftModelForm
+        required_fields = ['id']
+        permissions = [login_required]
+
+
+class DeleteShiftMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = ShiftModelForm
+        only_fields = ['id']
+        permissions = [staff_member_required]
+
+    @classmethod
+    def perform_mutate(cls, form, info):
+        shift = form.instance
+        shift.delete()
+        return cls(shift=shift, errors=[])
+
+
 # Task ----------------------------------------------------------------------
 
 # fields
@@ -1408,7 +1551,9 @@ task_rw_fields = [
     'resources_desirable',
     'persons_registered',
     'persons_participated',
+    'locations',
     'title',
+    'description',
     'postal_address_name',
     'postal_address_street',
     'postal_address_zip_code',
@@ -1479,6 +1624,7 @@ task_field_wo_fields = [
 task_field_rw_fields = [
     'name',
     'description',
+    'organization',
 ]
 task_field_filter_fields = {
     'id': LOOKUPS_ID,
@@ -1529,72 +1675,6 @@ class DeleteTaskFieldMutation(UUIDDjangoModelFormMutation):
         task_field = form.instance
         task_field.delete()
         return cls(task_field=task_field, errors=[])
-
-
-# Shift ----------------------------------------------------------------------
-
-# fields
-shift_ro_fields = [
-    'uuid',
-]
-shift_wo_fields = [
-]
-shift_rw_fields = [
-    'start_time',
-    'end_time',
-    'enrollment_deadline',
-    'state',
-    'locations',
-    'roles',
-]
-shift_filter_fields = {
-    'uuid': LOOKUPS_ID,
-}
-
-
-# types
-class ShiftType(UUIDDjangoObjectType):
-    class Meta:
-        model = Shift
-        fields = shift_ro_fields + shift_rw_fields
-        filter_fields = shift_filter_fields
-        permissions = [login_required]
-
-
-# forms
-
-class ShiftModelForm(UUIDModelForm):
-    class Meta:
-        model = Shift
-        fields = shift_wo_fields + shift_rw_fields
-
-
-# cud mutations
-class CreateShiftMutation(UUIDDjangoModelFormMutation):
-    class Meta:
-        form_class = ShiftModelForm
-        exclude_fields = ['id']
-        permissions = [staff_member_required]
-
-
-class UpdateShiftMutation(UUIDDjangoModelFormMutation):
-    class Meta:
-        form_class = ShiftModelForm
-        required_fields = ['id']
-        permissions = [login_required]
-
-
-class DeleteShiftMutation(UUIDDjangoModelFormMutation):
-    class Meta:
-        form_class = ShiftModelForm
-        only_fields = ['id']
-        permissions = [staff_member_required]
-
-    @classmethod
-    def perform_mutate(cls, form, info):
-        shift = form.instance
-        shift.delete()
-        return cls(shift=shift, errors=[])
 
 
 # Subscriptions ===============================================================

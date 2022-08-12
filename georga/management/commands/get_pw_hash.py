@@ -1,4 +1,3 @@
-import logging
 from django.core.management.base import BaseCommand
 from django.contrib.auth.hashers import make_password
 
@@ -17,4 +16,4 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
-        print(make_password(options['passwd']))	
+        print(make_password(options['passwd']))
