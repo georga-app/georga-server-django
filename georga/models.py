@@ -3,6 +3,8 @@ import functools
 import uuid
 
 from django.contrib.auth.models import AbstractUser
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext as _
@@ -20,6 +22,7 @@ class MixinUUIDs(models.Model):
     uuid = models.UUIDField(
         default=uuid.uuid4,
         editable=False,
+        unique=True,
     )
 
     # global relay id
@@ -29,6 +32,44 @@ class MixinUUIDs(models.Model):
 
 
 #--- CLASSES
+
+class ACL(MixinUUIDs, models.Model):
+    content_type = models.ForeignKey(
+        ContentType,
+        on_delete=models.CASCADE,
+    )
+    object_id = models.UUIDField(
+        default=uuid.uuid4,
+        editable=False,
+    )
+    access_object = GenericForeignKey(
+        'content_type',
+        'object_id',
+    )
+
+    person = models.ForeignKey(
+        to='Person',
+        to_field='uuid',
+        on_delete=models.CASCADE,
+        null=False,
+        blank=False,
+        default=uuid.uuid4,
+    )
+
+    ACL_CODENAMES = [
+        ('ADMIN', 'admin'),
+    ]
+    acl_string = models.CharField(
+        max_length=5,
+        choices=ACL_CODENAMES,
+        default='ADMIN',
+    )
+
+    class Meta:
+        indexes = [
+            models.Index(fields=["content_type", "object_id"]),
+        ]
+
 
 class Deployment(MixinUUIDs, models.Model):
     project = models.ForeignKey(

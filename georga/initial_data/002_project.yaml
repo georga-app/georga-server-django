@@ -1,6 +1,7 @@
 - model: georga.project
   pk: 0
   fields:
+    uuid: "7acf9106-c8d8-4de4-941d-baa88e258b28"
     name: "Betreuungsdienst"
     organization: 0
 - model: georga.project

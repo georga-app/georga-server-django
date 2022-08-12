@@ -28,6 +28,7 @@
 # Password: simpleuserPassword
 - model: georga.person
   fields:
+    uuid: "492902cf-621a-495a-ac55-319644c1174a"
     password: pbkdf2_sha256$260000$fFZRD2Y4ayfiE5nJ6aV0re$tenrcqIOtu1UL/nj+u6hEz6dpzvsF2XU5jclREbWtNw=
     last_login: null
     is_superuser: false
