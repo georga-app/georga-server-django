@@ -1,0 +1,40 @@
+- model: georga.equipmentprovided
+  pk: 0
+  fields:
+    name: "FFP2-Masken"
+- model: georga.equipmentprovided
+  pk: 1
+  fields:
+    name: "Schaufeln"
+- model: georga.equipmentprovided
+  pk: 2
+  fields:
+    name: "Latexhandschuhe"
+- model: georga.equipmentprovided
+  pk: 3
+  fields:
+    name: "Arbeitshandschuhe"
+- model: georga.equipmentprovided
+  pk: 4
+  fields:
+    name: "S3-Schuhe"
+- model: georga.equipmentself
+  pk: 0
+  fields:
+    name: "S3-Schuhe"
+- model: georga.equipmentself
+  pk: 1
+  fields:
+    name: "Arbeitshandschuhe"
+- model: georga.equipmentself
+  pk: 2
+  fields:
+    name: "Latexhandschuhe"
+- model: georga.equipmentself
+  pk: 3
+  fields:
+    name: "Tauchpumpe"
+- model: georga.equipmentself
+  pk: 4
+  fields:
+    name: "Satellitentelefon"

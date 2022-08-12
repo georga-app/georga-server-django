@@ -1,0 +1,41 @@
+- model: georga.notificationcategory
+  pk: 0
+  fields:
+    name: "Neue Einsatzanfrage für angemeldete Themen"
+- model: georga.notificationcategory
+  pk: 1
+  fields:
+    name: "Neue Einsatzanfrage bei nicht angemeldeten Themen"
+- model: georga.notificationcategory
+  pk: 2
+  fields:
+    name: "Akute Warnmeldung im näheren Umfeld"
+- model: georga.notificationcategory
+  pk: 3
+  fields:
+    name: "Allgemeine News der angemeldeten Organisation"
+- model: georga.notificationcategory
+  pk: 4
+  fields:
+    name: "Wichtige Nachricht/Aktualisierung zum aktuell laufenden Einsatz"
+- model: georga.notification
+  pk: 0
+  fields:
+    title: "Dolmetschertätigkeit in der Unterkunft Hofstraße"
+    contents: "<h1>Tätigkeit:</h1><p>In der Notunkterkunft wird Hilfe für die Kommunikation zwischen Bewohnern und Betreuuern benötigt. Bitte <b>nur mit 2G-Nachweis</b><h1>Mitbringen:</h1><ul><li>Außentaugliche Kleidung für Tätigkeiten im Hof</ul>"
+    priority: DISTURB
+    notification_category: 0
+- model: georga.notification
+  pk: 1
+  fields:
+    title: "Großbrand im Stahlwerk"
+    contents: "Die Bevölkerung in der näheren Umgebung von 2km Umkreis wird wegen der Rauchentwicklung gebeten, Türen und Fenster geschlossen zu halten und sich nicht im Freien aufzuhalten."
+    priority: DISTURB
+    notification_category: 2
+- model: georga.notification
+  pk: 2
+  fields:
+    title: "Spendenbereitschaft überwältigend"
+    contents: "<p>Für die Notunterkünfte für Geflüchtet ist die Spendenbereitschaft in der Bevölkerung weiterhin überwältigend. Aktuell wird darum gebeten, dass vorerst keine neuen Küchenutensilien gespendet werden, da diese nun erst einmal sortiert und zugeteilt werden müssen und diese höchst wahrscheinlich für alle Unterkünfte ausreichen.</p>"
+    priority: ONNEWS
+    notification_category: 4

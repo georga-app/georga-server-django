@@ -1,5 +1,6 @@
-import uuid
+from datetime import datetime
 import functools
+import uuid
 
 from django.contrib.auth.models import AbstractUser
 from django.db import models
@@ -8,6 +9,8 @@ from django.utils.translation import gettext as _
 from phonenumber_field.modelfields import PhoneNumberField
 from graphql_relay import to_global_id
 
+
+#--- MIXINS
 
 class MixinUUIDs(models.Model):
     """Public facing UUIDs."""
@@ -23,6 +26,173 @@ class MixinUUIDs(models.Model):
     @functools.cached_property
     def gid(self):
         return to_global_id(f"{self._meta.object_name}Type", self.uuid)
+
+
+#--- CLASSES
+
+class Deployment(MixinUUIDs, models.Model):
+    project = models.ForeignKey(
+        to='Project',
+        on_delete=models.DO_NOTHING,
+        null=False,
+        blank=False,
+        default=0,
+    )
+    name = models.CharField(
+        max_length=100,
+        null=False,
+        blank=False,
+    )
+    is_active = models.BooleanField(
+        null=True,
+        blank=True,
+        default=True,
+    )
+    def __str__(self):
+        return '%s' % self.name
+
+    class Meta:
+        verbose_name = _("deployment")
+        verbose_name_plural = _("deployments")
+        # TODO: translate: Einsatz
+
+
+class Device(MixinUUIDs, models.Model):
+    device_string = models.CharField(
+        max_length=50,
+        null=False,
+        blank=False,
+    )
+    os_version = models.CharField(
+        max_length=35,
+        null=False,
+        blank=False,
+    )
+    app_version = models.CharField(
+        max_length=15,
+        null=False,
+        blank=False,
+    )
+    push_token = models.UUIDField(
+        default=uuid.uuid4,
+        editable=False,
+    )
+
+    def __str__(self):
+        return '%s' % self.device_string
+
+    class Meta:
+        verbose_name = _("client device")
+        verbose_name_plural = _("client devices")
+        # TODO: translation: Client-Gerät
+
+
+class Equipment(MixinUUIDs, models.Model):
+    name = models.CharField(
+        max_length=30,
+        null=False,
+        blank=False,
+        default='',
+    )
+    OWNER = [
+        ('SELF', 'person itself'),
+        ('ORG', 'provided by organisation'),
+        ('THIRDPARTY', 'other party'),
+    ]
+    owner = models.CharField(
+        max_length=10,
+        choices=OWNER,
+        default='ORG',
+    )
+    def __str__(self):
+        return '%s' % self.name
+
+    def __unicode__(self):
+        return '%s' % self.name
+
+    class Meta:
+        verbose_name = _("equipment")
+        verbose_name_plural = _("equipment")
+        # TODO: translate: Eigenes oder Material der Organisation
+
+
+class Location(MixinUUIDs, models.Model):
+    address = models.CharField(max_length=200)
+    location_category = models.ForeignKey(
+        to='LocationCategory',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+    )
+
+    class Meta:
+        verbose_name = _("location")
+        verbose_name_plural = _("locations")
+        # TODO: translate: Ort
+
+
+class LocationCategory(MixinUUIDs, models.Model):
+    name = models.CharField(
+        max_length=50,
+    )
+
+    class Meta:
+        verbose_name = _("location category")
+        verbose_name_plural = _("location categories")
+        # TODO: translate: Einsatzort-Kategorie
+        # e.g. deployment location
+
+
+class Notification(MixinUUIDs, models.Model):
+    title = models.CharField(
+        max_length=100,
+    )
+    contents = models.CharField(
+        max_length=1000,
+    )
+    notification_category = models.ForeignKey(
+        to='NotificationCategory',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+    )
+    PRIORITY = [
+        ('DISTURB', 'disturb'),
+        ('ONAPPCALL', 'on app call'),
+        ('ONNEWS', 'on reading news actively'),
+    ]
+    priority = models.CharField(
+        max_length=9,
+        choices=PRIORITY,
+        default='ONNEWS',
+    )
+
+
+class NotificationCategory(MixinUUIDs, models.Model):
+    name = models.CharField(
+        max_length=100,
+    )
+
+    class Meta:
+        verbose_name = _("notification category")
+        verbose_name_plural = _("notification categories")
+        # TODO: translate: Benachrichtigungstyp
+
+
+class Organization(MixinUUIDs, models.Model):
+    name = models.CharField(
+        max_length=50,
+        null=False,
+        blank=False,
+    )
+
+    def __str__(self):
+        return '%s' % self.name
+
+    class Meta:
+        verbose_name = _("organization")
+        verbose_name_plural = _("organizations")
+        # TODO: translation: Organisation
 
 
 class Person(MixinUUIDs, AbstractUser):
@@ -211,73 +381,6 @@ class Person(MixinUUIDs, AbstractUser):
         # TODO: translation: Registrierter Helfer
 
 
-class Device(MixinUUIDs, models.Model):
-    device_string = models.CharField(
-        max_length=50,
-        null=False,
-        blank=False,
-    )
-    os_version = models.CharField(
-        max_length=35,
-        null=False,
-        blank=False,
-    )
-    app_version = models.CharField(
-        max_length=15,
-        null=False,
-        blank=False,
-    )
-    push_token = models.UUIDField(
-        default=uuid.uuid4,
-        editable=False,
-    )
-
-    def __str__(self):
-        return '%s' % self.device_string
-
-    class Meta:
-        verbose_name = _("client device")
-        verbose_name_plural = _("client devices")
-        # TODO: translation: Client-Gerät
-
-
-class Resource(MixinUUIDs, models.Model):
-    description = models.CharField(
-        max_length=50,
-        null=False,
-        blank=False,
-    )
-    personal_hint = models.CharField(
-        max_length=50,
-        null=False,
-        blank=False,
-    )
-
-    def __str__(self):
-        return '%s' % self.description
-
-    class Meta:
-        verbose_name = _("resource")
-        verbose_name_plural = _("resources")
-        # TODO: translation: Ressource
-
-
-class Organization(MixinUUIDs, models.Model):
-    name = models.CharField(
-        max_length=50,
-        null=False,
-        blank=False,
-    )
-
-    def __str__(self):
-        return '%s' % self.name
-
-    class Meta:
-        verbose_name = _("organization")
-        verbose_name_plural = _("organizations")
-        # TODO: translation: Organisation
-
-
 class Project(MixinUUIDs, models.Model):
     organization = models.ForeignKey(
         to='Organization',
@@ -298,167 +401,6 @@ class Project(MixinUUIDs, models.Model):
         verbose_name = _("project")
         verbose_name_plural = _("projects")
         # TODO: translation: Projekt
-
-
-class Deployment(MixinUUIDs, models.Model):
-    organization = models.ForeignKey(
-        to='Organization',
-        on_delete=models.DO_NOTHING,
-        null=False,
-        blank=False,
-    )
-    name = models.CharField(
-        max_length=50,
-        null=False,
-        blank=False,
-    )
-
-    def __str__(self):
-        return '%s' % self.name
-
-    class Meta:
-        verbose_name = _("deployment")
-        verbose_name_plural = _("deployments")
-        # TODO: translate: Einsatz
-
-
-class Task(MixinUUIDs, models.Model):
-    project = models.ForeignKey(
-        to='Project',
-        on_delete=models.DO_NOTHING,
-        null=False,
-        blank=False,
-    )
-    task_category = models.ForeignKey(
-        to='TaskCategory',
-        on_delete=models.DO_NOTHING,
-        null=False,
-        blank=False,
-    )
-    roles_required = models.ManyToManyField(
-        to='Role',
-        blank=True,
-        related_name='roles_required',
-    )
-    roles_desirable = models.ManyToManyField(
-        to='Role',
-        blank=True,
-        related_name='roles_desirable',
-    )
-    resources_required = models.ManyToManyField(
-        to='Resource',
-        blank=True,
-        related_name='resources_required',
-    )
-    resources_desirable = models.ManyToManyField(
-        to='Resource',
-        blank=True,
-        related_name='resources_desirable',
-    )
-    persons_registered = models.ManyToManyField(
-        to='Person',
-        blank=True,
-        related_name='persons_registered',
-    )
-    persons_participated = models.ManyToManyField(
-        to='Person',
-        blank=True,
-        related_name='persons_participated',
-    )
-    # geolocation
-    title = models.CharField(
-        max_length=50,
-        null=False,
-        blank=False,
-    )
-    postal_address_name = models.CharField(
-        max_length=50,
-        null=True,
-        blank=True,
-    )
-    postal_address_street = models.CharField(
-        max_length=50,
-        null=True,
-        blank=True,
-    )
-    postal_address_zip_code = models.CharField(
-        max_length=50,
-        null=True,
-        blank=True,
-    )
-    postal_address_city = models.CharField(
-        max_length=50,
-        null=True,
-        blank=True,
-    )
-    postal_address_country = models.CharField(
-        max_length=50,
-        null=True,
-        blank=True,
-    )
-    start_time = models.DateTimeField()
-    end_time = models.DateTimeField()
-
-    def __str__(self):
-        return '%s' % self.title
-
-    class Meta:
-        verbose_name = _("task")
-        verbose_name_plural = _("tasks")
-        # TODO: translate: Aufgabe
-
-
-class TaskCategory(MixinUUIDs, models.Model):
-    name = models.CharField(
-        max_length=50,
-        null=False,
-        blank=False,
-    )
-    description = models.CharField(
-        max_length=50,
-        null=False,
-        blank=False,
-    )
-
-    def __str__(self):
-        return '%s' % self.name
-
-    class Meta:
-        verbose_name = _("task category")
-        verbose_name_plural = _("task categories")
-        # TODO: translate: Aufgabentyp
-
-
-class Schedule(MixinUUIDs, models.Model):
-    task = models.ForeignKey(
-        to='Task',
-        on_delete=models.CASCADE,
-        null=False,
-        blank=False,
-    )
-    start_time = models.DateTimeField()
-    end_time = models.DateTimeField()
-
-    class Meta:
-        verbose_name = _("schedule")
-        verbose_name_plural = _("schedules")
-        # TODO: translate: Schichtplan
-
-
-class Timeslot(MixinUUIDs, models.Model):
-    schedule = models.ForeignKey(
-        to='Schedule',
-        on_delete=models.CASCADE,
-        null=False,
-        blank=False,
-    )
-    start_time = models.DateTimeField()
-    end_time = models.DateTimeField()
-
-    class Meta:
-        verbose_name = _("timeslot")
-        verbose_name_plural = _("timeslots")
-        # TODO: translate: Schichtplan
 
 
 class Qualification(MixinUUIDs, models.Model):
@@ -487,6 +429,12 @@ class Qualification(MixinUUIDs, models.Model):
 
 
 class QualificationCategory(MixinUUIDs, models.Model):
+    code = models.CharField(
+        max_length=15,
+        default='',
+        verbose_name=_("qualification category"),
+    )
+
     name = models.CharField(
         max_length=50,
         null=True,
@@ -517,6 +465,32 @@ class QualificationCategory(MixinUUIDs, models.Model):
         # TODO: translate: Qualifikationstyp
 
 
+class Resource(MixinUUIDs, models.Model):
+    description = models.CharField(
+        max_length=50,
+        null=False,
+        blank=False,
+    )
+    personal_hint = models.CharField(
+        max_length=50,
+        null=False,
+        blank=False,
+    )
+    equipment_needed = models.ManyToManyField(
+        to='Equipment',
+        blank=True,
+        related_name='equipment_needed',
+    )
+
+    def __str__(self):
+        return '%s' % self.description
+
+    class Meta:
+        verbose_name = _("resource")
+        verbose_name_plural = _("resources")
+        # TODO: translation: Ressource
+
+
 class Restriction(MixinUUIDs, models.Model):
     name = models.CharField(
         max_length=50,
@@ -537,10 +511,31 @@ class Restriction(MixinUUIDs, models.Model):
 
 
 class Role(MixinUUIDs, models.Model):
-    description = models.CharField(
+    title = models.CharField(
         max_length=50,
         null=False,
         blank=False,
+        default='',
+    )
+    amount = models.IntegerField(
+        null=True,
+        blank=True,
+        verbose_name=_("Amount of people desirable with this role"),
+    )
+    description = models.CharField(
+        max_length=50,
+        null=True,
+        blank=True,
+    )
+    is_template = models.BooleanField(
+        null=True,
+        blank=True,
+        default = False,
+    )
+    qualifications_suitable = models.ManyToManyField(
+        to='Qualification',
+        blank=True,
+        related_name='qualifications_suitable',
     )
 
     def __str__(self):
@@ -552,102 +547,150 @@ class Role(MixinUUIDs, models.Model):
         # TODO: translate: Einsatzrolle
 
 
-class EquipmentProvided(MixinUUIDs, models.Model):
-    name = models.CharField(
-        max_length=30,
-        null=True,
+class Task(MixinUUIDs, models.Model):
+    deployment = models.ForeignKey(
+        to='Deployment',
+        on_delete=models.DO_NOTHING,
+        null=False,
+        blank=False,
+        default=0,
+    )
+    task_category = models.ForeignKey(
+        to='TaskCategory',
+        on_delete=models.DO_NOTHING,
+        null=False,
+        blank=False,
+    )
+    roles = models.ManyToManyField(
+        to='Role',
         blank=True,
+        related_name='task_roles',
     )
-
-    def __str__(self):
-        return '%s' % self.name
-
-    def __unicode__(self):
-        return '%s' % self.name
-
-    class Meta:
-        verbose_name = _("equipment provided by organization")
-        verbose_name_plural = _("equipments provided by organization")
-        # TODO: translate: Ausstattung durch Organisation
-
-
-class EquipmentSelf(MixinUUIDs, models.Model):
-    name = models.CharField(
-        max_length=30,
-        null=True,
+    resources_required = models.ManyToManyField(
+        to='Resource',
         blank=True,
+        related_name='resources_required',
     )
-
-    def __str__(self):
-        return '%s' % self.name
-
-    def __unicode__(self):
-        return '%s' % self.name
-
-    class Meta:
-        verbose_name = _("own equipment")
-        verbose_name_plural = _("own equipments")
-        # TODO: translate: Eigene Ausstattung
-
-
-class Location(MixinUUIDs, models.Model):
-    address = models.CharField(max_length=200)
-    location_category = models.ForeignKey(
-        to='LocationCategory',
-        on_delete=models.CASCADE,
-        null=True,
+    resources_desirable = models.ManyToManyField(
+        to='Resource',
         blank=True,
+        related_name='resources_desirable',
     )
-
-    class Meta:
-        verbose_name = _("location")
-        verbose_name_plural = _("locations")
-        # TODO: translate: Ort
-
-
-class LocationCategory(MixinUUIDs, models.Model):
-    name = models.CharField(
-        max_length=50,
+    persons_registered = models.ManyToManyField(
+        to='Person',
+        blank=True,
+        related_name='persons_registered',
     )
-
-    class Meta:
-        verbose_name = _("location category")
-        verbose_name_plural = _("location categories")
-        # TODO: translate: Einsatzort-Kategorie
-        # e.g. deployment location
-
-
-class Notification(MixinUUIDs, models.Model):
+    persons_participated = models.ManyToManyField(
+        to='Person',
+        blank=True,
+        related_name='persons_participated',
+    )
+    locations = models.ManyToManyField(
+        to='Location',
+        blank=True,
+        related_name='task_locations',
+    )
     title = models.CharField(
-        max_length=50,
+        max_length=100,
+        null=False,
+        blank=False,
     )
-    contents = models.CharField(
+    description = models.CharField(
         max_length=1000,
-    )
-    notification_category = models.ForeignKey(
-        to='NotificationCategory',
-        on_delete=models.CASCADE,
         null=True,
         blank=True,
     )
-    PRIORITY = [
-        ('DISTURB', 'disturb'),
-        ('ONAPPCALL', 'on app call'),
-        ('ONNEWS', 'on reading news actively'),
-    ]
-    priority = models.CharField(
-        max_length=9,
-        choices=PRIORITY,
-        default='ONNEWS',
+    postal_address_name = models.CharField(
+        max_length=50,
+        null=True,
+        blank=True,
+    )
+    postal_address_street = models.CharField(
+        max_length=50,
+        null=True,
+        blank=True,
+    )
+    postal_address_zip_code = models.CharField(
+        max_length=50,
+        null=True,
+        blank=True,
+    )
+    postal_address_city = models.CharField(
+        max_length=50,
+        null=True,
+        blank=True,
+    )
+    postal_address_country = models.CharField(
+        max_length=50,
+        null=True,
+        blank=True,
+    )
+    start_time = models.DateTimeField()
+    end_time = models.DateTimeField(
+        null=True,
+        blank=True,
     )
 
+    def __str__(self):
+        return '%s' % self.title
 
-class NotificationCategory(MixinUUIDs, models.Model):
+    class Meta:
+        verbose_name = _("task")
+        verbose_name_plural = _("tasks")
+        # TODO: translate: Aufgabe
+
+
+class TaskCategory(MixinUUIDs, models.Model):
     name = models.CharField(
         max_length=50,
+        null=False,
+        blank=False,
+    )
+    description = models.CharField(
+        max_length=500,
+        null=True,
+        blank=True,
+    )
+
+    def __str__(self):
+        return '%s' % self.name
+
+    class Meta:
+        verbose_name = _("task category")
+        verbose_name_plural = _("task categories")
+        # TODO: translate: Aufgabentyp
+
+
+class Timeslot(MixinUUIDs, models.Model):
+    start_time = models.DateTimeField()
+    end_time = models.DateTimeField()
+    STATES = [
+        ('DRAFT', 'draft'),
+        ('PUBLISHED', 'published'),
+        ('CANCELED', 'canceled'),
+        ('DELETED', 'deleted'),
+    ]
+    state = models.CharField(
+        max_length=9,
+        choices=STATES,
+        default='DRAFT',
+    )
+    enrollment_deadline = models.DateTimeField(
+        default=datetime.now,
+    )
+    locations = models.ManyToManyField(
+        to='Location',
+        blank=False,
+        related_name='timeslot_locations',
+    )
+    roles = models.ManyToManyField(
+        to='Role',
+        blank=False,
+        related_name='timeslot_roles',
     )
 
     class Meta:
-        verbose_name = _("notification category")
-        verbose_name_plural = _("notification categories")
-        # TODO: translate: Benachrichtigungstyp
+        verbose_name = _("timeslot")
+        verbose_name_plural = _("timeslots")
+        # TODO: translate: Schichtplan
