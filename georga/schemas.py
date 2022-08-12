@@ -1,6 +1,9 @@
-from datetime import datetime
+import asyncio
 
+import graphene
 import graphql_jwt
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
 from django.contrib.auth.password_validation import validate_password
 # from django.core.exceptions import ValidationError
 from django.db.models import ManyToManyField, ManyToManyRel, ManyToOneRel
@@ -9,7 +12,7 @@ from django.forms import (
     IntegerField, CharField, ChoiceField
 )
 from django.forms.models import model_to_dict
-from graphene import Schema, ObjectType, List, ID, String, NonNull, Mutation as GrapheneMutation
+from graphene import Schema, ObjectType, List, ID, String, NonNull
 from graphene.relay import Node
 from graphene.types.dynamic import Dynamic
 from graphene_django import DjangoObjectType
@@ -43,6 +46,8 @@ from .models import (
     TaskCategory,
     Timeslot
 )
+
+channel_layer = get_channel_layer()
 
 
 # Subclasses ==================================================================
@@ -388,7 +393,6 @@ device_rw_fields = [
     'device_string',
     'os_version',
     'app_version',
-
 
 ]
 device_filter_fields = {
@@ -1567,46 +1571,8 @@ class DeleteTimeslotMutation(UUIDDjangoModelFormMutation):
 
 
 # Subscriptions ===============================================================
-"""
-class TestSubscription(GQLSubscription):
-    # Simple GraphQL subscription.
 
-    # Leave only latest 64 messages in the server queue.
-    notification_queue_limit = 64
-
-    # Subscription payload.
-    message = String()
-    time = String()
-
-    class Arguments:
-       #That is how subscription arguments are defined.
-        arg1 = String()
-        arg2 = String()
-
-    @staticmethod
-    def subscribe(root, info, arg1, arg2):
-        # Called when user subscribes.
-
-        # Return the list of subscription group names.
-        return ["TestSubscriptionEvents"]
-
-    @staticmethod
-    def publish(payload, info, arg1, arg2):
-        # Called to notify the client.
-
-        # Here `payload` contains the `payload` from the `broadcast()`
-        # invocation (see below). You can return `MySubscription.SKIP`
-        # if you wish to suppress the notification to a particular
-        # client. For example, this allows to avoid notifications for
-        # the tasks made by this particular client.
-
-        return TestSubscription(
-            message=f"{payload}",
-            time=datetime.now().strftime("%d.%m.%Y %H:%M:%S")
-        )
-
-
-class TestSubscriptionEventMutation(GrapheneMutation):
+class TestSubscriptionEventMutation(graphene.Mutation):
     class Arguments:
         message = String(required=True)
 
@@ -1615,9 +1581,10 @@ class TestSubscriptionEventMutation(GrapheneMutation):
     @classmethod
     def mutate(cls, root, info, message):
         print(f"New message broadcasted: {message}")
-        TestSubscription.broadcast(group="TestSubscriptionEvents", payload=message)
+        # TestSubscription.broadcast(group="TestSubscriptionEvents", payload=message)
+        async_to_sync(channel_layer.group_send)("new_message", {"data": message})
         return TestSubscriptionEventMutation(response="OK")
-"""
+
 
 # Schema ======================================================================
 
@@ -1703,15 +1670,34 @@ class Mutation(ObjectType):
     delete_role = DeleteRoleMutation.Field()
 
     # TestSubscription
-    #test_subscription_event = TestSubscriptionEventMutation.Field()
+    test_subscription_event = TestSubscriptionEventMutation.Field()
 
-"""
-class Subscription(ObjectType):
-    test_subscription = TestSubscription.Field()
-"""
+
+class Subscription(graphene.ObjectType):
+    count_seconds = graphene.Int(up_to=graphene.Int())
+    test_subscription = graphene.String()
+
+    async def resolve_count_seconds(self, info, up_to=5):
+        print(up_to)
+        i = 1
+        while i <= up_to:
+            yield str(i)
+            await asyncio.sleep(1)
+            i += 1
+
+    async def resolve_test_subscription(self, info):
+        channel_name = await channel_layer.new_channel()
+        await channel_layer.group_add("new_message", channel_name)
+        try:
+            while True:
+                message = await channel_layer.receive(channel_name)
+                yield message["data"]
+        finally:
+            await channel_layer.group_discard("new_message", channel_name)
+
 
 schema = Schema(
     query=Query,
     mutation=Mutation,
-#    subscription=Subscription,
+    subscription=Subscription,
 )

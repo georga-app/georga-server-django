@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'phonenumber_field',
 
     # GraphQL
+    'graphql_ws.django',
     'graphene_django',
     'django_filters',
     'channels',
@@ -88,7 +89,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'georga.wsgi.application'
-ASGI_APPLICATION = 'georga.asgi.application'
+ASGI_APPLICATION = 'graphql_ws.django.routing.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
