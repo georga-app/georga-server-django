@@ -1,3 +1,4 @@
+from datetime import datetime
 import asyncio
 
 import graphene
@@ -1572,6 +1573,11 @@ class DeleteTimeslotMutation(UUIDDjangoModelFormMutation):
 
 # Subscriptions ===============================================================
 
+class TestSubscription(graphene.ObjectType):
+    message = graphene.String(required=True)
+    time = graphene.DateTime(required=True)
+
+
 class TestSubscriptionEventMutation(graphene.Mutation):
     class Arguments:
         message = String(required=True)
@@ -1675,7 +1681,7 @@ class Mutation(ObjectType):
 
 class Subscription(graphene.ObjectType):
     count_seconds = graphene.Int(up_to=graphene.Int())
-    test_subscription = graphene.String()
+    test_subscription = graphene.Field(TestSubscription)
 
     async def resolve_count_seconds(self, info, up_to=5):
         print(up_to)
@@ -1691,7 +1697,7 @@ class Subscription(graphene.ObjectType):
         try:
             while True:
                 message = await channel_layer.receive(channel_name)
-                yield message["data"]
+                yield TestSubscription(message=message["data"], time=datetime.now())
         finally:
             await channel_layer.group_discard("new_message", channel_name)
 
