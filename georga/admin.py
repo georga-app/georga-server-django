@@ -7,13 +7,12 @@ from .models import (
     Resource,
     Organization,
     Project,
-    Deployment,
+    Operation,
     Task,
     TaskCategory,
     Timeslot,
-    Qualification,
-    QualificationCategory,
-    Restriction,
+    PersonProperty,
+    PersonPropertyGroup,
     Role,
     Equipment,
     Location,
@@ -27,13 +26,12 @@ admin.site.register(Device)
 admin.site.register(Resource)
 admin.site.register(Organization)
 admin.site.register(Project)
-admin.site.register(Deployment)
+admin.site.register(Operation)
 admin.site.register(Task)
 admin.site.register(TaskCategory)
 admin.site.register(Timeslot)
-admin.site.register(Qualification)
-admin.site.register(QualificationCategory)
-admin.site.register(Restriction)
+admin.site.register(PersonProperty)
+admin.site.register(PersonPropertyGroup)
 admin.site.register(Role)
 admin.site.register(Equipment)
 admin.site.register(Location)

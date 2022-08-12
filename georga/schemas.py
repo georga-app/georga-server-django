@@ -28,7 +28,7 @@ from graphql_relay import from_global_id
 from .auth import jwt_decode
 from .email import Email
 from .models import (
-    Deployment,
+    Operation,
     Device,
     Equipment,
     Location,
@@ -38,10 +38,9 @@ from .models import (
     Organization,
     Person,
     Project,
-    Qualification,
-    QualificationCategory,
+    PersonProperty,
+    PersonPropertyGroup,
     Resource,
-    Restriction,
     Role,
     Task,
     TaskCategory,
@@ -318,67 +317,67 @@ LOOKUPS_DATETIME = [
 
 # Models ======================================================================
 
-# Deployment ----------------------------------------------------------------------
+# Operation ----------------------------------------------------------------------
 
 # fields
-deployment_ro_fields = [
+operation_ro_fields = [
     'uuid',
 ]
-deployment_wo_fields = [
+operation_wo_fields = [
 ]
-deployment_rw_fields = [
+operation_rw_fields = [
     'project',
     'name',
     'is_active',
 ]
-deployment_filter_fields = {
+operation_filter_fields = {
     'uuid': LOOKUPS_ID,
 }
 
 
 # types
-class DeploymentType(UUIDDjangoObjectType):
+class OperationType(UUIDDjangoObjectType):
     class Meta:
-        model = Deployment
-        fields = deployment_ro_fields + deployment_rw_fields
-        filter_fields = deployment_filter_fields
+        model = Operation
+        fields = operation_ro_fields + operation_rw_fields
+        filter_fields = operation_filter_fields
         permissions = [login_required]
 
 
 # forms
 
-class DeploymentModelForm(UUIDModelForm):
+class OperationModelForm(UUIDModelForm):
     class Meta:
-        model = Deployment
-        fields = deployment_wo_fields + deployment_rw_fields
+        model = Operation
+        fields = operation_wo_fields + operation_rw_fields
 
 
 # cud mutations
-class CreateDeploymentMutation(UUIDDjangoModelFormMutation):
+class CreateOperationMutation(UUIDDjangoModelFormMutation):
     class Meta:
-        form_class = DeploymentModelForm
+        form_class = OperationModelForm
         exclude_fields = ['id']
         permissions = [staff_member_required]
 
 
-class UpdateDeploymentMutation(UUIDDjangoModelFormMutation):
+class UpdateOperationMutation(UUIDDjangoModelFormMutation):
     class Meta:
-        form_class = DeploymentModelForm
+        form_class = OperationModelForm
         required_fields = ['id']
         permissions = [login_required]
 
 
-class DeleteDeploymentMutation(UUIDDjangoModelFormMutation):
+class DeleteOperationMutation(UUIDDjangoModelFormMutation):
     class Meta:
-        form_class = DeploymentModelForm
+        form_class = OperationModelForm
         only_fields = ['id']
         permissions = [staff_member_required]
 
     @classmethod
     def perform_mutate(cls, form, info):
-        deployment = form.instance
-        deployment.delete()
-        return cls(deployment=deployment, errors=[])
+        operation = form.instance
+        operation.delete()
+        return cls(operation=operation, errors=[])
 
 
 # Device ----------------------------------------------------------------------
@@ -773,10 +772,7 @@ person_rw_fields = [
     'last_name',
     'email',
     'title',
-    'qualifications',
-    'qualification_specific',
-    'restrictions',
-    'restriction_specific',
+    'person_properties',
     'occupation',
     'street',
     'number',
@@ -795,10 +791,7 @@ person_filter_fields = {
     'last_name': LOOKUPS_STRING,
     'email': LOOKUPS_STRING,
     'title': LOOKUPS_ENUM,
-    'qualifications': LOOKUPS_CONNECTION,
-    'qualification_specific': LOOKUPS_STRING,
-    'restrictions': LOOKUPS_CONNECTION,
-    'restriction_specific': LOOKUPS_STRING,
+    'person_properties': LOOKUPS_CONNECTION,
     'occupation': LOOKUPS_STRING,
     'street': LOOKUPS_STRING,
     'number': LOOKUPS_STRING,
@@ -1076,136 +1069,137 @@ class DeleteProjectMutation(UUIDDjangoModelFormMutation):
         return cls(project=project, errors=[])
 
 
-# Qualification -------------------------------------------------------
+# PersonProperty -------------------------------------------------------
 
 # fields
-qualification_ro_fields = [
+person_property_ro_fields = [
     'uuid',
     'person_set',
 ]
-qualification_wo_fields = []
-qualification_rw_fields = [
+person_property_wo_fields = []
+person_property_rw_fields = [
     'name',
-    'qualification_category',
+    'group',
+    'necessity',
 ]
-qualification_filter_fields = {
+person_property_filter_fields = {
     'uuid': LOOKUPS_ID,
-    'qualification_category': LOOKUPS_ID,
-    'qualification_category__name': LOOKUPS_STRING,
-    'qualification_category__code': LOOKUPS_STRING,
+    'group': LOOKUPS_ID,
+    'group__name': LOOKUPS_STRING,
+    'group__codename': LOOKUPS_STRING,
 }
 
 
 # types
-class QualificationType(UUIDDjangoObjectType):
+class PersonPropertyType(UUIDDjangoObjectType):
     class Meta:
-        model = Qualification
-        fields = qualification_ro_fields + qualification_rw_fields
-        filter_fields = qualification_filter_fields
+        model = PersonProperty
+        fields = person_property_ro_fields + person_property_rw_fields
+        filter_fields = person_property_filter_fields
         permissions = []
 
 
 # forms
-class QualificationModelForm(UUIDModelForm):
+class PersonPropertyModelForm(UUIDModelForm):
     class Meta:
-        model = Qualification
-        fields = qualification_wo_fields + qualification_rw_fields
+        model = PersonProperty
+        fields = person_property_wo_fields + person_property_rw_fields
 
 
 # cud mutations
-class CreateQualificationMutation(UUIDDjangoModelFormMutation):
+class CreatePersonPropertyMutation(UUIDDjangoModelFormMutation):
     class Meta:
-        form_class = QualificationModelForm
+        form_class = PersonPropertyModelForm
         exclude_fields = ['id']
         permissions = [staff_member_required]
 
 
-class UpdateQualificationMutation(UUIDDjangoModelFormMutation):
+class UpdatePersonPropertyMutation(UUIDDjangoModelFormMutation):
     class Meta:
-        form_class = QualificationModelForm
+        form_class = PersonPropertyModelForm
         required_fields = ['id']
         permissions = [login_required]
 
 
-class DeleteQualificationMutation(UUIDDjangoModelFormMutation):
+class DeletePersonPropertyMutation(UUIDDjangoModelFormMutation):
     class Meta:
-        form_class = QualificationModelForm
+        form_class = PersonPropertyModelForm
         only_fields = ['id']
         permissions = [staff_member_required]
 
     @classmethod
     def perform_mutate(cls, form, info):
-        qualification = form.instance
-        qualification.delete()
-        return cls(qualification=qualification, errors=[])
+        person_property = form.instance
+        person_property.delete()
+        return cls(person_property=person_property, errors=[])
 
 
 # flow mutations
 
 
-# QualificationCategory ----------------------------------------------------------------------
+# PersonPropertyGroup ----------------------------------------------------------------------
 
 # fields
-qualification_category_ro_fields = [
+person_property_group_ro_fields = [
     'uuid',
 ]
-qualification_category_wo_fields = [
+person_property_group_wo_fields = [
 ]
-qualification_category_rw_fields = [
+person_property_group_rw_fields = [
     'name',
-    'code',
+    'codename',
     'selection_type',
 ]
-qualification_category_filter_fields = {
+person_property_group_filter_fields = {
     'uuid': LOOKUPS_ID,
     'name': LOOKUPS_STRING,
-    'code': LOOKUPS_STRING,
+    'codename': LOOKUPS_STRING,
 }
 
 
 # types
-class QualificationCategoryType(UUIDDjangoObjectType):
+class PersonPropertyGroupType(UUIDDjangoObjectType):
     class Meta:
-        model = QualificationCategory
-        fields = qualification_category_ro_fields + qualification_category_rw_fields
-        filter_fields = qualification_category_filter_fields
+        model = PersonPropertyGroup
+        fields = person_property_group_ro_fields + person_property_group_rw_fields
+        filter_fields = person_property_group_filter_fields
         permissions = []
 
 
 # forms
 
-class QualificationCategoryModelForm(UUIDModelForm):
+class PersonPropertyGroupModelForm(UUIDModelForm):
     class Meta:
-        model = QualificationCategory
-        fields = qualification_category_wo_fields + qualification_category_rw_fields
+        model = PersonPropertyGroup
+        fields = person_property_group_wo_fields + person_property_group_rw_fields
 
 
 # cud mutations
-class CreateQualificationCategoryMutation(UUIDDjangoModelFormMutation):
+class CreatePersonPropertyGroupMutation(UUIDDjangoModelFormMutation):
     class Meta:
-        form_class = QualificationCategoryModelForm
+        form_class = PersonPropertyGroupModelForm
         exclude_fields = ['id']
         permissions = [staff_member_required]
 
 
-class UpdateQualificationCategoryMutation(UUIDDjangoModelFormMutation):
+class UpdatePersonPropertyGroupMutation(UUIDDjangoModelFormMutation):
     class Meta:
-        form_class = QualificationCategoryModelForm
+        form_class = PersonPropertyGroupModelForm
         required_fields = ['id']
         permissions = [login_required]
 
 
-class DeleteQualificationCategoryMutation(UUIDDjangoModelFormMutation):
+class DeletePersonPropertyGroupMutation(UUIDDjangoModelFormMutation):
     class Meta:
-        form_class = QualificationCategoryModelForm
+        form_class = PersonPropertyGroupModelForm
         only_fields = ['id']
         permissions = [staff_member_required]
 
     @classmethod
     def perform_mutate(cls, form, info):
-        qualification_category = form.instance
-        qualification_category.delete()
-        return cls(qualification_category=qualification_category, errors=[])
+        person_property_group = form.instance
+        person_property_group.delete()
+        return cls(person_property_group=person_property_group, errors=[])
 
 
 # Resource ----------------------------------------------------------------------
@@ -1272,36 +1266,6 @@ class DeleteResourceMutation(UUIDDjangoModelFormMutation):
         return cls(resource=resource, errors=[])
 
 
-# Restriction -----------------------------------------------------------------
-
-# fields
-restriction_ro_fields = [
-    'uuid',
-]
-restriction_wo_fields = []
-restriction_rw_fields = [
-    'name',
-]
-restriction_filter_fields = {
-    'uuid': LOOKUPS_ID,
-    'name': LOOKUPS_STRING,
-}
-
-
-# types
-class RestrictionType(UUIDDjangoObjectType):
-    class Meta:
-        model = Restriction
-        fields = restriction_ro_fields + restriction_rw_fields
-        filter_fields = restriction_filter_fields
-        permissions = []
-
-
-# forms
-# cud mutations
-# flow mutations
-
-
 # Role ----------------------------------------------------------------------
 
 # fields
@@ -1313,7 +1277,7 @@ role_wo_fields = [
 role_rw_fields = [
     'description',
     'is_template',
-    'qualifications_suitable',
+    'person_properties',
     'amount',
 ]
 role_filter_fields = {
@@ -1375,7 +1339,7 @@ task_ro_fields = [
 task_wo_fields = [
 ]
 task_rw_fields = [
-    'deployment',
+    'operation',
     'task_category',
     'roles',
     'resources_required',
@@ -1604,12 +1568,10 @@ class Query(ObjectType):
         LocationType)
     all_persons = UUIDDjangoFilterConnectionField(
         PersonType)
-    all_qualifications = UUIDDjangoFilterConnectionField(
-        QualificationType)
-    all_qualification_categories = UUIDDjangoFilterConnectionField(
-        QualificationCategoryType)
-    all_restrictions = UUIDDjangoFilterConnectionField(
-        RestrictionType)
+    all_person_properties = UUIDDjangoFilterConnectionField(
+        PersonPropertyType)
+    all_person_property_categories = UUIDDjangoFilterConnectionField(
+        PersonPropertyGroupType)
     all_devices = UUIDDjangoFilterConnectionField(DeviceType)
     all_resources = UUIDDjangoFilterConnectionField(ResourceType)
     all_organisations = UUIDDjangoFilterConnectionField(OrganizationType)
@@ -1637,14 +1599,14 @@ class Mutation(ObjectType):
     request_password = RequestPasswordMutation.Field()
     reset_password = ResetPasswordMutation.Field()
 
-    # Qualification
-    create_qualification = CreateQualificationMutation.Field()
-    update_qualification = UpdateQualificationMutation.Field()
-    delete_qualification = DeleteQualificationMutation.Field()
-    # QualificationCategory
-    create_qualification_category = CreateQualificationCategoryMutation.Field()
-    update_qualification_category = UpdateQualificationCategoryMutation.Field()
-    delete_qualification_category = DeleteQualificationCategoryMutation.Field()
+    # PersonProperty
+    create_person_property = CreatePersonPropertyMutation.Field()
+    update_person_property = UpdatePersonPropertyMutation.Field()
+    delete_person_property = DeletePersonPropertyMutation.Field()
+    # PersonPropertyGroup
+    create_person_property_group = CreatePersonPropertyGroupMutation.Field()
+    update_person_property_group = UpdatePersonPropertyGroupMutation.Field()
+    delete_person_property_group = DeletePersonPropertyGroupMutation.Field()
 
     # Device
     create_device = CreateDeviceMutation.Field()

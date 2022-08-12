@@ -71,7 +71,7 @@ class ACL(MixinUUIDs, models.Model):
         ]
 
 
-class Deployment(MixinUUIDs, models.Model):
+class Operation(MixinUUIDs, models.Model):
     project = models.ForeignKey(
         to='Project',
         on_delete=models.DO_NOTHING,
@@ -94,8 +94,8 @@ class Deployment(MixinUUIDs, models.Model):
         return '%s' % self.name
 
     class Meta:
-        verbose_name = _("deployment")
-        verbose_name_plural = _("deployments")
+        verbose_name = _("operation")
+        verbose_name_plural = _("operations")
         # TODO: translate: Einsatz
 
 
@@ -183,7 +183,7 @@ class LocationCategory(MixinUUIDs, models.Model):
         verbose_name = _("location category")
         verbose_name_plural = _("location categories")
         # TODO: translate: Einsatzort-Kategorie
-        # e.g. deployment location
+        # e.g. operation location
 
 
 class Notification(MixinUUIDs, models.Model):
@@ -263,30 +263,17 @@ class Person(MixinUUIDs, AbstractUser):
         verbose_name=_("title"),
     )
 
-    qualifications = models.ManyToManyField(
-        'Qualification',
+    person_properties = models.ManyToManyField(
+        'PersonProperty',
         blank=True,
-        verbose_name=_("qualification"),
+        verbose_name=_("person properties"),
     )
 
-    qualification_specific = models.CharField(
+    person_properties_freetext = models.CharField(
         max_length=60,
         null=True,
         blank=True,
-        verbose_name=_("qualification details"),
-    )
-
-    restrictions = models.ManyToManyField(
-        'Restriction',
-        blank=True,
-        verbose_name=_("restrictions"),
-    )
-
-    restriction_specific = models.CharField(
-        max_length=60,
-        null=True,
-        blank=True,
-        verbose_name=_("restriction details"),
+        verbose_name=_("person properties freetext"),
     )
 
     occupation = models.CharField(
@@ -446,17 +433,31 @@ class Project(MixinUUIDs, models.Model):
         # TODO: translation: Projekt
 
 
-class Qualification(MixinUUIDs, models.Model):
+class PersonProperty(MixinUUIDs, models.Model):
     name = models.CharField(
         max_length=50,
         null=True,
         blank=True,
     )
-    qualification_category = models.ForeignKey(
-        to='QualificationCategory',
+    group = models.ForeignKey(
+        to='PersonPropertyGroup',
         on_delete=models.CASCADE,
         null=True,
         blank=True,
+        related_name="person_property_group",
+    )
+    NECESSITIES = [
+        ('RECOMMENDED', _("recommended")),
+        ('MANDATORY', _("mandatory")),
+    ]
+    necessity = models.CharField(
+        max_length=11,
+        choices=NECESSITIES,
+        null=False,
+        blank=False,
+        default="RECOMMENDED",
+        verbose_name=_("necessity"),
+        # TODO: translate: "Erforderlichkeit"
     )
 
     def __str__(self):
@@ -466,16 +467,16 @@ class Qualification(MixinUUIDs, models.Model):
         return '%s' % self.name
 
     class Meta:
-        verbose_name = _("qualification")
-        verbose_name_plural = _("qualification")
-        # TODO: translate: Qualifikation
+        verbose_name = _("person property")
+        verbose_name_plural = _("person properties")
+        # TODO: translate: PersonProperty
 
 
-class QualificationCategory(MixinUUIDs, models.Model):
-    code = models.CharField(
+class PersonPropertyGroup(MixinUUIDs, models.Model):
+    codename = models.CharField(
         max_length=15,
         default='',
-        verbose_name=_("qualification category"),
+        verbose_name=_("person propery group"),
     )
 
     name = models.CharField(
@@ -503,9 +504,9 @@ class QualificationCategory(MixinUUIDs, models.Model):
         return '%s' % self.name
 
     class Meta:
-        verbose_name = _("qualification category")
-        verbose_name_plural = _("qualification categories")
-        # TODO: translate: Qualifikationstyp
+        verbose_name = _("group of person properties")
+        verbose_name_plural = _("groups of person properties")
+        # TODO: translate: PersonPropertyGroup
 
 
 class Resource(MixinUUIDs, models.Model):
@@ -534,25 +535,6 @@ class Resource(MixinUUIDs, models.Model):
         # TODO: translation: Ressource
 
 
-class Restriction(MixinUUIDs, models.Model):
-    name = models.CharField(
-        max_length=50,
-        null=True,
-        blank=True,
-    )
-
-    def __str__(self):
-        return '%s' % self.name
-
-    def __unicode__(self):
-        return '%s' % self.name
-
-    class Meta:
-        verbose_name = _("restriction")
-        verbose_name_plural = _("restrictions")
-        # TODO: translate: Einschränkung
-
-
 class Role(MixinUUIDs, models.Model):
     title = models.CharField(
         max_length=50,
@@ -575,10 +557,10 @@ class Role(MixinUUIDs, models.Model):
         blank=True,
         default=False,
     )
-    qualifications_suitable = models.ManyToManyField(
-        to='Qualification',
+    person_properties = models.ManyToManyField(
+        to='PersonProperty',
         blank=True,
-        related_name='qualifications_suitable',
+        related_name='person_properties',
     )
 
     def __str__(self):
@@ -591,8 +573,8 @@ class Role(MixinUUIDs, models.Model):
 
 
 class Task(MixinUUIDs, models.Model):
-    deployment = models.ForeignKey(
-        to='Deployment',
+    operation = models.ForeignKey(
+        to='Operation',
         on_delete=models.DO_NOTHING,
         null=False,
         blank=False,
