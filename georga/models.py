@@ -191,7 +191,7 @@ class Message(MixinUUIDs, models.Model):
     A Message is sent via different channels to registered persons.
 
     priority: describes, how disruptive the message should be
-    - disturb: 
+    - disturb:
     category:
     - news: manually sent contents
     - alert: triggered by the system by cronjobs based on analysis
