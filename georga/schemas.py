@@ -33,8 +33,7 @@ from .models import (
     Equipment,
     Location,
     LocationCategory,
-    Notification,
-    NotificationCategory,
+    Message,
     Operation,
     Organization,
     Participant,
@@ -578,131 +577,71 @@ class DeleteLocationCategoryMutation(UUIDDjangoModelFormMutation):
         return cls(location_category=location_category, errors=[])
 
 
-# Notification ----------------------------------------------------------------------
+# Message ----------------------------------------------------------------------
 
 # fields
-notification_ro_fields = [
+message_ro_fields = [
     'uuid',
+    'category',
+    'priority',
+    'state',
+    'delivery_state',
 ]
-notification_wo_fields = [
+message_wo_fields = [
 ]
-notification_rw_fields = [
-    'organization',
+message_rw_fields = [
     'title',
     'contents',
-    'notification_category',
-    'priority',
+
 ]
-notification_filter_fields = {
+message_filter_fields = {
     'uuid': LOOKUPS_ID,
 }
 
 
 # types
-class NotificationType(UUIDDjangoObjectType):
+class MessageType(UUIDDjangoObjectType):
     class Meta:
-        model = Notification
-        fields = notification_ro_fields + notification_rw_fields
-        filter_fields = notification_filter_fields
+        model = Message
+        fields = message_ro_fields + message_rw_fields
+        filter_fields = message_filter_fields
         permissions = [login_required]
 
 
 # forms
 
-class NotificationModelForm(UUIDModelForm):
+class MessageModelForm(UUIDModelForm):
     class Meta:
-        model = Notification
-        fields = notification_wo_fields + notification_rw_fields
+        model = Message
+        fields = message_wo_fields + message_rw_fields
 
 
 # cud mutations
-class CreateNotificationMutation(UUIDDjangoModelFormMutation):
+class CreateMessageMutation(UUIDDjangoModelFormMutation):
     class Meta:
-        form_class = NotificationModelForm
+        form_class = MessageModelForm
         exclude_fields = ['id']
         permissions = [staff_member_required]
 
 
-class UpdateNotificationMutation(UUIDDjangoModelFormMutation):
+class UpdateMessageMutation(UUIDDjangoModelFormMutation):
     class Meta:
-        form_class = NotificationModelForm
+        form_class = MessageModelForm
         required_fields = ['id']
         permissions = [login_required]
 
 
-class DeleteNotificationMutation(UUIDDjangoModelFormMutation):
+class DeleteMessageMutation(UUIDDjangoModelFormMutation):
     class Meta:
-        form_class = NotificationModelForm
+        form_class = MessageModelForm
         only_fields = ['id']
         permissions = [staff_member_required]
 
     @classmethod
     def perform_mutate(cls, form, info):
-        notification = form.instance
-        notification.delete()
-        return cls(notification=notification, errors=[])
-
-
-# NotificationCategory ----------------------------------------------------------------------
-
-# fields
-notification_category_ro_fields = [
-    'uuid',
-]
-notification_category_wo_fields = [
-]
-notification_category_rw_fields = [
-    'name',
-    'organization',
-]
-notification_category_filter_fields = {
-    'uuid': LOOKUPS_ID,
-}
-
-
-# types
-class NotificationCategoryType(UUIDDjangoObjectType):
-    class Meta:
-        model = NotificationCategory
-        fields = notification_category_ro_fields + notification_category_rw_fields
-        filter_fields = notification_category_filter_fields
-        permissions = [login_required]
-
-
-# forms
-
-class NotificationCategoryModelForm(UUIDModelForm):
-    class Meta:
-        model = NotificationCategory
-        fields = notification_category_wo_fields + notification_category_rw_fields
-
-
-# cud mutations
-class CreateNotificationCategoryMutation(UUIDDjangoModelFormMutation):
-    class Meta:
-        form_class = NotificationCategoryModelForm
-        exclude_fields = ['id']
-        permissions = [staff_member_required]
-
-
-class UpdateNotificationCategoryMutation(UUIDDjangoModelFormMutation):
-    class Meta:
-        form_class = NotificationCategoryModelForm
-        required_fields = ['id']
-        permissions = [login_required]
-
-
-class DeleteNotificationCategoryMutation(UUIDDjangoModelFormMutation):
-    class Meta:
-        form_class = NotificationCategoryModelForm
-        only_fields = ['id']
-        permissions = [staff_member_required]
-
-    @classmethod
-    def perform_mutate(cls, form, info):
-        notification_category = form.instance
-        notification_category.delete()
-        return cls(notification_category=notification_category, errors=[])
+        message = form.instance
+        message.delete()
+        return cls(message=message, errors=[])
 
 
 # Operation ----------------------------------------------------------------------
@@ -1291,6 +1230,8 @@ person_to_object_wo_fields = [
 ]
 person_to_object_rw_fields = [
     'person',
+    'unseen',
+    'bookmarked',
 ]
 person_to_object_filter_fields = {
     'uuid': LOOKUPS_ID,
@@ -1836,6 +1777,8 @@ class Query(ObjectType):
         EquipmentType)
     all_locations = UUIDDjangoFilterConnectionField(
         LocationType)
+    all_messages = UUIDDjangoFilterConnectionField(
+        MessageType)
     all_persons = UUIDDjangoFilterConnectionField(
         PersonType)
     all_person_properties = UUIDDjangoFilterConnectionField(

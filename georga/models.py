@@ -186,25 +186,34 @@ class LocationCategory(MixinUUIDs, models.Model):
         # e.g. operation location
 
 
-class Notification(MixinUUIDs, models.Model):
-    organization = models.ForeignKey(
-        to='Organization',
+class Message(MixinUUIDs, models.Model):
+    '''
+    A Message is sent via different channels to registered persons.
+
+    priority: describes, how disruptive the message should be
+    - disturb: 
+    category:
+    - news: manually sent contents
+    - alert: triggered by the system by cronjobs based on analysis
+    - activity: on change of objects, which are relevant to the persons
+    '''
+    content_type = models.ForeignKey(
+        ContentType,
         on_delete=models.CASCADE,
-        null=False,
-        blank=False,
-        default=0,
+    )
+    object_id = models.UUIDField(
+        default=uuid.uuid4,
+        editable=False,
+    )
+    scope = GenericForeignKey(
+        'content_type',
+        'object_id',
     )
     title = models.CharField(
         max_length=100,
     )
     contents = models.CharField(
         max_length=1000,
-    )
-    notification_category = models.ForeignKey(
-        to='NotificationCategory',
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True,
     )
     PRIORITY = [
         ('DISTURB', 'disturb'),
@@ -216,24 +225,37 @@ class Notification(MixinUUIDs, models.Model):
         choices=PRIORITY,
         default='ONNEWS',
     )
-
-
-class NotificationCategory(MixinUUIDs, models.Model):
-    organization = models.ForeignKey(
-        to='Organization',
-        on_delete=models.CASCADE,
-        null=False,
-        blank=False,
-        default=0,
+    CATEGORIES = [
+        ('NEWS', 'news'),
+        ('ALERT', 'alert'),
+        ('ACTIVITY', 'activity'),
+    ]
+    category = models.CharField(
+        max_length=8,
+        choices=CATEGORIES,
+        default='NEWS',
     )
-    name = models.CharField(
-        max_length=100,
+    STATES = [
+        ('DRAFT', 'draft'),
+        ('PUBLISHED', 'published'),
+    ]
+    state = models.CharField(
+        max_length=9,
+        choices=STATES,
+        default='DRAFT',
     )
-
-    class Meta:
-        verbose_name = _("notification category")
-        verbose_name_plural = _("notification categories")
-        # TODO: translate: Benachrichtigungstyp
+    DELIVERY_STATES = [
+        ('NONE', 'none'),
+        ('PENDING', 'pending'),
+        ('SENT', 'sent'),
+        ('SENT_SUCCESSFULLY', 'sent successfully'),
+        ('SENT_ERROR', 'sent error'),
+    ]
+    delivery_state = models.CharField(
+        max_length=17,
+        choices=DELIVERY_STATES,
+        default='NONE',
+    )
 
 
 class Operation(MixinUUIDs, models.Model):
@@ -580,6 +602,16 @@ class PersonToObject(MixinUUIDs, models.Model):
     access_object = GenericForeignKey(
         'content_type',
         'object_id',
+    )
+    unseen = models.BooleanField(
+        null=False,
+        blank=False,
+        default=True,
+    )
+    bookmarked = models.BooleanField(
+        null=False,
+        blank=False,
+        default=False,
     )
 
 

@@ -7,8 +7,7 @@ from .models import (
     Equipment,
     Location,
     LocationCategory,
-    Notification,
-    NotificationCategory,
+    Message,
     Operation,
     Organization,
     Participant,
@@ -30,8 +29,7 @@ admin.site.register(Device)
 admin.site.register(Equipment)
 admin.site.register(Location)
 admin.site.register(LocationCategory)
-admin.site.register(Notification)
-admin.site.register(NotificationCategory)
+admin.site.register(Message)
 admin.site.register(Operation)
 admin.site.register(Organization)
 admin.site.register(Participant)
