@@ -37,9 +37,11 @@ from .models import (
     NotificationCategory,
     Operation,
     Organization,
+    Participant,
     Person,
     PersonProperty,
     PersonPropertyGroup,
+    PersonToObject,
     Project,
     Resource,
     Role,
@@ -828,6 +830,70 @@ class DeleteOrganizationMutation(UUIDDjangoModelFormMutation):
         return cls(organization=organization, errors=[])
 
 
+# Participant ----------------------------------------------------------------------
+
+# fields
+participant_ro_fields = [
+    'uuid',
+]
+participant_wo_fields = [
+]
+participant_rw_fields = [
+    'person',
+    'role',
+]
+participant_filter_fields = {
+    'uuid': LOOKUPS_ID,
+}
+
+
+# types
+class ParticipantType(UUIDDjangoObjectType):
+    class Meta:
+        model = Participant
+        fields = participant_ro_fields + participant_rw_fields
+        filter_fields = participant_filter_fields
+        permissions = [login_required]
+
+
+# forms
+
+class ParticipantModelForm(UUIDModelForm):
+    class Meta:
+        model = Participant
+        fields = participant_wo_fields + participant_rw_fields
+
+
+# cud mutations
+class CreateParticipantMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = ParticipantModelForm
+        exclude_fields = ['id']
+        permissions = [staff_member_required]
+
+
+class UpdateParticipantMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = ParticipantModelForm
+        required_fields = ['id']
+        permissions = [login_required]
+
+
+class DeleteParticipantMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = ParticipantModelForm
+        only_fields = ['id']
+        permissions = [staff_member_required]
+
+    @classmethod
+    def perform_mutate(cls, form, info):
+        participant = form.instance
+        participant.delete()
+        return cls(participant=participant, errors=[])
+
+
+# Project ----------------------------------------------------------------------
+
 # Person ----------------------------------------------------------------------
 
 # fields
@@ -1213,6 +1279,69 @@ class DeletePersonPropertyGroupMutation(UUIDDjangoModelFormMutation):
         return cls(person_property_group=person_property_group, errors=[])
 
 
+# PersonToObject ----------------------------------------------------------------------
+
+# fields
+person_to_object_ro_fields = [
+    'uuid',
+    'content_type',
+    'object_id',
+]
+person_to_object_wo_fields = [
+]
+person_to_object_rw_fields = [
+    'person',
+]
+person_to_object_filter_fields = {
+    'uuid': LOOKUPS_ID,
+}
+
+
+# types
+class PersonToObjectType(UUIDDjangoObjectType):
+    class Meta:
+        model = PersonToObject
+        fields = person_to_object_ro_fields + person_to_object_rw_fields
+        filter_fields = person_to_object_filter_fields
+        permissions = [login_required]
+
+
+# forms
+
+class PersonToObjectModelForm(UUIDModelForm):
+    class Meta:
+        model = PersonToObject
+        fields = person_to_object_wo_fields + person_to_object_rw_fields
+
+
+# cud mutations
+class CreatePersonToObjectMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = PersonToObjectModelForm
+        exclude_fields = ['id']
+        permissions = [staff_member_required]
+
+
+class UpdatePersonToObjectMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = PersonToObjectModelForm
+        required_fields = ['id']
+        permissions = [login_required]
+
+
+class DeletePersonToObjectMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = PersonToObjectModelForm
+        only_fields = ['id']
+        permissions = [staff_member_required]
+
+    @classmethod
+    def perform_mutate(cls, form, info):
+        person_to_object = form.instance
+        person_to_object.delete()
+        return cls(person_to_object=person_to_object, errors=[])
+
+
 # Project ----------------------------------------------------------------------
 
 # fields
@@ -1354,7 +1483,6 @@ role_rw_fields = [
     'title',
     'description',
     'is_template',
-    'amount',
     'shift',
 ]
 role_filter_fields = {

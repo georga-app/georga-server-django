@@ -11,9 +11,11 @@ from .models import (
     NotificationCategory,
     Operation,
     Organization,
+    Participant,
     Person,
     PersonProperty,
     PersonPropertyGroup,
+    PersonToObject,
     Project,
     Resource,
     Role,
@@ -32,9 +34,11 @@ admin.site.register(Notification)
 admin.site.register(NotificationCategory)
 admin.site.register(Operation)
 admin.site.register(Organization)
+admin.site.register(Participant)
 admin.site.register(Person)
 admin.site.register(PersonProperty)
 admin.site.register(PersonPropertyGroup)
+admin.site.register(PersonToObject)
 admin.site.register(Project)
 admin.site.register(Resource)
 admin.site.register(Role)

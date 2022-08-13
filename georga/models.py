@@ -280,6 +280,23 @@ class Organization(MixinUUIDs, models.Model):
         # TODO: translation: Organisation
 
 
+class Participant(MixinUUIDs, models.Model):
+    role = models.ForeignKey(
+        to='Role',
+        on_delete=models.CASCADE,
+        null=False,
+        blank=False,
+        default=0,
+    )
+    person = models.ForeignKey(
+        to='Person',
+        on_delete=models.CASCADE,
+        null=False,
+        blank=False,
+        default=0,
+    )
+
+
 class Person(MixinUUIDs, AbstractUser):
     email = models.EmailField(
         'email address',
@@ -543,6 +560,29 @@ class PersonPropertyGroup(MixinUUIDs, models.Model):
         # TODO: translate: PersonPropertyGroup
 
 
+class PersonToObject(MixinUUIDs, models.Model):
+    person = models.ForeignKey(
+        to='Person',
+        to_field='uuid',
+        on_delete=models.CASCADE,
+        null=False,
+        blank=False,
+        default=uuid.uuid4,
+    )
+    content_type = models.ForeignKey(
+        ContentType,
+        on_delete=models.CASCADE,
+    )
+    object_id = models.UUIDField(
+        default=uuid.uuid4,
+        editable=False,
+    )
+    access_object = GenericForeignKey(
+        'content_type',
+        'object_id',
+    )
+
+
 class Project(MixinUUIDs, models.Model):
     organization = models.ForeignKey(
         to='Organization',
@@ -624,12 +664,6 @@ class Role(MixinUUIDs, models.Model):
         null=False,
         blank=False,
         default='',
-    )
-    amount = models.IntegerField(
-        null=False,
-        blank=False,
-        verbose_name=_("Amount of people desirable with this role"),
-        default=1,
     )
     description = models.CharField(
         max_length=50,
