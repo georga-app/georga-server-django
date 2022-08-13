@@ -1535,7 +1535,7 @@ class DeleteRoleSpecificationMutation(UUIDDjangoModelFormMutation):
     def perform_mutate(cls, form, info):
         role = form.instance
         role.delete()
-        return cls(role_specification=role_specification, errors=[])
+        return cls(role_specification=role, errors=[])
 
 
 # Shift ----------------------------------------------------------------------
