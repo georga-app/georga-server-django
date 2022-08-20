@@ -2,6 +2,7 @@ from datetime import datetime
 import functools
 import uuid
 
+from django.core.exceptions import ValidationError
 from django.contrib.auth.models import AbstractUser
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
@@ -34,9 +35,11 @@ class MixinUUIDs(models.Model):
 # --- CLASSES
 
 class ACL(MixinUUIDs, models.Model):
+    content_types = ['organization', 'project', 'operation']
     content_type = models.ForeignKey(
         ContentType,
         on_delete=models.CASCADE,
+        limit_choices_to={'model__in': content_types},
     )
     object_id = models.PositiveIntegerField()
     access_object = GenericForeignKey(
@@ -66,6 +69,18 @@ class ACL(MixinUUIDs, models.Model):
         indexes = [
             models.Index(fields=["content_type", "object_id"]),
         ]
+
+    def clean(self):
+        super().clean()
+
+        # restrict foreign models of access object
+        label = self.content_type.app_label
+        model = self.content_type.model
+        valid_models = {'georga': self.content_types}
+        if label not in valid_models or model not in valid_models[label]:
+            raise ValidationError(
+                f"'{self.content_type.app_labeled_name}' is not a valid "
+                "content type for ACL.access_object")
 
 
 class Device(MixinUUIDs, models.Model):
@@ -234,15 +249,18 @@ class Message(MixinUUIDs, models.Model):
     - alert: triggered by the system by cronjobs based on analysis
     - activity: on change of objects, which are relevant to the persons
     '''
+    content_types = ['organization', 'project', 'operation', 'task', 'shift']
     content_type = models.ForeignKey(
         ContentType,
         on_delete=models.CASCADE,
+        limit_choices_to={'model__in': content_types},
     )
     object_id = models.PositiveIntegerField()
     scope = GenericForeignKey(
         'content_type',
         'object_id',
     )
+
     title = models.CharField(
         max_length=100,
     )
@@ -297,6 +315,18 @@ class Message(MixinUUIDs, models.Model):
         object_id_field='object_id',
         related_query_name='message'
     )
+
+    def clean(self):
+        super().clean()
+
+        # restrict foreign models of scope
+        label = self.content_type.app_label
+        model = self.content_type.model
+        valid_models = {'georga': self.content_types}
+        if label not in valid_models or model not in valid_models[label]:
+            raise ValidationError(
+                f"'{self.content_type.app_labeled_name}' is not a valid "
+                "content type for Message.scope")
 
 
 class Operation(MixinUUIDs, models.Model):
