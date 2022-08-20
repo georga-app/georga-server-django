@@ -1764,17 +1764,25 @@ class DeleteTaskFieldMutation(UUIDDjangoModelFormMutation):
         return cls(task_field=task_field, errors=[])
 
 
-# Models with GenericForeignKeys ==============================================
+# Unions ======================================================================
+
+# ACL.access_object
+class ACLAccessObjectUnion(Union):
+    class Meta:
+        types = [OrganizationType, ProjectType, OperationType]
 
 
-
-# types
+# Message.scope
 class MessageScopeUnion(Union):
     class Meta:
         types = [OrganizationType, ProjectType, OperationType, TaskType, ShiftType]
 
 
+# PersonToObject
+class PersonToObjectRelationObjectUnion(Union):
     class Meta:
+        types = [OrganizationType, ProjectType, OperationType, TaskType, ShiftType,
+                 RoleType, MessageType]
 
 
 # Subscriptions ===============================================================
