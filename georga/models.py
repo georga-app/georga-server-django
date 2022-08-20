@@ -184,7 +184,7 @@ class PersonToObject(MixinUUIDs, models.Model):
         default=uuid.uuid4,
     )
 
-    content_types = ['organization', 'project', 'operation', 'task', 'shift', 'message']
+    content_types = ['organization', 'project', 'operation', 'task', 'shift', 'role', 'message']
     content_type = models.ForeignKey(
         ContentType,
         on_delete=models.CASCADE,
@@ -742,6 +742,13 @@ class Role(MixinUUIDs, models.Model):
         null=True,
         blank=True,
         default=False,
+    )
+
+    person_attributes = GenericRelation(
+        PersonToObject,
+        content_type_field='content_type',
+        object_id_field='object_id',
+        related_query_name='role'
     )
 
     def __str__(self):
