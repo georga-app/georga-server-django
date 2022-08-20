@@ -8,7 +8,7 @@
     unnoticed: true
     bookmarked: false
 - model: georga.persontoobject
-  pk: 1
+  pk: 2
   fields:
     person: 2
     relation_object_ct: ["georga", "message"]
@@ -16,7 +16,7 @@
     unnoticed: true
     bookmarked: false
 - model: georga.persontoobject
-  pk: 1
+  pk: 3
   fields:
     person: 2
     relation_object_ct: ["georga", "message"]
@@ -26,7 +26,7 @@
 
 # unnoticed objects
 - model: georga.persontoobject
-  pk: 1
+  pk: 4
   fields:
     person: 2
     relation_object_ct: ["georga", "role"]
@@ -34,7 +34,7 @@
     unnoticed: true
     bookmarked: false
 - model: georga.persontoobject
-  pk: 1
+  pk: 5
   fields:
     person: 2
     relation_object_ct: ["georga", "role"]
@@ -44,7 +44,7 @@
 
 # bookmarked objects
 - model: georga.persontoobject
-  pk: 1
+  pk: 6
   fields:
     person: 2
     relation_object_ct: ["georga", "project"]
@@ -52,7 +52,7 @@
     unnoticed: false
     bookmarked: true
 - model: georga.persontoobject
-  pk: 1
+  pk: 7
   fields:
     person: 2
     relation_object_ct: ["georga", "task"]
@@ -60,7 +60,7 @@
     unnoticed: false
     bookmarked: true
 - model: georga.persontoobject
-  pk: 1
+  pk: 8
   fields:
     person: 2
     relation_object_ct: ["georga", "shift"]
