@@ -326,7 +326,7 @@ class Message(MixinUUIDs, models.Model):
 
     @property
     def delivery_state(self):
-        for state, __ in self.DELIVERY_STATES.items():
+        for state, __ in self.DELIVERY_STATES:
             for channel_state in [self.delivery_state_email,
                                   self.delivery_state_push,
                                   self.delivery_state_sms]:

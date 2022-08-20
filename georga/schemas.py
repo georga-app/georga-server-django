@@ -17,7 +17,10 @@ from graphene import Schema, Field, ObjectType, Union, List, ID, String, NonNull
 from graphene.relay import Node
 from graphene.types.dynamic import Dynamic
 from graphene_django import DjangoObjectType
-from graphene_django.converter import convert_django_field
+from graphene_django.converter import (
+    convert_django_field,
+    convert_choices_to_named_enum_with_descriptions,
+)
 from graphene_django.fields import DjangoListField, DjangoConnectionField
 from graphene_django.filter import DjangoFilterConnectionField
 from graphene_django.forms import GlobalIDMultipleChoiceField, GlobalIDFormField
@@ -606,7 +609,10 @@ message_filter_fields = {
 
 class MessageType(UUIDDjangoObjectType):
     scope = Field('georga.schemas.MessageScopeUnion', required=True)
-    # delivery_state = Field('georga.schemas.MessageScopeUnion', required=True)
+    delivery_state = Field(
+        convert_choices_to_named_enum_with_descriptions(
+            'MessageDeliveryState', Message.DELIVERY_STATES),
+        required=True)
 
     class Meta:
         model = Message
