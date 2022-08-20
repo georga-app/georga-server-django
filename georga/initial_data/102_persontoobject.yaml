@@ -1,0 +1,69 @@
+# unnoticed messages
+- model: georga.persontoobject
+  pk: 1
+  fields:
+    person: 2
+    relation_object_ct: ["georga", "message"]
+    relation_object_id: 1
+    unnoticed: true
+    bookmarked: false
+- model: georga.persontoobject
+  pk: 1
+  fields:
+    person: 2
+    relation_object_ct: ["georga", "message"]
+    relation_object_id: 1
+    unnoticed: true
+    bookmarked: false
+- model: georga.persontoobject
+  pk: 1
+  fields:
+    person: 2
+    relation_object_ct: ["georga", "message"]
+    relation_object_id: 3
+    unnoticed: false
+    bookmarked: false
+
+# unnoticed objects
+- model: georga.persontoobject
+  pk: 1
+  fields:
+    person: 2
+    relation_object_ct: ["georga", "role"]
+    relation_object_id: 1
+    unnoticed: true
+    bookmarked: false
+- model: georga.persontoobject
+  pk: 1
+  fields:
+    person: 2
+    relation_object_ct: ["georga", "role"]
+    relation_object_id: 2
+    unnoticed: true
+    bookmarked: false
+
+# bookmarked objects
+- model: georga.persontoobject
+  pk: 1
+  fields:
+    person: 2
+    relation_object_ct: ["georga", "project"]
+    relation_object_id: 1
+    unnoticed: false
+    bookmarked: true
+- model: georga.persontoobject
+  pk: 1
+  fields:
+    person: 2
+    relation_object_ct: ["georga", "task"]
+    relation_object_id: 1
+    unnoticed: false
+    bookmarked: true
+- model: georga.persontoobject
+  pk: 1
+  fields:
+    person: 2
+    relation_object_ct: ["georga", "shift"]
+    relation_object_id: 1
+    unnoticed: false
+    bookmarked: true
