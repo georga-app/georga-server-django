@@ -335,6 +335,7 @@ acl_rw_fields = [
     'acl_string',
 ]
 acl_filter_fields = {
+    'id': LOOKUPS_ID,
     'uuid': LOOKUPS_ID,
 }
 
@@ -463,6 +464,7 @@ equipment_rw_fields = [
     'organization',
 ]
 equipment_filter_fields = {
+    'id': LOOKUPS_ID,
     'uuid': LOOKUPS_ID,
     'name': LOOKUPS_STRING,
 }
@@ -528,6 +530,7 @@ location_category_rw_fields = [
     'organization',
 ]
 location_category_filter_fields = {
+    'id': LOOKUPS_ID,
     'uuid': LOOKUPS_ID,
 }
 
@@ -591,6 +594,7 @@ operation_rw_fields = [
     'is_active',
 ]
 operation_filter_fields = {
+    'id': LOOKUPS_ID,
     'uuid': LOOKUPS_ID,
 }
 
@@ -715,6 +719,7 @@ participant_rw_fields = [
     'role',
 ]
 participant_filter_fields = {
+    'id': LOOKUPS_ID,
     'uuid': LOOKUPS_ID,
 }
 
@@ -1031,6 +1036,7 @@ person_property_rw_fields = [
     'necessity',
 ]
 person_property_filter_fields = {
+    'id': LOOKUPS_ID,
     'uuid': LOOKUPS_ID,
     'group': LOOKUPS_ID,
     'group__name': LOOKUPS_STRING,
@@ -1100,6 +1106,7 @@ person_property_group_rw_fields = [
     'selection_type',
 ]
 person_property_group_filter_fields = {
+    'id': LOOKUPS_ID,
     'uuid': LOOKUPS_ID,
     'name': LOOKUPS_STRING,
     'codename': LOOKUPS_STRING,
@@ -1167,6 +1174,7 @@ person_to_object_rw_fields = [
     'bookmarked',
 ]
 person_to_object_filter_fields = {
+    'id': LOOKUPS_ID,
     'uuid': LOOKUPS_ID,
 }
 
@@ -1362,6 +1370,7 @@ role_rw_fields = [
     'shift',
 ]
 role_filter_fields = {
+    'id': LOOKUPS_ID,
     'uuid': LOOKUPS_ID,
 }
 
@@ -1424,6 +1433,7 @@ role_specification_rw_fields = [
     'person_properties',
 ]
 role_specification_filter_fields = {
+    'id': LOOKUPS_ID,
     'uuid': LOOKUPS_ID,
 }
 
@@ -1490,6 +1500,7 @@ shift_rw_fields = [
     'locations',
 ]
 shift_filter_fields = {
+    'id': LOOKUPS_ID,
     'uuid': LOOKUPS_ID,
 }
 
