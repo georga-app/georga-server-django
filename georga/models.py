@@ -3,7 +3,7 @@ import functools
 import uuid
 
 from django.contrib.auth.models import AbstractUser
-from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.utils import timezone
@@ -291,6 +291,13 @@ class Message(MixinUUIDs, models.Model):
         default='NONE',
     )
 
+    person_attributes = GenericRelation(
+        PersonToObject,
+        content_type_field='content_type',
+        object_id_field='object_id',
+        related_query_name='message'
+    )
+
 
 class Operation(MixinUUIDs, models.Model):
     project = models.ForeignKey(
@@ -311,6 +318,25 @@ class Operation(MixinUUIDs, models.Model):
         default=True,
     )
 
+    acl = GenericRelation(
+        ACL,
+        content_type_field='content_type',
+        object_id_field='object_id',
+        related_query_name='operation'
+    )
+    messages = GenericRelation(
+        Message,
+        content_type_field='content_type',
+        object_id_field='object_id',
+        related_query_name='operation'
+    )
+    person_attributes = GenericRelation(
+        PersonToObject,
+        content_type_field='content_type',
+        object_id_field='object_id',
+        related_query_name='operation'
+    )
+
     def __str__(self):
         return '%s' % self.name
 
@@ -325,6 +351,25 @@ class Organization(MixinUUIDs, models.Model):
         max_length=50,
         null=False,
         blank=False,
+    )
+
+    acl = GenericRelation(
+        ACL,
+        content_type_field='content_type',
+        object_id_field='object_id',
+        related_query_name='organisation'
+    )
+    messages = GenericRelation(
+        Message,
+        content_type_field='content_type',
+        object_id_field='object_id',
+        related_query_name='organisation'
+    )
+    person_attributes = GenericRelation(
+        PersonToObject,
+        content_type_field='content_type',
+        object_id_field='object_id',
+        related_query_name='organisation'
     )
 
     def __str__(self):
@@ -510,6 +555,13 @@ class Person(MixinUUIDs, AbstractUser):
         verbose_name=_("resources provided")
     )
 
+    object_attributes = GenericRelation(
+        PersonToObject,
+        content_type_field='content_type',
+        object_id_field='object_id',
+        related_query_name='person'
+    )
+
     def __name__(self):
         return self.email
 
@@ -628,6 +680,25 @@ class Project(MixinUUIDs, models.Model):
         max_length=50,
         null=False,
         blank=False,
+    )
+
+    acl = GenericRelation(
+        ACL,
+        content_type_field='content_type',
+        object_id_field='object_id',
+        related_query_name='project'
+    )
+    messages = GenericRelation(
+        Message,
+        content_type_field='content_type',
+        object_id_field='object_id',
+        related_query_name='project'
+    )
+    person_attributes = GenericRelation(
+        PersonToObject,
+        content_type_field='content_type',
+        object_id_field='object_id',
+        related_query_name='project'
     )
 
     def __str__(self):
@@ -763,6 +834,19 @@ class Shift(MixinUUIDs, models.Model):
         related_name='shift_locations',
     )
 
+    messages = GenericRelation(
+        Message,
+        content_type_field='content_type',
+        object_id_field='object_id',
+        related_query_name='shift'
+    )
+    person_attributes = GenericRelation(
+        PersonToObject,
+        content_type_field='content_type',
+        object_id_field='object_id',
+        related_query_name='shift'
+    )
+
     class Meta:
         verbose_name = _("shift")
         verbose_name_plural = _("shifts")
@@ -852,6 +936,19 @@ class Task(MixinUUIDs, models.Model):
     end_time = models.DateTimeField(
         null=True,
         blank=True,
+    )
+
+    messages = GenericRelation(
+        Message,
+        content_type_field='content_type',
+        object_id_field='object_id',
+        related_query_name='task'
+    )
+    person_attributes = GenericRelation(
+        PersonToObject,
+        content_type_field='content_type',
+        object_id_field='object_id',
+        related_query_name='task'
     )
 
     def __str__(self):
