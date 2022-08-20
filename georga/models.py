@@ -38,10 +38,7 @@ class ACL(MixinUUIDs, models.Model):
         ContentType,
         on_delete=models.CASCADE,
     )
-    object_id = models.UUIDField(
-        default=uuid.uuid4,
-        editable=False,
-    )
+    object_id = models.PositiveIntegerField()
     access_object = GenericForeignKey(
         'content_type',
         'object_id',
@@ -201,10 +198,7 @@ class Message(MixinUUIDs, models.Model):
         ContentType,
         on_delete=models.CASCADE,
     )
-    object_id = models.UUIDField(
-        default=uuid.uuid4,
-        editable=False,
-    )
+    object_id = models.PositiveIntegerField()
     scope = GenericForeignKey(
         'content_type',
         'object_id',
