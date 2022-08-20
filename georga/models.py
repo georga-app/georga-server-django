@@ -276,6 +276,7 @@ class Message(MixinUUIDs, models.Model):
         choices=STATES,
         default='DRAFT',
     )
+
     DELIVERY_STATES = [
         ('NONE', 'none'),
         ('PENDING', 'pending'),
@@ -283,7 +284,17 @@ class Message(MixinUUIDs, models.Model):
         ('SENT_SUCCESSFULLY', 'sent successfully'),
         ('SENT_ERROR', 'sent error'),
     ]
-    delivery_state = models.CharField(
+    delivery_state_email = models.CharField(
+        max_length=17,
+        choices=DELIVERY_STATES,
+        default='NONE',
+    )
+    delivery_state_push = models.CharField(
+        max_length=17,
+        choices=DELIVERY_STATES,
+        default='NONE',
+    )
+    delivery_state_sms = models.CharField(
         max_length=17,
         choices=DELIVERY_STATES,
         default='NONE',
@@ -312,6 +323,16 @@ class Message(MixinUUIDs, models.Model):
             raise ValidationError(
                 f"'{self.scope_ct.app_labeled_name}' is not a valid "
                 "content type for Message.scope")
+
+    @property
+    def delivery_state(self):
+        for state, __ in self.DELIVERY_STATES.items():
+            for channel_state in [self.delivery_state_email,
+                                  self.delivery_state_push,
+                                  self.delivery_state_sms]:
+                if channel_state == state:
+                    return state
+        return "NONE"
 
 
 class Operation(MixinUUIDs, models.Model):

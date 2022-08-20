@@ -583,7 +583,9 @@ message_ro_fields = [
     'category',
     'priority',
     'state',
-    'delivery_state',
+    'delivery_state_email',
+    'delivery_state_push',
+    'delivery_state_sms',
 ]
 message_wo_fields = [
 ]
@@ -604,6 +606,7 @@ message_filter_fields = {
 
 class MessageType(UUIDDjangoObjectType):
     scope = Field('georga.schemas.MessageScopeUnion', required=True)
+    # delivery_state = Field('georga.schemas.MessageScopeUnion', required=True)
 
     class Meta:
         model = Message
