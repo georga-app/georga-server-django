@@ -1,15 +1,18 @@
 - model: georga.resource
-  pk: 0
+  pk: 1
   fields:
     description: "Schlammschüppe"
     personal_hint: "Spende"
-- model: georga.resource
-  pk: 1
-  fields:
-    description: "Stiefel"
-    personal_hint: "brauch ich danach zurück"
+    shift: 1
 - model: georga.resource
   pk: 2
   fields:
+    description: "Stiefel"
+    personal_hint: "brauch ich danach zurück"
+    shift: 1
+- model: georga.resource
+  pk: 3
+  fields:
     description: "Tauchpumpe"
     personal_hint: "kann verliehen werden im August"
+    shift: 1

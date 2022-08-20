@@ -1,4 +1,5 @@
 - model: georga.person
+  pk: 1
   fields:
     password: pbkdf2_sha256$260000$sxk0T7HBdwtwc4DpShdcYX$7i46OQncyXeLwcwTN2793/ElMNRDz/E3kdhrtxOKyQQ=
     last_login: null
@@ -10,11 +11,12 @@
     date_joined: 2022-03-13 16:13:36.048326+00:00
     email: admin@georga.test
     password_modified: 2022-03-13 16:13:36.048338+00:00
-    person_properties: [1, 4, 6, 9]
-    organizations_subscribed: [0, 1, 2]
+    person_properties: [2, 5, 7, 10]
+    organizations_subscribed: [1, 2, 3]
     is_active: true
 # Password: verysafePassword
 - model: georga.person
+  pk: 2
   fields:
     password: pbkdf2_sha256$260000$mS79S7xiwUAcp8fxZeoQfd$mmbMGxyOdsVRgsV1elC1xiZr86xrvMYnY+/oGau8uxM=
     last_login: null
@@ -26,10 +28,11 @@
     date_joined: 2022-03-13 16:13:36.048326+00:00
     email: simpleuser@georga.test
     password_modified: 2022-03-13 16:13:36.048338+00:00
-    organizations_subscribed: [0, 1, 2]
+    organizations_subscribed: [1, 2, 3]
     is_active: true
 # Password: simpleuserPassword
 - model: georga.person
+  pk: 3
   fields:
     uuid: "492902cf-621a-495a-ac55-319644c1174a"
     password: pbkdf2_sha256$260000$fFZRD2Y4ayfiE5nJ6aV0re$tenrcqIOtu1UL/nj+u6hEz6dpzvsF2XU5jclREbWtNw=
@@ -42,11 +45,12 @@
     date_joined: 2022-03-13 16:13:36.048326+00:00
     email: staffuser@georga.test
     password_modified: 2022-03-13 16:13:36.048338+00:00
-    person_properties: [2, 15, 20, 22]
-    organizations_subscribed: [0]
+    person_properties: [3, 16, 21, 23]
+    organizations_subscribed: [1]
     is_active: true
 # Password: staffuserPassword
 - model: georga.person
+  pk: 4
   fields:
     uuid: "492902cf-621a-495a-ac55-319644c1174b"
     password: pbkdf2_sha256$260000$fFZRD2Y4ayfiE5nJ6aV0re$tenrcqIOtu1UL/nj+u6hEz6dpzvsF2XU5jclREbWtNw=
@@ -59,11 +63,12 @@
     date_joined: 2022-03-13 16:13:36.048326+00:00
     email: staffuser2@georga.test
     password_modified: 2022-03-13 16:13:36.048338+00:00
-    person_properties: [3, 25]
-    organizations_subscribed: [1, 2]
+    person_properties: [4, 26]
+    organizations_subscribed: [2, 3]
     is_active: true
 # Password: staffuserPassword
 - model: georga.person
+  pk: 5
   fields:
     uuid: "492902cf-621a-495a-ac55-319644c1174c"
     password: pbkdf2_sha256$260000$fFZRD2Y4ayfiE5nJ6aV0re$tenrcqIOtu1UL/nj+u6hEz6dpzvsF2XU5jclREbWtNw=
@@ -76,7 +81,7 @@
     date_joined: 2022-03-13 16:13:36.048326+00:00
     email: staffuser3@georga.test
     password_modified: 2022-03-13 16:13:36.048338+00:00
-    person_properties: [6, 9]
-    organizations_subscribed: [2]
+    person_properties: [7, 10]
+    organizations_subscribed: [3]
     is_active: false
 # Password: staffuserPassword

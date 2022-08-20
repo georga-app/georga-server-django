@@ -1,50 +1,44 @@
 - model: georga.operation
-  pk: 0
+  pk: 1
   fields:
     name: "Betreuungsdienst Notunterkunft Hofstraße 2022"
     is_active: true
-    project: 0
-- model: georga.operation
-  pk: 1
-  fields:
-    name: "Betreuungsdienst Notunterkunft Lindenstraße 2022"
-    is_active: false
-    project: 0
+    project: 1
 - model: georga.operation
   pk: 2
   fields:
-    name: "Sanitätsdienst Fußball Lokalderby 06.08.2022"
-    is_active: true
+    name: "Betreuungsdienst Notunterkunft Lindenstraße 2022"
+    is_active: false
     project: 1
 - model: georga.operation
   pk: 3
   fields:
-    name: "Sanitätsdienst Mozartkonzert Wien 07.08.2022"
-    is_active: false
-    project: 1
+    name: "Sanitätsdienst Fußball Lokalderby 06.08.2022"
+    is_active: true
+    project: 2
 - model: georga.operation
   pk: 4
   fields:
-    name: "Hilfe für Behördengänge für Geflüchtete 2022-04"
-    is_active: true
+    name: "Sanitätsdienst Mozartkonzert Wien 07.08.2022"
+    is_active: false
     project: 2
 - model: georga.operation
   pk: 5
   fields:
-    name: "Sandsäcke füllen"
+    name: "Hilfe für Behördengänge für Geflüchtete 2022-04"
     is_active: true
     project: 3
 - model: georga.operation
   pk: 6
   fields:
-    name: "Schlammräumung"
-    is_active: false
-    project: 3
+    name: "Sandsäcke füllen"
+    is_active: true
+    project: 4
 - model: georga.operation
   pk: 7
   fields:
     name: "Schlammräumung"
-    is_active: true
+    is_active: false
     project: 4
 - model: georga.operation
   pk: 8
@@ -55,30 +49,36 @@
 - model: georga.operation
   pk: 9
   fields:
-    name: "Registrierung"
+    name: "Schlammräumung"
     is_active: true
     project: 6
 - model: georga.operation
   pk: 10
   fields:
-    name: "Zuteilung Impfräume"
-    is_active: false
-    project: 6
+    name: "Registrierung"
+    is_active: true
+    project: 7
 - model: georga.operation
   pk: 11
   fields:
-    name: "Schiff zur Abfahrt rüsten April 2023"
-    is_active: true
+    name: "Zuteilung Impfräume"
+    is_active: false
     project: 7
 - model: georga.operation
   pk: 12
   fields:
-    name: "Cyber Cyber Cyberabwehr Bundestag 2023-01"
+    name: "Schiff zur Abfahrt rüsten April 2023"
     is_active: true
     project: 8
 - model: georga.operation
   pk: 13
   fields:
+    name: "Cyber Cyber Cyberabwehr Bundestag 2023-01"
+    is_active: true
+    project: 9
+- model: georga.operation
+  pk: 14
+  fields:
     name: "Cyber Cyber Cyberabwehr KHs Luisenstift September 2022"
     is_active: false
-    project: 8
+    project: 9

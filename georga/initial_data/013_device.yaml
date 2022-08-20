@@ -1,18 +1,21 @@
 - model: georga.device
-  pk: 0
+  pk: 1
   fields:
     device_string: "Samsung Galaxy Note 2"
     os_version: "Android 6.0"
     app_version: "MAUI 2.0"
+    organization: 1
 - model: georga.device
-  pk: 1
+  pk: 2
   fields:
     device_string: "Samsung Ultrabook 3"
     os_version: "Debian 11"
     app_version: "React 1.0"
+    organization: 1
 - model: georga.device
-  pk: 2
+  pk: 3
   fields:
     device_string: "Apple iPhone 3"
     os_version: "iOS 2.5"
     app_version: "0.5"
+    organization: 1

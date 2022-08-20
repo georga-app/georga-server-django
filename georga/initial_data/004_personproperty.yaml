@@ -1,374 +1,436 @@
 - model: georga.personproperty
+  pk: 1
   fields:
-    id: 0
     name: English
     # Englisch
-    group: 0
+    group: 1
+    organization: 1
 - model: georga.personproperty
+  pk: 2
   fields:
-    id: 1
     name: French
     # Französisch
-    group: 0
+    group: 1
+    organization: 1
 - model: georga.personproperty
+  pk: 3
   fields:
-    id: 2
     name: Spanish
     # Spanisch
-    necessity: MANDATORY
-    group: 0
+    group: 1
+    organization: 1
 - model: georga.personproperty
+  pk: 4
   fields:
-    id: 3
     name: Arabian
     # Arabisch
-    necessity: MANDATORY
-    group: 0
+    group: 1
+    organization: 1
 - model: georga.personproperty
+  pk: 5
   fields:
-    id: 4
     name: Turkish
     # Türkisch
-    group: 0
+    group: 1
+    organization: 1
 - model: georga.personproperty
+  pk: 6
   fields:
-    id: 5
     name: Polnish
     # Polnisch
-    group: 0
+    group: 1
+    organization: 1
 - model: georga.personproperty
+  pk: 7
   fields:
-    id: 6
     name: Kurdish
     # Kurdisch
-    group: 0
+    group: 1
+    organization: 1
 - model: georga.personproperty
+  pk: 8
   fields:
-    id: 7
     name: Italian
     # Italienisch
-    group: 0
+    group: 1
+    organization: 1
 - model: georga.personproperty
+  pk: 9
   fields:
-    id: 8
     name: Greek
     # Griechisch
-    group: 0
+    group: 1
+    organization: 1
 - model: georga.personproperty
+  pk: 10
   fields:
-    id: 9
     name: Dutch
     # Niederländisch
-    group: 0
+    group: 1
+    organization: 1
 - model: georga.personproperty
+  pk: 11
   fields:
-    id: 10
     name: Serbian
     # Serbisch
-    group: 0
+    group: 1
+    organization: 1
 - model: georga.personproperty
+  pk: 12
   fields:
-    id: 11
     name: Croatian
     # Kroatisch
-    group: 0
+    group: 1
+    organization: 1
 - model: georga.personproperty
+  pk: 13
   fields:
-    id: 11
     name: Ukrainian
     # Ukrainisch
-    group: 0
+    group: 1
+    organization: 1
 - model: georga.personproperty
+  pk: 14
   fields:
-    id: 12
     name: Russian
     # Russisch
-    group: 0
+    group: 1
+    organization: 1
 - model: georga.personproperty
+  pk: 15
   fields:
-    id: 13
     name: Romanian
     # Rumänisch
-    group: 0
+    group: 1
+    organization: 1
 - model: georga.personproperty
+  pk: 16
   fields:
-    id: 14
     name: Hungarian
     # Ungarisch
-    group: 0
+    group: 1
+    organization: 1
 - model: georga.personproperty
+  pk: 17
   fields:
-    id: 15
     name: Slovakian
     # Slowakisch
-    group: 0
+    group: 1
+    organization: 1
 - model: georga.personproperty
+  pk: 18
   fields:
-    id: 16
     name: Czech
     # Tschechisch
-    group: 0
+    group: 1
+    organization: 1
 - model: georga.personproperty
+  pk: 19
   fields:
-    id: 17
     name: Lithuanian
     # Litauisch
-    group: 0
+    group: 1
+    organization: 1
 - model: georga.personproperty
+  pk: 20
   fields:
-    id: 18
     name: Latvian
     # Lettisch
-    group: 0
+    group: 1
+    organization: 1
 - model: georga.personproperty
+  pk: 21
   fields:
-    id: 19
     name: Estonian
     # Estnisch
-    group: 0
+    group: 1
+    organization: 1
 - model: georga.personproperty
+  pk: 22
   fields:
-    id: 20
     name: German drivers license class B
     # Führerschein B
-    group: 1
+    group: 2
+    organization: 1
 - model: georga.personproperty
+  pk: 23
   fields:
-    id: 21
     name: German drivers license class BE
     # Führerschein BE
-    group: 1
+    group: 2
+    organization: 1
 - model: georga.personproperty
+  pk: 24
   fields:
-    id: 22
     name: German drivers license class E
     # Führerschein E
-    group: 1
+    group: 2
+    organization: 1
 - model: georga.personproperty
+  pk: 25
   fields:
-    id: 23
     name: German drivers license class D1
     # Führerschein D1
-    group: 1
+    group: 2
+    organization: 1
 - model: georga.personproperty
+  pk: 26
   fields:
-    id: 24
     name: German drivers license class D1E
     # Führerschein D1E
-    group: 1
+    group: 2
+    organization: 1
 - model: georga.personproperty
+  pk: 27
   fields:
-    id: 25
     name: German drivers license class D
     # Führerschein D
-    group: 1
+    group: 2
+    organization: 1
 - model: georga.personproperty
+  pk: 28
   fields:
-    id: 26
     name: German drivers license class DE
     # Führerschein DE
-    group: 1
+    group: 2
+    organization: 1
 - model: georga.personproperty
+  pk: 29
   fields:
-    id: 27
     name: German drivers license class C1
     # Führerschein C1
-    group: 1
+    group: 2
+    organization: 1
 - model: georga.personproperty
+  pk: 30
   fields:
-    id: 28
     name: German drivers license class C1E
     # Führerschein C1E
-    group: 1
+    group: 2
+    organization: 1
 - model: georga.personproperty
+  pk: 31
   fields:
-    id: 29
     name: German drivers license class CE
     # Führerschein CE
-    group: 1
+    group: 2
+    organization: 1
 - model: georga.personproperty
+  pk: 32
   fields:
-    id: 30
     name: German drivers license class C
     # Führerschein C
-    group: 1
+    group: 2
+    organization: 1
 - model: georga.personproperty
+  pk: 33
   fields:
-    id: 31
     name: German drivers license class A2
     # Führerschein A2
-    group: 1
+    group: 2
+    organization: 1
 - model: georga.personproperty
+  pk: 34
   fields:
-    id: 32
     name: German drivers license class A1
     # Führerschein A1
-    group: 1
+    group: 2
+    organization: 1
 - model: georga.personproperty
+  pk: 35
   fields:
-    id: 33
     name: Operating license for marine vessels
     # Führerschein Boot
-    group: 1
+    group: 2
+    organization: 1
 - model: georga.personproperty
+  pk: 36
   fields:
-    id: 34
     name: German drivers license class A
     # Führerschein A
-    group: 1
+    group: 2
+    organization: 1
 - model: georga.personproperty
+  pk: 37
   fields:
-    id: 35
     name: German drivers license class AM
     # Führerschein AM
-    group: 1
+    group: 2
+    organization: 1
 - model: georga.personproperty
+  pk: 38
   fields:
-    id: 36
     name: German drivers license class L
     # Führerschein L
-    group: 1
+    group: 2
+    organization: 1
 - model: georga.personproperty
+  pk: 39
   fields:
-    id: 37
     name: German drivers license class T
     # Führerschein T
-    group: 1
+    group: 2
+    organization: 1
+
 - model: georga.personproperty
+  pk: 40
   fields:
-    id: 38
     name: Clerk
     # Bürokaufmann/-frau
-    group: 2
+    group: 3
+    organization: 1
 - model: georga.personproperty
+  pk: 41
   fields:
-    id: 39
     name: Human resouces
     # Personalverwaltung
-    group: 2
+    group: 3
+    organization: 1
 - model: georga.personproperty
+  pk: 42
   fields:
-    id: 40
     name: Accounting clerk
     # Buchhalter/-in
-    group: 2
+    group: 3
+    organization: 1
+
 - model: georga.personproperty
+  pk: 43
   fields:
-    id: 41
     name: Emergency medical services
     # Rettungsdienst-Qualifikation (unten eintragen)
-    group: 3
+    group: 4
+    organization: 1
 - model: georga.personproperty
+  pk: 44
   fields:
-    id: 42
     name: Nurse (exam)
     # Examinierte Pflegekraft
-    group: 3
+    group: 4
+    organization: 1
 # - model: georga.personproperty               dupe? see nurse...
 #   fields:
 #     name: Gesundheits- und Krankenpfleger/in
 #     group: 3
+#     organization: 1
 - model: georga.personproperty
+  pk: 45
   fields:
-    id: 43
     name: Medical technical assistant
     # Medizinisch Technische Assistenz
-    group: 3
+    group: 4
+    organization: 1
 - model: georga.personproperty
+  pk: 46
   fields:
-    id: 44
     name: Physician
     # Mediziner/in
-    group: 3
+    group: 4
+    organization: 1
+
 - model: georga.personproperty
+  pk: 47
   fields:
-    id: 45
     name: Information technology
     # Informationstechnik
-    group: 4
+    group: 5
+    organization: 1
 - model: georga.personproperty
+  pk: 48
   fields:
-    id: 46
     name: Communication technology
     # Kommunikationstechnik
-    group: 4
+    group: 5
+    organization: 1
 - model: georga.personproperty
+  pk: 49
   fields:
-    id: 47
     name: Small amateur radio licence (German)
     # Kleine Amateurfunklizenz
-    group: 4
+    group: 5
+    organization: 1
 - model: georga.personproperty
+  pk: 50
   fields:
-    id: 48
     name: Big amateur radio licence (German)
     # Große Amateurfunklizenz
-    group: 4
+    group: 5
+    organization: 1
 - model: georga.personproperty
+  pk: 51
   fields:
-    id: 49
     name: Amateur radio licence class E (German)
     # Amateurfunkzeugnis der Klasse E
-    necessity: MANDATORY
-    group: 4
+    group: 5
+    organization: 1
 - model: georga.personproperty
+  pk: 52
   fields:
-    id: 50
     name: Amateur radio licence class A (German)
     # Amateurfunkzeugnis der Klasse A
-    group: 4
+    group: 5
+    organization: 1
 - model: georga.personproperty
+  pk: 53
   fields:
-    id: 51
     name: Own amateur radio station
     # Eigene Amateurfunkstation
-    group: 4
+    group: 5
+    organization: 1
 
 # former 'georga.helpoperation' model
 - model: georga.personproperty
+  pk: 54
   fields:
-    id: 52
     name: Shopping
     # Einkaufen
-    group: 5
+    group: 6
+    organization: 1
 - model: georga.personproperty
+  pk: 55
   fields:
-    id: 53
     name: Household
     # Haushalt
-    group: 5
+    group: 6
+    organization: 1
 - model: georga.personproperty
+  pk: 56
   fields:
-    id: 54
     name: Craft activity
     # Handwerkliche Tätigkeit
-    necessity: MANDATORY
-    group: 5
+    group: 6
+    organization: 1
 - model: georga.personproperty
+  pk: 57
   fields:
-    id: 55
     name: Transport service - own car
     # Fahrdienst - eigener PKW
-    group: 5
+    group: 6
+    organization: 1
 - model: georga.personproperty
+  pk: 58
   fields:
-    id: 56
     name: Transport service - own van
     # Fahrdienst - eigener Transporter
-    group: 5
+    group: 6
+    organization: 1
 - model: georga.personproperty
+  pk: 59
   fields:
-    id: 57
     name: Transport service - provided vehicle
     # Fahrdienst - gestelltes Fahrzeug
-    group: 5
+    group: 6
+    organization: 1
+
 - model: georga.personproperty
+  pk: 60
   fields:
-    id: 58
     name: yes
-    group: 6
+    group: 7
+    organization: 1
 - model: georga.personproperty
+  pk: 61
   fields:
-    id: 59
     name: no
-    group: 6
+    group: 7
+    organization: 1

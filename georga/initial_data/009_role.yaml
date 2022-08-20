@@ -1,60 +1,60 @@
 - model: georga.role
-  pk: 0
-  fields:
-    title: "Emergency physician"
-    shift: 0
-- model: georga.role
   pk: 1
   fields:
-    title: "Rescue worker"
-    shift: 0
+    title: "Emergency physician"
+    shift: 1
 - model: georga.role
   pk: 2
   fields:
-    title: "Radio operator"
+    title: "Rescue worker"
     shift: 1
 - model: georga.role
   pk: 3
   fields:
-    title: "Staff administration"
+    title: "Radio operator"
     shift: 2
 - model: georga.role
   pk: 4
   fields:
-    title: "Group leader"
+    title: "Staff administration"
     shift: 3
 - model: georga.role
   pk: 5
   fields:
-    title: "Helpers without special qualification"
-    shift: 3
+    title: "Group leader"
+    shift: 4
 - model: georga.role
   pk: 6
   fields:
-    title: "Group leader"
-    shift: 7
+    title: "Helpers without special qualification"
+    shift: 4
 - model: georga.role
   pk: 7
   fields:
-    title: "Helpers without special qualification"
-    shift: 7
+    title: "Group leader"
+    shift: 8
 - model: georga.role
   pk: 8
   fields:
-    title: "Group leader"
+    title: "Helpers without special qualification"
     shift: 8
 - model: georga.role
   pk: 9
   fields:
-    title: "Helpers without special qualification"
-    shift: 8
+    title: "Group leader"
+    shift: 9
 - model: georga.role
   pk: 10
   fields:
-    title: "Group leader"
+    title: "Helpers without special qualification"
     shift: 9
 - model: georga.role
   pk: 11
   fields:
+    title: "Group leader"
+    shift: 10
+- model: georga.role
+  pk: 12
+  fields:
     title: "Helpers without special qualification"
-    shift: 9
+    shift: 10

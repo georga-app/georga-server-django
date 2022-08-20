@@ -1,5 +1,5 @@
 - model: georga.message
-  pk: 0
+  pk: 1
   fields:
     title: "Dolmetschertätigkeit in der Unterkunft Hofstraße"
     contents: "<h1>Tätigkeit:</h1><p>In der Notunkterkunft wird Hilfe für die Kommunikation zwischen Bewohnern und Betreuuern benötigt. Bitte <b>nur mit 2G-Nachweis</b><h1>Mitbringen:</h1><ul><li>Außentaugliche Kleidung für Tätigkeiten im Hof</ul>"
@@ -8,8 +8,9 @@
     state: DRAFT
     delivery_state: NONE
     content_type: ["georga", "shift"]
+    object_id: 1
 - model: georga.message
-  pk: 1
+  pk: 2
   fields:
     title: "Großbrand im Stahlwerk"
     contents: "Die Bevölkerung in der näheren Umgebung von 2km Umkreis wird wegen der Rauchentwicklung gebeten, Türen und Fenster geschlossen zu halten und sich nicht im Freien aufzuhalten."
@@ -18,8 +19,9 @@
     state: PUBLISHED
     delivery_state: SENT_SUCCESSFULLY
     content_type: ["georga", "organization"]
+    object_id: 1
 - model: georga.message
-  pk: 2
+  pk: 3
   fields:
     title: "Spendenbereitschaft überwältigend"
     contents: "<p>Für die Notunterkünfte für Geflüchtet ist die Spendenbereitschaft in der Bevölkerung weiterhin überwältigend. Aktuell wird darum gebeten, dass vorerst keine neuen Küchenutensilien gespendet werden, da diese nun erst einmal sortiert und zugeteilt werden müssen und diese höchst wahrscheinlich für alle Unterkünfte ausreichen.</p>"
@@ -28,8 +30,9 @@
     state: PUBLISHED
     delivery_state: SENT
     content_type: ["georga", "project"]
+    object_id: 1
 - model: georga.message
-  pk: 3
+  pk: 4
   fields:
     title: "Bli Bla Blubb"
     contents: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet."
@@ -38,8 +41,9 @@
     state: PUBLISHED
     delivery_state: SENT
     content_type: ["georga", "task"]
+    object_id: 1
 - model: georga.message
-  pk: 4
+  pk: 5
   fields:
     title: "Räuber Hotzenplotz"
     contents: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet."
@@ -48,3 +52,4 @@
     state: DRAFT
     delivery_state: NONE
     content_type: ["georga", "operation"]
+    object_id: 1

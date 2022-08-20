@@ -1,50 +1,60 @@
 - model: georga.equipment
-  pk: 0
+  pk: 1
   fields:
     name: "FFP2-Masken"
     owner: "ORG"
+    organization: 1
 - model: georga.equipment
-  pk: 1
+  pk: 2
   fields:
     name: "Schaufeln"
     owner: "ORG"
+    organization: 1
 - model: georga.equipment
-  pk: 2
+  pk: 3
   fields:
     name: "Latexhandschuhe"
     owner: "ORG"
-- model: georga.equipment
-  pk: 3
-  fields:
-    name: "Arbeitshandschuhe"
-    owner: "THIRDPARTY"
+    organization: 1
 - model: georga.equipment
   pk: 4
   fields:
+    name: "Arbeitshandschuhe"
+    owner: "THIRDPARTY"
+    organization: 1
+- model: georga.equipment
+  pk: 5
+  fields:
     name: "S3-Schuhe"
     owner: "THIRDPARTY"
+    organization: 1
 - model: georga.equipment
-  pk: 0
+  pk: 6
   fields:
     name: "S3-Schuhe"
     owner: "SELF"
+    organization: 1
 - model: georga.equipment
-  pk: 1
+  pk: 7
   fields:
     name: "Arbeitshandschuhe"
     owner: "SELF"
+    organization: 1
 - model: georga.equipment
-  pk: 2
+  pk: 8
   fields:
     name: "Latexhandschuhe"
     owner: "SELF"
+    organization: 1
 - model: georga.equipment
-  pk: 3
+  pk: 9
   fields:
     name: "Tauchpumpe"
     owner: "SELF"
+    organization: 1
 - model: georga.equipment
-  pk: 4
+  pk: 10
   fields:
     name: "Satellitentelefon"
     owner: "SELF"
+    organization: 1

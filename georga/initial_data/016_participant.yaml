@@ -1,25 +1,25 @@
 - model: georga.participant
-  pk: 0
-  fields:
-    role: 0
-    person: 1
-- model: georga.participant
   pk: 1
   fields:
     role: 1
-    person: 2
+    person: 1
 - model: georga.participant
   pk: 2
   fields:
     role: 2
-    person: 3
+    person: 2
 - model: georga.participant
   pk: 3
   fields:
     role: 3
+    person: 3
+- model: georga.participant
+  pk: 4
+  fields:
+    role: 4
     person: 4
 - model: georga.participant
   pk: 5
   fields:
-    role: 4
+    role: 5
     person: 5

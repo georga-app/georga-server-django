@@ -1,79 +1,79 @@
 - model: georga.personpropertygroup
+  pk: 1
   fields:
-    id: 0
-    codename: LANGUAGE
-    name: Language
-    organization: 0
-- model: georga.personpropertygroup
-  fields:
-    id: 1
     codename: LANGUAGE
     name: Language
     organization: 1
 - model: georga.personpropertygroup
+  pk: 2
   fields:
-    id: 2
+    codename: LANGUAGE
+    name: Language
+    organization: 2
+- model: georga.personpropertygroup
+  pk: 3
+  fields:
     codename: LICENSE
     name: License
-    organization: 0
-- model: georga.personpropertygroup
-  fields:
-    id: 3
-    codename: ADMINISTRATIVE
-    name: Administrative
     organization: 1
 - model: georga.personpropertygroup
+  pk: 4
   fields:
-    id: 4
     codename: ADMINISTRATIVE
     name: Administrative
     organization: 2
 - model: georga.personpropertygroup
+  pk: 5
   fields:
-    id: 5
-    codename: MEDICAL
-    name: Medical
-    organization: 0
+    codename: ADMINISTRATIVE
+    name: Administrative
+    organization: 3
 - model: georga.personpropertygroup
+  pk: 6
   fields:
-    id: 6
     codename: MEDICAL
     name: Medical
     organization: 1
 - model: georga.personpropertygroup
+  pk: 7
   fields:
-    id: 7
-    codename: TECHNICAL
-    name: Technical
-    organization: 1
+    codename: MEDICAL
+    name: Medical
+    organization: 2
 - model: georga.personpropertygroup
+  pk: 8
   fields:
-    id: 8
     codename: TECHNICAL
     name: Technical
     organization: 2
 - model: georga.personpropertygroup
+  pk: 9
   fields:
-    id: 9
-    codename: GENERAL
-    name: General
-    organization: 0
+    codename: TECHNICAL
+    name: Technical
+    organization: 3
 - model: georga.personpropertygroup
+  pk: 10
   fields:
-    id: 10
     codename: GENERAL
     name: General
     organization: 1
 - model: georga.personpropertygroup
+  pk: 11
   fields:
-    id: 11
     codename: GENERAL
     name: General
     organization: 2
 - model: georga.personpropertygroup
+  pk: 12
   fields:
-    id: 12
+    codename: GENERAL
+    name: General
+    organization: 3
+- model: georga.personpropertygroup
+  pk: 13
+  fields:
     codename: ADULT
     name: Adult
-    organization: 2
+    organization: 3
     selection_type: SINGLESELECT
