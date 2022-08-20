@@ -51,8 +51,6 @@ class ACL(MixinUUIDs, models.Model):
         to='Person',
         to_field='uuid',
         on_delete=models.CASCADE,
-        null=False,
-        blank=False,
         default=uuid.uuid4,
     )
 
@@ -87,23 +85,15 @@ class Device(MixinUUIDs, models.Model):
     organization = models.ForeignKey(
         to='Organization',
         on_delete=models.CASCADE,
-        null=False,
-        blank=False,
     )
     device_string = models.CharField(
         max_length=50,
-        null=False,
-        blank=False,
     )
     os_version = models.CharField(
         max_length=35,
-        null=False,
-        blank=False,
     )
     app_version = models.CharField(
         max_length=15,
-        null=False,
-        blank=False,
     )
     push_token = models.UUIDField(
         default=uuid.uuid4,
@@ -123,13 +113,9 @@ class Equipment(MixinUUIDs, models.Model):
     organization = models.ForeignKey(
         to='Organization',
         on_delete=models.CASCADE,
-        null=False,
-        blank=False,
     )
     name = models.CharField(
         max_length=30,
-        null=False,
-        blank=False,
         default='',
     )
     OWNER = [
@@ -159,8 +145,6 @@ class Location(MixinUUIDs, models.Model):
     organization = models.ForeignKey(
         to='Organization',
         on_delete=models.CASCADE,
-        null=False,
-        blank=False,
     )
     address = models.CharField(max_length=200)
     location_category = models.ForeignKey(
@@ -180,8 +164,6 @@ class LocationCategory(MixinUUIDs, models.Model):
     organization = models.ForeignKey(
         to='Organization',
         on_delete=models.CASCADE,
-        null=False,
-        blank=False,
     )
     name = models.CharField(
         max_length=50,
@@ -329,13 +311,9 @@ class Operation(MixinUUIDs, models.Model):
     project = models.ForeignKey(
         to='Project',
         on_delete=models.CASCADE,
-        null=False,
-        blank=False,
     )
     name = models.CharField(
         max_length=100,
-        null=False,
-        blank=False,
     )
     is_active = models.BooleanField(
         null=True,
@@ -374,8 +352,6 @@ class Operation(MixinUUIDs, models.Model):
 class Organization(MixinUUIDs, models.Model):
     name = models.CharField(
         max_length=50,
-        null=False,
-        blank=False,
     )
 
     acl = GenericRelation(
@@ -410,21 +386,16 @@ class Participant(MixinUUIDs, models.Model):
     role = models.ForeignKey(
         to='Role',
         on_delete=models.CASCADE,
-        null=False,
-        blank=False,
     )
     person = models.ForeignKey(
         to='Person',
         on_delete=models.CASCADE,
-        null=False,
-        blank=False,
     )
 
 
 class Person(MixinUUIDs, AbstractUser):
     email = models.EmailField(
         'email address',
-        blank=False,
         unique=True,
     )
     USERNAME_FIELD = 'email'
@@ -562,7 +533,6 @@ class Person(MixinUUIDs, AbstractUser):
 
     organizations_subscribed = models.ManyToManyField(
         to='Organization',
-        blank=False,
         verbose_name=_("organizations subscribed to"),
     )
 
@@ -605,8 +575,6 @@ class PersonProperty(MixinUUIDs, models.Model):
     organization = models.ForeignKey(
         to='Organization',
         on_delete=models.CASCADE,
-        null=False,
-        blank=False,
     )
     name = models.CharField(
         max_length=50,
@@ -627,8 +595,6 @@ class PersonProperty(MixinUUIDs, models.Model):
     necessity = models.CharField(
         max_length=11,
         choices=NECESSITIES,
-        null=False,
-        blank=False,
         default="RECOMMENDED",
         verbose_name=_("necessity"),
         # TODO: translate: "Erforderlichkeit"
@@ -650,8 +616,6 @@ class PersonPropertyGroup(MixinUUIDs, models.Model):
     organization = models.ForeignKey(
         to='Organization',
         on_delete=models.CASCADE,
-        null=False,
-        blank=False,
     )
     codename = models.CharField(
         max_length=30,
@@ -693,13 +657,9 @@ class Project(MixinUUIDs, models.Model):
     organization = models.ForeignKey(
         to='Organization',
         on_delete=models.CASCADE,
-        null=False,
-        blank=False,
     )
     name = models.CharField(
         max_length=50,
-        null=False,
-        blank=False,
     )
 
     acl = GenericRelation(
@@ -734,24 +694,16 @@ class Resource(MixinUUIDs, models.Model):
     shift = models.ForeignKey(
         to='Shift',
         on_delete=models.CASCADE,
-        null=False,
-        blank=False,
     )
     title = models.CharField(
         max_length=50,
-        null=False,
-        blank=False,
         default='',
     )
     description = models.CharField(
         max_length=50,
-        null=False,
-        blank=False,
     )
     personal_hint = models.CharField(
         max_length=50,
-        null=False,
-        blank=False,
     )
     equipment_needed = models.ManyToManyField(
         to='Equipment',
@@ -759,8 +711,6 @@ class Resource(MixinUUIDs, models.Model):
         related_name='equipment_needed',
     )
     amount = models.IntegerField(
-        null=False,
-        blank=False,
         verbose_name=_("Amount of resources desirable with this role"),
         default=1,
     )
@@ -778,13 +728,9 @@ class Role(MixinUUIDs, models.Model):
     shift = models.ForeignKey(
         to='Shift',
         on_delete=models.CASCADE,
-        null=False,
-        blank=False,
     )
     title = models.CharField(
         max_length=50,
-        null=False,
-        blank=False,
         default='',
     )
     description = models.CharField(
@@ -811,8 +757,6 @@ class RoleSpecification(MixinUUIDs, models.Model):
     role = models.ForeignKey(
         to='Role',
         on_delete=models.CASCADE,
-        null=False,
-        blank=False,
     )
     person_properties = models.ManyToManyField(
         to='PersonProperty',
@@ -838,15 +782,12 @@ class Shift(MixinUUIDs, models.Model):
     task = models.ForeignKey(
         to='Task',
         on_delete=models.CASCADE,
-        null=False,
-        blank=False,
     )
     enrollment_deadline = models.DateTimeField(
         default=datetime.now,
     )
     locations = models.ManyToManyField(
         to='Location',
-        blank=False,
         related_name='shift_locations',
     )
 
@@ -873,14 +814,10 @@ class Task(MixinUUIDs, models.Model):
     operation = models.ForeignKey(
         to='Operation',
         on_delete=models.CASCADE,
-        null=False,
-        blank=False,
     )
     task_field = models.ForeignKey(
         to='TaskField',
         on_delete=models.DO_NOTHING,
-        null=False,
-        blank=False,
     )
     roles = models.ManyToManyField(
         to='Role',
@@ -914,8 +851,6 @@ class Task(MixinUUIDs, models.Model):
     )
     title = models.CharField(
         max_length=100,
-        null=False,
-        blank=False,
     )
     description = models.CharField(
         max_length=1000,
@@ -979,13 +914,9 @@ class TaskField(MixinUUIDs, models.Model):
     organization = models.ForeignKey(
         to='Organization',
         on_delete=models.CASCADE,
-        null=False,
-        blank=False,
     )
     name = models.CharField(
         max_length=50,
-        null=False,
-        blank=False,
     )
     description = models.CharField(
         max_length=500,
