@@ -183,6 +183,46 @@ class LocationCategory(MixinUUIDs, models.Model):
         # e.g. operation location
 
 
+class PersonToObject(MixinUUIDs, models.Model):
+    person = models.ForeignKey(
+        to='Person',
+        to_field='uuid',
+        on_delete=models.CASCADE,
+        default=uuid.uuid4,
+    )
+
+    content_types = ['organization', 'project', 'operation', 'task', 'shift', 'message']
+    content_type = models.ForeignKey(
+        ContentType,
+        on_delete=models.CASCADE,
+        limit_choices_to={'model__in': content_types},
+    )
+    object_id = models.PositiveIntegerField()
+    relation_object = GenericForeignKey(
+        'content_type',
+        'object_id',
+    )
+
+    unnoticed = models.BooleanField(
+        default=True,
+    )
+    bookmarked = models.BooleanField(
+        default=False,
+    )
+
+    def clean(self):
+        super().clean()
+
+        # restrict foreign models of relation_object
+        label = self.content_type.app_label
+        model = self.content_type.model
+        valid_models = {'georga': self.content_types}
+        if label not in valid_models or model not in valid_models[label]:
+            raise ValidationError(
+                f"'{self.content_type.app_labeled_name}' is not a valid "
+                "content type for PersonToObject.relation_object")
+
+
 class Message(MixinUUIDs, models.Model):
     '''
     A Message is sent via different channels to registered persons.
@@ -574,39 +614,6 @@ class PersonPropertyGroup(MixinUUIDs, models.Model):
         verbose_name = _("group of person properties")
         verbose_name_plural = _("groups of person properties")
         # TODO: translate: PersonPropertyGroup
-
-
-class PersonToObject(MixinUUIDs, models.Model):
-    person = models.ForeignKey(
-        to='Person',
-        to_field='uuid',
-        on_delete=models.CASCADE,
-        null=False,
-        blank=False,
-        default=uuid.uuid4,
-    )
-    content_type = models.ForeignKey(
-        ContentType,
-        on_delete=models.CASCADE,
-    )
-    object_id = models.UUIDField(
-        default=uuid.uuid4,
-        editable=False,
-    )
-    access_object = GenericForeignKey(
-        'content_type',
-        'object_id',
-    )
-    unseen = models.BooleanField(
-        null=False,
-        blank=False,
-        default=True,
-    )
-    bookmarked = models.BooleanField(
-        null=False,
-        blank=False,
-        default=False,
-    )
 
 
 class Project(MixinUUIDs, models.Model):
