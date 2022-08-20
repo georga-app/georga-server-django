@@ -580,6 +580,78 @@ class DeleteLocationCategoryMutation(UUIDDjangoModelFormMutation):
         return cls(location_category=location_category, errors=[])
 
 
+# Message ----------------------------------------------------------------------
+
+# fields
+message_ro_fields = [
+    'uuid',
+    'category',
+    'priority',
+    'state',
+    'delivery_state',
+]
+message_wo_fields = [
+]
+message_rw_fields = [
+    'title',
+    'contents',
+
+]
+message_filter_fields = {
+    'id': LOOKUPS_ID,
+    'uuid': LOOKUPS_ID,
+    'state': LOOKUPS_ENUM,
+    'object_id': LOOKUPS_ID,
+    'content_type': LOOKUPS_CONNECTION,
+    'project__id': LOOKUPS_ID,
+}
+
+
+class MessageType(UUIDDjangoObjectType):
+    scope = Field('georga.schemas.MessageScopeUnion', required=True)
+
+    class Meta:
+        model = Message
+        fields = message_ro_fields + message_rw_fields
+        filter_fields = message_filter_fields
+        permissions = [login_required]
+
+
+# forms
+class MessageModelForm(UUIDModelForm):
+    class Meta:
+        model = Message
+        fields = message_wo_fields + message_rw_fields
+
+
+# mutations
+class CreateMessageMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = MessageModelForm
+        exclude_fields = ['id']
+        permissions = [staff_member_required]
+
+
+class UpdateMessageMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = MessageModelForm
+        required_fields = ['id']
+        permissions = [login_required]
+
+
+class DeleteMessageMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = MessageModelForm
+        only_fields = ['id']
+        permissions = [staff_member_required]
+
+    @classmethod
+    def perform_mutate(cls, form, info):
+        message = form.instance
+        message.delete()
+        return cls(message=message, errors=[])
+
+
 # Operation ----------------------------------------------------------------------
 
 # fields
@@ -1694,29 +1766,6 @@ class DeleteTaskFieldMutation(UUIDDjangoModelFormMutation):
 
 # Models with GenericForeignKeys ==============================================
 
-# Message ----------------------------------------------------------------------
-
-# fields
-message_ro_fields = [
-    'uuid',
-    'category',
-    'priority',
-    'state',
-    'delivery_state',
-]
-message_wo_fields = [
-]
-message_rw_fields = [
-    'title',
-    'contents',
-
-]
-message_filter_fields = {
-    'uuid': LOOKUPS_ID,
-    'object_id': LOOKUPS_ID,
-    'content_type': LOOKUPS_CONNECTION,
-    'project__id': LOOKUPS_ID,
-}
 
 
 # types
@@ -1725,49 +1774,7 @@ class MessageScopeUnion(Union):
         types = [OrganizationType, ProjectType, OperationType, TaskType, ShiftType]
 
 
-class MessageType(UUIDDjangoObjectType):
-    scope = Field(MessageScopeUnion, required=True)
-
     class Meta:
-        model = Message
-        fields = message_ro_fields + message_rw_fields
-        filter_fields = message_filter_fields
-        permissions = [login_required]
-
-
-# forms
-class MessageModelForm(UUIDModelForm):
-    class Meta:
-        model = Message
-        fields = message_wo_fields + message_rw_fields
-
-
-# cud mutations
-class CreateMessageMutation(UUIDDjangoModelFormMutation):
-    class Meta:
-        form_class = MessageModelForm
-        exclude_fields = ['id']
-        permissions = [staff_member_required]
-
-
-class UpdateMessageMutation(UUIDDjangoModelFormMutation):
-    class Meta:
-        form_class = MessageModelForm
-        required_fields = ['id']
-        permissions = [login_required]
-
-
-class DeleteMessageMutation(UUIDDjangoModelFormMutation):
-    class Meta:
-        form_class = MessageModelForm
-        only_fields = ['id']
-        permissions = [staff_member_required]
-
-    @classmethod
-    def perform_mutate(cls, form, info):
-        message = form.instance
-        message.delete()
-        return cls(message=message, errors=[])
 
 
 # Subscriptions ===============================================================
