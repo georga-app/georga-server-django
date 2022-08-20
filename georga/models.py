@@ -35,16 +35,16 @@ class MixinUUIDs(models.Model):
 # --- CLASSES
 
 class ACL(MixinUUIDs, models.Model):
-    content_types = ['organization', 'project', 'operation']
-    content_type = models.ForeignKey(
+    access_object_cts = ['organization', 'project', 'operation']
+    access_object_ct = models.ForeignKey(
         ContentType,
         on_delete=models.CASCADE,
-        limit_choices_to={'model__in': content_types},
+        limit_choices_to={'model__in': access_object_cts},
     )
-    object_id = models.PositiveIntegerField()
+    access_object_id = models.PositiveIntegerField()
     access_object = GenericForeignKey(
-        'content_type',
-        'object_id',
+        'access_object_ct',
+        'access_object_id',
     )
 
     person = models.ForeignKey(
@@ -65,19 +65,19 @@ class ACL(MixinUUIDs, models.Model):
 
     class Meta:
         indexes = [
-            models.Index(fields=["content_type", "object_id"]),
+            models.Index(fields=["access_object_ct", "access_object_id"]),
         ]
 
     def clean(self):
         super().clean()
 
         # restrict foreign models of access object
-        label = self.content_type.app_label
-        model = self.content_type.model
-        valid_models = {'georga': self.content_types}
+        label = self.access_object_ct.app_label
+        model = self.access_object_ct.model
+        valid_models = {'georga': self.access_object_cts}
         if label not in valid_models or model not in valid_models[label]:
             raise ValidationError(
-                f"'{self.content_type.app_labeled_name}' is not a valid "
+                f"'{self.access_object_ct.app_labeled_name}' is not a valid "
                 "content type for ACL.access_object")
 
 
@@ -184,16 +184,17 @@ class PersonToObject(MixinUUIDs, models.Model):
         default=uuid.uuid4,
     )
 
-    content_types = ['organization', 'project', 'operation', 'task', 'shift', 'role', 'message']
-    content_type = models.ForeignKey(
+    relation_object_cts = [
+        'organization', 'project', 'operation', 'task', 'shift', 'role', 'message']
+    relation_object_ct = models.ForeignKey(
         ContentType,
         on_delete=models.CASCADE,
-        limit_choices_to={'model__in': content_types},
+        limit_choices_to={'model__in': relation_object_cts},
     )
-    object_id = models.PositiveIntegerField()
+    relation_object_id = models.PositiveIntegerField()
     relation_object = GenericForeignKey(
-        'content_type',
-        'object_id',
+        'relation_object_ct',
+        'relation_object_id',
     )
 
     unnoticed = models.BooleanField(
@@ -203,16 +204,21 @@ class PersonToObject(MixinUUIDs, models.Model):
         default=False,
     )
 
+    class Meta:
+        indexes = [
+            models.Index(fields=["relation_object_ct", "relation_object_id"]),
+        ]
+
     def clean(self):
         super().clean()
 
         # restrict foreign models of relation_object
-        label = self.content_type.app_label
-        model = self.content_type.model
-        valid_models = {'georga': self.content_types}
+        label = self.relation_object_ct.app_label
+        model = self.relation_object_ct.model
+        valid_models = {'georga': self.relation_object_cts}
         if label not in valid_models or model not in valid_models[label]:
             raise ValidationError(
-                f"'{self.content_type.app_labeled_name}' is not a valid "
+                f"'{self.relation_object_ct.app_labeled_name}' is not a valid "
                 "content type for PersonToObject.relation_object")
 
 
@@ -227,16 +233,16 @@ class Message(MixinUUIDs, models.Model):
     - alert: triggered by the system by cronjobs based on analysis
     - activity: on change of objects, which are relevant to the persons
     '''
-    content_types = ['organization', 'project', 'operation', 'task', 'shift']
-    content_type = models.ForeignKey(
+    scope_cts = ['organization', 'project', 'operation', 'task', 'shift']
+    scope_ct = models.ForeignKey(
         ContentType,
         on_delete=models.CASCADE,
-        limit_choices_to={'model__in': content_types},
+        limit_choices_to={'model__in': scope_cts},
     )
-    object_id = models.PositiveIntegerField()
+    scope_id = models.PositiveIntegerField()
     scope = GenericForeignKey(
-        'content_type',
-        'object_id',
+        'scope_ct',
+        'scope_id',
     )
 
     title = models.CharField(
@@ -289,21 +295,26 @@ class Message(MixinUUIDs, models.Model):
 
     person_attributes = GenericRelation(
         PersonToObject,
-        content_type_field='content_type',
-        object_id_field='object_id',
+        content_type_field='relation_object_ct',
+        object_id_field='relation_object_id',
         related_query_name='message'
     )
+
+    class Meta:
+        indexes = [
+            models.Index(fields=["scope_ct", "scope_id"]),
+        ]
 
     def clean(self):
         super().clean()
 
         # restrict foreign models of scope
-        label = self.content_type.app_label
-        model = self.content_type.model
-        valid_models = {'georga': self.content_types}
+        label = self.scope_ct.app_label
+        model = self.scope_ct.model
+        valid_models = {'georga': self.scope_cts}
         if label not in valid_models or model not in valid_models[label]:
             raise ValidationError(
-                f"'{self.content_type.app_labeled_name}' is not a valid "
+                f"'{self.scope_ct.app_labeled_name}' is not a valid "
                 "content type for Message.scope")
 
 
@@ -323,20 +334,20 @@ class Operation(MixinUUIDs, models.Model):
 
     acl = GenericRelation(
         ACL,
-        content_type_field='content_type',
-        object_id_field='object_id',
+        content_type_field='access_object_ct',
+        object_id_field='access_object_id',
         related_query_name='operation'
     )
     messages = GenericRelation(
         Message,
-        content_type_field='content_type',
-        object_id_field='object_id',
+        content_type_field='scope_ct',
+        object_id_field='scope_id',
         related_query_name='operation'
     )
     person_attributes = GenericRelation(
         PersonToObject,
-        content_type_field='content_type',
-        object_id_field='object_id',
+        content_type_field='relation_object_ct',
+        object_id_field='relation_object_id',
         related_query_name='operation'
     )
 
@@ -356,20 +367,20 @@ class Organization(MixinUUIDs, models.Model):
 
     acl = GenericRelation(
         ACL,
-        content_type_field='content_type',
-        object_id_field='object_id',
+        content_type_field='access_object_ct',
+        object_id_field='access_object_id',
         related_query_name='organisation'
     )
     messages = GenericRelation(
         Message,
-        content_type_field='content_type',
-        object_id_field='object_id',
+        content_type_field='scope_ct',
+        object_id_field='scope_id',
         related_query_name='organisation'
     )
     person_attributes = GenericRelation(
         PersonToObject,
-        content_type_field='content_type',
-        object_id_field='object_id',
+        content_type_field='relation_object_ct',
+        object_id_field='relation_object_id',
         related_query_name='organisation'
     )
 
@@ -550,8 +561,8 @@ class Person(MixinUUIDs, AbstractUser):
 
     object_attributes = GenericRelation(
         PersonToObject,
-        content_type_field='content_type',
-        object_id_field='object_id',
+        content_type_field='relation_object_ct',
+        object_id_field='relation_object_id',
         related_query_name='person'
     )
 
@@ -664,20 +675,20 @@ class Project(MixinUUIDs, models.Model):
 
     acl = GenericRelation(
         ACL,
-        content_type_field='content_type',
-        object_id_field='object_id',
+        content_type_field='access_object_ct',
+        object_id_field='access_object_id',
         related_query_name='project'
     )
     messages = GenericRelation(
         Message,
-        content_type_field='content_type',
-        object_id_field='object_id',
+        content_type_field='scope_ct',
+        object_id_field='scope_id',
         related_query_name='project'
     )
     person_attributes = GenericRelation(
         PersonToObject,
-        content_type_field='content_type',
-        object_id_field='object_id',
+        content_type_field='relation_object_ct',
+        object_id_field='relation_object_id',
         related_query_name='project'
     )
 
@@ -746,8 +757,8 @@ class Role(MixinUUIDs, models.Model):
 
     person_attributes = GenericRelation(
         PersonToObject,
-        content_type_field='content_type',
-        object_id_field='object_id',
+        content_type_field='relation_object_ct',
+        object_id_field='relation_object_id',
         related_query_name='role'
     )
 
@@ -800,14 +811,14 @@ class Shift(MixinUUIDs, models.Model):
 
     messages = GenericRelation(
         Message,
-        content_type_field='content_type',
-        object_id_field='object_id',
+        content_type_field='scope_ct',
+        object_id_field='scope_id',
         related_query_name='shift'
     )
     person_attributes = GenericRelation(
         PersonToObject,
-        content_type_field='content_type',
-        object_id_field='object_id',
+        content_type_field='relation_object_ct',
+        object_id_field='relation_object_id',
         related_query_name='shift'
     )
 
@@ -897,14 +908,14 @@ class Task(MixinUUIDs, models.Model):
 
     messages = GenericRelation(
         Message,
-        content_type_field='content_type',
-        object_id_field='object_id',
+        content_type_field='scope_ct',
+        object_id_field='scope_id',
         related_query_name='task'
     )
     person_attributes = GenericRelation(
         PersonToObject,
-        content_type_field='content_type',
-        object_id_field='object_id',
+        content_type_field='relation_object_ct',
+        object_id_field='relation_object_id',
         related_query_name='task'
     )
 

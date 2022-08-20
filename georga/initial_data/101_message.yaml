@@ -7,8 +7,8 @@
     category: ALERT
     state: DRAFT
     delivery_state: NONE
-    content_type: ["georga", "shift"]
-    object_id: 1
+    scope_ct: ["georga", "shift"]
+    scope_id: 1
 - model: georga.message
   pk: 2
   fields:
@@ -18,8 +18,8 @@
     category: ALERT
     state: PUBLISHED
     delivery_state: SENT_SUCCESSFULLY
-    content_type: ["georga", "organization"]
-    object_id: 1
+    scope_ct: ["georga", "organization"]
+    scope_id: 1
 - model: georga.message
   pk: 3
   fields:
@@ -29,8 +29,8 @@
     category: NEWS
     state: PUBLISHED
     delivery_state: SENT
-    content_type: ["georga", "project"]
-    object_id: 1
+    scope_ct: ["georga", "project"]
+    scope_id: 1
 - model: georga.message
   pk: 4
   fields:
@@ -40,16 +40,20 @@
     category: ACTIVITY
     state: PUBLISHED
     delivery_state: SENT
-    content_type: ["georga", "task"]
-    object_id: 1
+    scope_ct: ["georga", "task"]
+    scope_id: 1
 - model: georga.message
   pk: 5
   fields:
     title: "Räuber Hotzenplotz"
     contents: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet."
     priority: ONNEWS
+    scope_ct: ["georga", "operation"]
+    scope_id: 1
     category: ACTIVITY
     state: DRAFT
     delivery_state: NONE
     content_type: ["georga", "operation"]
     object_id: 1
+    scope_ct: ["georga", "operation"]
+    scope_id: 1

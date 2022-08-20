@@ -325,8 +325,6 @@ LOOKUPS_DATETIME = [
 # fields
 acl_ro_fields = [
     'uuid',
-    'content_type',
-    'object_id',
 ]
 acl_wo_fields = [
 ]
@@ -598,8 +596,8 @@ message_filter_fields = {
     'id': LOOKUPS_ID,
     'uuid': LOOKUPS_ID,
     'state': LOOKUPS_ENUM,
-    'object_id': LOOKUPS_ID,
-    'content_type': LOOKUPS_CONNECTION,
+    'scope_id': LOOKUPS_ID,
+    'scope_ct': LOOKUPS_CONNECTION,
     'project__id': LOOKUPS_ID,
 }
 
@@ -1230,8 +1228,6 @@ class DeletePersonPropertyGroupMutation(UUIDDjangoModelFormMutation):
 # fields
 person_to_object_ro_fields = [
     'uuid',
-    'content_type',
-    'object_id',
 ]
 person_to_object_wo_fields = [
 ]
