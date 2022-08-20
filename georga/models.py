@@ -49,9 +49,7 @@ class ACL(MixinUUIDs, models.Model):
 
     person = models.ForeignKey(
         to='Person',
-        to_field='uuid',
         on_delete=models.CASCADE,
-        default=uuid.uuid4,
     )
 
     ACL_CODENAMES = [
@@ -179,9 +177,7 @@ class LocationCategory(MixinUUIDs, models.Model):
 class PersonToObject(MixinUUIDs, models.Model):
     person = models.ForeignKey(
         to='Person',
-        to_field='uuid',
         on_delete=models.CASCADE,
-        default=uuid.uuid4,
     )
 
     relation_object_cts = [
