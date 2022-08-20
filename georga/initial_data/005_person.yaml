@@ -1,11 +1,12 @@
 # password for all demo users: georga
+# super admin
 - model: georga.person
   pk: 1
   fields:
     password: pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
     last_login: null
     is_superuser: true
-    username: admin
+    username: admin@georga.test
     first_name: 'Admin'
     last_name: 'admin'
     is_staff: true
@@ -15,21 +16,25 @@
     person_properties: [2, 5, 7, 10]
     organizations_subscribed: [1, 2, 3]
     is_active: true
+
+# helper
 - model: georga.person
   pk: 2
   fields:
     password: pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
     last_login: null
     is_superuser: false
-    username: simpleuser
-    first_name: 'Simple'
+    username: helper@georga.test
+    first_name: 'Helper'
     last_name: 'User'
     is_staff: false
     date_joined: 2022-03-13 16:13:36.048326+00:00
-    email: simpleuser@georga.test
+    email: helper@georga.test
     password_modified: 2022-03-13 16:13:36.048338+00:00
     organizations_subscribed: [1, 2, 3]
     is_active: true
+
+# staff
 - model: georga.person
   pk: 3
   fields:
@@ -37,12 +42,12 @@
     password: pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
     last_login: null
     is_superuser: false
-    username: staffuser
-    first_name: 'Staff'
-    last_name: 'User'
+    username: organization@georga.test
+    first_name: 'Organization'
+    last_name: 'Admin'
     is_staff: true
     date_joined: 2022-03-13 16:13:36.048326+00:00
-    email: staffuser@georga.test
+    email: organization@georga.test
     password_modified: 2022-03-13 16:13:36.048338+00:00
     person_properties: [3, 16, 21, 23]
     organizations_subscribed: [1]
@@ -54,12 +59,12 @@
     password: pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
     last_login: null
     is_superuser: false
-    username: staffuser2
-    first_name: 'Staff'
-    last_name: 'User'
+    username: project@georga.test
+    first_name: 'Project'
+    last_name: 'Admin'
     is_staff: true
     date_joined: 2022-03-13 16:13:36.048326+00:00
-    email: staffuser2@georga.test
+    email: project@georga.test
     password_modified: 2022-03-13 16:13:36.048338+00:00
     person_properties: [4, 26]
     organizations_subscribed: [2, 3]
@@ -71,12 +76,12 @@
     password: pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
     last_login: null
     is_superuser: false
-    username: staffuser3
-    first_name: 'Staff'
-    last_name: 'User'
+    username: operation@georga.test
+    first_name: 'Operation'
+    last_name: 'Admin'
     is_staff: true
     date_joined: 2022-03-13 16:13:36.048326+00:00
-    email: staffuser3@georga.test
+    email: operation@georga.test
     password_modified: 2022-03-13 16:13:36.048338+00:00
     person_properties: [7, 10]
     organizations_subscribed: [3]

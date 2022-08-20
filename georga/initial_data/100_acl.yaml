@@ -1,6 +1,18 @@
 - model: georga.acl
   pk: 1
   fields:
-    content_type: ["georga", "project"]
-    object_id: 1
-    person: "492902cf-621a-495a-ac55-319644c1174a"
+    access_object_ct: ["georga", "organization"]
+    access_object_id: 1
+    person: 3
+- model: georga.acl
+  pk: 2
+  fields:
+    access_object_ct: ["georga", "project"]
+    access_object_id: 1
+    person: 4
+- model: georga.acl
+  pk: 3
+  fields:
+    access_object_ct: ["georga", "operation"]
+    access_object_id: 1
+    person: 5
