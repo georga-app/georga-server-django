@@ -320,7 +320,7 @@ LOOKUPS_DATETIME = [
 
 # Models ======================================================================
 
-# ACL ----------------------------------------------------------------------
+# ACL -------------------------------------------------------------------------
 
 # fields
 acl_ro_fields = [
@@ -352,14 +352,13 @@ class ACLType(UUIDDjangoObjectType):
 
 
 # forms
-
 class ACLModelForm(UUIDModelForm):
     class Meta:
         model = ACL
         fields = acl_wo_fields + acl_rw_fields
 
 
-# cud mutations
+# mutations
 class CreateACLMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = ACLModelForm
@@ -419,14 +418,13 @@ class DeviceType(UUIDDjangoObjectType):
 
 
 # forms
-
 class DeviceModelForm(UUIDModelForm):
     class Meta:
         model = Device
         fields = device_wo_fields + device_rw_fields
 
 
-# cud mutations
+# mutations
 class CreateDeviceMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = DeviceModelForm
@@ -454,7 +452,7 @@ class DeleteDeviceMutation(UUIDDjangoModelFormMutation):
         return cls(device=device, errors=[])
 
 
-# Equipment -----------------------------------------------------------
+# Equipment -------------------------------------------------------------------
 
 # fields
 equipment_ro_fields = [
@@ -482,8 +480,7 @@ class EquipmentType(UUIDDjangoObjectType):
 
 
 # forms
-# cud mutations
-# flow mutations
+# mutations
 
 
 # Location --------------------------------------------------------------------
@@ -515,11 +512,10 @@ class LocationType(UUIDDjangoObjectType):
 
 
 # forms
-# cud mutations
-# flow mutations
+# mutations
 
 
-# LocationCategory ----------------------------------------------------------------------
+# LocationCategory ------------------------------------------------------------
 
 # fields
 location_category_ro_fields = [
@@ -547,14 +543,13 @@ class LocationCategoryType(UUIDDjangoObjectType):
 
 
 # forms
-
 class LocationCategoryModelForm(UUIDModelForm):
     class Meta:
         model = LocationCategory
         fields = location_category_wo_fields + location_category_rw_fields
 
 
-# cud mutations
+# mutations
 class CreateLocationCategoryMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = LocationCategoryModelForm
@@ -582,7 +577,7 @@ class DeleteLocationCategoryMutation(UUIDDjangoModelFormMutation):
         return cls(location_category=location_category, errors=[])
 
 
-# Message ----------------------------------------------------------------------
+# Message ---------------------------------------------------------------------
 
 # fields
 message_ro_fields = [
@@ -654,7 +649,7 @@ class DeleteMessageMutation(UUIDDjangoModelFormMutation):
         return cls(message=message, errors=[])
 
 
-# Operation ----------------------------------------------------------------------
+# Operation -------------------------------------------------------------------
 
 # fields
 operation_ro_fields = [
@@ -687,14 +682,13 @@ class OperationType(UUIDDjangoObjectType):
 
 
 # forms
-
 class OperationModelForm(UUIDModelForm):
     class Meta:
         model = Operation
         fields = operation_wo_fields + operation_rw_fields
 
 
-# cud mutations
+# mutations
 class CreateOperationMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = OperationModelForm
@@ -722,7 +716,7 @@ class DeleteOperationMutation(UUIDDjangoModelFormMutation):
         return cls(operation=operation, errors=[])
 
 
-# Organization ----------------------------------------------------------------------
+# Organization ----------------------------------------------------------------
 
 # fields
 organization_ro_fields = [
@@ -753,14 +747,13 @@ class OrganizationType(UUIDDjangoObjectType):
 
 
 # forms
-
 class OrganizationModelForm(UUIDModelForm):
     class Meta:
         model = Organization
         fields = organization_wo_fields + organization_rw_fields
 
 
-# cud mutations
+# mutations
 class CreateOrganizationMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = OrganizationModelForm
@@ -788,7 +781,7 @@ class DeleteOrganizationMutation(UUIDDjangoModelFormMutation):
         return cls(organization=organization, errors=[])
 
 
-# Participant ----------------------------------------------------------------------
+# Participant -----------------------------------------------------------------
 
 # fields
 participant_ro_fields = [
@@ -816,14 +809,13 @@ class ParticipantType(UUIDDjangoObjectType):
 
 
 # forms
-
 class ParticipantModelForm(UUIDModelForm):
     class Meta:
         model = Participant
         fields = participant_wo_fields + participant_rw_fields
 
 
-# cud mutations
+# mutations
 class CreateParticipantMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = ParticipantModelForm
@@ -850,8 +842,6 @@ class DeleteParticipantMutation(UUIDDjangoModelFormMutation):
         participant.delete()
         return cls(participant=participant, errors=[])
 
-
-# Project ----------------------------------------------------------------------
 
 # Person ----------------------------------------------------------------------
 
@@ -942,7 +932,7 @@ class PersonTokenModelForm(PersonModelForm):
     ])
 
 
-# cud mutations
+# mutations
 class CreatePersonMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = PersonModelForm
@@ -970,7 +960,6 @@ class DeletePersonMutation(UUIDDjangoModelFormMutation):
         return cls(person=person, errors=[])
 
 
-# flow mutations
 class RegisterPersonMutation(UUIDDjangoModelFormMutation):
     id = ID()
 
@@ -1103,7 +1092,7 @@ class ResetPasswordMutation(UUIDDjangoModelFormMutation):
         return cls(id=person.gid, errors=[])
 
 
-# PersonProperty -------------------------------------------------------
+# PersonProperty --------------------------------------------------------------
 
 # fields
 person_property_ro_fields = [
@@ -1142,7 +1131,7 @@ class PersonPropertyModelForm(UUIDModelForm):
         fields = person_property_wo_fields + person_property_rw_fields
 
 
-# cud mutations
+# mutations
 class CreatePersonPropertyMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = PersonPropertyModelForm
@@ -1170,10 +1159,7 @@ class DeletePersonPropertyMutation(UUIDDjangoModelFormMutation):
         return cls(person_property=person_property, errors=[])
 
 
-# flow mutations
-
-
-# PersonPropertyGroup ----------------------------------------------------------------------
+# PersonPropertyGroup ---------------------------------------------------------
 
 # fields
 person_property_group_ro_fields = [
@@ -1205,14 +1191,13 @@ class PersonPropertyGroupType(UUIDDjangoObjectType):
 
 
 # forms
-
 class PersonPropertyGroupModelForm(UUIDModelForm):
     class Meta:
         model = PersonPropertyGroup
         fields = person_property_group_wo_fields + person_property_group_rw_fields
 
 
-# cud mutations
+# mutations
 class CreatePersonPropertyGroupMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = PersonPropertyGroupModelForm
@@ -1240,7 +1225,7 @@ class DeletePersonPropertyGroupMutation(UUIDDjangoModelFormMutation):
         return cls(person_property_group=person_property_group, errors=[])
 
 
-# PersonToObject ----------------------------------------------------------------------
+# PersonToObject --------------------------------------------------------------
 
 # fields
 person_to_object_ro_fields = [
@@ -1273,14 +1258,13 @@ class PersonToObjectType(UUIDDjangoObjectType):
 
 
 # forms
-
 class PersonToObjectModelForm(UUIDModelForm):
     class Meta:
         model = PersonToObject
         fields = person_to_object_wo_fields + person_to_object_rw_fields
 
 
-# cud mutations
+# mutations
 class CreatePersonToObjectMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = PersonToObjectModelForm
@@ -1308,7 +1292,7 @@ class DeletePersonToObjectMutation(UUIDDjangoModelFormMutation):
         return cls(person_to_object=person_to_object, errors=[])
 
 
-# Project ----------------------------------------------------------------------
+# Project ---------------------------------------------------------------------
 
 # fields
 project_ro_fields = [
@@ -1340,14 +1324,13 @@ class ProjectType(UUIDDjangoObjectType):
 
 
 # forms
-
 class ProjectModelForm(UUIDModelForm):
     class Meta:
         model = Project
         fields = project_wo_fields + project_rw_fields
 
 
-# cud mutations
+# mutations
 class CreateProjectMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = ProjectModelForm
@@ -1375,7 +1358,7 @@ class DeleteProjectMutation(UUIDDjangoModelFormMutation):
         return cls(project=project, errors=[])
 
 
-# Resource ----------------------------------------------------------------------
+# Resource --------------------------------------------------------------------
 
 # fields
 resource_ro_fields = [
@@ -1406,14 +1389,13 @@ class ResourceType(UUIDDjangoObjectType):
 
 
 # forms
-
 class ResourceModelForm(UUIDModelForm):
     class Meta:
         model = Resource
         fields = resource_wo_fields + resource_rw_fields
 
 
-# cud mutations
+# mutations
 class CreateResourceMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = ResourceModelForm
@@ -1441,7 +1423,7 @@ class DeleteResourceMutation(UUIDDjangoModelFormMutation):
         return cls(resource=resource, errors=[])
 
 
-# Role ----------------------------------------------------------------------
+# Role ------------------------------------------------------------------------
 
 # fields
 role_ro_fields = [
@@ -1473,14 +1455,13 @@ class RoleType(UUIDDjangoObjectType):
 
 
 # forms
-
 class RoleModelForm(UUIDModelForm):
     class Meta:
         model = Role
         fields = role_wo_fields + role_rw_fields
 
 
-# cud mutations
+# mutations
 class CreateRoleMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = RoleModelForm
@@ -1508,7 +1489,7 @@ class DeleteRoleMutation(UUIDDjangoModelFormMutation):
         return cls(role=role, errors=[])
 
 
-# RoleSpecification ----------------------------------------------------------------------
+# RoleSpecification -----------------------------------------------------------
 
 # fields
 role_specification_ro_fields = [
@@ -1536,14 +1517,13 @@ class RoleSpecificationType(UUIDDjangoObjectType):
 
 
 # forms
-
 class RoleSpecificationModelForm(UUIDModelForm):
     class Meta:
         model = RoleSpecification
         fields = role_specification_wo_fields + role_specification_rw_fields
 
 
-# cud mutations
+# mutations
 class CreateRoleSpecificationMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = RoleSpecificationModelForm
@@ -1571,7 +1551,7 @@ class DeleteRoleSpecificationMutation(UUIDDjangoModelFormMutation):
         return cls(role_specification=role, errors=[])
 
 
-# Shift ----------------------------------------------------------------------
+# Shift -----------------------------------------------------------------------
 
 # fields
 shift_ro_fields = [
@@ -1606,14 +1586,13 @@ class ShiftType(UUIDDjangoObjectType):
 
 
 # forms
-
 class ShiftModelForm(UUIDModelForm):
     class Meta:
         model = Shift
         fields = shift_wo_fields + shift_rw_fields
 
 
-# cud mutations
+# mutations
 class CreateShiftMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = ShiftModelForm
@@ -1641,7 +1620,7 @@ class DeleteShiftMutation(UUIDDjangoModelFormMutation):
         return cls(shift=shift, errors=[])
 
 
-# Task ----------------------------------------------------------------------
+# Task ------------------------------------------------------------------------
 
 # fields
 task_ro_fields = [
@@ -1687,14 +1666,13 @@ class TaskType(UUIDDjangoObjectType):
 
 
 # forms
-
 class TaskModelForm(UUIDModelForm):
     class Meta:
         model = Task
         fields = task_wo_fields + task_rw_fields
 
 
-# cud mutations
+# mutations
 class CreateTaskMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = TaskModelForm
@@ -1722,7 +1700,7 @@ class DeleteTaskMutation(UUIDDjangoModelFormMutation):
         return cls(task=task, errors=[])
 
 
-# TaskField ----------------------------------------------------------------------
+# TaskField -------------------------------------------------------------------
 
 # fields
 task_field_ro_fields = [
@@ -1751,14 +1729,13 @@ class TaskFieldType(UUIDDjangoObjectType):
 
 
 # forms
-
 class TaskFieldModelForm(UUIDModelForm):
     class Meta:
         model = TaskField
         fields = task_field_wo_fields + task_field_rw_fields
 
 
-# cud mutations
+# mutations
 class CreateTaskFieldMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = TaskFieldModelForm
