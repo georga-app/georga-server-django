@@ -576,13 +576,6 @@ class Person(MixinUUIDs, AbstractUser):
         verbose_name=_("resources provided")
     )
 
-    object_attributes = GenericRelation(
-        PersonToObject,
-        content_type_field='relation_object_ct',
-        object_id_field='relation_object_id',
-        related_query_name='person'
-    )
-
     def __name__(self):
         return self.email
 
