@@ -6,7 +6,9 @@
     priority: IMPORTANT
     category: NEWS
     state: DRAFT
-    delivery_state: NONE
+    delivery_state_email: NONE
+    delivery_state_push: NONE
+    delivery_state_sms: NONE
     scope_ct: ["georga", "shift"]
     scope_id: 1
 - model: georga.message
@@ -17,7 +19,9 @@
     priority: URGENT
     category: NEWS
     state: PUBLISHED
-    delivery_state: SENT_SUCCESSFULLY
+    delivery_state_email: SENT_SUCCESSFULLY
+    delivery_state_push: SENT_SUCCESSFULLY
+    delivery_state_sms: SENT_SUCCESSFULLY
     scope_ct: ["georga", "organization"]
     scope_id: 1
 - model: georga.message
@@ -28,7 +32,9 @@
     priority: IMPORTANT
     category: ALERT
     state: PUBLISHED
-    delivery_state: SENT
+    delivery_state_email: SENT
+    delivery_state_push: SENT
+    delivery_state_sms: SENT
     scope_ct: ["georga", "project"]
     scope_id: 1
 - model: georga.message
@@ -39,7 +45,9 @@
     priority: NORMAL
     category: ACTIVITY
     state: PUBLISHED
-    delivery_state: SENT
+    delivery_state_email: PENDING
+    delivery_state_push: PENDING
+    delivery_state_sms: PENDING
     scope_ct: ["georga", "task"]
     scope_id: 1
 - model: georga.message
@@ -48,12 +56,23 @@
     title: "Räuber Hotzenplotz"
     contents: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet."
     priority: NORMAL
-    scope_ct: ["georga", "operation"]
-    scope_id: 1
     category: ACTIVITY
     state: DRAFT
-    delivery_state: NONE
-    content_type: ["georga", "operation"]
-    object_id: 1
+    delivery_state_email: SENT_ERROR
+    delivery_state_push: SENT_ERROR
+    delivery_state_sms: SENT_ERROR
+    scope_ct: ["georga", "operation"]
+    scope_id: 1
+- model: georga.message
+  pk: 6
+  fields:
+    title: "Momo"
+    contents: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet."
+    priority: NORMAL
+    category: ACTIVITY
+    state: DRAFT
+    delivery_state_email: PENDING
+    delivery_state_push: SENT
+    delivery_state_sms: SENT_ERROR
     scope_ct: ["georga", "operation"]
     scope_id: 1
