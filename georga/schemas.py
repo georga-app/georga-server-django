@@ -342,6 +342,8 @@ acl_filter_fields = {
 
 # types
 class ACLType(UUIDDjangoObjectType):
+    access_object = Field('georga.schemas.ACLAccessObjectUnion', required=True)
+
     class Meta:
         model = ACL
         fields = acl_ro_fields + acl_rw_fields
@@ -673,6 +675,10 @@ operation_filter_fields = {
 
 # types
 class OperationType(UUIDDjangoObjectType):
+    acl = UUIDDjangoFilterConnectionField('georga.schemas.ACLType')
+    messages = UUIDDjangoFilterConnectionField('georga.schemas.MessageType')
+    person_attributes = UUIDDjangoFilterConnectionField('georga.schemas.PersonToObjectType')
+
     class Meta:
         model = Operation
         fields = operation_ro_fields + operation_rw_fields
@@ -735,6 +741,10 @@ organization_filter_fields = {
 
 # types
 class OrganizationType(UUIDDjangoObjectType):
+    acl = UUIDDjangoFilterConnectionField('georga.schemas.ACLType')
+    messages = UUIDDjangoFilterConnectionField('georga.schemas.MessageType')
+    person_attributes = UUIDDjangoFilterConnectionField('georga.schemas.PersonToObjectType')
+
     class Meta:
         model = Organization
         fields = organization_ro_fields + organization_rw_fields
@@ -1253,6 +1263,8 @@ person_to_object_filter_fields = {
 
 # types
 class PersonToObjectType(UUIDDjangoObjectType):
+    relation_object = Field('georga.schemas.PersonToObjectRelationObjectUnion', required=True)
+
     class Meta:
         model = PersonToObject
         fields = person_to_object_ro_fields + person_to_object_rw_fields
@@ -1301,7 +1313,6 @@ class DeletePersonToObjectMutation(UUIDDjangoModelFormMutation):
 # fields
 project_ro_fields = [
     'uuid',
-    'messages',
 ]
 project_wo_fields = [
 ]
@@ -1312,12 +1323,15 @@ project_rw_fields = [
 project_filter_fields = {
     'id': LOOKUPS_ID,
     'uuid': LOOKUPS_ID,
-    'messages__state': LOOKUPS_ENUM,
 }
 
 
 # types
 class ProjectType(UUIDDjangoObjectType):
+    acl = UUIDDjangoFilterConnectionField('georga.schemas.ACLType')
+    messages = UUIDDjangoFilterConnectionField('georga.schemas.MessageType')
+    person_attributes = UUIDDjangoFilterConnectionField('georga.schemas.PersonToObjectType')
+
     class Meta:
         model = Project
         fields = project_ro_fields + project_rw_fields
@@ -1449,6 +1463,8 @@ role_filter_fields = {
 
 # types
 class RoleType(UUIDDjangoObjectType):
+    person_attributes = UUIDDjangoFilterConnectionField('georga.schemas.PersonToObjectType')
+
     class Meta:
         model = Role
         fields = role_ro_fields + role_rw_fields
@@ -1579,6 +1595,9 @@ shift_filter_fields = {
 
 # types
 class ShiftType(UUIDDjangoObjectType):
+    messages = UUIDDjangoFilterConnectionField('georga.schemas.MessageType')
+    person_attributes = UUIDDjangoFilterConnectionField('georga.schemas.PersonToObjectType')
+
     class Meta:
         model = Shift
         fields = shift_ro_fields + shift_rw_fields
@@ -1657,6 +1676,9 @@ task_filter_fields = {
 
 # types
 class TaskType(UUIDDjangoObjectType):
+    messages = UUIDDjangoFilterConnectionField('georga.schemas.MessageType')
+    person_attributes = UUIDDjangoFilterConnectionField('georga.schemas.PersonToObjectType')
+
     class Meta:
         model = Task
         fields = task_ro_fields + task_rw_fields
