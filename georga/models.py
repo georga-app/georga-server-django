@@ -89,7 +89,6 @@ class Device(MixinUUIDs, models.Model):
         on_delete=models.CASCADE,
         null=False,
         blank=False,
-        default=0,
     )
     device_string = models.CharField(
         max_length=50,
@@ -126,7 +125,6 @@ class Equipment(MixinUUIDs, models.Model):
         on_delete=models.CASCADE,
         null=False,
         blank=False,
-        default=0,
     )
     name = models.CharField(
         max_length=30,
@@ -163,7 +161,6 @@ class Location(MixinUUIDs, models.Model):
         on_delete=models.CASCADE,
         null=False,
         blank=False,
-        default=0,
     )
     address = models.CharField(max_length=200)
     location_category = models.ForeignKey(
@@ -185,7 +182,6 @@ class LocationCategory(MixinUUIDs, models.Model):
         on_delete=models.CASCADE,
         null=False,
         blank=False,
-        default=0,
     )
     name = models.CharField(
         max_length=50,
@@ -335,7 +331,6 @@ class Operation(MixinUUIDs, models.Model):
         on_delete=models.CASCADE,
         null=False,
         blank=False,
-        default=0,
     )
     name = models.CharField(
         max_length=100,
@@ -417,14 +412,12 @@ class Participant(MixinUUIDs, models.Model):
         on_delete=models.CASCADE,
         null=False,
         blank=False,
-        default=0,
     )
     person = models.ForeignKey(
         to='Person',
         on_delete=models.CASCADE,
         null=False,
         blank=False,
-        default=0,
     )
 
 
@@ -614,7 +607,6 @@ class PersonProperty(MixinUUIDs, models.Model):
         on_delete=models.CASCADE,
         null=False,
         blank=False,
-        default=0,
     )
     name = models.CharField(
         max_length=50,
@@ -660,7 +652,6 @@ class PersonPropertyGroup(MixinUUIDs, models.Model):
         on_delete=models.CASCADE,
         null=False,
         blank=False,
-        default=0,
     )
     codename = models.CharField(
         max_length=30,
@@ -704,7 +695,6 @@ class Project(MixinUUIDs, models.Model):
         on_delete=models.CASCADE,
         null=False,
         blank=False,
-        default=0,
     )
     name = models.CharField(
         max_length=50,
@@ -746,7 +736,6 @@ class Resource(MixinUUIDs, models.Model):
         on_delete=models.CASCADE,
         null=False,
         blank=False,
-        default=0,
     )
     title = models.CharField(
         max_length=50,
@@ -791,7 +780,6 @@ class Role(MixinUUIDs, models.Model):
         on_delete=models.CASCADE,
         null=False,
         blank=False,
-        default=0,
     )
     title = models.CharField(
         max_length=50,
@@ -825,7 +813,6 @@ class RoleSpecification(MixinUUIDs, models.Model):
         on_delete=models.CASCADE,
         null=False,
         blank=False,
-        default=0,
     )
     person_properties = models.ManyToManyField(
         to='PersonProperty',
@@ -853,7 +840,6 @@ class Shift(MixinUUIDs, models.Model):
         on_delete=models.CASCADE,
         null=False,
         blank=False,
-        default=0,
     )
     enrollment_deadline = models.DateTimeField(
         default=datetime.now,
@@ -889,7 +875,6 @@ class Task(MixinUUIDs, models.Model):
         on_delete=models.CASCADE,
         null=False,
         blank=False,
-        default=0,
     )
     task_field = models.ForeignKey(
         to='TaskField',
@@ -996,7 +981,6 @@ class TaskField(MixinUUIDs, models.Model):
         on_delete=models.CASCADE,
         null=False,
         blank=False,
-        default=0,
     )
     name = models.CharField(
         max_length=50,
