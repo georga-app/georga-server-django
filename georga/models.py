@@ -248,14 +248,14 @@ class Message(MixinUUIDs, models.Model):
         max_length=1000,
     )
     PRIORITY = [
-        ('DISTURB', 'disturb'),
-        ('ONAPPCALL', 'on app call'),
-        ('ONNEWS', 'on reading news actively'),
+        ('URGENT', 'Urgent'),
+        ('IMPORTANT', 'Important'),
+        ('NORMAL', 'Normal'),
     ]
     priority = models.CharField(
         max_length=9,
         choices=PRIORITY,
-        default='ONNEWS',
+        default='NORMAL',
     )
     CATEGORIES = [
         ('NEWS', 'news'),

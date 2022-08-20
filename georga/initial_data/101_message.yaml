@@ -3,8 +3,8 @@
   fields:
     title: "Dolmetschertätigkeit in der Unterkunft Hofstraße"
     contents: "<h1>Tätigkeit:</h1><p>In der Notunkterkunft wird Hilfe für die Kommunikation zwischen Bewohnern und Betreuuern benötigt. Bitte <b>nur mit 2G-Nachweis</b><h1>Mitbringen:</h1><ul><li>Außentaugliche Kleidung für Tätigkeiten im Hof</ul>"
-    priority: DISTURB
-    category: ALERT
+    priority: IMPORTANT
+    category: NEWS
     state: DRAFT
     delivery_state: NONE
     scope_ct: ["georga", "shift"]
@@ -14,8 +14,8 @@
   fields:
     title: "Großbrand im Stahlwerk"
     contents: "Die Bevölkerung in der näheren Umgebung von 2km Umkreis wird wegen der Rauchentwicklung gebeten, Türen und Fenster geschlossen zu halten und sich nicht im Freien aufzuhalten."
-    priority: DISTURB
-    category: ALERT
+    priority: URGENT
+    category: NEWS
     state: PUBLISHED
     delivery_state: SENT_SUCCESSFULLY
     scope_ct: ["georga", "organization"]
@@ -25,8 +25,8 @@
   fields:
     title: "Spendenbereitschaft überwältigend"
     contents: "<p>Für die Notunterkünfte für Geflüchtet ist die Spendenbereitschaft in der Bevölkerung weiterhin überwältigend. Aktuell wird darum gebeten, dass vorerst keine neuen Küchenutensilien gespendet werden, da diese nun erst einmal sortiert und zugeteilt werden müssen und diese höchst wahrscheinlich für alle Unterkünfte ausreichen.</p>"
-    priority: ONAPPCALL
-    category: NEWS
+    priority: IMPORTANT
+    category: ALERT
     state: PUBLISHED
     delivery_state: SENT
     scope_ct: ["georga", "project"]
@@ -36,7 +36,7 @@
   fields:
     title: "Bli Bla Blubb"
     contents: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet."
-    priority: ONAPPCALL
+    priority: NORMAL
     category: ACTIVITY
     state: PUBLISHED
     delivery_state: SENT
@@ -47,7 +47,7 @@
   fields:
     title: "Räuber Hotzenplotz"
     contents: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet."
-    priority: ONNEWS
+    priority: NORMAL
     scope_ct: ["georga", "operation"]
     scope_id: 1
     category: ACTIVITY
