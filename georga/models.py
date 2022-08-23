@@ -35,6 +35,8 @@ class MixinUUIDs(models.Model):
 # --- CLASSES
 
 class ACL(MixinUUIDs, models.Model):
+    # *_cts list: list of valid models
+    # checked in ForeignKey.limit_choices_to, Model.clean() and GQLFilterSet
     access_object_cts = ['organization', 'project', 'operation']
     access_object_ct = models.ForeignKey(
         ContentType,
@@ -180,6 +182,8 @@ class PersonToObject(MixinUUIDs, models.Model):
         on_delete=models.CASCADE,
     )
 
+    # *_cts list: list of valid models
+    # checked in ForeignKey.limit_choices_to, Model.clean() and GQLFilterSet
     relation_object_cts = [
         'organization', 'project', 'operation', 'task', 'shift', 'role', 'message']
     relation_object_ct = models.ForeignKey(
@@ -229,6 +233,8 @@ class Message(MixinUUIDs, models.Model):
     - alert: triggered by the system by cronjobs based on analysis
     - activity: on change of objects, which are relevant to the persons
     '''
+    # *_cts list: list of valid models
+    # checked in ForeignKey.limit_choices_to, Model.clean() and GQLFilterSet
     scope_cts = ['organization', 'project', 'operation', 'task', 'shift']
     scope_ct = models.ForeignKey(
         ContentType,
