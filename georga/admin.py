@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 from .models import (
-    ACL,
+    ACE,
     Device,
     Equipment,
     Location,
@@ -24,7 +24,7 @@ from .models import (
     TaskField,
 )
 
-admin.site.register(ACL)
+admin.site.register(ACE)
 admin.site.register(Device)
 admin.site.register(Equipment)
 admin.site.register(Location)

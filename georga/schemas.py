@@ -36,7 +36,7 @@ from graphql_relay import from_global_id
 from .auth import jwt_decode
 from .email import Email
 from .models import (
-    ACL,
+    ACE,
     Device,
     Equipment,
     Location,
@@ -393,78 +393,78 @@ LOOKUPS_DATETIME = [
 
 # Models ======================================================================
 
-# ACL -------------------------------------------------------------------------
+# ACE -------------------------------------------------------------------------
 
 # fields
-acl_ro_fields = [
+ace_ro_fields = [
     'uuid',
 ]
-acl_wo_fields = [
+ace_wo_fields = [
 ]
-acl_rw_fields = [
+ace_rw_fields = [
     'person',
-    'acl_string',
+    'ace_string',
 ]
-acl_filter_fields = {
+ace_filter_fields = {
     'id': LOOKUPS_ID,
     'uuid': LOOKUPS_ID,
 }
 
 
 # types
-class ACLType(UUIDDjangoObjectType):
-    access_object = Field('georga.schemas.ACLAccessObjectUnion', required=True)
+class ACEType(UUIDDjangoObjectType):
+    access_object = Field('georga.schemas.ACEAccessObjectUnion', required=True)
 
     class Meta:
-        model = ACL
-        fields = acl_ro_fields + acl_rw_fields
-        filter_fields = acl_filter_fields
+        model = ACE
+        fields = ace_ro_fields + ace_rw_fields
+        filter_fields = ace_filter_fields
         permissions = [login_required]
 
 
 # filters
-class ACLFilter(GFKFilterSet):
+class ACEFilter(GFKFilterSet):
     access_object = GlobalIDFilter(method='filterExact')
     access_object__in = GlobalIDMultipleChoiceFilter(method='filterIn')
 
     class Meta:
-        model = ACL
-        fields = acl_ro_fields + acl_rw_fields
+        model = ACE
+        fields = ace_ro_fields + ace_rw_fields
 
 
 # forms
-class ACLModelForm(UUIDModelForm):
+class ACEModelForm(UUIDModelForm):
     class Meta:
-        model = ACL
-        fields = acl_wo_fields + acl_rw_fields
+        model = ACE
+        fields = ace_wo_fields + ace_rw_fields
 
 
 # mutations
-class CreateACLMutation(UUIDDjangoModelFormMutation):
+class CreateACEMutation(UUIDDjangoModelFormMutation):
     class Meta:
-        form_class = ACLModelForm
+        form_class = ACEModelForm
         exclude_fields = ['id']
         permissions = [staff_member_required]
 
 
-class UpdateACLMutation(UUIDDjangoModelFormMutation):
+class UpdateACEMutation(UUIDDjangoModelFormMutation):
     class Meta:
-        form_class = ACLModelForm
+        form_class = ACEModelForm
         required_fields = ['id']
         permissions = [login_required]
 
 
-class DeleteACLMutation(UUIDDjangoModelFormMutation):
+class DeleteACEMutation(UUIDDjangoModelFormMutation):
     class Meta:
-        form_class = ACLModelForm
+        form_class = ACEModelForm
         only_fields = ['id']
         permissions = [staff_member_required]
 
     @classmethod
     def perform_mutate(cls, form, info):
-        acl = form.instance
-        acl.delete()
-        return cls(acl=acl, errors=[])
+        ace = form.instance
+        ace.delete()
+        return cls(ace=ace, errors=[])
 
 
 # Device ----------------------------------------------------------------------
@@ -573,13 +573,17 @@ location_ro_fields = [
 location_wo_fields = []
 location_rw_fields = [
     'organization',
-    'address',
     'location_category',
+    'postal_address_name',
+    'postal_address_street',
+    'postal_address_zip_code',
+    'postal_address_city',
+    'postal_address_country',
 ]
 location_filter_fields = {
     'id': LOOKUPS_ID,
     'uuid': LOOKUPS_ID,
-    'address': LOOKUPS_STRING,
+    'postal_address_name': LOOKUPS_STRING,
 }
 
 
@@ -765,7 +769,7 @@ operation_filter_fields = {
 
 # types
 class OperationType(UUIDDjangoObjectType):
-    acl = UUIDDjangoFilterConnectionField('georga.schemas.ACLType')
+    ace = UUIDDjangoFilterConnectionField('georga.schemas.ACEType')
     messages = UUIDDjangoFilterConnectionField('georga.schemas.MessageType')
     person_attributes = UUIDDjangoFilterConnectionField('georga.schemas.PersonToObjectType')
 
@@ -830,7 +834,7 @@ organization_filter_fields = {
 
 # types
 class OrganizationType(UUIDDjangoObjectType):
-    acl = UUIDDjangoFilterConnectionField('georga.schemas.ACLType')
+    ace = UUIDDjangoFilterConnectionField('georga.schemas.ACEType')
     messages = UUIDDjangoFilterConnectionField('georga.schemas.MessageType')
     person_attributes = UUIDDjangoFilterConnectionField('georga.schemas.PersonToObjectType')
 
@@ -954,7 +958,7 @@ person_rw_fields = [
     'last_name',
     'email',
     'title',
-    'person_properties',
+    'properties',
     'occupation',
     'street',
     'number',
@@ -973,7 +977,7 @@ person_filter_fields = {
     'last_name': LOOKUPS_STRING,
     'email': LOOKUPS_STRING,
     'title': LOOKUPS_ENUM,
-    'person_properties': LOOKUPS_CONNECTION,
+    'properties': LOOKUPS_CONNECTION,
     'occupation': LOOKUPS_STRING,
     'street': LOOKUPS_STRING,
     'number': LOOKUPS_STRING,
@@ -1199,7 +1203,6 @@ person_property_rw_fields = [
     'organization',
     'name',
     'group',
-    'necessity',
 ]
 person_property_filter_fields = {
     'id': LOOKUPS_ID,
@@ -1267,6 +1270,7 @@ person_property_group_rw_fields = [
     'organization',
     'codename',
     'selection_type',
+    'necessity',
 ]
 person_property_group_filter_fields = {
     'id': LOOKUPS_ID,
@@ -1415,7 +1419,7 @@ project_filter_fields = {
 
 # types
 class ProjectType(UUIDDjangoObjectType):
-    acl = UUIDDjangoFilterConnectionField('georga.schemas.ACLType')
+    ace = UUIDDjangoFilterConnectionField('georga.schemas.ACEType')
     messages = UUIDDjangoFilterConnectionField('georga.schemas.MessageType')
     person_attributes = UUIDDjangoFilterConnectionField('georga.schemas.PersonToObjectType')
 
@@ -1603,6 +1607,7 @@ role_specification_wo_fields = [
 role_specification_rw_fields = [
     'role',
     'person_properties',
+    'necessity',
 ]
 role_specification_filter_fields = {
     'id': LOOKUPS_ID,
@@ -1733,20 +1738,13 @@ task_wo_fields = [
 ]
 task_rw_fields = [
     'operation',
-    'task_field',
+    'field',
     'roles',
     'resources_required',
     'resources_desirable',
-    'persons_registered',
-    'persons_participated',
     'locations',
     'title',
     'description',
-    'postal_address_name',
-    'postal_address_street',
-    'postal_address_zip_code',
-    'postal_address_city',
-    'postal_address_country',
     'start_time',
     'end_time',
 ]
@@ -1868,8 +1866,8 @@ class DeleteTaskFieldMutation(UUIDDjangoModelFormMutation):
 
 # Unions ======================================================================
 
-# ACL.access_object
-class ACLAccessObjectUnion(Union):
+# ACE.access_object
+class ACEAccessObjectUnion(Union):
     class Meta:
         types = [OrganizationType, ProjectType, OperationType]
 

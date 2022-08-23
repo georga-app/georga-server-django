@@ -34,7 +34,7 @@ class MixinUUIDs(models.Model):
 
 # --- CLASSES
 
-class ACL(MixinUUIDs, models.Model):
+class ACE(MixinUUIDs, models.Model):
     # *_cts list: list of valid models
     # checked in ForeignKey.limit_choices_to, Model.clean() and GQLFilterSet
     access_object_cts = ['organization', 'project', 'operation']
@@ -54,12 +54,12 @@ class ACL(MixinUUIDs, models.Model):
         on_delete=models.CASCADE,
     )
 
-    ACL_CODENAMES = [
+    ACE_CODENAMES = [
         ('ADMIN', 'admin'),
     ]
-    acl_string = models.CharField(
+    ace_string = models.CharField(
         max_length=5,
-        choices=ACL_CODENAMES,
+        choices=ACE_CODENAMES,
         default='ADMIN',
     )
 
@@ -78,7 +78,7 @@ class ACL(MixinUUIDs, models.Model):
         if label not in valid_models or model not in valid_models[label]:
             raise ValidationError(
                 f"'{self.access_object_ct.app_labeled_name}' is not a valid "
-                "content type for ACL.access_object")
+                "content type for ACE.access_object")
 
 
 class Device(MixinUUIDs, models.Model):
@@ -146,7 +146,31 @@ class Location(MixinUUIDs, models.Model):
         to='Organization',
         on_delete=models.CASCADE,
     )
-    address = models.CharField(max_length=200)
+    postal_address_name = models.CharField(
+        max_length=50,
+        null=True,
+        blank=True,
+    )
+    postal_address_street = models.CharField(
+        max_length=50,
+        null=True,
+        blank=True,
+    )
+    postal_address_zip_code = models.CharField(
+        max_length=50,
+        null=True,
+        blank=True,
+    )
+    postal_address_city = models.CharField(
+        max_length=50,
+        null=True,
+        blank=True,
+    )
+    postal_address_country = models.CharField(
+        max_length=50,
+        null=True,
+        blank=True,
+    )
     location_category = models.ForeignKey(
         to='LocationCategory',
         on_delete=models.CASCADE,
@@ -355,8 +379,8 @@ class Operation(MixinUUIDs, models.Model):
         default=True,
     )
 
-    acl = GenericRelation(
-        ACL,
+    ace = GenericRelation(
+        ACE,
         content_type_field='access_object_ct',
         object_id_field='access_object_id',
         related_query_name='operation'
@@ -388,8 +412,8 @@ class Organization(MixinUUIDs, models.Model):
         max_length=50,
     )
 
-    acl = GenericRelation(
-        ACL,
+    ace = GenericRelation(
+        ACE,
         content_type_field='access_object_ct',
         object_id_field='access_object_id',
         related_query_name='organisation'
@@ -451,17 +475,17 @@ class Person(MixinUUIDs, AbstractUser):
         verbose_name=_("title"),
     )
 
-    person_properties = models.ManyToManyField(
+    properties = models.ManyToManyField(
         'PersonProperty',
         blank=True,
-        verbose_name=_("person properties"),
+        verbose_name=_("properties"),
     )
 
     person_properties_freetext = models.CharField(
         max_length=60,
         null=True,
         blank=True,
-        verbose_name=_("person properties freetext"),
+        verbose_name=_("properties freetext"),
     )
 
     occupation = models.CharField(
@@ -615,17 +639,6 @@ class PersonProperty(MixinUUIDs, models.Model):
         blank=True,
         related_name="person_property_group",
     )
-    NECESSITIES = [
-        ('RECOMMENDED', _("recommended")),
-        ('MANDATORY', _("mandatory")),
-    ]
-    necessity = models.CharField(
-        max_length=11,
-        choices=NECESSITIES,
-        default="RECOMMENDED",
-        verbose_name=_("necessity"),
-        # TODO: translate: "Erforderlichkeit"
-    )
 
     def __str__(self):
         return '%s' % self.name
@@ -667,6 +680,18 @@ class PersonPropertyGroup(MixinUUIDs, models.Model):
         default='MULTISELECT',
         verbose_name=_("selection type"),
     )
+    NECESSITIES = [
+        ('RECOMMENDED', _("recommended")),
+        ('MANDATORY', _("mandatory")),
+        ('NOT_POSSIBLE', _("not possible")),
+    ]
+    necessity = models.CharField(
+        max_length=12,
+        choices=NECESSITIES,
+        default="RECOMMENDED",
+        verbose_name=_("necessity"),
+        # TODO: translate: "Erforderlichkeit"
+    )
 
     def __str__(self):
         return '%s' % self.name
@@ -689,8 +714,8 @@ class Project(MixinUUIDs, models.Model):
         max_length=50,
     )
 
-    acl = GenericRelation(
-        ACL,
+    ace = GenericRelation(
+        ACE,
         content_type_field='access_object_ct',
         object_id_field='access_object_id',
         related_query_name='project'
@@ -797,6 +822,18 @@ class RoleSpecification(MixinUUIDs, models.Model):
         blank=True,
         related_name='person_properties',
     )
+    NECESSITIES = [
+        ('RECOMMENDED', _("recommended")),
+        ('MANDATORY', _("mandatory")),
+        ('NOT_POSSIBLE', _("not possible")),
+    ]
+    necessity = models.CharField(
+        max_length=12,
+        choices=NECESSITIES,
+        default="RECOMMENDED",
+        verbose_name=_("necessity"),
+        # TODO: translate: "Erforderlichkeit"
+    )
 
 
 class Shift(MixinUUIDs, models.Model):
@@ -807,6 +844,7 @@ class Shift(MixinUUIDs, models.Model):
         ('PUBLISHED', 'published'),
         ('CANCELED', 'canceled'),
         ('DELETED', 'deleted'),
+        ('DONE', 'done'),
     ]
     state = models.CharField(
         max_length=9,
@@ -849,7 +887,7 @@ class Task(MixinUUIDs, models.Model):
         to='Operation',
         on_delete=models.CASCADE,
     )
-    task_field = models.ForeignKey(
+    field = models.ForeignKey(
         to='TaskField',
         on_delete=models.DO_NOTHING,
     )
@@ -868,16 +906,6 @@ class Task(MixinUUIDs, models.Model):
         blank=True,
         related_name='resources_desirable',
     )
-    persons_registered = models.ManyToManyField(
-        to='Person',
-        blank=True,
-        related_name='persons_registered',
-    )
-    persons_participated = models.ManyToManyField(
-        to='Person',
-        blank=True,
-        related_name='persons_participated',
-    )
     locations = models.ManyToManyField(
         to='Location',
         blank=True,
@@ -888,31 +916,6 @@ class Task(MixinUUIDs, models.Model):
     )
     description = models.CharField(
         max_length=1000,
-        null=True,
-        blank=True,
-    )
-    postal_address_name = models.CharField(
-        max_length=50,
-        null=True,
-        blank=True,
-    )
-    postal_address_street = models.CharField(
-        max_length=50,
-        null=True,
-        blank=True,
-    )
-    postal_address_zip_code = models.CharField(
-        max_length=50,
-        null=True,
-        blank=True,
-    )
-    postal_address_city = models.CharField(
-        max_length=50,
-        null=True,
-        blank=True,
-    )
-    postal_address_country = models.CharField(
-        max_length=50,
         null=True,
         blank=True,
     )
