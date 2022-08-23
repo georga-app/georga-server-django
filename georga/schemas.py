@@ -6,14 +6,15 @@ import graphql_jwt
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 from django.contrib.auth.password_validation import validate_password
-# from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError
 from django.db.models import ManyToManyField, ManyToManyRel, ManyToOneRel
 from django.forms import (
     ModelForm, ModelChoiceField, ModelMultipleChoiceField,
     IntegerField, CharField, ChoiceField
 )
 from django.forms.models import model_to_dict
-from graphene import Schema, Field, ObjectType, Union, List, ID, String, NonNull
+from django_filters import FilterSet
+from graphene import Schema, ObjectType, Field, Union, List, ID, String, NonNull
 from graphene.relay import Node
 from graphene.types.dynamic import Dynamic
 from graphene_django import DjangoObjectType
@@ -22,7 +23,11 @@ from graphene_django.converter import (
     convert_choices_to_named_enum_with_descriptions,
 )
 from graphene_django.fields import DjangoListField, DjangoConnectionField
-from graphene_django.filter import DjangoFilterConnectionField
+from graphene_django.filter import (
+    DjangoFilterConnectionField,
+    GlobalIDFilter,
+    GlobalIDMultipleChoiceFilter,
+)
 from graphene_django.forms import GlobalIDMultipleChoiceField, GlobalIDFormField
 from graphene_django.forms.mutation import DjangoModelFormMutation
 from graphql_jwt.decorators import login_required, staff_member_required
@@ -286,6 +291,71 @@ class UUIDDjangoModelFormMutation(DjangoModelFormMutation):
         return kwargs
 
 
+class GFKFilterSet(FilterSet):
+    """
+    FilterSet class for GenericForeignKeys using GlobalRelayID.
+
+    Uses the type part of the GlobalRelayID to infer the GenericRelation
+    related_query_name for the lookup. Uses the filter attribute name to infer
+    the gfk field name to access the _cts attribute on the model to restrict
+    valid lookup names.
+
+    This works as long as the following conventions are met:
+    1) The GenericRelations.related_query_name must be equal to the model name
+    2) The attribute on the filter class has to start with the gfk field name,
+       lookup prefixes must be separated by a double underscore
+    3) The model needs to provide a list of valid foreign model names in
+       Model.<gfk_field>_cts ("Contenttypes")
+    """
+
+    class Meta:
+        abstract = True
+
+    def getRelatedQueryNameAndUUID(self, name, value):
+        _type, _id = from_global_id(value)
+        related_query_name = _type.removesuffix("Type").lower()
+        # check validity of provided name for foreign model
+        gfk_field, = name.split('__')[:1]
+        gfk_field_cts = f"{gfk_field}_cts"
+        if not hasattr(self.queryset.model, gfk_field_cts):
+            raise ValidationError(
+                f"{self.queryset.model._meta.label}.{gfk_field_cts} is not "
+                "defined. Please add it and assign a list with valid models.")
+        valid_models = getattr(self.queryset.model, gfk_field_cts)
+        if related_query_name not in valid_models:
+            raise ValidationError(
+                f"{related_query_name} is not a valid foreign model of "
+                f"{self.queryset.model._meta.label}, as it is not listed in "
+                f"{self.queryset.model._meta.label}.{gfk_field_cts}.")
+        return related_query_name, _id
+
+    def filterExact(self, queryset, name, value):
+        """Exact Filter for GenericForeignKeys using GlobalRelayID."""
+        if value is None:
+            return queryset
+        related_query_name, uuid = self.getRelatedQueryNameAndUUID(name, value)
+        lookup = related_query_name + "__uuid"
+        return queryset.filter(**{lookup: uuid})
+
+    def filterIn(self, queryset, name, values):
+        """In Filter for GlobalForeignKeys using GlobalRelayID."""
+        if values is []:
+            return queryset
+        # prepare dict with lookup as key and a list of IDs as value
+        lookups = {}
+        for value in values:
+            related_query_name, uuid = self.getRelatedQueryNameAndUUID(name, value)
+            lookup = related_query_name + "__uuid__in"
+            if lookup not in lookups:
+                lookups[lookup] = []
+            lookups[lookup].append(uuid)
+        # return a union of the querysets for all different lookups
+        result = self._meta.model.objects.none()
+        for lookup, uuids in lookups.items():
+            result = result.union(queryset.filter(**{lookup: uuids}))
+        return result
+
+
 # Lookups =====================================================================
 
 # see https://docs.djangoproject.com/en/4.0/ref/models/querysets/#field-lookups-1
@@ -350,6 +420,16 @@ class ACLType(UUIDDjangoObjectType):
         fields = acl_ro_fields + acl_rw_fields
         filter_fields = acl_filter_fields
         permissions = [login_required]
+
+
+# filters
+class ACLFilter(GFKFilterSet):
+    access_object = GlobalIDFilter(method='filterExact')
+    access_object__in = GlobalIDMultipleChoiceFilter(method='filterIn')
+
+    class Meta:
+        model = ACL
+        fields = acl_ro_fields + acl_rw_fields
 
 
 # forms
@@ -601,12 +681,10 @@ message_filter_fields = {
     'id': LOOKUPS_ID,
     'uuid': LOOKUPS_ID,
     'state': LOOKUPS_ENUM,
-    'scope_id': LOOKUPS_ID,
-    'scope_ct': LOOKUPS_CONNECTION,
-    'project__id': LOOKUPS_ID,
 }
 
 
+# types
 class MessageType(UUIDDjangoObjectType):
     scope = Field('georga.schemas.MessageScopeUnion', required=True)
     delivery_state = Field(
@@ -619,6 +697,16 @@ class MessageType(UUIDDjangoObjectType):
         fields = message_ro_fields + message_rw_fields
         filter_fields = message_filter_fields
         permissions = [login_required]
+
+
+# filters
+class MessageFilter(GFKFilterSet):
+    scope = GlobalIDFilter(method='filterExact')
+    scope__in = GlobalIDMultipleChoiceFilter(method='filterIn')
+
+    class Meta:
+        model = Message
+        fields = message_ro_fields + message_rw_fields
 
 
 # forms
@@ -1262,6 +1350,16 @@ class PersonToObjectType(UUIDDjangoObjectType):
         permissions = [login_required]
 
 
+# filters
+class PersonToObjectFilter(GFKFilterSet):
+    relation_object = GlobalIDFilter(method='filterExact')
+    relation_object__in = GlobalIDMultipleChoiceFilter(method='filterIn')
+
+    class Meta:
+        model = PersonToObject
+        fields = person_to_object_ro_fields + person_to_object_rw_fields
+
+
 # forms
 class PersonToObjectModelForm(UUIDModelForm):
     class Meta:
@@ -1821,7 +1919,7 @@ class Query(ObjectType):
     all_locations = UUIDDjangoFilterConnectionField(
         LocationType)
     all_messages = UUIDDjangoFilterConnectionField(
-        MessageType)
+        MessageType, filterset_class=MessageFilter)
     all_persons = UUIDDjangoFilterConnectionField(
         PersonType)
     all_person_properties = UUIDDjangoFilterConnectionField(
