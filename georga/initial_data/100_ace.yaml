@@ -1,16 +1,16 @@
-- model: georga.acl
+- model: georga.ace
   pk: 1
   fields:
     access_object_ct: ["georga", "organization"]
     access_object_id: 1
     person: 3
-- model: georga.acl
+- model: georga.ace
   pk: 2
   fields:
     access_object_ct: ["georga", "project"]
     access_object_id: 1
     person: 4
-- model: georga.acl
+- model: georga.ace
   pk: 3
   fields:
     access_object_ct: ["georga", "operation"]

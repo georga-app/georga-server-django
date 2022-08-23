@@ -52,6 +52,16 @@
 - model: georga.location
   pk: 1
   fields:
-    address: EAS
-    location_category: 1
+    postal_address_name: EAS
     organization: 1
+
+- model: georga.location
+  pk: 2
+  fields:
+    location_category: 3
+    organization: 1
+    postal_address_name: Snowslide
+    postal_address_street: Snowslide Lane 12
+    postal_address_zip_code: 52309
+    postal_address_city: Snowcity
+    postal_address_country: Snowcountry
