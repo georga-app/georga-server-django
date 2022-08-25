@@ -678,7 +678,8 @@ message_wo_fields = [
 message_rw_fields = [
     'title',
     'contents',
-
+    'priority',
+    # 'scope',
 ]
 message_filter_fields = {
     'id': LOOKUPS_ID,
@@ -714,6 +715,8 @@ class MessageFilter(GFKFilterSet):
 
 # forms
 class MessageModelForm(UUIDModelForm):
+    # scope = GlobalIDFormField()
+
     class Meta:
         model = Message
         fields = message_wo_fields + message_rw_fields
@@ -1261,7 +1264,7 @@ class DeletePersonPropertyMutation(UUIDDjangoModelFormMutation):
 # fields
 person_property_group_ro_fields = [
     'uuid',
-    'person_property_set',
+    'personproperty_set',
 ]
 person_property_group_wo_fields = [
 ]
