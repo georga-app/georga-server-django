@@ -637,7 +637,6 @@ class PersonProperty(MixinUUIDs, models.Model):
         on_delete=models.CASCADE,
         null=True,
         blank=True,
-        related_name="person_property_group",
     )
 
     def __str__(self):

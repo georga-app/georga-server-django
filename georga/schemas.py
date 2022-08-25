@@ -1262,6 +1262,7 @@ class DeletePersonPropertyMutation(UUIDDjangoModelFormMutation):
 # fields
 person_property_group_ro_fields = [
     'uuid',
+    'person_property_set',
 ]
 person_property_group_wo_fields = [
 ]
@@ -1277,6 +1278,7 @@ person_property_group_filter_fields = {
     'uuid': LOOKUPS_ID,
     'name': LOOKUPS_STRING,
     'codename': LOOKUPS_STRING,
+    'necessity': LOOKUPS_ENUM,
 }
 
 
