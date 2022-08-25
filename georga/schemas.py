@@ -108,7 +108,6 @@ class UUIDModelForm(ModelForm):
     Bugfixes:
     - Fixes bug of saving fields present in form but not in request data.
     """
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -303,7 +302,7 @@ class GFKFilterSet(FilterSet):
     This works as long as the following conventions are met:
     1) The GenericRelations.related_query_name must be equal to the model name
     2) The attribute on the filter class has to start with the gfk field name,
-       lookup prefixes must be separated by a double underscore
+       lookup postfixes must be separated by a double underscore
     3) The model needs to provide a list of valid foreign model names in
        Model.<gfk_field>_cts ("Contenttypes")
     """
