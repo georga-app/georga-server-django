@@ -724,7 +724,7 @@ class CreateMessageMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = MessageModelForm
         exclude_fields = ['id']
-        permissions = [staff_member_required]
+        permissions = [login_required]
 
 
 class UpdateMessageMutation(UUIDDjangoModelFormMutation):
@@ -1986,6 +1986,10 @@ class Mutation(ObjectType):
     create_role = CreateRoleMutation.Field()
     update_role = UpdateRoleMutation.Field()
     delete_role = DeleteRoleMutation.Field()
+    # Messages
+    create_message = CreateMessageMutation.Field()
+    update_message = UpdateMessageMutation.Field()
+    delete_message = DeleteMessageMutation.Field()
 
     # TestSubscription
     test_subscription_event = TestSubscriptionEventMutation.Field()
