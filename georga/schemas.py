@@ -6,13 +6,15 @@ import graphql_jwt
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 from django.contrib.auth.password_validation import validate_password
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes.fields import GenericForeignKey
 from django.core.exceptions import ValidationError
 from django.db.models import ManyToManyField, ManyToManyRel, ManyToOneRel
 from django.forms import (
     ModelForm, ModelChoiceField, ModelMultipleChoiceField,
     IntegerField, CharField, ChoiceField
 )
-from django.forms.models import model_to_dict
+from django.forms.models import ModelFormMetaclass, model_to_dict
 from django_filters import FilterSet
 from graphene import Schema, ObjectType, Field, Union, List, ID, String, NonNull
 from graphene.relay import Node
@@ -95,12 +97,43 @@ def convert_field_to_list_or_connection(field, registry=None):
     return Dynamic(dynamic_type)
 
 
-class UUIDModelForm(ModelForm):
+class GFKModelFormMetaclass(ModelFormMetaclass):
+    """
+    Metaclass for ModelForms adding FormFields for GenericForeignKey Fields.
+
+    GFKs:
+    - Adds GlobalIDFormField for GenericForeignKey fields.
+    """
+    def __new__(mcs, name, bases, attrs, *args, **kwargs):
+        # add GlobalIDFormField for GenericForeignKey fields
+        gfk_fields = []
+        if "Meta" in attrs:
+            model = getattr(attrs["Meta"], "model", None)
+            fields = getattr(attrs["Meta"], "fields", [])
+            if model:
+                for field in fields:
+                    formfield = getattr(model, field, False)
+                    if isinstance(formfield, GenericForeignKey):
+                        attrs["Meta"].fields.remove(field)
+                        gfk_fields.append(field)
+        cls = super().__new__(mcs, name, bases, attrs, *args, **kwargs)
+        cls._meta.gfk_fields = gfk_fields
+        for gfk_field in gfk_fields:
+            field = GlobalIDFormField()
+            setattr(cls, gfk_field, field)
+            cls.base_fields[gfk_field] = field
+        return cls
+
+
+class UUIDModelForm(ModelForm, metaclass=GFKModelFormMetaclass):
     """
     ModelForm with model.uuid as identifier.
 
     UUIDs:
     - Sets to_field_name of foreign relation fields to uuid.
+
+    GFKs:
+    - Assigns model instance to GenericForeignKey fields, if GlobalID was provided.
 
     Conveniece:
     - Sets fields required if listed in Meta.required_fields.
@@ -128,6 +161,20 @@ class UUIDModelForm(ModelForm):
             modeldict = model_to_dict(self.instance)
             modeldict.update(self.data)
             self.data = modeldict
+
+    def _post_clean(self, *args, **kwargs):
+        # assigns model instance to GenericForeignKey fields, if GlobalID was provided
+        for name in getattr(self._meta, 'gfk_fields', []):
+            if name not in self.data:
+                continue
+            _type, _id = from_global_id(self.data[name])
+            foreign_model_name = _type.removesuffix("Type").lower()
+            foreign_model_class = ContentType.objects.get(
+                app_label='georga', model=foreign_model_name
+            ).model_class()
+            foreign_model_instance = foreign_model_class.objects.get(uuid=_id)
+            setattr(self.instance, name, foreign_model_instance)
+        return super()._post_clean(*args, **kwargs)
 
 
 class UUIDDjangoObjectType(DjangoObjectType):
@@ -679,7 +726,7 @@ message_rw_fields = [
     'title',
     'contents',
     'priority',
-    # 'scope',
+    'scope',
 ]
 message_filter_fields = {
     'id': LOOKUPS_ID,
@@ -715,8 +762,6 @@ class MessageFilter(GFKFilterSet):
 
 # forms
 class MessageModelForm(UUIDModelForm):
-    # scope = GlobalIDFormField()
-
     class Meta:
         model = Message
         fields = message_wo_fields + message_rw_fields
