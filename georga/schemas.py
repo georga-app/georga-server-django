@@ -154,6 +154,8 @@ class UUIDModelForm(ModelForm, metaclass=GFKModelFormMetaclass):
         if hasattr(self.Meta, 'required_fields'):
             for name, field in self.fields.items():
                 field.required = name in self.Meta.required_fields
+            for gfk_name in self._meta.gfk_fields:
+                self.base_fields[gfk_name].required = name in self.Meta.required_fields
             delattr(self.Meta, 'required_fields')
 
         # fix bug of saving fields present in form but not in request data
