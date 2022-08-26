@@ -1014,6 +1014,7 @@ person_rw_fields = [
     'private_phone',
     'mobile_phone',
     'only_job_related_topics',
+    'organizations_subscribed',
 ]
 person_filter_fields = {
     'id': LOOKUPS_ID,
@@ -1326,6 +1327,7 @@ person_property_group_filter_fields = {
     'name': LOOKUPS_STRING,
     'codename': LOOKUPS_STRING,
     'necessity': LOOKUPS_ENUM,
+    'organization': LOOKUPS_CONNECTION,
 }
 
 
