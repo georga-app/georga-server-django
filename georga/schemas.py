@@ -108,7 +108,6 @@ class UUIDModelForm(ModelForm):
     Bugfixes:
     - Fixes bug of saving fields present in form but not in request data.
     """
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -303,7 +302,7 @@ class GFKFilterSet(FilterSet):
     This works as long as the following conventions are met:
     1) The GenericRelations.related_query_name must be equal to the model name
     2) The attribute on the filter class has to start with the gfk field name,
-       lookup prefixes must be separated by a double underscore
+       lookup postfixes must be separated by a double underscore
     3) The model needs to provide a list of valid foreign model names in
        Model.<gfk_field>_cts ("Contenttypes")
     """
@@ -679,7 +678,8 @@ message_wo_fields = [
 message_rw_fields = [
     'title',
     'contents',
-
+    'priority',
+    # 'scope',
 ]
 message_filter_fields = {
     'id': LOOKUPS_ID,
@@ -715,6 +715,8 @@ class MessageFilter(GFKFilterSet):
 
 # forms
 class MessageModelForm(UUIDModelForm):
+    # scope = GlobalIDFormField()
+
     class Meta:
         model = Message
         fields = message_wo_fields + message_rw_fields
@@ -725,7 +727,7 @@ class CreateMessageMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = MessageModelForm
         exclude_fields = ['id']
-        permissions = [staff_member_required]
+        permissions = [login_required]
 
 
 class UpdateMessageMutation(UUIDDjangoModelFormMutation):
@@ -1263,7 +1265,7 @@ class DeletePersonPropertyMutation(UUIDDjangoModelFormMutation):
 # fields
 person_property_group_ro_fields = [
     'uuid',
-    'person_property_set',
+    'personproperty_set',
 ]
 person_property_group_wo_fields = [
 ]
@@ -1991,6 +1993,10 @@ class Mutation(ObjectType):
     create_role = CreateRoleMutation.Field()
     update_role = UpdateRoleMutation.Field()
     delete_role = DeleteRoleMutation.Field()
+    # Messages
+    create_message = CreateMessageMutation.Field()
+    update_message = UpdateMessageMutation.Field()
+    delete_message = DeleteMessageMutation.Field()
 
     # TestSubscription
     test_subscription_event = TestSubscriptionEventMutation.Field()
