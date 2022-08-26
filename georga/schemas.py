@@ -4,6 +4,7 @@ import asyncio
 import graphene
 import graphql_jwt
 from asgiref.sync import async_to_sync
+from channels.db import database_sync_to_async
 from channels.layers import get_channel_layer
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.contenttypes.models import ContentType
@@ -773,6 +774,12 @@ class CreateMessageMutation(UUIDDjangoModelFormMutation):
         form_class = MessageModelForm
         exclude_fields = ['id']
         permissions = [login_required]
+
+    @classmethod
+    def perform_mutate(cls, form, info):
+        message = form.save()
+        async_to_sync(channel_layer.group_send)("message_created", {"pk": message.id})
+        return cls(message=message, errors=[])
 
 
 class UpdateMessageMutation(UUIDDjangoModelFormMutation):
@@ -2050,6 +2057,7 @@ class Mutation(ObjectType):
 class Subscription(graphene.ObjectType):
     count_seconds = graphene.Int(up_to=graphene.Int())
     test_subscription = graphene.Field(TestSubscription)
+    message_created = graphene.Field(MessageType)
 
     async def resolve_count_seconds(self, info, up_to=5):
         print(up_to)
@@ -2068,6 +2076,19 @@ class Subscription(graphene.ObjectType):
                 yield TestSubscription(message=message["data"], time=datetime.now())
         finally:
             await channel_layer.group_discard("new_message", channel_name)
+
+    async def resolve_message_created(self, info):
+        channel_name = await channel_layer.new_channel()
+        await channel_layer.group_add("message_created", channel_name)
+        try:
+            while True:
+                data = await channel_layer.receive(channel_name)
+                message = await database_sync_to_async(
+                    lambda: Message.objects.prefetch_related("scope").get(pk=data["pk"])
+                )()
+                yield message
+        finally:
+            await channel_layer.group_discard("message_created", channel_name)
 
 
 schema = Schema(
