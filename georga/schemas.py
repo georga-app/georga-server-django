@@ -827,6 +827,7 @@ organization_wo_fields = [
 ]
 organization_rw_fields = [
     'name',
+    'icon',
 ]
 organization_filter_fields = {
     'id': LOOKUPS_ID,
