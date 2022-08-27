@@ -17,7 +17,9 @@ from django.forms import (
 )
 from django.forms.models import ModelFormMetaclass, model_to_dict
 from django_filters import FilterSet
-from graphene import Schema, ObjectType, Field, Union, List, ID, String, NonNull
+from graphene import (
+    Schema, Mutation, ObjectType, Field, Union, List, ID, String, NonNull
+)
 from graphene.relay import Node
 from graphene.types.dynamic import Dynamic
 from graphene_django import DjangoObjectType
@@ -789,6 +791,24 @@ class UpdateMessageMutation(UUIDDjangoModelFormMutation):
         form_class = MessageModelForm
         required_fields = ['id']
         permissions = [login_required]
+
+
+class BatchUpdateMessageMutationPayload(ObjectType):
+    messages = List(UpdateMessageMutation)
+
+
+class BatchUpdateMessageMutation(Mutation):
+    class Input:
+        messages = List(UpdateMessageMutation.Input)
+
+    Output = BatchUpdateMessageMutationPayload
+
+    def mutate(root, info, messages):
+        results = []
+        for message in messages:
+            mutation = UpdateMessageMutation(message)
+            results.append(mutation.mutate_and_get_payload(info, **message))
+        return BatchUpdateMessageMutationPayload(messages=results)
 
 
 class DeleteMessageMutation(UUIDDjangoModelFormMutation):
@@ -2050,6 +2070,7 @@ class Mutation(ObjectType):
     # Messages
     create_message = CreateMessageMutation.Field()
     update_message = UpdateMessageMutation.Field()
+    batch_update_message = BatchUpdateMessageMutation.Field()
     delete_message = DeleteMessageMutation.Field()
 
     # TestSubscription
