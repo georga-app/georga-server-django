@@ -1163,25 +1163,20 @@ class RequestActivationMutation(UUIDDjangoModelFormMutation):
 
     class Meta:
         form_class = PersonTokenModelForm
-        only_fields = ['token']
-        permissions = []
+        only_fields = ['email']
+        required_fields = ['email']
 
     @classmethod
     def get_form_kwargs(cls, root, info, **input):
         form_kwargs = super().get_form_kwargs(root, info, **input)
-        payload = jwt_decode(form_kwargs["data"]["token"])
-        uuid = payload.pop("uid")
-        if uuid:
-            form_kwargs["instance"] = cls._meta.model._default_manager.get(uuid=uuid)
-            form_kwargs["data"].update(payload)
+        email = form_kwargs["data"]["email"]
+        form_kwargs["instance"] = cls._meta.model._default_manager.get(email=email)
         return form_kwargs
 
     @classmethod
     def perform_mutate(cls, form, info):
         person = form.instance
-        if form.cleaned_data.get('sub') == 'activation':
-            person.is_active = True
-            person.save()
+        Email.send_activation_email(person)
         return cls(id=person.gid, errors=[])
 
 
