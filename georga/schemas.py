@@ -4,17 +4,22 @@ import asyncio
 import graphene
 import graphql_jwt
 from asgiref.sync import async_to_sync
+from channels.db import database_sync_to_async
 from channels.layers import get_channel_layer
 from django.contrib.auth.password_validation import validate_password
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes.fields import GenericForeignKey
 from django.core.exceptions import ValidationError
 from django.db.models import ManyToManyField, ManyToManyRel, ManyToOneRel
 from django.forms import (
     ModelForm, ModelChoiceField, ModelMultipleChoiceField,
     IntegerField, CharField, ChoiceField
 )
-from django.forms.models import model_to_dict
+from django.forms.models import ModelFormMetaclass, model_to_dict
 from django_filters import FilterSet
-from graphene import Schema, ObjectType, Field, Union, List, ID, String, NonNull
+from graphene import (
+    Schema, Mutation, ObjectType, Field, Union, List, ID, String, NonNull
+)
 from graphene.relay import Node
 from graphene.types.dynamic import Dynamic
 from graphene_django import DjangoObjectType
@@ -95,12 +100,43 @@ def convert_field_to_list_or_connection(field, registry=None):
     return Dynamic(dynamic_type)
 
 
-class UUIDModelForm(ModelForm):
+class GFKModelFormMetaclass(ModelFormMetaclass):
+    """
+    Metaclass for ModelForms adding FormFields for GenericForeignKey Fields.
+
+    GFKs:
+    - Adds GlobalIDFormField for GenericForeignKey fields.
+    """
+    def __new__(mcs, name, bases, attrs, *args, **kwargs):
+        # add GlobalIDFormField for GenericForeignKey fields
+        gfk_fields = []
+        if "Meta" in attrs:
+            model = getattr(attrs["Meta"], "model", None)
+            fields = getattr(attrs["Meta"], "fields", [])
+            if model:
+                for field in fields:
+                    formfield = getattr(model, field, False)
+                    if isinstance(formfield, GenericForeignKey):
+                        attrs["Meta"].fields.remove(field)
+                        gfk_fields.append(field)
+        cls = super().__new__(mcs, name, bases, attrs, *args, **kwargs)
+        cls._meta.gfk_fields = gfk_fields
+        for gfk_field in gfk_fields:
+            field = GlobalIDFormField()
+            setattr(cls, gfk_field, field)
+            cls.base_fields[gfk_field] = field
+        return cls
+
+
+class UUIDModelForm(ModelForm, metaclass=GFKModelFormMetaclass):
     """
     ModelForm with model.uuid as identifier.
 
     UUIDs:
     - Sets to_field_name of foreign relation fields to uuid.
+
+    GFKs:
+    - Assigns model instance to GenericForeignKey fields, if GlobalID was provided.
 
     Conveniece:
     - Sets fields required if listed in Meta.required_fields.
@@ -120,6 +156,8 @@ class UUIDModelForm(ModelForm):
         if hasattr(self.Meta, 'required_fields'):
             for name, field in self.fields.items():
                 field.required = name in self.Meta.required_fields
+            for gfk_name in self._meta.gfk_fields:
+                self.base_fields[gfk_name].required = name in self.Meta.required_fields
             delattr(self.Meta, 'required_fields')
 
         # fix bug of saving fields present in form but not in request data
@@ -128,6 +166,20 @@ class UUIDModelForm(ModelForm):
             modeldict = model_to_dict(self.instance)
             modeldict.update(self.data)
             self.data = modeldict
+
+    def _post_clean(self, *args, **kwargs):
+        # assigns model instance to GenericForeignKey fields, if GlobalID was provided
+        for name in getattr(self._meta, 'gfk_fields', []):
+            if name not in self.data:
+                continue
+            _type, _id = from_global_id(self.data[name])
+            foreign_model_name = _type.removesuffix("Type").lower()
+            foreign_model_class = ContentType.objects.get(
+                app_label='georga', model=foreign_model_name
+            ).model_class()
+            foreign_model_instance = foreign_model_class.objects.get(uuid=_id)
+            setattr(self.instance, name, foreign_model_instance)
+        return super()._post_clean(*args, **kwargs)
 
 
 class UUIDDjangoObjectType(DjangoObjectType):
@@ -358,37 +410,43 @@ class GFKFilterSet(FilterSet):
 # Lookups =====================================================================
 
 # see https://docs.djangoproject.com/en/4.0/ref/models/querysets/#field-lookups-1
+# LOOKUPS_ID = ['exact']
+# LOOKUPS_INT = [
+#     'exact', 'gt', 'gte', 'lt', 'lte',
+#     'regex', 'iregex', 'isnull',
+# ]
+# LOOKUPS_STRING = [
+#     'exact', 'iexact',
+#     'contains', 'icontains',
+#     'startswith', 'istartswith',
+#     'endswith', 'iendswith',
+#     'regex', 'iregex',
+#     'in', 'isnull',
+# ]
+# LOOKUPS_ENUM = ['exact', 'contains', 'in', 'isnull']
+# LOOKUPS_CONNECTION = ['exact']
+# LOOKUPS_DATETIME = [
+#     'exact', 'range', 'gt', 'gte', 'lt', 'lte',
+#     'date', 'date__gt', 'date__gte', 'date__lt', 'date__lte',
+#     'time', 'time__gt', 'time__gte', 'time__lt', 'time__lte',
+#     'iso_year', 'iso_year__gt', 'iso_year__gte', 'iso_year__lt', 'iso_year__lte',
+#     'year', 'year__gt', 'year__gte', 'year__lt', 'year__lte',
+#     'month', 'month__gt', 'month__gte', 'month__lt', 'month__lte',
+#     'iso_week_day', 'iso_week_day__gt', 'iso_week_day__gte', 'iso_week_day__lt', 'iso_week_day__lte',
+#     'quarter', 'quarter__gt', 'quarter__gte', 'quarter__lt', 'quarter__lte',
+#     'week_day', 'week_day__gt', 'week_day__gte', 'week_day__lt', 'week_day__lte',
+#     'day', 'day__gt', 'day__gte', 'day__lt', 'day__lte',
+#     'hour', 'hour__gt', 'hour__gte', 'hour__lt', 'hour__lte',
+#     'minute', 'minute__gt', 'minute__gte', 'minute__lt', 'minute__lte',
+#     'second', 'second__gt', 'second__gte', 'second__lt', 'second__lte',
+#     'isnull',
+# ]
 LOOKUPS_ID = ['exact']
-LOOKUPS_INT = [
-    'exact', 'gt', 'gte', 'lt', 'lte',
-    'regex', 'iregex', 'isnull',
-]
-LOOKUPS_STRING = [
-    'exact', 'iexact',
-    'contains', 'icontains',
-    'startswith', 'istartswith',
-    'endswith', 'iendswith',
-    'regex', 'iregex',
-    'in', 'isnull',
-]
-LOOKUPS_ENUM = ['exact', 'contains', 'in', 'isnull']
+LOOKUPS_INT = ['exact']
+LOOKUPS_STRING = ['exact']
+LOOKUPS_ENUM = ['exact']
 LOOKUPS_CONNECTION = ['exact']
-LOOKUPS_DATETIME = [
-    'exact', 'range', 'gt', 'gte', 'lt', 'lte',
-    'date', 'date__gt', 'date__gte', 'date__lt', 'date__lte',
-    'time', 'time__gt', 'time__gte', 'time__lt', 'time__lte',
-    'iso_year', 'iso_year__gt', 'iso_year__gte', 'iso_year__lt', 'iso_year__lte',
-    'year', 'year__gt', 'year__gte', 'year__lt', 'year__lte',
-    'month', 'month__gt', 'month__gte', 'month__lt', 'month__lte',
-    'iso_week_day', 'iso_week_day__gt', 'iso_week_day__gte', 'iso_week_day__lt', 'iso_week_day__lte',
-    'quarter', 'quarter__gt', 'quarter__gte', 'quarter__lt', 'quarter__lte',
-    'week_day', 'week_day__gt', 'week_day__gte', 'week_day__lt', 'week_day__lte',
-    'day', 'day__gt', 'day__gte', 'day__lt', 'day__lte',
-    'hour', 'hour__gt', 'hour__gte', 'hour__lt', 'hour__lte',
-    'minute', 'minute__gt', 'minute__gte', 'minute__lt', 'minute__lte',
-    'second', 'second__gt', 'second__gte', 'second__lt', 'second__lte',
-    'isnull',
-]
+LOOKUPS_DATETIME = ['exact']
 
 # Models ======================================================================
 
@@ -679,7 +737,7 @@ message_rw_fields = [
     'title',
     'contents',
     'priority',
-    # 'scope',
+    'scope',
 ]
 message_filter_fields = {
     'id': LOOKUPS_ID,
@@ -715,8 +773,6 @@ class MessageFilter(GFKFilterSet):
 
 # forms
 class MessageModelForm(UUIDModelForm):
-    # scope = GlobalIDFormField()
-
     class Meta:
         model = Message
         fields = message_wo_fields + message_rw_fields
@@ -729,12 +785,36 @@ class CreateMessageMutation(UUIDDjangoModelFormMutation):
         exclude_fields = ['id']
         permissions = [login_required]
 
+    @classmethod
+    def perform_mutate(cls, form, info):
+        message = form.save()
+        async_to_sync(channel_layer.group_send)("message_created", {"pk": message.id})
+        return cls(message=message, errors=[])
+
 
 class UpdateMessageMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = MessageModelForm
         required_fields = ['id']
         permissions = [login_required]
+
+
+class BatchUpdateMessageMutationPayload(ObjectType):
+    messages = List(UpdateMessageMutation)
+
+
+class BatchUpdateMessageMutation(Mutation):
+    class Input:
+        messages = List(UpdateMessageMutation.Input)
+
+    Output = BatchUpdateMessageMutationPayload
+
+    def mutate(root, info, messages):
+        results = []
+        for message in messages:
+            mutation = UpdateMessageMutation(message)
+            results.append(mutation.mutate_and_get_payload(info, **message))
+        return BatchUpdateMessageMutationPayload(messages=results)
 
 
 class DeleteMessageMutation(UUIDDjangoModelFormMutation):
@@ -1997,6 +2077,7 @@ class Mutation(ObjectType):
     # Messages
     create_message = CreateMessageMutation.Field()
     update_message = UpdateMessageMutation.Field()
+    batch_update_message = BatchUpdateMessageMutation.Field()
     delete_message = DeleteMessageMutation.Field()
 
     # TestSubscription
@@ -2006,6 +2087,7 @@ class Mutation(ObjectType):
 class Subscription(graphene.ObjectType):
     count_seconds = graphene.Int(up_to=graphene.Int())
     test_subscription = graphene.Field(TestSubscription)
+    message_created = graphene.Field(MessageType)
 
     async def resolve_count_seconds(self, info, up_to=5):
         print(up_to)
@@ -2024,6 +2106,19 @@ class Subscription(graphene.ObjectType):
                 yield TestSubscription(message=message["data"], time=datetime.now())
         finally:
             await channel_layer.group_discard("new_message", channel_name)
+
+    async def resolve_message_created(self, info):
+        channel_name = await channel_layer.new_channel()
+        await channel_layer.group_add("message_created", channel_name)
+        try:
+            while True:
+                data = await channel_layer.receive(channel_name)
+                message = await database_sync_to_async(
+                    lambda: Message.objects.prefetch_related("scope").get(pk=data["pk"])
+                )()
+                yield message
+        finally:
+            await channel_layer.group_discard("message_created", channel_name)
 
 
 schema = Schema(
