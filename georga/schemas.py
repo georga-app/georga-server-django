@@ -410,37 +410,43 @@ class GFKFilterSet(FilterSet):
 # Lookups =====================================================================
 
 # see https://docs.djangoproject.com/en/4.0/ref/models/querysets/#field-lookups-1
+# LOOKUPS_ID = ['exact']
+# LOOKUPS_INT = [
+#     'exact', 'gt', 'gte', 'lt', 'lte',
+#     'regex', 'iregex', 'isnull',
+# ]
+# LOOKUPS_STRING = [
+#     'exact', 'iexact',
+#     'contains', 'icontains',
+#     'startswith', 'istartswith',
+#     'endswith', 'iendswith',
+#     'regex', 'iregex',
+#     'in', 'isnull',
+# ]
+# LOOKUPS_ENUM = ['exact', 'contains', 'in', 'isnull']
+# LOOKUPS_CONNECTION = ['exact']
+# LOOKUPS_DATETIME = [
+#     'exact', 'range', 'gt', 'gte', 'lt', 'lte',
+#     'date', 'date__gt', 'date__gte', 'date__lt', 'date__lte',
+#     'time', 'time__gt', 'time__gte', 'time__lt', 'time__lte',
+#     'iso_year', 'iso_year__gt', 'iso_year__gte', 'iso_year__lt', 'iso_year__lte',
+#     'year', 'year__gt', 'year__gte', 'year__lt', 'year__lte',
+#     'month', 'month__gt', 'month__gte', 'month__lt', 'month__lte',
+#     'iso_week_day', 'iso_week_day__gt', 'iso_week_day__gte', 'iso_week_day__lt', 'iso_week_day__lte',
+#     'quarter', 'quarter__gt', 'quarter__gte', 'quarter__lt', 'quarter__lte',
+#     'week_day', 'week_day__gt', 'week_day__gte', 'week_day__lt', 'week_day__lte',
+#     'day', 'day__gt', 'day__gte', 'day__lt', 'day__lte',
+#     'hour', 'hour__gt', 'hour__gte', 'hour__lt', 'hour__lte',
+#     'minute', 'minute__gt', 'minute__gte', 'minute__lt', 'minute__lte',
+#     'second', 'second__gt', 'second__gte', 'second__lt', 'second__lte',
+#     'isnull',
+# ]
 LOOKUPS_ID = ['exact']
-LOOKUPS_INT = [
-    'exact', 'gt', 'gte', 'lt', 'lte',
-    'regex', 'iregex', 'isnull',
-]
-LOOKUPS_STRING = [
-    'exact', 'iexact',
-    'contains', 'icontains',
-    'startswith', 'istartswith',
-    'endswith', 'iendswith',
-    'regex', 'iregex',
-    'in', 'isnull',
-]
-LOOKUPS_ENUM = ['exact', 'contains', 'in', 'isnull']
+LOOKUPS_INT = ['exact']
+LOOKUPS_STRING = ['exact']
+LOOKUPS_ENUM = ['exact']
 LOOKUPS_CONNECTION = ['exact']
-LOOKUPS_DATETIME = [
-    'exact', 'range', 'gt', 'gte', 'lt', 'lte',
-    'date', 'date__gt', 'date__gte', 'date__lt', 'date__lte',
-    'time', 'time__gt', 'time__gte', 'time__lt', 'time__lte',
-    'iso_year', 'iso_year__gt', 'iso_year__gte', 'iso_year__lt', 'iso_year__lte',
-    'year', 'year__gt', 'year__gte', 'year__lt', 'year__lte',
-    'month', 'month__gt', 'month__gte', 'month__lt', 'month__lte',
-    'iso_week_day', 'iso_week_day__gt', 'iso_week_day__gte', 'iso_week_day__lt', 'iso_week_day__lte',
-    'quarter', 'quarter__gt', 'quarter__gte', 'quarter__lt', 'quarter__lte',
-    'week_day', 'week_day__gt', 'week_day__gte', 'week_day__lt', 'week_day__lte',
-    'day', 'day__gt', 'day__gte', 'day__lt', 'day__lte',
-    'hour', 'hour__gt', 'hour__gte', 'hour__lt', 'hour__lte',
-    'minute', 'minute__gt', 'minute__gte', 'minute__lt', 'minute__lte',
-    'second', 'second__gt', 'second__gte', 'second__lt', 'second__lte',
-    'isnull',
-]
+LOOKUPS_DATETIME = ['exact']
 
 # Models ======================================================================
 
