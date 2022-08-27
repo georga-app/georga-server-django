@@ -595,6 +595,7 @@ class Person(MixinUUIDs, AbstractUser):
 
     organizations_subscribed = models.ManyToManyField(
         to='Organization',
+        blank=True,
         verbose_name=_("organizations subscribed to"),
     )
 
