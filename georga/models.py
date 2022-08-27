@@ -411,6 +411,10 @@ class Organization(MixinUUIDs, models.Model):
     name = models.CharField(
         max_length=50,
     )
+    icon = models.TextField(
+        null=True,
+        blank=True,
+    )
 
     ace = GenericRelation(
         ACE,
