@@ -1621,6 +1621,7 @@ class DeleteResourceMutation(UUIDDjangoModelFormMutation):
 # fields
 role_ro_fields = [
     'uuid',
+    'participant_set'
 ]
 role_wo_fields = [
 ]
