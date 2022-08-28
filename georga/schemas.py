@@ -1175,7 +1175,7 @@ class RegisterPersonMutation(UUIDDjangoModelFormMutation):
         return cls(id=person.gid, errors=[])
 
 
-class RequestActivationMutation(UUIDDjangoModelFormMutation):
+class RequestActivatePersonMutation(UUIDDjangoModelFormMutation):
     id = ID()
 
     class Meta:
@@ -1231,7 +1231,7 @@ class ChangePasswordMutation(UUIDDjangoModelFormMutation):
         permissions = [login_required]
 
 
-class RequestPasswordMutation(UUIDDjangoModelFormMutation):
+class RequestResetPasswordMutation(UUIDDjangoModelFormMutation):
     id = ID()
 
     class Meta:
@@ -2036,10 +2036,10 @@ class Mutation(ObjectType):
     # delete_person = DeletePersonMutation.Field()
     # Persons Flows
     register_person = RegisterPersonMutation.Field()
-    request_activation = RequestActivationMutation.Field()
+    request_activate_person = RequestActivatePersonMutation.Field()
     activate_person = ActivatePersonMutation.Field()
     change_password = ChangePasswordMutation.Field()
-    request_password = RequestPasswordMutation.Field()
+    request_reset_password = RequestResetPasswordMutation.Field()
     reset_password = ResetPasswordMutation.Field()
 
     # PersonProperty
