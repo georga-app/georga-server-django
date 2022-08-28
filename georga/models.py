@@ -476,6 +476,7 @@ class Person(MixinUUIDs, AbstractUser):
         max_length=4,
         choices=TITLES,
         default='NONE',
+        blank=True,
         verbose_name=_("title"),
     )
 
