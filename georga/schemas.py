@@ -2014,6 +2014,7 @@ class Query(ObjectType):
         PersonPropertyGroupType)
     all_devices = UUIDDjangoFilterConnectionField(DeviceType)
     all_resources = UUIDDjangoFilterConnectionField(ResourceType)
+    all_operations = UUIDDjangoFilterConnectionField(OperationType)
     all_organizations = UUIDDjangoFilterConnectionField(OrganizationType)
     all_tasks = UUIDDjangoFilterConnectionField(TaskType)
     all_projects = UUIDDjangoFilterConnectionField(ProjectType)
