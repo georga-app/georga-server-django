@@ -1274,6 +1274,22 @@ class ResetPasswordMutation(UUIDDjangoModelFormMutation):
         return cls(id=person.gid, errors=[])
 
 
+class UpdateProfileMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = PersonModelForm
+        exclude_fields = ['id', 'password']
+        required_fields = []
+        permissions = [login_required]
+
+    @classmethod
+    def get_form_kwargs(cls, root, info, **input):
+        form_kwargs = super().get_form_kwargs(root, info, **input)
+        pk = info.context.user.pk
+        if pk:
+            form_kwargs["instance"] = cls._meta.model._default_manager.get(pk=pk)
+        return form_kwargs
+
+
 class ChangePasswordMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = PersonModelForm
@@ -2004,6 +2020,7 @@ class TestSubscriptionEventMutation(graphene.Mutation):
 
 class Query(ObjectType):
     node = Node.Field()
+    get_profile = Field(PersonType)
     all_task_fields = UUIDDjangoFilterConnectionField(
         TaskFieldType)
     all_equipment = UUIDDjangoFilterConnectionField(
@@ -2025,6 +2042,9 @@ class Query(ObjectType):
     all_projects = UUIDDjangoFilterConnectionField(ProjectType)
     all_roles = UUIDDjangoFilterConnectionField(RoleType)
 
+    def resolve_get_profile(parent, info):
+        return info.context.user
+
 
 class Mutation(ObjectType):
     # Authorization
@@ -2042,6 +2062,7 @@ class Mutation(ObjectType):
     activate_person = ActivatePersonMutation.Field()
     request_reset_password = RequestResetPasswordMutation.Field()
     reset_password = ResetPasswordMutation.Field()
+    update_profile = UpdateProfileMutation.Field()
     change_password = ChangePasswordMutation.Field()
 
     # PersonProperty
