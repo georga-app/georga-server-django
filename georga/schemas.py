@@ -1224,13 +1224,6 @@ class ActivatePersonMutation(UUIDDjangoModelFormMutation):
         return cls(email=person.email, errors=[])
 
 
-class ChangePasswordMutation(UUIDDjangoModelFormMutation):
-    class Meta:
-        form_class = PersonModelForm
-        only_fields = ['id', 'password']
-        permissions = [login_required]
-
-
 class RequestResetPasswordMutation(UUIDDjangoModelFormMutation):
     id = ID()
 
@@ -1277,6 +1270,13 @@ class ResetPasswordMutation(UUIDDjangoModelFormMutation):
         if form.cleaned_data.get('sub') == 'password_reset':
             person.save()
         return cls(id=person.gid, errors=[])
+
+
+class ChangePasswordMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = PersonModelForm
+        only_fields = ['id', 'password']
+        permissions = [login_required]
 
 
 # PersonProperty --------------------------------------------------------------
@@ -2038,9 +2038,9 @@ class Mutation(ObjectType):
     register_person = RegisterPersonMutation.Field()
     request_activate_person = RequestActivatePersonMutation.Field()
     activate_person = ActivatePersonMutation.Field()
-    change_password = ChangePasswordMutation.Field()
     request_reset_password = RequestResetPasswordMutation.Field()
     reset_password = ResetPasswordMutation.Field()
+    change_password = ChangePasswordMutation.Field()
 
     # PersonProperty
     create_person_property = CreatePersonPropertyMutation.Field()
