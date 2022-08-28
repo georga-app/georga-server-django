@@ -448,6 +448,17 @@ LOOKUPS_ENUM = ['exact']
 LOOKUPS_CONNECTION = ['exact']
 LOOKUPS_DATETIME = ['exact']
 
+
+# Authorization ===============================================================
+
+class ObtainJSONWebToken(graphql_jwt.relay.JSONWebTokenMutation):
+    id = ID()
+
+    @classmethod
+    def resolve(cls, root, info, **kwargs):
+        return cls(id=info.context.user.gid)
+
+
 # Models ======================================================================
 
 # ACE -------------------------------------------------------------------------
@@ -1032,6 +1043,7 @@ person_ro_fields = [
     'uuid',
     'date_joined',
     'last_login',
+    'ace_set',
 ]
 person_wo_fields = [
     'password',
@@ -1075,6 +1087,11 @@ person_filter_fields = {
 
 # types
 class PersonType(UUIDDjangoObjectType):
+    permission_level = Field(
+        convert_choices_to_named_enum_with_descriptions(
+            'PermissionLevel', Person.PERMISSION_LEVELS),
+        required=True)
+
     class Meta:
         model = Person
         fields = person_ro_fields + person_rw_fields
@@ -1116,31 +1133,32 @@ class PersonTokenModelForm(PersonModelForm):
 
 
 # mutations
-class CreatePersonMutation(UUIDDjangoModelFormMutation):
-    class Meta:
-        form_class = PersonModelForm
-        exclude_fields = ['id']
-        permissions = [staff_member_required]
 
-
-class UpdatePersonMutation(UUIDDjangoModelFormMutation):
-    class Meta:
-        form_class = PersonModelForm
-        required_fields = ['id']
-        permissions = [login_required]
-
-
-class DeletePersonMutation(UUIDDjangoModelFormMutation):
-    class Meta:
-        form_class = PersonModelForm
-        only_fields = ['id']
-        permissions = [staff_member_required]
-
-    @classmethod
-    def perform_mutate(cls, form, info):
-        person = form.instance
-        person.delete()
-        return cls(person=person, errors=[])
+# class CreatePersonMutation(UUIDDjangoModelFormMutation):
+#     class Meta:
+#         form_class = PersonModelForm
+#         exclude_fields = ['id']
+#         permissions = [staff_member_required]
+#
+#
+# class UpdatePersonMutation(UUIDDjangoModelFormMutation):
+#     class Meta:
+#         form_class = PersonModelForm
+#         required_fields = ['id']
+#         permissions = [login_required]
+#
+#
+# class DeletePersonMutation(UUIDDjangoModelFormMutation):
+#     class Meta:
+#         form_class = PersonModelForm
+#         only_fields = ['id']
+#         permissions = [staff_member_required]
+#
+#     @classmethod
+#     def perform_mutate(cls, form, info):
+#         person = form.instance
+#         person.delete()
+#         return cls(person=person, errors=[])
 
 
 class RegisterPersonMutation(UUIDDjangoModelFormMutation):
@@ -1158,30 +1176,26 @@ class RegisterPersonMutation(UUIDDjangoModelFormMutation):
         return cls(id=person.gid, errors=[])
 
 
-class RequestActivationMutation(UUIDDjangoModelFormMutation):
+class RequestActivatePersonMutation(UUIDDjangoModelFormMutation):
     id = ID()
 
     class Meta:
         form_class = PersonTokenModelForm
-        only_fields = ['token']
+        only_fields = ['email']
+        required_fields = ['email']
         permissions = []
 
     @classmethod
     def get_form_kwargs(cls, root, info, **input):
         form_kwargs = super().get_form_kwargs(root, info, **input)
-        payload = jwt_decode(form_kwargs["data"]["token"])
-        uuid = payload.pop("uid")
-        if uuid:
-            form_kwargs["instance"] = cls._meta.model._default_manager.get(uuid=uuid)
-            form_kwargs["data"].update(payload)
+        email = form_kwargs["data"]["email"]
+        form_kwargs["instance"] = cls._meta.model._default_manager.get(email=email)
         return form_kwargs
 
     @classmethod
     def perform_mutate(cls, form, info):
         person = form.instance
-        if form.cleaned_data.get('sub') == 'activation':
-            person.is_active = True
-            person.save()
+        Email.send_activation_email(person)
         return cls(id=person.gid, errors=[])
 
 
@@ -1212,28 +1226,14 @@ class ActivatePersonMutation(UUIDDjangoModelFormMutation):
         return cls(email=person.email, errors=[])
 
 
-class ObtainJSONWebToken(graphql_jwt.relay.JSONWebTokenMutation):
-    id = ID()
-
-    @classmethod
-    def resolve(cls, root, info, **kwargs):
-        return cls(id=info.context.user.gid)
-
-
-class ChangePasswordMutation(UUIDDjangoModelFormMutation):
-    class Meta:
-        form_class = PersonModelForm
-        only_fields = ['id', 'password']
-        permissions = [login_required]
-
-
-class RequestPasswordMutation(UUIDDjangoModelFormMutation):
+class RequestResetPasswordMutation(UUIDDjangoModelFormMutation):
     id = ID()
 
     class Meta:
         form_class = PersonModelForm
         only_fields = ['email']
         required_fields = ['email']
+        permissions = []
 
     @classmethod
     def get_form_kwargs(cls, root, info, **input):
@@ -1273,6 +1273,29 @@ class ResetPasswordMutation(UUIDDjangoModelFormMutation):
         if form.cleaned_data.get('sub') == 'password_reset':
             person.save()
         return cls(id=person.gid, errors=[])
+
+
+class UpdateProfileMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = PersonModelForm
+        exclude_fields = ['id', 'password']
+        required_fields = []
+        permissions = [login_required]
+
+    @classmethod
+    def get_form_kwargs(cls, root, info, **input):
+        form_kwargs = super().get_form_kwargs(root, info, **input)
+        pk = info.context.user.pk
+        if pk:
+            form_kwargs["instance"] = cls._meta.model._default_manager.get(pk=pk)
+        return form_kwargs
+
+
+class ChangePasswordMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = PersonModelForm
+        only_fields = ['id', 'password']
+        permissions = [login_required]
 
 
 # PersonProperty --------------------------------------------------------------
@@ -1998,6 +2021,7 @@ class TestSubscriptionEventMutation(graphene.Mutation):
 
 class Query(ObjectType):
     node = Node.Field()
+    get_profile = Field(PersonType)
     all_task_fields = UUIDDjangoFilterConnectionField(
         TaskFieldType)
     all_equipment = UUIDDjangoFilterConnectionField(
@@ -2006,8 +2030,8 @@ class Query(ObjectType):
         LocationType)
     all_messages = UUIDDjangoFilterConnectionField(
         MessageType, filterset_class=MessageFilter)
-    all_persons = UUIDDjangoFilterConnectionField(
-        PersonType)
+    # all_persons = UUIDDjangoFilterConnectionField(
+    #     PersonType)
     all_person_properties = UUIDDjangoFilterConnectionField(
         PersonPropertyType)
     all_person_property_groups = UUIDDjangoFilterConnectionField(
@@ -2020,6 +2044,9 @@ class Query(ObjectType):
     all_projects = UUIDDjangoFilterConnectionField(ProjectType)
     all_roles = UUIDDjangoFilterConnectionField(RoleType)
 
+    def resolve_get_profile(parent, info):
+        return info.context.user
+
 
 class Mutation(ObjectType):
     # Authorization
@@ -2028,16 +2055,17 @@ class Mutation(ObjectType):
     refresh_token = graphql_jwt.relay.Refresh.Field()
 
     # Persons
-    create_person = CreatePersonMutation.Field()
-    update_person = UpdatePersonMutation.Field()
-    delete_person = DeletePersonMutation.Field()
+    # create_person = CreatePersonMutation.Field()
+    # update_person = UpdatePersonMutation.Field()
+    # delete_person = DeletePersonMutation.Field()
     # Persons Flows
     register_person = RegisterPersonMutation.Field()
-    request_activation = RequestActivationMutation.Field()
+    request_activate_person = RequestActivatePersonMutation.Field()
     activate_person = ActivatePersonMutation.Field()
-    change_password = ChangePasswordMutation.Field()
-    request_password = RequestPasswordMutation.Field()
+    request_reset_password = RequestResetPasswordMutation.Field()
     reset_password = ResetPasswordMutation.Field()
+    update_profile = UpdateProfileMutation.Field()
+    change_password = ChangePasswordMutation.Field()
 
     # PersonProperty
     create_person_property = CreatePersonPropertyMutation.Field()

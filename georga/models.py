@@ -476,6 +476,7 @@ class Person(MixinUUIDs, AbstractUser):
         max_length=4,
         choices=TITLES,
         default='NONE',
+        blank=True,
         verbose_name=_("title"),
     )
 
@@ -595,6 +596,7 @@ class Person(MixinUUIDs, AbstractUser):
 
     organizations_subscribed = models.ManyToManyField(
         to='Organization',
+        blank=True,
         verbose_name=_("organizations subscribed to"),
     )
 
@@ -624,6 +626,26 @@ class Person(MixinUUIDs, AbstractUser):
         verbose_name = _("registered helper")
         verbose_name_plural = _("registered helpers")
         # TODO: translation: Registrierter Helfer
+
+    PERMISSION_LEVELS = [
+        ('NONE', _('None')),
+        ('OPERATION', _('Operation')),
+        ('PROJECT', _("Project")),
+        ('ORGANIZATION', _("Organization"))
+    ]
+
+    @property
+    def permission_level(self):
+        level = "NONE"
+        for ace in self.ace_set.all():
+            obj = ace.access_object
+            if isinstance(obj, Organization):
+                return "ORGANIZATION"
+            if isinstance(obj, Project):
+                level = "PROJECT"
+            if level != "PROJECT" and isinstance(obj, Operation):
+                level = "OPERATION"
+        return level
 
 
 class PersonProperty(MixinUUIDs, models.Model):
