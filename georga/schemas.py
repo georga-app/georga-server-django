@@ -1043,6 +1043,7 @@ person_ro_fields = [
     'uuid',
     'date_joined',
     'last_login',
+    'ace_set',
 ]
 person_wo_fields = [
     'password',
@@ -2029,8 +2030,8 @@ class Query(ObjectType):
         LocationType)
     all_messages = UUIDDjangoFilterConnectionField(
         MessageType, filterset_class=MessageFilter)
-    all_persons = UUIDDjangoFilterConnectionField(
-        PersonType)
+    # all_persons = UUIDDjangoFilterConnectionField(
+    #     PersonType)
     all_person_properties = UUIDDjangoFilterConnectionField(
         PersonPropertyType)
     all_person_property_groups = UUIDDjangoFilterConnectionField(
