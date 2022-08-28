@@ -2022,27 +2022,27 @@ class TestSubscriptionEventMutation(graphene.Mutation):
 class Query(ObjectType):
     node = Node.Field()
     get_profile = Field(PersonType)
-    all_task_fields = UUIDDjangoFilterConnectionField(
+    list_task_fields = UUIDDjangoFilterConnectionField(
         TaskFieldType)
-    all_equipment = UUIDDjangoFilterConnectionField(
+    list_equipment = UUIDDjangoFilterConnectionField(
         EquipmentType)
-    all_locations = UUIDDjangoFilterConnectionField(
+    list_locations = UUIDDjangoFilterConnectionField(
         LocationType)
-    all_messages = UUIDDjangoFilterConnectionField(
+    list_messages = UUIDDjangoFilterConnectionField(
         MessageType, filterset_class=MessageFilter)
     # all_persons = UUIDDjangoFilterConnectionField(
     #     PersonType)
-    all_person_properties = UUIDDjangoFilterConnectionField(
+    list_person_properties = UUIDDjangoFilterConnectionField(
         PersonPropertyType)
-    all_person_property_groups = UUIDDjangoFilterConnectionField(
+    list_person_property_groups = UUIDDjangoFilterConnectionField(
         PersonPropertyGroupType)
-    all_devices = UUIDDjangoFilterConnectionField(DeviceType)
-    all_resources = UUIDDjangoFilterConnectionField(ResourceType)
-    all_operations = UUIDDjangoFilterConnectionField(OperationType)
-    all_organizations = UUIDDjangoFilterConnectionField(OrganizationType)
-    all_tasks = UUIDDjangoFilterConnectionField(TaskType)
-    all_projects = UUIDDjangoFilterConnectionField(ProjectType)
-    all_roles = UUIDDjangoFilterConnectionField(RoleType)
+    list_devices = UUIDDjangoFilterConnectionField(DeviceType)
+    list_resources = UUIDDjangoFilterConnectionField(ResourceType)
+    list_operations = UUIDDjangoFilterConnectionField(OperationType)
+    list_organizations = UUIDDjangoFilterConnectionField(OrganizationType)
+    list_tasks = UUIDDjangoFilterConnectionField(TaskType)
+    list_projects = UUIDDjangoFilterConnectionField(ProjectType)
+    list_roles = UUIDDjangoFilterConnectionField(RoleType)
 
     def resolve_get_profile(parent, info):
         return info.context.user
