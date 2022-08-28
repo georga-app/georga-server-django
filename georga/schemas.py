@@ -448,6 +448,17 @@ LOOKUPS_ENUM = ['exact']
 LOOKUPS_CONNECTION = ['exact']
 LOOKUPS_DATETIME = ['exact']
 
+
+# Authorization ===============================================================
+
+class ObtainJSONWebToken(graphql_jwt.relay.JSONWebTokenMutation):
+    id = ID()
+
+    @classmethod
+    def resolve(cls, root, info, **kwargs):
+        return cls(id=info.context.user.gid)
+
+
 # Models ======================================================================
 
 # ACE -------------------------------------------------------------------------
@@ -1210,14 +1221,6 @@ class ActivatePersonMutation(UUIDDjangoModelFormMutation):
             person.is_active = True
             person.save()
         return cls(email=person.email, errors=[])
-
-
-class ObtainJSONWebToken(graphql_jwt.relay.JSONWebTokenMutation):
-    id = ID()
-
-    @classmethod
-    def resolve(cls, root, info, **kwargs):
-        return cls(id=info.context.user.gid)
 
 
 class ChangePasswordMutation(UUIDDjangoModelFormMutation):
