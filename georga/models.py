@@ -373,6 +373,11 @@ class Operation(MixinUUIDs, models.Model):
     name = models.CharField(
         max_length=100,
     )
+    description = models.CharField(
+        max_length=1000,
+        null=True,
+        blank=True,
+    )
     is_active = models.BooleanField(
         null=True,
         blank=True,
@@ -738,6 +743,11 @@ class Project(MixinUUIDs, models.Model):
     name = models.CharField(
         max_length=50,
     )
+    description = models.CharField(
+        max_length=1000,
+        null=True,
+        blank=True,
+    )
 
     ace = GenericRelation(
         ACE,
@@ -936,7 +946,7 @@ class Task(MixinUUIDs, models.Model):
         blank=True,
         related_name='task_locations',
     )
-    title = models.CharField(
+    name = models.CharField(
         max_length=100,
     )
     description = models.CharField(

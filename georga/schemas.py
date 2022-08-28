@@ -852,6 +852,7 @@ operation_wo_fields = [
 operation_rw_fields = [
     'project',
     'name',
+    'description',
     'is_active',
 ]
 operation_filter_fields = {
@@ -1519,6 +1520,7 @@ project_wo_fields = [
 ]
 project_rw_fields = [
     'name',
+    'description',
     'organization',
 ]
 project_filter_fields = {
@@ -1854,7 +1856,7 @@ task_rw_fields = [
     'resources_required',
     'resources_desirable',
     'locations',
-    'title',
+    'name',
     'description',
     'start_time',
     'end_time',
