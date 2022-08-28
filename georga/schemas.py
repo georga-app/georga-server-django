@@ -1132,31 +1132,32 @@ class PersonTokenModelForm(PersonModelForm):
 
 
 # mutations
-class CreatePersonMutation(UUIDDjangoModelFormMutation):
-    class Meta:
-        form_class = PersonModelForm
-        exclude_fields = ['id']
-        permissions = [staff_member_required]
 
-
-class UpdatePersonMutation(UUIDDjangoModelFormMutation):
-    class Meta:
-        form_class = PersonModelForm
-        required_fields = ['id']
-        permissions = [login_required]
-
-
-class DeletePersonMutation(UUIDDjangoModelFormMutation):
-    class Meta:
-        form_class = PersonModelForm
-        only_fields = ['id']
-        permissions = [staff_member_required]
-
-    @classmethod
-    def perform_mutate(cls, form, info):
-        person = form.instance
-        person.delete()
-        return cls(person=person, errors=[])
+# class CreatePersonMutation(UUIDDjangoModelFormMutation):
+#     class Meta:
+#         form_class = PersonModelForm
+#         exclude_fields = ['id']
+#         permissions = [staff_member_required]
+#
+#
+# class UpdatePersonMutation(UUIDDjangoModelFormMutation):
+#     class Meta:
+#         form_class = PersonModelForm
+#         required_fields = ['id']
+#         permissions = [login_required]
+#
+#
+# class DeletePersonMutation(UUIDDjangoModelFormMutation):
+#     class Meta:
+#         form_class = PersonModelForm
+#         only_fields = ['id']
+#         permissions = [staff_member_required]
+#
+#     @classmethod
+#     def perform_mutate(cls, form, info):
+#         person = form.instance
+#         person.delete()
+#         return cls(person=person, errors=[])
 
 
 class RegisterPersonMutation(UUIDDjangoModelFormMutation):
@@ -2030,9 +2031,9 @@ class Mutation(ObjectType):
     refresh_token = graphql_jwt.relay.Refresh.Field()
 
     # Persons
-    create_person = CreatePersonMutation.Field()
-    update_person = UpdatePersonMutation.Field()
-    delete_person = DeletePersonMutation.Field()
+    # create_person = CreatePersonMutation.Field()
+    # update_person = UpdatePersonMutation.Field()
+    # delete_person = DeletePersonMutation.Field()
     # Persons Flows
     register_person = RegisterPersonMutation.Field()
     request_activation = RequestActivationMutation.Field()
