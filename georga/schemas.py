@@ -1182,6 +1182,7 @@ class RequestActivatePersonMutation(UUIDDjangoModelFormMutation):
         form_class = PersonTokenModelForm
         only_fields = ['email']
         required_fields = ['email']
+        permissions = []
 
     @classmethod
     def get_form_kwargs(cls, root, info, **input):
@@ -1231,6 +1232,7 @@ class RequestResetPasswordMutation(UUIDDjangoModelFormMutation):
         form_class = PersonModelForm
         only_fields = ['email']
         required_fields = ['email']
+        permissions = []
 
     @classmethod
     def get_form_kwargs(cls, root, info, **input):
