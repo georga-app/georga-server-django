@@ -2,45 +2,54 @@
   pk: 1
   fields:
     uuid: "7acf9106-c8d8-4de4-941d-baa88e258b28"
-    name: "Betreuungsdienst"
+    name: "Care Service"
+    description: "Care for people who aren't able to care for oneselves alone."
     organization: 1
 - model: georga.project
   pk: 2
   fields:
-    name: "Sanitätsdienst"
+    name: "Sanitary Service"
+    description: "Clean houses and property and make everything shine again."
     organization: 1
 - model: georga.project
   pk: 3
   fields:
-    name: "Geflüchtetenhilfe Ukrainekrise 2022"
+    name: "Refugee Aid Ukraine Crisis 2022"
+    description: "Help with authorities, translation service, shelter."
     organization: 1
 - model: georga.project
   pk: 4
   fields:
-    name: "Elbehochwasser Hamburg 2002"
+    name: "Elbe River Flood Hamburg 2002"
+    description: "General disaster countermeasures, dike reinforcement, draining basements, clean up rubble."
     organization: 1
 - model: georga.project
   pk: 5
   fields:
-    name: "Sturmflut Hamburg 1962"
+    name: "Flood Catastrophy Hamburg 1962"
+    description: "General disaster countermeasures, dike reinforcement, draining basements, clean up rubble."
     organization: 1
 - model: georga.project
   pk: 6
   fields:
     name: "Ahrtal Hochwasser 2021"
+    description: "General disaster countermeasures, dike reinforcement, draining basements, clean up rubble."
     organization: 1
 - model: georga.project
   pk: 7
   fields:
     name: "Corona Impfzentrum Musterdorf 2020-11"
+    description: "Supporting measures to organize vaccinations."
     organization: 1
 - model: georga.project
   pk: 8
   fields:
-    name: "Schiff zur Abfahrt rüsten"
+    name: "Prepare vessel for sailing"
+    description: "Getting supplies on board, decorative repairs, administrative work, buerocratic necessities."
     organization: 2
 - model: georga.project
   pk: 9
   fields:
-    name: "Notfalleinsatz Cyberabwehr"
+    name: "Urgency Deployment of Cyber Defence Measures"
     organization: 3
+    description: "Updating infrastructure, replacing vulnerable devices, setup firewalls, pentests."

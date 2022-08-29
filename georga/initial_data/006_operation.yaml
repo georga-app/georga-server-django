@@ -68,6 +68,7 @@
   pk: 12
   fields:
     name: "Schiff zur Abfahrt rüsten April 2023"
+    description: "Beware: stormy weather on north sea this spring!"
     is_active: true
     project: 8
 - model: georga.operation
@@ -79,6 +80,7 @@
 - model: georga.operation
   pk: 14
   fields:
-    name: "Cyber Cyber Cyberabwehr KHs Luisenstift September 2022"
+    name: "Cyber Cyber Cyber Defence KHs Luisenstift September 2022"
+    description: "This is a representative deployment for the usual cyber defence agent."
     is_active: false
     project: 9
