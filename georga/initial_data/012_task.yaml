@@ -10,7 +10,7 @@
   pk: 2
   fields:
     name: "Registrierung"
-    description: "Registrierung jeglicher Besucher und Bewohnder"
+    description: "Registrierung jeglicher Besucher und Bewohner"
     operation: 1
     start_time: 2022-08-05 08:00:36.048326+00:00
     field: 6
@@ -26,7 +26,7 @@
   pk: 5
   fields:
     name: "Registrierung"
-    description: "Registrierung jeglicher Besucher und Bewohnder"
+    description: "Registrierung jeglicher Besucher und Bewohner"
     operation: 2
     start_time: 2022-08-06 08:00:36.048326+00:00
     field: 6
