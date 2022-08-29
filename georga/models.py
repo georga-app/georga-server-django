@@ -893,9 +893,11 @@ class Shift(MixinUUIDs, models.Model):
     enrollment_deadline = models.DateTimeField(
         default=datetime.now,
     )
-    locations = models.ManyToManyField(
+    locations = models.ForeignKey(
         to='Location',
-        related_name='shift_locations',
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
     )
 
     messages = GenericRelation(
@@ -924,12 +926,13 @@ class Task(MixinUUIDs, models.Model):
     )
     field = models.ForeignKey(
         to='TaskField',
-        on_delete=models.DO_NOTHING,
+        on_delete=models.DO_NOTHING,  # TODO: implement sane strategy how to cope with field deletion
     )
-    roles = models.ManyToManyField(
+    roles = models.ForeignKey(
         to='Role',
         blank=True,
-        related_name='task_roles',
+        null=True,
+        on_delete=models.SET_NULL,
     )
     resources_required = models.ManyToManyField(
         to='Resource',
@@ -941,10 +944,11 @@ class Task(MixinUUIDs, models.Model):
         blank=True,
         related_name='resources_desirable',
     )
-    locations = models.ManyToManyField(
+    locations = models.ForeignKey(
         to='Location',
         blank=True,
-        related_name='task_locations',
+        null=True,
+        on_delete=models.SET_NULL,
     )
     name = models.CharField(
         max_length=100,
