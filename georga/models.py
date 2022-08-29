@@ -177,6 +177,18 @@ class Location(MixinUUIDs, models.Model):
         null=True,
         blank=True,
     )
+    task = models.ForeignKey(  # if set, this becomes a template to all subsequent shifts of the task
+        to='Task',
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE,
+    )
+    shift = models.ForeignKey(  # if set, concrete location associated to a shift
+        to='Shift',
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE,
+    )  
 
     class Meta:
         verbose_name = _("location")
@@ -831,6 +843,12 @@ class Role(MixinUUIDs, models.Model):
         default=False,
     )
 
+    task = models.ForeignKey(
+        to='Task',
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE,
+    )
     person_attributes = GenericRelation(
         PersonToObject,
         content_type_field='relation_object_ct',
@@ -893,12 +911,6 @@ class Shift(MixinUUIDs, models.Model):
     enrollment_deadline = models.DateTimeField(
         default=datetime.now,
     )
-    locations = models.ForeignKey(
-        to='Location',
-        blank=True,
-        null=True,
-        on_delete=models.SET_NULL,
-    )
 
     messages = GenericRelation(
         Message,
@@ -928,12 +940,6 @@ class Task(MixinUUIDs, models.Model):
         to='TaskField',
         on_delete=models.DO_NOTHING,  # TODO: implement sane strategy how to cope with field deletion
     )
-    roles = models.ForeignKey(
-        to='Role',
-        blank=True,
-        null=True,
-        on_delete=models.SET_NULL,
-    )
     resources_required = models.ManyToManyField(
         to='Resource',
         blank=True,
@@ -943,12 +949,6 @@ class Task(MixinUUIDs, models.Model):
         to='Resource',
         blank=True,
         related_name='resources_desirable',
-    )
-    locations = models.ForeignKey(
-        to='Location',
-        blank=True,
-        null=True,
-        on_delete=models.SET_NULL,
     )
     name = models.CharField(
         max_length=100,

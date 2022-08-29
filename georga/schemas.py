@@ -647,6 +647,8 @@ location_rw_fields = [
     'postal_address_zip_code',
     'postal_address_city',
     'postal_address_country',
+    'task',
+    'shift',
 ]
 location_filter_fields = {
     'id': LOOKUPS_ID,
@@ -1786,7 +1788,6 @@ shift_rw_fields = [
     'end_time',
     'enrollment_deadline',
     'state',
-    'locations',
 ]
 shift_filter_fields = {
     'id': LOOKUPS_ID,
@@ -1852,10 +1853,8 @@ task_wo_fields = [
 task_rw_fields = [
     'operation',
     'field',
-    'roles',
     'resources_required',
     'resources_desirable',
-    'locations',
     'name',
     'description',
     'start_time',
