@@ -1,6 +1,7 @@
 - model: georga.personproperty
   pk: 1
   fields:
+    uuid: "00000004-0000-0000-0000-000000000001"
     name: English
     # Englisch
     group: 1
@@ -8,6 +9,7 @@
 - model: georga.personproperty
   pk: 2
   fields:
+    uuid: "00000004-0000-0000-0000-000000000002"
     name: French
     # Französisch
     group: 1
@@ -15,6 +17,7 @@
 - model: georga.personproperty
   pk: 3
   fields:
+    uuid: "00000004-0000-0000-0000-000000000003"
     name: Spanish
     # Spanisch
     group: 1
@@ -22,6 +25,7 @@
 - model: georga.personproperty
   pk: 4
   fields:
+    uuid: "00000004-0000-0000-0000-000000000004"
     name: Arabian
     # Arabisch
     group: 1
@@ -29,6 +33,7 @@
 - model: georga.personproperty
   pk: 5
   fields:
+    uuid: "00000004-0000-0000-0000-000000000005"
     name: Turkish
     # Türkisch
     group: 1
@@ -36,6 +41,7 @@
 - model: georga.personproperty
   pk: 6
   fields:
+    uuid: "00000004-0000-0000-0000-000000000006"
     name: Polnish
     # Polnisch
     group: 1
@@ -43,6 +49,7 @@
 - model: georga.personproperty
   pk: 7
   fields:
+    uuid: "00000004-0000-0000-0000-000000000007"
     name: Kurdish
     # Kurdisch
     group: 1
@@ -50,6 +57,7 @@
 - model: georga.personproperty
   pk: 8
   fields:
+    uuid: "00000004-0000-0000-0000-000000000008"
     name: Italian
     # Italienisch
     group: 1
@@ -57,6 +65,7 @@
 - model: georga.personproperty
   pk: 9
   fields:
+    uuid: "00000004-0000-0000-0000-000000000009"
     name: Greek
     # Griechisch
     group: 1
@@ -64,6 +73,7 @@
 - model: georga.personproperty
   pk: 10
   fields:
+    uuid: "00000004-0000-0000-0000-000000000010"
     name: Dutch
     # Niederländisch
     group: 1
@@ -71,6 +81,7 @@
 - model: georga.personproperty
   pk: 11
   fields:
+    uuid: "00000004-0000-0000-0000-000000000011"
     name: Serbian
     # Serbisch
     group: 1
@@ -78,6 +89,7 @@
 - model: georga.personproperty
   pk: 12
   fields:
+    uuid: "00000004-0000-0000-0000-000000000012"
     name: Croatian
     # Kroatisch
     group: 1
@@ -85,6 +97,7 @@
 - model: georga.personproperty
   pk: 13
   fields:
+    uuid: "00000004-0000-0000-0000-000000000013"
     name: Ukrainian
     # Ukrainisch
     group: 1
@@ -92,6 +105,7 @@
 - model: georga.personproperty
   pk: 14
   fields:
+    uuid: "00000004-0000-0000-0000-000000000014"
     name: Russian
     # Russisch
     group: 1
@@ -99,6 +113,7 @@
 - model: georga.personproperty
   pk: 15
   fields:
+    uuid: "00000004-0000-0000-0000-000000000015"
     name: Romanian
     # Rumänisch
     group: 1
@@ -106,6 +121,7 @@
 - model: georga.personproperty
   pk: 16
   fields:
+    uuid: "00000004-0000-0000-0000-000000000016"
     name: Hungarian
     # Ungarisch
     group: 1
@@ -113,6 +129,7 @@
 - model: georga.personproperty
   pk: 17
   fields:
+    uuid: "00000004-0000-0000-0000-000000000017"
     name: Slovakian
     # Slowakisch
     group: 1
@@ -120,6 +137,7 @@
 - model: georga.personproperty
   pk: 18
   fields:
+    uuid: "00000004-0000-0000-0000-000000000018"
     name: Czech
     # Tschechisch
     group: 1
@@ -127,6 +145,7 @@
 - model: georga.personproperty
   pk: 19
   fields:
+    uuid: "00000004-0000-0000-0000-000000000019"
     name: Lithuanian
     # Litauisch
     group: 1
@@ -134,6 +153,7 @@
 - model: georga.personproperty
   pk: 20
   fields:
+    uuid: "00000004-0000-0000-0000-000000000020"
     name: Latvian
     # Lettisch
     group: 1
@@ -141,6 +161,7 @@
 - model: georga.personproperty
   pk: 21
   fields:
+    uuid: "00000004-0000-0000-0000-000000000021"
     name: Estonian
     # Estnisch
     group: 1
@@ -148,6 +169,7 @@
 - model: georga.personproperty
   pk: 22
   fields:
+    uuid: "00000004-0000-0000-0000-000000000022"
     name: German drivers license class B
     # Führerschein B
     group: 2
@@ -155,6 +177,7 @@
 - model: georga.personproperty
   pk: 23
   fields:
+    uuid: "00000004-0000-0000-0000-000000000023"
     name: German drivers license class BE
     # Führerschein BE
     group: 2
@@ -162,6 +185,7 @@
 - model: georga.personproperty
   pk: 24
   fields:
+    uuid: "00000004-0000-0000-0000-000000000024"
     name: German drivers license class E
     # Führerschein E
     group: 2
@@ -169,6 +193,7 @@
 - model: georga.personproperty
   pk: 25
   fields:
+    uuid: "00000004-0000-0000-0000-000000000025"
     name: German drivers license class D1
     # Führerschein D1
     group: 2
@@ -176,6 +201,7 @@
 - model: georga.personproperty
   pk: 26
   fields:
+    uuid: "00000004-0000-0000-0000-000000000026"
     name: German drivers license class D1E
     # Führerschein D1E
     group: 2
@@ -183,6 +209,7 @@
 - model: georga.personproperty
   pk: 27
   fields:
+    uuid: "00000004-0000-0000-0000-000000000027"
     name: German drivers license class D
     # Führerschein D
     group: 2
@@ -190,6 +217,7 @@
 - model: georga.personproperty
   pk: 28
   fields:
+    uuid: "00000004-0000-0000-0000-000000000028"
     name: German drivers license class DE
     # Führerschein DE
     group: 2
@@ -197,6 +225,7 @@
 - model: georga.personproperty
   pk: 29
   fields:
+    uuid: "00000004-0000-0000-0000-000000000029"
     name: German drivers license class C1
     # Führerschein C1
     group: 2
@@ -204,6 +233,7 @@
 - model: georga.personproperty
   pk: 30
   fields:
+    uuid: "00000004-0000-0000-0000-000000000030"
     name: German drivers license class C1E
     # Führerschein C1E
     group: 2
@@ -211,6 +241,7 @@
 - model: georga.personproperty
   pk: 31
   fields:
+    uuid: "00000004-0000-0000-0000-000000000031"
     name: German drivers license class CE
     # Führerschein CE
     group: 2
@@ -218,6 +249,7 @@
 - model: georga.personproperty
   pk: 32
   fields:
+    uuid: "00000004-0000-0000-0000-000000000032"
     name: German drivers license class C
     # Führerschein C
     group: 2
@@ -225,6 +257,7 @@
 - model: georga.personproperty
   pk: 33
   fields:
+    uuid: "00000004-0000-0000-0000-000000000033"
     name: German drivers license class A2
     # Führerschein A2
     group: 2
@@ -232,6 +265,7 @@
 - model: georga.personproperty
   pk: 34
   fields:
+    uuid: "00000004-0000-0000-0000-000000000034"
     name: German drivers license class A1
     # Führerschein A1
     group: 2
@@ -239,6 +273,7 @@
 - model: georga.personproperty
   pk: 35
   fields:
+    uuid: "00000004-0000-0000-0000-000000000035"
     name: Operating license for marine vessels
     # Führerschein Boot
     group: 2
@@ -246,6 +281,7 @@
 - model: georga.personproperty
   pk: 36
   fields:
+    uuid: "00000004-0000-0000-0000-000000000036"
     name: German drivers license class A
     # Führerschein A
     group: 2
@@ -253,6 +289,7 @@
 - model: georga.personproperty
   pk: 37
   fields:
+    uuid: "00000004-0000-0000-0000-000000000037"
     name: German drivers license class AM
     # Führerschein AM
     group: 2
@@ -260,6 +297,7 @@
 - model: georga.personproperty
   pk: 38
   fields:
+    uuid: "00000004-0000-0000-0000-000000000038"
     name: German drivers license class L
     # Führerschein L
     group: 2
@@ -267,6 +305,7 @@
 - model: georga.personproperty
   pk: 39
   fields:
+    uuid: "00000004-0000-0000-0000-000000000039"
     name: German drivers license class T
     # Führerschein T
     group: 2
@@ -275,6 +314,7 @@
 - model: georga.personproperty
   pk: 40
   fields:
+    uuid: "00000004-0000-0000-0000-000000000040"
     name: Clerk
     # Bürokaufmann/-frau
     group: 3
@@ -282,6 +322,7 @@
 - model: georga.personproperty
   pk: 41
   fields:
+    uuid: "00000004-0000-0000-0000-000000000041"
     name: Human resouces
     # Personalverwaltung
     group: 3
@@ -289,6 +330,7 @@
 - model: georga.personproperty
   pk: 42
   fields:
+    uuid: "00000004-0000-0000-0000-000000000042"
     name: Accounting clerk
     # Buchhalter/-in
     group: 3
@@ -297,6 +339,7 @@
 - model: georga.personproperty
   pk: 43
   fields:
+    uuid: "00000004-0000-0000-0000-000000000043"
     name: Emergency medical services
     # Rettungsdienst-Qualifikation (unten eintragen)
     group: 4
@@ -304,18 +347,21 @@
 - model: georga.personproperty
   pk: 44
   fields:
+    uuid: "00000004-0000-0000-0000-000000000044"
     name: Nurse (exam)
     # Examinierte Pflegekraft
     group: 4
     organization: 1
 # - model: georga.personproperty               dupe? see nurse...
 #   fields:
+#     uuid: "00000004-0000-0000-0000-000000000044"
 #     name: Gesundheits- und Krankenpfleger/in
 #     group: 3
 #     organization: 1
 - model: georga.personproperty
   pk: 45
   fields:
+    uuid: "00000004-0000-0000-0000-000000000045"
     name: Medical technical assistant
     # Medizinisch Technische Assistenz
     group: 4
@@ -323,6 +369,7 @@
 - model: georga.personproperty
   pk: 46
   fields:
+    uuid: "00000004-0000-0000-0000-000000000046"
     name: Physician
     # Mediziner/in
     group: 4
@@ -331,6 +378,7 @@
 - model: georga.personproperty
   pk: 47
   fields:
+    uuid: "00000004-0000-0000-0000-000000000047"
     name: Information technology
     # Informationstechnik
     group: 5
@@ -338,6 +386,7 @@
 - model: georga.personproperty
   pk: 48
   fields:
+    uuid: "00000004-0000-0000-0000-000000000048"
     name: Communication technology
     # Kommunikationstechnik
     group: 5
@@ -345,6 +394,7 @@
 - model: georga.personproperty
   pk: 49
   fields:
+    uuid: "00000004-0000-0000-0000-000000000049"
     name: Small amateur radio licence (German)
     # Kleine Amateurfunklizenz
     group: 5
@@ -352,6 +402,7 @@
 - model: georga.personproperty
   pk: 50
   fields:
+    uuid: "00000004-0000-0000-0000-000000000050"
     name: Big amateur radio licence (German)
     # Große Amateurfunklizenz
     group: 5
@@ -359,6 +410,7 @@
 - model: georga.personproperty
   pk: 51
   fields:
+    uuid: "00000004-0000-0000-0000-000000000051"
     name: Amateur radio licence class E (German)
     # Amateurfunkzeugnis der Klasse E
     group: 5
@@ -366,6 +418,7 @@
 - model: georga.personproperty
   pk: 52
   fields:
+    uuid: "00000004-0000-0000-0000-000000000052"
     name: Amateur radio licence class A (German)
     # Amateurfunkzeugnis der Klasse A
     group: 5
@@ -373,6 +426,7 @@
 - model: georga.personproperty
   pk: 53
   fields:
+    uuid: "00000004-0000-0000-0000-000000000053"
     name: Own amateur radio station
     # Eigene Amateurfunkstation
     group: 5
@@ -382,6 +436,7 @@
 - model: georga.personproperty
   pk: 54
   fields:
+    uuid: "00000004-0000-0000-0000-000000000054"
     name: Shopping
     # Einkaufen
     group: 6
@@ -389,6 +444,7 @@
 - model: georga.personproperty
   pk: 55
   fields:
+    uuid: "00000004-0000-0000-0000-000000000055"
     name: Household
     # Haushalt
     group: 6
@@ -396,6 +452,7 @@
 - model: georga.personproperty
   pk: 56
   fields:
+    uuid: "00000004-0000-0000-0000-000000000056"
     name: Craft activity
     # Handwerkliche Tätigkeit
     group: 6
@@ -403,6 +460,7 @@
 - model: georga.personproperty
   pk: 57
   fields:
+    uuid: "00000004-0000-0000-0000-000000000057"
     name: Transport service - own car
     # Fahrdienst - eigener PKW
     group: 6
@@ -410,6 +468,7 @@
 - model: georga.personproperty
   pk: 58
   fields:
+    uuid: "00000004-0000-0000-0000-000000000058"
     name: Transport service - own van
     # Fahrdienst - eigener Transporter
     group: 6
@@ -417,6 +476,7 @@
 - model: georga.personproperty
   pk: 59
   fields:
+    uuid: "00000004-0000-0000-0000-000000000059"
     name: Transport service - provided vehicle
     # Fahrdienst - gestelltes Fahrzeug
     group: 6
@@ -425,12 +485,14 @@
 - model: georga.personproperty
   pk: 60
   fields:
+    uuid: "00000004-0000-0000-0000-000000000060"
     name: yes
     group: 7
     organization: 1
 - model: georga.personproperty
   pk: 61
   fields:
+    uuid: "00000004-0000-0000-0000-000000000061"
     name: no
     group: 7
     organization: 1

@@ -1,6 +1,7 @@
 - model: georga.device
   pk: 1
   fields:
+    uuid: "00000013-0000-0000-0000-000000000001"
     device_string: "Samsung Galaxy Note 2"
     os_version: "Android 6.0"
     app_version: "MAUI 2.0"
@@ -8,6 +9,7 @@
 - model: georga.device
   pk: 2
   fields:
+    uuid: "00000013-0000-0000-0000-000000000002"
     device_string: "Samsung Ultrabook 3"
     os_version: "Debian 11"
     app_version: "React 1.0"
@@ -15,6 +17,7 @@
 - model: georga.device
   pk: 3
   fields:
+    uuid: "00000013-0000-0000-0000-000000000003"
     device_string: "Apple iPhone 3"
     os_version: "iOS 2.5"
     app_version: "0.5"

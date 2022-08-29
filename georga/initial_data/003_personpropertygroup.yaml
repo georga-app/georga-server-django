@@ -1,78 +1,91 @@
 - model: georga.personpropertygroup
   pk: 1
   fields:
+    uuid: "00000003-0000-0000-0000-000000000001"
     codename: LANGUAGE
     name: Language
     organization: 1
 - model: georga.personpropertygroup
   pk: 2
   fields:
+    uuid: "00000003-0000-0000-0000-000000000002"
     codename: LANGUAGE
     name: Language
     organization: 2
 - model: georga.personpropertygroup
   pk: 3
   fields:
+    uuid: "00000003-0000-0000-0000-000000000003"
     codename: LICENSE
     name: License
     organization: 1
 - model: georga.personpropertygroup
   pk: 4
   fields:
+    uuid: "00000003-0000-0000-0000-000000000004"
     codename: ADMINISTRATIVE
     name: Administrative
     organization: 2
 - model: georga.personpropertygroup
   pk: 5
   fields:
+    uuid: "00000003-0000-0000-0000-000000000005"
     codename: ADMINISTRATIVE
     name: Administrative
     organization: 3
 - model: georga.personpropertygroup
   pk: 6
   fields:
+    uuid: "00000003-0000-0000-0000-000000000006"
     codename: MEDICAL
     name: Medical
     organization: 1
 - model: georga.personpropertygroup
   pk: 7
   fields:
+    uuid: "00000003-0000-0000-0000-000000000007"
     codename: MEDICAL
     name: Medical
     organization: 2
 - model: georga.personpropertygroup
   pk: 8
   fields:
+    uuid: "00000003-0000-0000-0000-000000000008"
     codename: TECHNICAL
     name: Technical
     organization: 2
 - model: georga.personpropertygroup
   pk: 9
   fields:
+    uuid: "00000003-0000-0000-0000-000000000009"
     codename: TECHNICAL
     name: Technical
     organization: 3
 - model: georga.personpropertygroup
   pk: 10
   fields:
+    uuid: "00000003-0000-0000-0000-000000000010"
     codename: GENERAL
     name: General
     organization: 1
 - model: georga.personpropertygroup
   pk: 11
   fields:
+    uuid: "00000003-0000-0000-0000-000000000011"
     codename: GENERAL
     name: General
     organization: 2
 - model: georga.personpropertygroup
   pk: 12
   fields:
+    uuid: "00000003-0000-0000-0000-000000000012"
     codename: GENERAL
     name: General
     organization: 3
 - model: georga.personpropertygroup
   pk: 13
   fields:
+    uuid: "00000003-0000-0000-0000-000000000013"
     codename: ADULT
     name: Adult
     organization: 3

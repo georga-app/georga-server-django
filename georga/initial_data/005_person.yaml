@@ -3,6 +3,7 @@
 - model: georga.person
   pk: 1
   fields:
+    uuid: "00000005-0000-0000-0000-000000000001"
     password: pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
     last_login: null
     is_superuser: true
@@ -20,6 +21,7 @@
 - model: georga.person
   pk: 2
   fields:
+    uuid: "00000005-0000-0000-0000-000000000002"
     password: pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
     last_login: null
     is_superuser: false
@@ -38,7 +40,7 @@
 - model: georga.person
   pk: 3
   fields:
-    uuid: "492902cf-621a-495a-ac55-319644c1174a"
+    uuid: "00000005-0000-0000-0000-000000000003"
     password: pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
     last_login: null
     is_superuser: false
@@ -55,7 +57,7 @@
 - model: georga.person
   pk: 4
   fields:
-    uuid: "492902cf-621a-495a-ac55-319644c1174b"
+    uuid: "00000005-0000-0000-0000-000000000004"
     password: pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
     last_login: null
     is_superuser: false
@@ -72,7 +74,7 @@
 - model: georga.person
   pk: 5
   fields:
-    uuid: "492902cf-621a-495a-ac55-319644c1174c"
+    uuid: "00000005-0000-0000-0000-000000000005"
     password: pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
     last_login: null
     is_superuser: false
@@ -86,3 +88,22 @@
     properties: [7, 10]
     organizations_subscribed: [3]
     is_active: true
+
+# inactive user
+- model: georga.person
+  pk: 6
+  fields:
+    uuid: "00000005-0000-0000-0000-000000000006"
+    password: pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
+    last_login: null
+    is_superuser: false
+    username: inactive@georga.test
+    first_name: 'Inactive'
+    last_name: 'User'
+    is_staff: false
+    date_joined: 2022-03-13 16:13:36.048326+00:00
+    email: inactive@georga.test
+    password_modified: 2022-03-13 16:13:36.048338+00:00
+    properties: [2, 5, 7, 10]
+    organizations_subscribed: [1, 2, 3]
+    is_active: false

@@ -1,72 +1,84 @@
 - model: georga.operation
   pk: 1
   fields:
+    uuid: "00000006-0000-0000-0000-000000000001"
     name: "Betreuungsdienst Notunterkunft Hofstraße 2022"
     is_active: true
     project: 1
 - model: georga.operation
   pk: 2
   fields:
+    uuid: "00000006-0000-0000-0000-000000000002"
     name: "Betreuungsdienst Notunterkunft Lindenstraße 2022"
     is_active: false
     project: 1
 - model: georga.operation
   pk: 3
   fields:
+    uuid: "00000006-0000-0000-0000-000000000003"
     name: "Sanitätsdienst Fußball Lokalderby 06.08.2022"
     is_active: true
     project: 2
 - model: georga.operation
   pk: 4
   fields:
+    uuid: "00000006-0000-0000-0000-000000000004"
     name: "Sanitätsdienst Mozartkonzert Wien 07.08.2022"
     is_active: false
     project: 2
 - model: georga.operation
   pk: 5
   fields:
+    uuid: "00000006-0000-0000-0000-000000000005"
     name: "Hilfe für Behördengänge für Geflüchtete 2022-04"
     is_active: true
     project: 3
 - model: georga.operation
   pk: 6
   fields:
+    uuid: "00000006-0000-0000-0000-000000000006"
     name: "Sandsäcke füllen"
     is_active: true
     project: 4
 - model: georga.operation
   pk: 7
   fields:
+    uuid: "00000006-0000-0000-0000-000000000007"
     name: "Schlammräumung"
     is_active: false
     project: 4
 - model: georga.operation
   pk: 8
   fields:
+    uuid: "00000006-0000-0000-0000-000000000008"
     name: "Schlammräumung"
     is_active: true
     project: 5
 - model: georga.operation
   pk: 9
   fields:
+    uuid: "00000006-0000-0000-0000-000000000009"
     name: "Schlammräumung"
     is_active: true
     project: 6
 - model: georga.operation
   pk: 10
   fields:
+    uuid: "00000006-0000-0000-0000-000000000010"
     name: "Registrierung"
     is_active: true
     project: 7
 - model: georga.operation
   pk: 11
   fields:
+    uuid: "00000006-0000-0000-0000-000000000011"
     name: "Zuteilung Impfräume"
     is_active: false
     project: 7
 - model: georga.operation
   pk: 12
   fields:
+    uuid: "00000006-0000-0000-0000-000000000012"
     name: "Schiff zur Abfahrt rüsten April 2023"
     description: "Beware: stormy weather on north sea this spring!"
     is_active: true
@@ -74,12 +86,14 @@
 - model: georga.operation
   pk: 13
   fields:
+    uuid: "00000006-0000-0000-0000-000000000013"
     name: "Cyber Cyber Cyberabwehr Bundestag 2023-01"
     is_active: true
     project: 9
 - model: georga.operation
   pk: 14
   fields:
+    uuid: "00000006-0000-0000-0000-000000000014"
     name: "Cyber Cyber Cyber Defence KHs Luisenstift September 2022"
     description: "This is a representative deployment for the usual cyber defence agent."
     is_active: false

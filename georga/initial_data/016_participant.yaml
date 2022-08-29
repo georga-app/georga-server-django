@@ -1,25 +1,30 @@
 - model: georga.participant
   pk: 1
   fields:
+    uuid: "00000016-0000-0000-0000-000000000001"
     role: 1
     person: 1
 - model: georga.participant
   pk: 2
   fields:
+    uuid: "00000016-0000-0000-0000-000000000002"
     role: 2
     person: 2
 - model: georga.participant
   pk: 3
   fields:
+    uuid: "00000016-0000-0000-0000-000000000003"
     role: 3
     person: 3
 - model: georga.participant
   pk: 4
   fields:
+    uuid: "00000016-0000-0000-0000-000000000004"
     role: 4
     person: 4
 - model: georga.participant
   pk: 5
   fields:
+    uuid: "00000016-0000-0000-0000-000000000005"
     role: 5
     person: 5

@@ -1,60 +1,70 @@
 - model: georga.equipment
   pk: 1
   fields:
+    uuid: "00000014-0000-0000-0000-000000000001"
     name: "FFP2-Masken"
     owner: "ORG"
     organization: 1
 - model: georga.equipment
   pk: 2
   fields:
+    uuid: "00000014-0000-0000-0000-000000000002"
     name: "Schaufeln"
     owner: "ORG"
     organization: 1
 - model: georga.equipment
   pk: 3
   fields:
+    uuid: "00000014-0000-0000-0000-000000000003"
     name: "Latexhandschuhe"
     owner: "ORG"
     organization: 1
 - model: georga.equipment
   pk: 4
   fields:
+    uuid: "00000014-0000-0000-0000-000000000004"
     name: "Arbeitshandschuhe"
     owner: "THIRDPARTY"
     organization: 1
 - model: georga.equipment
   pk: 5
   fields:
+    uuid: "00000014-0000-0000-0000-000000000005"
     name: "S3-Schuhe"
     owner: "THIRDPARTY"
     organization: 1
 - model: georga.equipment
   pk: 6
   fields:
+    uuid: "00000014-0000-0000-0000-000000000006"
     name: "S3-Schuhe"
     owner: "SELF"
     organization: 1
 - model: georga.equipment
   pk: 7
   fields:
+    uuid: "00000014-0000-0000-0000-000000000007"
     name: "Arbeitshandschuhe"
     owner: "SELF"
     organization: 1
 - model: georga.equipment
   pk: 8
   fields:
+    uuid: "00000014-0000-0000-0000-000000000008"
     name: "Latexhandschuhe"
     owner: "SELF"
     organization: 1
 - model: georga.equipment
   pk: 9
   fields:
+    uuid: "00000014-0000-0000-0000-000000000009"
     name: "Tauchpumpe"
     owner: "SELF"
     organization: 1
 - model: georga.equipment
   pk: 10
   fields:
+    uuid: "00000014-0000-0000-0000-000000000010"
     name: "Satellitentelefon"
     owner: "SELF"
     organization: 1
