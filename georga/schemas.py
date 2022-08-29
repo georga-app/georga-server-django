@@ -38,7 +38,7 @@ from graphene_django.forms.mutation import DjangoModelFormMutation
 from graphql_jwt.decorators import login_required, staff_member_required
 from graphql_relay import from_global_id
 
-from .auth import jwt_decode
+from .auth import jwt_decode, object_permits_user
 from .email import Email
 from .models import (
     ACE,
@@ -206,16 +206,17 @@ class UUIDDjangoObjectType(DjangoObjectType):
 
         # set permissions for query specified in Meta.permissions
         for permission in kwargs.get('permissions', []):
+            cls.get_node = permission(cls.get_node)
             cls.get_queryset = permission(cls.get_queryset)
 
         super().__init_subclass_with_meta__(*args, **kwargs)
 
     @classmethod
-    def get_node(cls, info, id):
+    def get_node(cls, info, uuid):
         # change queryset to fetch objects by uuid model field
         queryset = cls.get_queryset(cls._meta.model.objects, info)
         try:
-            return queryset.get(uuid=id)
+            return queryset.get(uuid=uuid)
         except cls._meta.model.DoesNotExist:
             return None
 
@@ -235,6 +236,12 @@ class UUIDDjangoFilterConnectionField(DjangoFilterConnectionField):
     Bugfixes:
     - Fixes a bug that converts model id fields to graphene.Float schema fields.
     """
+    # def __init__(self, *args, **kwargs):
+    #     # set permissions for query specified in Meta.permissions
+    #     obj = super().__init__(*args, **kwargs)
+    #     for permission in kwargs.get('permissions', []):
+    #         # cls.get_node = permission(cls.get_node)
+    #         pass
 
     @property
     def filtering_args(self):
@@ -301,7 +308,7 @@ class UUIDDjangoModelFormMutation(DjangoModelFormMutation):
 
         # set permissions for mutation specified in Meta.permissions
         for permission in kwargs.get('permissions', []):
-            cls.mutate_and_get_payload = permission(cls.mutate_and_get_payload)
+            cls.get_form_kwargs = permission(cls.get_form_kwargs)
 
         # remove schema id field if Meta.only_fields is given and does not contain it
         if 'id' not in kwargs.get('only_fields', ['id']):
@@ -1096,7 +1103,7 @@ class PersonType(UUIDDjangoObjectType):
         model = Person
         fields = person_ro_fields + person_rw_fields
         filter_fields = person_filter_fields
-        permissions = [login_required]
+        permissions = [login_required, object_permits_user('admin')]
 
 
 # forms
@@ -1280,7 +1287,7 @@ class UpdateProfileMutation(UUIDDjangoModelFormMutation):
         form_class = PersonModelForm
         exclude_fields = ['id', 'password']
         required_fields = []
-        permissions = [login_required]
+        permissions = [login_required, object_permits_user("admin")]
 
     @classmethod
     def get_form_kwargs(cls, root, info, **input):
@@ -2043,6 +2050,7 @@ class Query(ObjectType):
     all_projects = UUIDDjangoFilterConnectionField(ProjectType)
     all_roles = UUIDDjangoFilterConnectionField(RoleType)
 
+    @object_permits_user("admin")
     def resolve_get_profile(parent, info):
         return info.context.user
 

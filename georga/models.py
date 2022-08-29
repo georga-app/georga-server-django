@@ -32,6 +32,91 @@ class MixinUUIDs(models.Model):
         return to_global_id(f"{self._meta.object_name}Type", self.uuid)
 
 
+class MixinAuthorization(models.Model):
+    """
+    Methods for instance level authorization.
+
+    Access rules for a model are defined by overriding `Model.permitted()`
+    to return a dictionary of lookup expressions and values,
+    which select the accessible instances.
+
+    Access to an instance can be inquired via `instance.permits()`.
+    A filtered queryset can be obtained via `Model.filter_permitted()`.
+
+    All methods need to be called with the parameters:
+        user: Person instance
+        access_string: arbitraty description of a role or permission
+
+    If the granting of some role or permission should be configurable via ACEs,
+    the access_string should match the choices of ACE.access_string field.
+
+    For usage with graphene_django see `georga.auth.object_permits_user()`.
+
+    Example: permitted lookup expressions
+
+        class Person(MixinAuthorization, models.Model):
+            @classmethod
+            def permitted(cls, user, access_string):
+                permitted = None
+                if access_string == 'admin':
+                    permitted = {
+                        'pk': user.pk
+                    }
+                return permitted
+
+    Example: permit execution^
+
+        if person.permits(context.user, 'admin'):
+            person.change_password('secret')
+            person.save()
+
+    Example: filter queryset
+
+        queryset = Person.objects.all()
+        filtered_queryset = Person.filter_permitted(
+            queryset, context.user, 'admin')
+    """
+    class Meta:
+        abstract = True
+
+    @classmethod
+    def filter_permitted(cls, queryset, user, access_string):
+        """
+        Filters a queryset to include only permitted instances for the user.
+
+        Returns a queryset filtered by the lookups defined in permitted().
+        """
+        permitted = cls.permitted(user, access_string)
+        if permitted is None:
+            return queryset.none()
+        return queryset.filter(**permitted)
+
+    @classmethod
+    def permitted(cls, user, access_string):
+        """
+        Defines the permissions of the object.
+
+        Returns a dict of lookups expressions and values to filter queryset
+        or None to deny all. Denies all by default.
+        """
+        return None
+
+    def permits(self, user, access_string):
+        """
+        Asks an object, if it grants some user a certain permission.
+
+        Returns True if permission was granted, False otherwise.
+        Issues a database query using the lookups defined in permitted().
+        """
+        permitted = self.permitted(user, access_string)
+        if permitted is None:
+            return False
+        if 'pk' in permitted and self.pk != permitted['pk']:
+            return False
+        permitted['pk'] = self.pk
+        return self._meta.model.objects.filter(**permitted).exists()
+
+
 # --- CLASSES
 
 class ACE(MixinUUIDs, models.Model):
@@ -455,7 +540,7 @@ class Participant(MixinUUIDs, models.Model):
     )
 
 
-class Person(MixinUUIDs, AbstractUser):
+class Person(MixinUUIDs, MixinAuthorization, AbstractUser):
     email = models.EmailField(
         'email address',
         unique=True,
@@ -646,6 +731,15 @@ class Person(MixinUUIDs, AbstractUser):
             if level != "PROJECT" and isinstance(obj, Operation):
                 level = "OPERATION"
         return level
+
+    @classmethod
+    def permitted(cls, user, access_string):
+        permitted = None
+        if access_string == 'admin':
+            permitted = {
+                'pk': user.pk
+            }
+        return permitted
 
 
 class PersonProperty(MixinUUIDs, models.Model):
