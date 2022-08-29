@@ -1,7 +1,7 @@
 - model: georga.task
   pk: 1
   fields:
-    title: "Dolmetscher Ukrainisch"
+    name: "Dolmetscher Ukrainisch"
     description: "Übersetzung zwischen Notunterkunft-Bewohnern und Betreuern"
     operation: 1
     start_time: 2022-08-05 08:00:36.048326+00:00
@@ -9,7 +9,7 @@
 - model: georga.task
   pk: 2
   fields:
-    title: "Registrierung"
+    name: "Registrierung"
     description: "Registrierung jeglicher Besucher und Bewohnder"
     operation: 1
     start_time: 2022-08-05 08:00:36.048326+00:00
@@ -17,7 +17,7 @@
 - model: georga.task
   pk: 3
   fields:
-    title: "Dolmetscher Ukrainisch"
+    name: "Dolmetscher Ukrainisch"
     description: "Übersetzung zwischen Notunterkunft-Bewohnern und Betreuern"
     operation: 2
     start_time: 2022-08-06 08:00:36.048326+00:00
@@ -25,7 +25,7 @@
 - model: georga.task
   pk: 5
   fields:
-    title: "Registrierung"
+    name: "Registrierung"
     description: "Registrierung jeglicher Besucher und Bewohnder"
     operation: 2
     start_time: 2022-08-06 08:00:36.048326+00:00
@@ -33,35 +33,35 @@
 - model: georga.task
   pk: 5
   fields:
-    title: "Rettungshelfer"
+    name: "Rettungshelfer"
     operation: 3
     start_time: 2022-08-07 08:00:36.048326+00:00
     field: 3
 - model: georga.task
   pk: 6
   fields:
-    title: "Sanitäter"
+    name: "Sanitäter"
     operation: 3
     start_time: 2022-08-07 08:00:36.048326+00:00
     field: 3
 - model: georga.task
   pk: 7
   fields:
-    title: "Rettungshelfer"
+    name: "Rettungshelfer"
     operation: 4
     start_time: 2022-08-08 08:00:36.048326+00:00
     field: 3
 - model: georga.task
   pk: 8
   fields:
-    title: "Notarzt"
+    name: "Notarzt"
     operation: 4
     start_time: 2022-08-08 08:00:36.048326+00:00
     field: 3
 - model: georga.task
   pk: 9
   fields:
-    title: "Übersetzung Behördenformulare"
+    name: "Übersetzung Behördenformulare"
     description: "Jeden Mo. Mi. und Do. gibt es nachmittags Treffen mit den Notunterkunft-Bewohnern zur gegenseitigen Hilfe beim Ausfüllen von Anträgen. Hierbei ist eine Unterstützung durch Dolmetscher wichtig."
     operation: 5
     start_time: 2021-02-02 08:00:36.048326+00:00
@@ -69,126 +69,126 @@
 - model: georga.task
   pk: 10
   fields:
-    title: "Begleitung und Übersetzung Behördengänge"
+    name: "Begleitung und Übersetzung Behördengänge"
     operation: 5
     start_time: 2021-02-05 08:00:36.048326+00:00
     field: 2
 - model: georga.task
   pk: 11
   fields:
-    title: "Sandsäcke füllen"
+    name: "Sandsäcke füllen"
     operation: 6
     start_time: 2002-08-05 08:00:36.048326+00:00
     field: 4
 - model: georga.task
   pk: 12
   fields:
-    title: "Schlammräumung"
+    name: "Schlammräumung"
     operation: 7
     start_time: 2002-08-18 20:00:36.048326+00:00
     field: 5
 - model: georga.task
   pk: 13
   fields:
-    title: "Schlammräumung"
+    name: "Schlammräumung"
     operation: 8
     start_time: 1962-02-17 15:30:36.048326+00:00
     field: 5
 - model: georga.task
   pk: 14
   fields:
-    title: "Schlammräumung"
+    name: "Schlammräumung"
     operation: 9
     start_time: 2021-07-16 08:00:36.048326+00:00
     field: 5
 - model: georga.task
   pk: 15
   fields:
-    title: "Registrierung"
+    name: "Registrierung"
     operation: 10
     start_time: 2022-08-05 08:00:36.048326+00:00
     field: 6
 - model: georga.task
   pk: 16
   fields:
-    title: "Zuteilung Impfräume"
+    name: "Zuteilung Impfräume"
     operation: 11
     start_time: 2022-08-05 08:00:36.048326+00:00
     field: 6
 - model: georga.task
   pk: 17
   fields:
-    title: "Neue Wäsche in Wohnräumen verteilen"
+    name: "Neue Wäsche in Wohnräumen verteilen"
     operation: 12
     start_time: 2022-08-05 08:00:36.048326+00:00
     field: 10
 - model: georga.task
   pk: 18
   fields:
-    title: "Abgelaufene Lebensmittel aus Lagerräumen aussortieren"
+    name: "Abgelaufene Lebensmittel aus Lagerräumen aussortieren"
     operation: 12
     start_time: 2022-08-05 08:00:36.048326+00:00
     field: 10
 - model: georga.task
   pk: 19
   fields:
-    title: "Neue Lebensmittel in Lagerräume füllen"
+    name: "Neue Lebensmittel in Lagerräume füllen"
     operation: 12
     start_time: 2022-08-05 08:00:36.048326+00:00
     field: 7
 - model: georga.task
   pk: 20
   fields:
-    title: "Netzwerkgeräteprotokolle sichern"
+    name: "Netzwerkgeräteprotokolle sichern"
     operation: 13
     start_time: 2022-08-05 08:00:36.048326+00:00
     field: 11
 - model: georga.task
   pk: 21
   fields:
-    title: "SSH-Zugriffsprotokolle sichern"
+    name: "SSH-Zugriffsprotokolle sichern"
     operation: 13
     start_time: 2022-08-05 08:00:36.048326+00:00
     field: 11
 - model: georga.task
   pk: 22
   fields:
-    title: "Abgeflossene Datenstreams analysieren"
+    name: "Abgeflossene Datenstreams analysieren"
     operation: 13
     start_time: 2022-08-05 08:00:36.048326+00:00
     field: 11
 - model: georga.task
   pk: 23
   fields:
-    title: "Extern erreichbare Systeme und deren Softwarestände analysieren"
+    name: "Extern erreichbare Systeme und deren Softwarestände analysieren"
     operation: 13
     start_time: 2022-08-05 08:00:36.048326+00:00
     field: 11
 - model: georga.task
   pk: 20
   fields:
-    title: "Netzwerkgeräteprotokolle sichern"
+    name: "Netzwerkgeräteprotokolle sichern"
     operation: 14
     start_time: 2022-08-05 08:00:36.048326+00:00
     field: 11
 - model: georga.task
   pk: 21
   fields:
-    title: "SSH-Zugriffsprotokolle sichern"
+    name: "SSH-Zugriffsprotokolle sichern"
     operation: 14
     start_time: 2022-08-05 08:00:36.048326+00:00
     field: 11
 - model: georga.task
   pk: 22
   fields:
-    title: "Abgeflossene Datenstreams analysieren"
+    name: "Abgeflossene Datenstreams analysieren"
     operation: 14
     start_time: 2022-08-05 08:00:36.048326+00:00
     field: 11
 - model: georga.task
   pk: 23
   fields:
-    title: "Extern erreichbare Systeme und deren Softwarestände analysieren"
+    name: "Extern erreichbare Systeme und deren Softwarestände analysieren"
     operation: 14
     start_time: 2022-08-05 08:00:36.048326+00:00
     field: 11
