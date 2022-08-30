@@ -705,7 +705,38 @@ class LocationType(UUIDDjangoObjectType):
 
 
 # forms
+class LocationModelForm(UUIDModelForm):
+    class Meta:
+        model = Location
+        fields = location_wo_fields + location_rw_fields
+
+
 # mutations
+class CreateLocationMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = LocationModelForm
+        exclude_fields = ['id']
+        permissions = [staff_member_required]
+
+
+class UpdateLocationMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = LocationModelForm
+        required_fields = ['id']
+        permissions = [login_required]
+
+
+class DeleteLocationMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = LocationModelForm
+        only_fields = ['id']
+        permissions = [staff_member_required]
+
+    @classmethod
+    def perform_mutate(cls, form, info):
+        location = form.instance
+        location.delete()
+        return cls(location=location, errors=[])
 
 
 # LocationCategory ------------------------------------------------------------
@@ -2095,7 +2126,6 @@ class Mutation(ObjectType):
     # ACE
     create_ace = CreateACEMutation.Field()
     update_ace = UpdateACEMutation.Field()
-    # update_ace_batch = UpdateACEBatchMutation.Field()
     delete_ace = DeleteACEMutation.Field()
     # Device
     create_device = CreateDeviceMutation.Field()
@@ -2106,18 +2136,30 @@ class Mutation(ObjectType):
     update_equipment = UpdateEquipmentMutation.Field()
     delete_equipment = DeleteEquipmentMutation.Field()
     # Location
+    create_location = CreateLocationMutation.Field()
+    update_location = UpdateLocationMutation.Field()
+    delete_location = DeleteLocationMutation.Field()
     # LocationCategory
+    create_location_category = CreateLocationCategoryMutation.Field()
+    update_location_category = UpdateLocationCategoryMutation.Field()
+    delete_location_category = DeleteLocationCategoryMutation.Field()
     # Messages
     create_message = CreateMessageMutation.Field()
     update_message = UpdateMessageMutation.Field()
-    update_message_batch = UpdateMessageBatchMutation.Field()
+    # update_message_batch = UpdateMessageBatchMutation.Field()
     delete_message = DeleteMessageMutation.Field()
     # Operation
+    create_operation = CreateOperationMutation.Field()
+    update_operation = UpdateOperationMutation.Field()
+    delete_operation = DeleteOperationMutation.Field()
     # Organization
     create_organization = CreateOrganizationMutation.Field()
     update_organization = UpdateOrganizationMutation.Field()
     delete_organization = DeleteOrganizationMutation.Field()
     # Participant
+    create_participant = CreateParticipantMutation.Field()
+    update_participant = UpdateParticipantMutation.Field()
+    delete_participant = DeleteParticipantMutation.Field()
     # Person
     create_person = CreatePersonMutation.Field()
     update_person = UpdatePersonMutation.Field()
@@ -2138,6 +2180,9 @@ class Mutation(ObjectType):
     update_person_property_group = UpdatePersonPropertyGroupMutation.Field()
     delete_person_property_group = DeletePersonPropertyGroupMutation.Field()
     # PersonToObject
+    create_person_to_object = CreatePersonToObjectMutation.Field()
+    update_person_to_object = UpdatePersonToObjectMutation.Field()
+    delete_person_to_object = DeletePersonToObjectMutation.Field()
     # Project
     create_project = CreateProjectMutation.Field()
     update_project = UpdateProjectMutation.Field()
@@ -2151,7 +2196,13 @@ class Mutation(ObjectType):
     update_role = UpdateRoleMutation.Field()
     delete_role = DeleteRoleMutation.Field()
     # RoleSpecification
+    create_role_specification = CreateRoleSpecificationMutation.Field()
+    update_role_specification = UpdateRoleSpecificationMutation.Field()
+    delete_role_specification = DeleteRoleSpecificationMutation.Field()
     # Shift
+    create_shift = CreateShiftMutation.Field()
+    update_shift = UpdateShiftMutation.Field()
+    delete_shift = DeleteShiftMutation.Field()
     # Tasks
     create_task = CreateTaskMutation.Field()
     update_task = UpdateTaskMutation.Field()
