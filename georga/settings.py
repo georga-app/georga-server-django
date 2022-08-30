@@ -216,3 +216,11 @@ CHANNEL_LAYERS = {
         },
     },
 }
+
+APNS = {
+    'KEY_PATH': os.getenv('APNS_KEY_PATH', ''),
+    'TEAM_ID': os.getenv('APNS_TEAM_ID', ''),
+    'KEY_ID': os.getenv('APNS_KEY_ID', ''),
+    'BUNDLE_ID': os.getenv('APNS_BUNDLE_ID', ''),
+    'SANDBOX': os.getenv('APNS_SANDBOX', 'False') == 'True'
+}
