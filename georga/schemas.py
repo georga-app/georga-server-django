@@ -636,7 +636,38 @@ class EquipmentType(UUIDDjangoObjectType):
 
 
 # forms
+class EquipmentModelForm(UUIDModelForm):
+    class Meta:
+        model = Equipment
+        fields = equipment_wo_fields + equipment_rw_fields
+
+
 # mutations
+class CreateEquipmentMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = EquipmentModelForm
+        exclude_fields = ['id']
+        permissions = [staff_member_required]
+
+
+class UpdateEquipmentMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = EquipmentModelForm
+        required_fields = ['id']
+        permissions = [login_required]
+
+
+class DeleteEquipmentMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = EquipmentModelForm
+        only_fields = ['id']
+        permissions = [staff_member_required]
+
+    @classmethod
+    def perform_mutate(cls, form, info):
+        equipment = form.instance
+        equipment.delete()
+        return cls(equipment=equipment, errors=[])
 
 
 # Location --------------------------------------------------------------------
@@ -819,22 +850,22 @@ class UpdateMessageMutation(UUIDDjangoModelFormMutation):
         permissions = [login_required]
 
 
-class BatchUpdateMessageMutationPayload(ObjectType):
+class UpdateMessageBatchMutationPayload(ObjectType):
     messages = List(UpdateMessageMutation)
 
 
-class BatchUpdateMessageMutation(Mutation):
+class UpdateMessageBatchMutation(Mutation):
     class Input:
         messages = List(UpdateMessageMutation.Input)
 
-    Output = BatchUpdateMessageMutationPayload
+    Output = UpdateMessageBatchMutationPayload
 
     def mutate(root, info, messages):
         results = []
         for message in messages:
             mutation = UpdateMessageMutation(message)
-            results.append(mutation.mutate_and_get_payload(info, **message))
-        return BatchUpdateMessageMutationPayload(messages=results)
+            results.append(mutation.mutate_and_get_payload(root, info, **message))
+        return UpdateMessageBatchMutationPayload(messages=results)
 
 
 class DeleteMessageMutation(UUIDDjangoModelFormMutation):
@@ -1143,32 +1174,31 @@ class PersonTokenModelForm(PersonModelForm):
 
 
 # mutations
+class CreatePersonMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = PersonModelForm
+        exclude_fields = ['id']
+        permissions = [staff_member_required]
 
-# class CreatePersonMutation(UUIDDjangoModelFormMutation):
-#     class Meta:
-#         form_class = PersonModelForm
-#         exclude_fields = ['id']
-#         permissions = [staff_member_required]
-#
-#
-# class UpdatePersonMutation(UUIDDjangoModelFormMutation):
-#     class Meta:
-#         form_class = PersonModelForm
-#         required_fields = ['id']
-#         permissions = [login_required]
-#
-#
-# class DeletePersonMutation(UUIDDjangoModelFormMutation):
-#     class Meta:
-#         form_class = PersonModelForm
-#         only_fields = ['id']
-#         permissions = [staff_member_required]
-#
-#     @classmethod
-#     def perform_mutate(cls, form, info):
-#         person = form.instance
-#         person.delete()
-#         return cls(person=person, errors=[])
+
+class UpdatePersonMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = PersonModelForm
+        required_fields = ['id']
+        permissions = [login_required]
+
+
+class DeletePersonMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = PersonModelForm
+        only_fields = ['id']
+        permissions = [staff_member_required]
+
+    @classmethod
+    def perform_mutate(cls, form, info):
+        person = form.instance
+        person.delete()
+        return cls(person=person, errors=[])
 
 
 class RegisterPersonMutation(UUIDDjangoModelFormMutation):
@@ -1186,7 +1216,7 @@ class RegisterPersonMutation(UUIDDjangoModelFormMutation):
         return cls(id=person.gid, errors=[])
 
 
-class RequestActivatePersonMutation(UUIDDjangoModelFormMutation):
+class RequestPersonActivationMutation(UUIDDjangoModelFormMutation):
     id = ID()
 
     class Meta:
@@ -1236,7 +1266,7 @@ class ActivatePersonMutation(UUIDDjangoModelFormMutation):
         return cls(email=person.email, errors=[])
 
 
-class RequestResetPasswordMutation(UUIDDjangoModelFormMutation):
+class RequestPersonPasswordResetMutation(UUIDDjangoModelFormMutation):
     id = ID()
 
     class Meta:
@@ -1259,7 +1289,7 @@ class RequestResetPasswordMutation(UUIDDjangoModelFormMutation):
         return cls(id=person.gid, errors=[])
 
 
-class ResetPasswordMutation(UUIDDjangoModelFormMutation):
+class ResetPersonPasswordMutation(UUIDDjangoModelFormMutation):
     id = ID()
 
     class Meta:
@@ -1285,7 +1315,7 @@ class ResetPasswordMutation(UUIDDjangoModelFormMutation):
         return cls(id=person.gid, errors=[])
 
 
-class UpdateProfileMutation(UUIDDjangoModelFormMutation):
+class UpdatePersonProfileMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = PersonModelForm
         exclude_fields = ['id', 'password']
@@ -1301,7 +1331,7 @@ class UpdateProfileMutation(UUIDDjangoModelFormMutation):
         return form_kwargs
 
 
-class ChangePasswordMutation(UUIDDjangoModelFormMutation):
+class ChangePersonPasswordMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = PersonModelForm
         only_fields = ['id', 'password']
@@ -2029,31 +2059,30 @@ class TestSubscriptionEventMutation(graphene.Mutation):
 
 class Query(ObjectType):
     node = Node.Field()
-    get_profile = Field(PersonType)
-    list_task_fields = UUIDDjangoFilterConnectionField(
-        TaskFieldType)
-    list_equipment = UUIDDjangoFilterConnectionField(
-        EquipmentType)
-    list_locations = UUIDDjangoFilterConnectionField(
-        LocationType)
-    list_messages = UUIDDjangoFilterConnectionField(
-        MessageType, filterset_class=MessageFilter)
-    # all_persons = UUIDDjangoFilterConnectionField(
-    #     PersonType)
-    list_person_properties = UUIDDjangoFilterConnectionField(
-        PersonPropertyType)
-    list_person_property_groups = UUIDDjangoFilterConnectionField(
-        PersonPropertyGroupType)
+    list_aces = UUIDDjangoFilterConnectionField(ACEType)
     list_devices = UUIDDjangoFilterConnectionField(DeviceType)
-    list_resources = UUIDDjangoFilterConnectionField(ResourceType)
+    list_equipment = UUIDDjangoFilterConnectionField(EquipmentType)
+    list_locations = UUIDDjangoFilterConnectionField(LocationType)
+    list_location_categories = UUIDDjangoFilterConnectionField(LocationCategoryType)
+    list_messages = UUIDDjangoFilterConnectionField(MessageType, filterset_class=MessageFilter)
     list_operations = UUIDDjangoFilterConnectionField(OperationType)
     list_organizations = UUIDDjangoFilterConnectionField(OrganizationType)
-    list_tasks = UUIDDjangoFilterConnectionField(TaskType)
+    list_participants = UUIDDjangoFilterConnectionField(ParticipantType)
+    list_persons = UUIDDjangoFilterConnectionField(PersonType)
+    get_person_profile = Field(PersonType)
+    list_person_properties = UUIDDjangoFilterConnectionField(PersonPropertyType)
+    list_person_property_groups = UUIDDjangoFilterConnectionField(PersonPropertyGroupType)
+    list_person_to_objects = UUIDDjangoFilterConnectionField(PersonToObjectType)
     list_projects = UUIDDjangoFilterConnectionField(ProjectType)
+    list_resources = UUIDDjangoFilterConnectionField(ResourceType)
     list_roles = UUIDDjangoFilterConnectionField(RoleType)
+    list_role_specifications = UUIDDjangoFilterConnectionField(RoleSpecificationType)
+    list_shifts = UUIDDjangoFilterConnectionField(ShiftType)
+    list_tasks = UUIDDjangoFilterConnectionField(TaskType)
+    list_task_fields = UUIDDjangoFilterConnectionField(TaskFieldType)
 
     @object_permits_user("admin")
-    def resolve_get_profile(parent, info):
+    def resolve_get_person_profile(parent, info):
         return info.context.user
 
 
@@ -2062,20 +2091,44 @@ class Mutation(ObjectType):
     token_auth = ObtainJSONWebToken.Field()
     verify_token = graphql_jwt.relay.Verify.Field()
     refresh_token = graphql_jwt.relay.Refresh.Field()
-
-    # Persons
-    # create_person = CreatePersonMutation.Field()
-    # update_person = UpdatePersonMutation.Field()
-    # delete_person = DeletePersonMutation.Field()
-    # Persons Flows
+    revoke_token = graphql_jwt.relay.Revoke.Field()
+    # ACE
+    create_ace = CreateACEMutation.Field()
+    update_ace = UpdateACEMutation.Field()
+    # update_ace_batch = UpdateACEBatchMutation.Field()
+    delete_ace = DeleteACEMutation.Field()
+    # Device
+    create_device = CreateDeviceMutation.Field()
+    update_device = UpdateDeviceMutation.Field()
+    delete_device = DeleteDeviceMutation.Field()
+    # Equipment
+    create_equipment = CreateEquipmentMutation.Field()
+    update_equipment = UpdateEquipmentMutation.Field()
+    delete_equipment = DeleteEquipmentMutation.Field()
+    # Location
+    # LocationCategory
+    # Messages
+    create_message = CreateMessageMutation.Field()
+    update_message = UpdateMessageMutation.Field()
+    update_message_batch = UpdateMessageBatchMutation.Field()
+    delete_message = DeleteMessageMutation.Field()
+    # Operation
+    # Organization
+    create_organization = CreateOrganizationMutation.Field()
+    update_organization = UpdateOrganizationMutation.Field()
+    delete_organization = DeleteOrganizationMutation.Field()
+    # Participant
+    # Person
+    create_person = CreatePersonMutation.Field()
+    update_person = UpdatePersonMutation.Field()
+    delete_person = DeletePersonMutation.Field()
     register_person = RegisterPersonMutation.Field()
-    request_activate_person = RequestActivatePersonMutation.Field()
+    request_person_activation = RequestPersonActivationMutation.Field()
     activate_person = ActivatePersonMutation.Field()
-    request_reset_password = RequestResetPasswordMutation.Field()
-    reset_password = ResetPasswordMutation.Field()
-    update_profile = UpdateProfileMutation.Field()
-    change_password = ChangePasswordMutation.Field()
-
+    request_person_password_reset = RequestPersonPasswordResetMutation.Field()
+    reset_person_password = ResetPersonPasswordMutation.Field()
+    change_person_password = ChangePersonPasswordMutation.Field()
+    update_person_profile = UpdatePersonProfileMutation.Field()
     # PersonProperty
     create_person_property = CreatePersonPropertyMutation.Field()
     update_person_property = UpdatePersonPropertyMutation.Field()
@@ -2084,19 +2137,21 @@ class Mutation(ObjectType):
     create_person_property_group = CreatePersonPropertyGroupMutation.Field()
     update_person_property_group = UpdatePersonPropertyGroupMutation.Field()
     delete_person_property_group = DeletePersonPropertyGroupMutation.Field()
-
-    # Device
-    create_device = CreateDeviceMutation.Field()
-    update_device = UpdateDeviceMutation.Field()
-    delete_device = DeleteDeviceMutation.Field()
-    # Resources
+    # PersonToObject
+    # Project
+    create_project = CreateProjectMutation.Field()
+    update_project = UpdateProjectMutation.Field()
+    delete_project = DeleteProjectMutation.Field()
+    # Resource
     create_resource = CreateResourceMutation.Field()
     update_resource = UpdateResourceMutation.Field()
     delete_resource = DeleteResourceMutation.Field()
-    # Organizations
-    create_organization = CreateOrganizationMutation.Field()
-    update_organization = UpdateOrganizationMutation.Field()
-    delete_organization = DeleteOrganizationMutation.Field()
+    # Role
+    create_role = CreateRoleMutation.Field()
+    update_role = UpdateRoleMutation.Field()
+    delete_role = DeleteRoleMutation.Field()
+    # RoleSpecification
+    # Shift
     # Tasks
     create_task = CreateTaskMutation.Field()
     update_task = UpdateTaskMutation.Field()
@@ -2105,19 +2160,6 @@ class Mutation(ObjectType):
     create_task_field = CreateTaskFieldMutation.Field()
     update_task_field = UpdateTaskFieldMutation.Field()
     delete_task_field = DeleteTaskFieldMutation.Field()
-    # Projects
-    create_project = CreateProjectMutation.Field()
-    update_project = UpdateProjectMutation.Field()
-    delete_project = DeleteProjectMutation.Field()
-    # Roles
-    create_role = CreateRoleMutation.Field()
-    update_role = UpdateRoleMutation.Field()
-    delete_role = DeleteRoleMutation.Field()
-    # Messages
-    create_message = CreateMessageMutation.Field()
-    update_message = UpdateMessageMutation.Field()
-    batch_update_message = BatchUpdateMessageMutation.Field()
-    delete_message = DeleteMessageMutation.Field()
 
     # TestSubscription
     test_subscription_event = TestSubscriptionEventMutation.Field()
