@@ -11,7 +11,7 @@ apns_key_client = APNs(
 )
 
 
-async def send_push(device_id, message):
+async def send_push(device_id: str, message: str):
     request = NotificationRequest(
         device_token=device_id,
         message={
@@ -21,3 +21,16 @@ async def send_push(device_id, message):
         },
     )
     await apns_key_client.send_notification(request)
+
+async def send_push_mass(device_ids: [str], message: str):
+
+    for device_id in device_ids:
+        request = NotificationRequest(
+            device_token=device_id,
+            message={
+                "aps": {
+                    "alert": message
+                }
+            },
+        )
+        await apns_key_client.send_notification(request)
