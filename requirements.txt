@@ -15,3 +15,4 @@ ptvsd==4.3.2
 pdbpp==0.10.3
 graphql-ws==0.4.4
 aioapns~=2.1
+firebase-admin==5.3.0
