@@ -1168,7 +1168,7 @@ class PersonType(UUIDDjangoObjectType):
         model = Person
         fields = person_ro_fields + person_rw_fields
         filter_fields = person_filter_fields
-        permissions = [login_required, object_permits_user('admin')]
+        permissions = [login_required, object_permits_user('ADMIN')]
 
 
 # forms
@@ -1351,7 +1351,7 @@ class UpdatePersonProfileMutation(UUIDDjangoModelFormMutation):
         form_class = PersonModelForm
         exclude_fields = ['id', 'password']
         required_fields = []
-        permissions = [login_required, object_permits_user("admin")]
+        permissions = [login_required, object_permits_user("ADMIN")]
 
     @classmethod
     def get_form_kwargs(cls, root, info, **input):
@@ -2112,7 +2112,7 @@ class QueryType(ObjectType):
     list_tasks = UUIDDjangoFilterConnectionField(TaskType)
     list_task_fields = UUIDDjangoFilterConnectionField(TaskFieldType)
 
-    @object_permits_user("admin")
+    @object_permits_user("ADMIN")
     def resolve_get_person_profile(parent, info):
         return info.context.user
 

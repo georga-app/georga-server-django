@@ -752,7 +752,7 @@ class Person(MixinUUIDs, MixinAuthorization, AbstractUser):
     @classmethod
     def permitted(cls, user, access_string):
         permitted = None
-        if access_string == 'admin':
+        if access_string == 'ADMIN':
             permitted = {
                 'pk': user.pk
             }
