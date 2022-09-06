@@ -1,7 +1,6 @@
 from datetime import datetime
 import asyncio
 
-import graphene
 import graphql_jwt
 from asgiref.sync import async_to_sync
 from channels.db import database_sync_to_async
@@ -18,7 +17,8 @@ from django.forms import (
 from django.forms.models import ModelFormMetaclass, model_to_dict
 from django_filters import FilterSet
 from graphene import (
-    Schema, Mutation, ObjectType, Field, Union, List, ID, String, NonNull
+    Schema, Mutation, ObjectType, Field, Union, List,
+    ID, DateTime, String, Int, NonNull
 )
 from graphene.relay import Node
 from graphene.types.dynamic import Dynamic
@@ -2067,12 +2067,12 @@ class PersonToObjectRelationObjectUnion(Union):
 
 # Subscriptions ===============================================================
 
-class TestSubscription(graphene.ObjectType):
-    message = graphene.String(required=True)
-    time = graphene.DateTime(required=True)
+class TestSubscription(ObjectType):
+    message = String(required=True)
+    time = DateTime(required=True)
 
 
-class TestSubscriptionEventMutation(graphene.Mutation):
+class TestSubscriptionEventMutation(Mutation):
     class Arguments:
         message = String(required=True)
 
@@ -2088,7 +2088,7 @@ class TestSubscriptionEventMutation(graphene.Mutation):
 
 # Schema ======================================================================
 
-class Query(ObjectType):
+class QueryType(ObjectType):
     node = Node.Field()
     list_aces = UUIDDjangoFilterConnectionField(ACEType)
     list_devices = UUIDDjangoFilterConnectionField(DeviceType)
@@ -2117,7 +2117,7 @@ class Query(ObjectType):
         return info.context.user
 
 
-class Mutation(ObjectType):
+class MutationType(ObjectType):
     # Authorization
     token_auth = ObtainJSONWebToken.Field()
     verify_token = graphql_jwt.relay.Verify.Field()
@@ -2216,10 +2216,10 @@ class Mutation(ObjectType):
     test_subscription_event = TestSubscriptionEventMutation.Field()
 
 
-class Subscription(graphene.ObjectType):
-    count_seconds = graphene.Int(up_to=graphene.Int())
-    test_subscription = graphene.Field(TestSubscription)
-    message_created = graphene.Field(MessageType)
+class SubscriptionType(ObjectType):
+    count_seconds = Int(up_to=Int())
+    test_subscription = Field(TestSubscription)
+    message_created = Field(MessageType)
 
     async def resolve_count_seconds(self, info, up_to=5):
         print(up_to)
@@ -2254,7 +2254,7 @@ class Subscription(graphene.ObjectType):
 
 
 schema = Schema(
-    query=Query,
-    mutation=Mutation,
-    subscription=Subscription,
+    query=QueryType,
+    mutation=MutationType,
+    subscription=SubscriptionType,
 )
