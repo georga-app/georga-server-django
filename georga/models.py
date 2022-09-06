@@ -273,7 +273,7 @@ class Location(MixinUUIDs, models.Model):
         blank=True,
         null=True,
         on_delete=models.CASCADE,
-    )  
+    )
 
     class Meta:
         verbose_name = _("location")
