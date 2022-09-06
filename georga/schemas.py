@@ -2089,27 +2089,48 @@ class TestSubscriptionEventMutation(Mutation):
 # Schema ======================================================================
 
 class QueryType(ObjectType):
+    # Relay
     node = Node.Field()
+    # ACE
     list_aces = UUIDDjangoFilterConnectionField(ACEType)
+    # Device
     list_devices = UUIDDjangoFilterConnectionField(DeviceType)
+    # Equipment
     list_equipment = UUIDDjangoFilterConnectionField(EquipmentType)
+    # Location
     list_locations = UUIDDjangoFilterConnectionField(LocationType)
+    # LocationCategory
     list_location_categories = UUIDDjangoFilterConnectionField(LocationCategoryType)
+    # Message
     list_messages = UUIDDjangoFilterConnectionField(MessageType, filterset_class=MessageFilter)
+    # Operation
     list_operations = UUIDDjangoFilterConnectionField(OperationType)
+    # Organization
     list_organizations = UUIDDjangoFilterConnectionField(OrganizationType)
+    # Participant
     list_participants = UUIDDjangoFilterConnectionField(ParticipantType)
+    # Person
     list_persons = UUIDDjangoFilterConnectionField(PersonType)
     get_person_profile = Field(PersonType)
+    # PersonProperty
     list_person_properties = UUIDDjangoFilterConnectionField(PersonPropertyType)
+    # PersonPropertyGroup
     list_person_property_groups = UUIDDjangoFilterConnectionField(PersonPropertyGroupType)
+    # PersonToObject
     list_person_to_objects = UUIDDjangoFilterConnectionField(PersonToObjectType)
+    # Project
     list_projects = UUIDDjangoFilterConnectionField(ProjectType)
+    # Resource
     list_resources = UUIDDjangoFilterConnectionField(ResourceType)
+    # Role
     list_roles = UUIDDjangoFilterConnectionField(RoleType)
+    # RoleSpecification
     list_role_specifications = UUIDDjangoFilterConnectionField(RoleSpecificationType)
+    # Shift
     list_shifts = UUIDDjangoFilterConnectionField(ShiftType)
+    # Task
     list_tasks = UUIDDjangoFilterConnectionField(TaskType)
+    # TaskField
     list_task_fields = UUIDDjangoFilterConnectionField(TaskFieldType)
 
     @object_permits_user("ADMIN")
@@ -2206,7 +2227,7 @@ class MutationType(ObjectType):
     create_task = CreateTaskMutation.Field()
     update_task = UpdateTaskMutation.Field()
     delete_task = DeleteTaskMutation.Field()
-    # TaskFields
+    # TaskField
     create_task_field = CreateTaskFieldMutation.Field()
     update_task_field = UpdateTaskFieldMutation.Field()
     delete_task_field = DeleteTaskFieldMutation.Field()
