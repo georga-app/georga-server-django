@@ -1,3 +1,4 @@
+import logging
 from functools import wraps
 
 from django.db.models import Model
@@ -10,6 +11,8 @@ from graphql_jwt.compat import GraphQLResolveInfo
 from graphql_jwt.middleware import allow_any
 
 from . import settings
+
+logger = logging.getLogger(__name__)
 
 
 # override allow_any, see https://stackoverflow.com/a/71296685
@@ -116,7 +119,12 @@ def object_permits_user(*access_strings, exc=exceptions.PermissionDenied):
             elif isinstance(obj, (Manager, QuerySet)):
                 try:
                     return obj.model.filter_permitted(obj, info.context.user, access_strings)
-                except Exception:
+                except AssertionError as e:
+                    logger.error(e)
+                    return obj.none()
+                # TODO: restrict exception to valid subclasses
+                except Exception as e:
+                    logger.error(e)
                     return obj.none()
 
             # access ObjectTypes
