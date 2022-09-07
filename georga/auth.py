@@ -92,6 +92,15 @@ def object_permits_user(*access_strings, exc=exceptions.PermissionDenied):
             class Meta:
                 permissions = [object_permits_user('ADMIN')]
     """
+    # allow only tuple of strings
+    assert isinstance(access_strings, tuple), (
+        f"Error: access_strings {access_strings} is not a tuple."
+    )
+    for access_string in access_strings:
+        assert isinstance(access_string, str), (
+            f"Error: access string {access_string} is not a string."
+        )
+
     def decorator(func):
         @wraps(func)
         @info(func)
