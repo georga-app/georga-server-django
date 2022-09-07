@@ -7,6 +7,7 @@ from django.contrib.auth.models import AbstractUser
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
+from django.db.models import Q
 from django.utils import timezone
 from django.utils.translation import gettext as _
 from phonenumber_field.modelfields import PhoneNumberField
@@ -84,27 +85,42 @@ class MixinAuthorization(models.Model):
         """
         Filters a queryset to include only permitted instances for the user.
 
-        Multiple access_strings (tuple) are combined with an OR.
-        Returns a queryset filtered by the lookups defined in permitted().
+        Multiple access_strings (tuple of strings) are combined with an OR.
+        Returns a queryset filtered by the Q objects defined in permitted().
         """
-        if not isinstance(access_strings, tuple):
+        # convert string to tuple
+        if isinstance(access_strings, str):
             access_strings = tuple([access_strings])
-        result = None
+        # allow only tuple
+        assert isinstance(access_strings, tuple), (
+            f"Error: access_strings is not a tuple. \n"
+            f"cls {cls}, queryset {queryset}, access_strings {access_strings}"
+        )
+        # combine query objects for each access string
+        q = Q()
         for access_string in access_strings:
+            # allow only strings
+            assert isinstance(access_string, str), (
+                f"Error: access string is not a string. \n"
+                f"cls {cls}, queryset {queryset}, access_string {access_string}"
+            )
+            # get and combine q object
             permitted = cls.permitted(user, access_string)
             if permitted is None:
                 continue
-            qs = queryset.filter(**permitted)
-            result = result and result.union(qs) or qs
-        return result or queryset.none()
+            if permitted is True:
+                return queryset
+            q |= permitted
+        # return filtered queryset or none queryset
+        return q and queryset.filter(q) or queryset.none()
 
     @classmethod
     def permitted(cls, user, access_string):
         """
         Defines the permissions of the object.
 
-        Returns a dict of lookups expressions and values to filter queryset
-        or None to deny all. Denies all by default.
+        Returns a Q object for some given access_string to filter a queryset,
+        or True to allow all, or None to deny all. Denies all by default.
         """
         return None
 
@@ -112,22 +128,12 @@ class MixinAuthorization(models.Model):
         """
         Asks an object, if it grants some user certain permissions.
 
-        Multiple access_strings (tuple) are combined with an OR.
-        Issues database queries using the lookups defined in permitted().
+        Multiple access_strings (tuple of strings) are combined with an OR.
+        Issues database queries using the Q objects defined in permitted().
         Returns True if permission was granted, False otherwise.
         """
-        if not isinstance(access_strings, tuple):
-            access_strings = (access_strings)
-        result = False
-        for access_string in access_strings:
-            permitted = self.permitted(user, access_string)
-            if permitted is None:
-                return False
-            if 'pk' in permitted and self.pk != permitted['pk']:
-                return False
-            permitted['pk'] = self.pk
-            result = result or self._meta.model.objects.filter(**permitted).exists()
-        return result
+        qs = self.filter_permitted(self._meta.model.objects.all(), user, access_strings)
+        return qs.filter(pk=self.pk).exists()
 
 
 # --- CLASSES
@@ -764,15 +770,12 @@ class Person(MixinUUIDs, MixinAuthorization, AbstractUser):
 
     @classmethod
     def permitted(cls, user, access_string):
-        permitted = None
-            permitted = {
-                'pk': user.pk
-            }
-        return permitted
         if access_string == 'self':
+            return Q(pk=user.pk)
+        return None
 
 
-class PersonProperty(MixinUUIDs, models.Model):
+class PersonProperty(MixinUUIDs, MixinAuthorization, models.Model):
     organization = models.ForeignKey(
         to='Organization',
         on_delete=models.CASCADE,
