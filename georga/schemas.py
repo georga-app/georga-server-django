@@ -494,7 +494,7 @@ class ACEType(UUIDDjangoObjectType):
         model = ACE
         fields = ace_ro_fields + ace_rw_fields
         filter_fields = ace_filter_fields
-        permissions = [login_required]
+        permissions = [login_required, object_permits_user('read')]
 
 
 # filters
@@ -1168,7 +1168,7 @@ class PersonType(UUIDDjangoObjectType):
         model = Person
         fields = person_ro_fields + person_rw_fields
         filter_fields = person_filter_fields
-        permissions = [login_required, object_permits_user('self')]
+        permissions = [login_required, object_permits_user('read')]
 
 
 # forms
@@ -1216,7 +1216,7 @@ class UpdatePersonMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = PersonModelForm
         required_fields = ['id']
-        permissions = [login_required]
+        permissions = [login_required, object_permits_user('write')]
 
 
 class DeletePersonMutation(UUIDDjangoModelFormMutation):
@@ -2133,7 +2133,7 @@ class QueryType(ObjectType):
     # TaskField
     list_task_fields = UUIDDjangoFilterConnectionField(TaskFieldType)
 
-    @object_permits_user("self")
+    @object_permits_user('read')
     def resolve_get_person_profile(parent, info):
         return info.context.user
 

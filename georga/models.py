@@ -1,5 +1,6 @@
+from operator import or_
 from datetime import datetime
-import functools
+from functools import cached_property, reduce
 import uuid
 
 from django.core.exceptions import ValidationError
@@ -28,7 +29,7 @@ class MixinUUIDs(models.Model):
     )
 
     # global relay id
-    @functools.cached_property
+    @cached_property
     def gid(self):
         return to_global_id(f"{self._meta.object_name}Type", self.uuid)
 
@@ -132,7 +133,7 @@ class MixinAuthorization(models.Model):
         Issues database queries using the Q objects defined in permitted().
         Returns True if permission was granted, False otherwise.
         """
-        qs = self.filter_permitted(self._meta.model.objects.all(), user, access_strings)
+        qs = self.filter_permitted(self._meta.model.objects, user, access_strings)
         return qs.filter(pk=self.pk).exists()
 
 
@@ -184,8 +185,30 @@ class ACE(MixinUUIDs, MixinAuthorization, models.Model):
                 f"'{self.access_object_ct.app_labeled_name}' is not a valid "
                 "content type for ACE.access_object")
 
+    @classmethod
+    def permitted(cls, user, access_string):
+        admin_orgs = Organization.objects.filter(ace__person=user.id, ace__ace_string="ADMIN")
+        admin_pros = Project.objects.filter(ace__person=user.id, ace__ace_string="ADMIN")
+        admin_ops = Operation.objects.filter(ace__person=user.id, ace__ace_string="ADMIN")
+        if access_string == 'read':
+            return reduce(or_, [
+                Q(organization__in=admin_orgs),
+                Q(project__in=admin_pros),
+                Q(project__organization__in=admin_orgs),
+                Q(operation__in=admin_ops),
+                Q(operation__project__in=admin_pros),
+                Q(operation__project__organization__in=admin_orgs),
+            ])
+        if access_string == ['write', 'delete']:
+            return reduce(or_, [
+                Q(project__organization__in=admin_orgs),
+                Q(operation__project__in=admin_pros),
+                Q(operation__project__organization__in=admin_orgs),
+            ])
+        return None
 
-class Device(MixinUUIDs, models.Model):
+
+class Device(MixinUUIDs, MixinAuthorization, models.Model):
     organization = models.ForeignKey(
         to='Organization',
         on_delete=models.CASCADE,
