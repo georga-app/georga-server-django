@@ -1168,7 +1168,7 @@ class PersonType(UUIDDjangoObjectType):
         model = Person
         fields = person_ro_fields + person_rw_fields
         filter_fields = person_filter_fields
-        permissions = [login_required, object_permits_user(['self'])]
+        permissions = [login_required, object_permits_user('self')]
 
 
 # forms
