@@ -42,7 +42,7 @@ def info(f):
     return decorator
 
 
-def object_permits_user(access_string, exc=exceptions.PermissionDenied):
+def object_permits_user(*access_strings, exc=exceptions.PermissionDenied):
     """
     Decorator for instance level access control in django graphql objects.
 
@@ -53,11 +53,11 @@ def object_permits_user(access_string, exc=exceptions.PermissionDenied):
     - restrict access to fields of instances after `DjangoObjectType.resolve_<field>()`
 
     Permission is granted/denied based on a model instance, an user instance
-    and an access_string passed to methods defined in `georga.models.MixinAuthorization`.
+    and access_strings passed to methods defined in `georga.models.MixinAuthorization`.
     Requires all inquired models to implement this mixin.
 
     Denial on direct access will throw the customizable `exc` Exception.
-    Lists and Connections will be filtered silently.
+    Connections will be filtered silently.
 
     Usage:
 
@@ -66,22 +66,23 @@ def object_permits_user(access_string, exc=exceptions.PermissionDenied):
             # restrict object access & filter querysets
             # note: works due to adjustments in UUIDDjangoObjectType subclass
             class Meta:
-                permissions = [object_permits_user('admin')]
+                permissions = [object_permits_user('ADMIN')]
 
             # restrict object access
             @classmethod
-            @object_permits_user('admin')
+            @object_permits_user('ADMIN', 'OR_some_other_access_string')
             def get_node(cls, info, id):
                 return super().get_node(info, id)
 
             # filter querysets
             @classmethod
-            @object_permits_user('admin')
+            @object_permits_user('ADMIN')
+            @object_permits_user('AND_some_other_access_string')
             def get_queryset(cls, queryset, info):
                 return super().get_queryset(queryset, info)
 
             # restrict field access
-            @object_permits_user('admin')
+            @object_permits_user('ADMIN')
             def resolve_some_field(self, info):
                 return self.some_field
 
@@ -89,7 +90,7 @@ def object_permits_user(access_string, exc=exceptions.PermissionDenied):
         # note: works due to adjustments in UUIDDjangoModelFormMutation subclass
         class UpdateSomeModelMutation(UUIDDjangoModelFormMutation):
             class Meta:
-                permissions = [object_permits_user('admin')]
+                permissions = [object_permits_user('ADMIN')]
     """
     def decorator(func):
         @wraps(func)
@@ -99,24 +100,24 @@ def object_permits_user(access_string, exc=exceptions.PermissionDenied):
 
             # access Mutation
             if info.parent_type.name == 'Mutation':
-                if obj['instance'].permits(info.context.user, access_string):
+                if obj['instance'].permits(info.context.user, access_strings):
                     return obj
 
             # filter QuerySets
             elif isinstance(obj, (Manager, QuerySet)):
                 try:
-                    return obj.model.filter_permitted(obj, info.context.user, access_string)
+                    return obj.model.filter_permitted(obj, info.context.user, access_strings)
                 except Exception:
                     return obj.none()
 
             # access ObjectTypes
             elif isinstance(obj, Model):
-                if obj.permits(info.context.user, access_string):
+                if obj.permits(info.context.user, access_strings):
                     return obj
 
             # access Scalars (ask parent object)
             elif isinstance(next(iter(args), None), Model):
-                if args[0].permits(info.context.user, access_string):
+                if args[0].permits(info.context.user, access_strings):
                     return obj
 
             # raise exception otherwise

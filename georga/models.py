@@ -80,16 +80,23 @@ class MixinAuthorization(models.Model):
         abstract = True
 
     @classmethod
-    def filter_permitted(cls, queryset, user, access_string):
+    def filter_permitted(cls, queryset, user, access_strings):
         """
         Filters a queryset to include only permitted instances for the user.
 
+        Multiple access_strings (tuple) are combined with an OR.
         Returns a queryset filtered by the lookups defined in permitted().
         """
-        permitted = cls.permitted(user, access_string)
-        if permitted is None:
-            return queryset.none()
-        return queryset.filter(**permitted)
+        if not isinstance(access_strings, tuple):
+            access_strings = tuple([access_strings])
+        result = None
+        for access_string in access_strings:
+            permitted = cls.permitted(user, access_string)
+            if permitted is None:
+                continue
+            qs = queryset.filter(**permitted)
+            result = result and result.union(qs) or qs
+        return result or queryset.none()
 
     @classmethod
     def permitted(cls, user, access_string):
@@ -101,25 +108,31 @@ class MixinAuthorization(models.Model):
         """
         return None
 
-    def permits(self, user, access_string):
+    def permits(self, user, access_strings):
         """
-        Asks an object, if it grants some user a certain permission.
+        Asks an object, if it grants some user certain permissions.
 
+        Multiple access_strings (tuple) are combined with an OR.
+        Issues database queries using the lookups defined in permitted().
         Returns True if permission was granted, False otherwise.
-        Issues a database query using the lookups defined in permitted().
         """
-        permitted = self.permitted(user, access_string)
-        if permitted is None:
-            return False
-        if 'pk' in permitted and self.pk != permitted['pk']:
-            return False
-        permitted['pk'] = self.pk
-        return self._meta.model.objects.filter(**permitted).exists()
+        if not isinstance(access_strings, tuple):
+            access_strings = (access_strings)
+        result = False
+        for access_string in access_strings:
+            permitted = self.permitted(user, access_string)
+            if permitted is None:
+                return False
+            if 'pk' in permitted and self.pk != permitted['pk']:
+                return False
+            permitted['pk'] = self.pk
+            result = result or self._meta.model.objects.filter(**permitted).exists()
+        return result
 
 
 # --- CLASSES
 
-class ACE(MixinUUIDs, models.Model):
+class ACE(MixinUUIDs, MixinAuthorization, models.Model):
     # *_cts list: list of valid models
     # checked in ForeignKey.limit_choices_to, Model.clean() and GQLFilterSet
     access_object_cts = ['organization', 'project', 'operation']
