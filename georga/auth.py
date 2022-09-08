@@ -111,7 +111,7 @@ def object_permits_user(*access_strings, exc=exceptions.PermissionDenied):
             obj = func(*args, **kwargs)
 
             # access Mutation
-            if info.parent_type.name == 'Mutation':
+            if info.parent_type.name == 'MutationType':
                 if obj['instance'].permits(info.context.user, access_strings):
                     return obj
 
