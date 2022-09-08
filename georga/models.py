@@ -187,6 +187,8 @@ class ACE(MixinUUIDs, MixinAuthorization, models.Model):
 
     @classmethod
     def permitted(cls, user, access_string):
+        if not user.is_staff:
+            return None
         admin_orgs = Organization.objects.filter(ace__person=user.id, ace__ace_string="ADMIN")
         admin_pros = Project.objects.filter(ace__person=user.id, ace__ace_string="ADMIN")
         admin_ops = Operation.objects.filter(ace__person=user.id, ace__ace_string="ADMIN")
@@ -199,7 +201,7 @@ class ACE(MixinUUIDs, MixinAuthorization, models.Model):
                 Q(operation__project__in=admin_pros),
                 Q(operation__project__organization__in=admin_orgs),
             ])
-        if access_string == ['write', 'delete']:
+        if access_string in ['create', 'update', 'delete']:
             return reduce(or_, [
                 Q(project__organization__in=admin_orgs),
                 Q(operation__project__in=admin_pros),
@@ -793,7 +795,7 @@ class Person(MixinUUIDs, MixinAuthorization, AbstractUser):
 
     @classmethod
     def permitted(cls, user, access_string):
-        if access_string == 'self':
+        if access_string in ['read', 'write']:
             return Q(pk=user.pk)
         return None
 
