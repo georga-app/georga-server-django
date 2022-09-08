@@ -519,21 +519,21 @@ class CreateACEMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = ACEModelForm
         exclude_fields = ['id']
-        permissions = [staff_member_required]
+        permissions = [staff_member_required, object_permits_user('create')]
 
 
 class UpdateACEMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = ACEModelForm
         required_fields = ['id']
-        permissions = [login_required]
+        permissions = [staff_member_required, object_permits_user('update')]
 
 
 class DeleteACEMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = ACEModelForm
         only_fields = ['id']
-        permissions = [staff_member_required]
+        permissions = [staff_member_required, object_permits_user('delete')]
 
     @classmethod
     def perform_mutate(cls, form, info):
