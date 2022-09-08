@@ -564,19 +564,19 @@ class Organization(MixinUUIDs, models.Model):
         ACE,
         content_type_field='access_object_ct',
         object_id_field='access_object_id',
-        related_query_name='organisation'
+        related_query_name='organization'
     )
     messages = GenericRelation(
         Message,
         content_type_field='scope_ct',
         object_id_field='scope_id',
-        related_query_name='organisation'
+        related_query_name='organization'
     )
     person_attributes = GenericRelation(
         PersonToObject,
         content_type_field='relation_object_ct',
         object_id_field='relation_object_id',
-        related_query_name='organisation'
+        related_query_name='organization'
     )
 
     def __str__(self):
