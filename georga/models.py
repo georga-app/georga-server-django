@@ -238,7 +238,7 @@ class Device(MixinUUIDs, MixinAuthorization, models.Model):
         # TODO: translation: Client-Gerät
 
 
-class Equipment(MixinUUIDs, models.Model):
+class Equipment(MixinUUIDs, MixinAuthorization, models.Model):
     organization = models.ForeignKey(
         to='Organization',
         on_delete=models.CASCADE,
@@ -270,7 +270,7 @@ class Equipment(MixinUUIDs, models.Model):
         # TODO: translate: Eigenes oder Material der Organisation
 
 
-class Location(MixinUUIDs, models.Model):
+class Location(MixinUUIDs, MixinAuthorization, models.Model):
     organization = models.ForeignKey(
         to='Organization',
         on_delete=models.CASCADE,
@@ -325,7 +325,7 @@ class Location(MixinUUIDs, models.Model):
         # TODO: translate: Ort
 
 
-class LocationCategory(MixinUUIDs, models.Model):
+class LocationCategory(MixinUUIDs, MixinAuthorization, models.Model):
     organization = models.ForeignKey(
         to='Organization',
         on_delete=models.CASCADE,
@@ -341,7 +341,7 @@ class LocationCategory(MixinUUIDs, models.Model):
         # e.g. operation location
 
 
-class PersonToObject(MixinUUIDs, models.Model):
+class PersonToObject(MixinUUIDs, MixinAuthorization, models.Model):
     person = models.ForeignKey(
         to='Person',
         on_delete=models.CASCADE,
@@ -387,7 +387,7 @@ class PersonToObject(MixinUUIDs, models.Model):
                 "content type for PersonToObject.relation_object")
 
 
-class Message(MixinUUIDs, models.Model):
+class Message(MixinUUIDs, MixinAuthorization, models.Model):
     '''
     A Message is sent via different channels to registered persons.
 
@@ -506,7 +506,7 @@ class Message(MixinUUIDs, models.Model):
         return "NONE"
 
 
-class Operation(MixinUUIDs, models.Model):
+class Operation(MixinUUIDs, MixinAuthorization, models.Model):
     project = models.ForeignKey(
         to='Project',
         on_delete=models.CASCADE,
@@ -553,7 +553,7 @@ class Operation(MixinUUIDs, models.Model):
         # TODO: translate: Einsatz
 
 
-class Organization(MixinUUIDs, models.Model):
+class Organization(MixinUUIDs, MixinAuthorization, models.Model):
     name = models.CharField(
         max_length=50,
     )
@@ -590,7 +590,7 @@ class Organization(MixinUUIDs, models.Model):
         # TODO: translation: Organisation
 
 
-class Participant(MixinUUIDs, models.Model):
+class Participant(MixinUUIDs, MixinAuthorization, models.Model):
     role = models.ForeignKey(
         to='Role',
         on_delete=models.CASCADE,
@@ -829,7 +829,7 @@ class PersonProperty(MixinUUIDs, MixinAuthorization, models.Model):
         # TODO: translate: PersonProperty
 
 
-class PersonPropertyGroup(MixinUUIDs, models.Model):
+class PersonPropertyGroup(MixinUUIDs, MixinAuthorization, models.Model):
     organization = models.ForeignKey(
         to='Organization',
         on_delete=models.CASCADE,
@@ -882,7 +882,7 @@ class PersonPropertyGroup(MixinUUIDs, models.Model):
         # TODO: translate: PersonPropertyGroup
 
 
-class Project(MixinUUIDs, models.Model):
+class Project(MixinUUIDs, MixinAuthorization, models.Model):
     organization = models.ForeignKey(
         to='Organization',
         on_delete=models.CASCADE,
@@ -924,7 +924,7 @@ class Project(MixinUUIDs, models.Model):
         # TODO: translation: Projekt
 
 
-class Resource(MixinUUIDs, models.Model):
+class Resource(MixinUUIDs, MixinAuthorization, models.Model):
     shift = models.ForeignKey(
         to='Shift',
         on_delete=models.CASCADE,
@@ -958,7 +958,7 @@ class Resource(MixinUUIDs, models.Model):
         # TODO: translation: Ressource
 
 
-class Role(MixinUUIDs, models.Model):
+class Role(MixinUUIDs, MixinAuthorization, models.Model):
     shift = models.ForeignKey(
         to='Shift',
         on_delete=models.CASCADE,
@@ -1000,7 +1000,7 @@ class Role(MixinUUIDs, models.Model):
         # TODO: translate: Einsatzrolle
 
 
-class RoleSpecification(MixinUUIDs, models.Model):
+class RoleSpecification(MixinUUIDs, MixinAuthorization, models.Model):
     role = models.ForeignKey(
         to='Role',
         on_delete=models.CASCADE,
@@ -1024,7 +1024,7 @@ class RoleSpecification(MixinUUIDs, models.Model):
     )
 
 
-class Shift(MixinUUIDs, models.Model):
+class Shift(MixinUUIDs, MixinAuthorization, models.Model):
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
     STATES = [
@@ -1066,7 +1066,7 @@ class Shift(MixinUUIDs, models.Model):
         # TODO: translate: Schicht
 
 
-class Task(MixinUUIDs, models.Model):
+class Task(MixinUUIDs, MixinAuthorization, models.Model):
     operation = models.ForeignKey(
         to='Operation',
         on_delete=models.CASCADE,
@@ -1121,7 +1121,7 @@ class Task(MixinUUIDs, models.Model):
         # TODO: translate: Aufgabe
 
 
-class TaskField(MixinUUIDs, models.Model):
+class TaskField(MixinUUIDs, MixinAuthorization, models.Model):
     organization = models.ForeignKey(
         to='Organization',
         on_delete=models.CASCADE,
