@@ -133,7 +133,7 @@ class UUIDModelForm(ModelForm, metaclass=GFKModelFormMetaclass):
     ModelForm with model.uuid as identifier.
 
     UUIDs:
-    - Sets to_field_name of foreign relation fields to uuid.
+    - Sets to_field_name of foreign relation fields to uuid if provided as input.
 
     GFKs:
     - Assigns model instance to GenericForeignKey fields, if GlobalID was provided.
@@ -147,9 +147,10 @@ class UUIDModelForm(ModelForm, metaclass=GFKModelFormMetaclass):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        # set to_field_name of foreign relation fields to uuid
+        # set to_field_name of foreign relation fields to uuid if provided as input
         for name, field in self.fields.items():
-            if isinstance(field, (ModelChoiceField, ModelMultipleChoiceField)):
+            if name in self.data and isinstance(
+                    field, (ModelChoiceField, ModelMultipleChoiceField)):
                 field.to_field_name = 'uuid'
 
         # set fields required if listed in Meta.required_fields
@@ -236,13 +237,6 @@ class UUIDDjangoFilterConnectionField(DjangoFilterConnectionField):
     Bugfixes:
     - Fixes a bug that converts model id fields to graphene.Float schema fields.
     """
-    # def __init__(self, *args, **kwargs):
-    #     # set permissions for query specified in Meta.permissions
-    #     obj = super().__init__(*args, **kwargs)
-    #     for permission in kwargs.get('permissions', []):
-    #         # cls.get_node = permission(cls.get_node)
-    #         pass
-
     @property
     def filtering_args(self):
         # fix a bug that converts model id fields to graphene.Float schema fields
@@ -329,6 +323,8 @@ class UUIDDjangoModelFormMutation(DjangoModelFormMutation):
     def get_form_kwargs(cls, root, info, **input):
         # delete kwargs for graphql variables defined but not passed
         kwargs = {"data": {key: value for key, value in input.items() if value is not None}}
+        if 'id' in kwargs["data"]:
+            del kwargs["data"]["id"]
 
         # replace model form id arg with model form uuid arg
         global_id = input.pop("id", None)
@@ -339,11 +335,12 @@ class UUIDDjangoModelFormMutation(DjangoModelFormMutation):
 
         # replace foreign model reference ids with uuids
         for name, field in vars(cls.Input).items():
-            if name not in input or name.startswith("_"):
+            if name not in input or name.startswith("_") or name == "id":
                 continue
-            if isinstance(field.type, ID):
+            _type = field.type
+            if isinstance(_type, ID) or isinstance(_type, type) and issubclass(_type, ID):
                 kwargs["data"][name] = from_global_id(input[name])[1]
-            if isinstance(field.type, List) and field.type.of_type == ID and input[name]:
+            if isinstance(_type, List) and _type.of_type == ID and input[name]:
                 kwargs["data"][name] = [from_global_id(id)[1] for id in input[name]]
 
         return kwargs
@@ -1351,7 +1348,7 @@ class UpdatePersonProfileMutation(UUIDDjangoModelFormMutation):
         form_class = PersonModelForm
         exclude_fields = ['id', 'password']
         required_fields = []
-        permissions = [login_required, object_permits_user("self")]
+        permissions = [login_required, object_permits_user("write")]
 
     @classmethod
     def get_form_kwargs(cls, root, info, **input):
@@ -1388,6 +1385,7 @@ person_property_filter_fields = {
     'group': LOOKUPS_ID,
     'group__name': LOOKUPS_STRING,
     'group__codename': LOOKUPS_STRING,
+    'organization': LOOKUPS_ID,
 }
 
 
