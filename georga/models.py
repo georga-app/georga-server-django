@@ -145,8 +145,10 @@ class MixinAuthorization(models.Model):
                 return queryset
             # combine Q objects (logical OR)
             q |= permitted
-        # return filtered queryset or none queryset
-        return q and queryset.filter(q) or queryset.none()
+        # return filtered or none queryset
+        if q:
+            return queryset.filter(q)
+        return queryset.none()
 
     @classmethod
     def permitted(cls, instance, user, action):
