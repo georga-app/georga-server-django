@@ -947,7 +947,7 @@ class Person(MixinUUIDs, MixinAuthorization, AbstractUser):
         verbose_name_plural = _("registered helpers")
         # TODO: translation: Registrierter Helfer
 
-    PERMISSION_LEVELS = [
+    ADMIN_LEVELS = [
         ('NONE', _('None')),
         ('OPERATION', _('Operation')),
         ('PROJECT', _("Project")),
@@ -955,7 +955,7 @@ class Person(MixinUUIDs, MixinAuthorization, AbstractUser):
     ]
 
     @property
-    def permission_level(self):
+    def admin_level(self):
         """
         str (NONE|ORGANIZATION|PROJECT|OPERATION): Returns the highest
             hierarchical level for which the user has ADMIN rights. Used as
@@ -963,6 +963,8 @@ class Person(MixinUUIDs, MixinAuthorization, AbstractUser):
         """
         level = "NONE"
         for ace in self.ace_set.all():
+            if ace.ace_string != "ADMIN":
+                continue
             obj = ace.access_object
             if isinstance(obj, Organization):
                 return "ORGANIZATION"

@@ -1176,9 +1176,9 @@ person_filter_fields = {
 
 # types
 class PersonType(UUIDDjangoObjectType):
-    permission_level = Field(
+    admin_level = Field(
         convert_choices_to_named_enum_with_descriptions(
-            'PermissionLevel', Person.PERMISSION_LEVELS),
+            'AdminLevel', Person.ADMIN_LEVELS),
         required=True)
 
     class Meta:
