@@ -7,6 +7,32 @@ from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q, F
 from georga.schemas import *
 
+from django.db import connection
+from django.db import reset_queries
+
+
+def profile_queries(func):
+    """Decorator for performance measures on database queries."""
+    def inner_func(*args, **kwargs):
+        reset_queries()
+        results = func()
+        query_info = connection.queries
+        print('function_name: {}'.format(func.__name__))
+        print('query_count: {}'.format(len(query_info)))
+        queries = ['{}\n\n'.format(query['sql']) for query in query_info]
+        print('queries: \n\n{}'.format(''.join(queries)))
+        return results
+    return inner_func
+
+
+@profile_queries
+def profile_permits():
+    org_admin = Person.objects.get(email="organization@georga.test")
+    ace1 = ACE.objects.get(pk=1)
+    ace1.permits(org_admin, 'read')
+    ace1.permits(org_admin, 'read')
+
+
 persons = Person.objects.all()
 aces = ACE.objects.all()
 
