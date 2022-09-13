@@ -296,6 +296,18 @@ class ACE(MixinUUIDs, MixinAuthorization, models.Model):
                 f"'{self.access_object_ct.app_labeled_name}' is not a valid "
                 "content type for ACE.access_object")
 
+        # restrict persons to have a true is_staff flag
+        if not self.person.is_staff:
+            raise ValidationError(f"person {self.person.gid} is not staff")
+
+        # restrict persons to be employed by the organization
+        organization = self.access_object.organization
+        valid_organizations = self.person.organizations_employed.all()
+        if organization not in valid_organizations:
+            raise ValidationError(
+                f"person {self.person.gid} is not employed by organization "
+                f"of access_object {self.access_object.gid}")
+
     @classmethod
     def permitted(cls, instance, user, action):
         if not user.is_staff:
