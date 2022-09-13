@@ -647,6 +647,10 @@ class Message(MixinUUIDs, MixinAuthorization, models.Model):
 
     @property
     def delivery_state(self):
+        """
+        str (SENT_ERROR|PENDING|SENT|SENT_SUCCESSFULLY): Returns the least
+            optimal delivery state of all channels in the given order.
+        """
         for state in ["SENT_ERROR", "PENDING", "SENT", "SENT_SUCCESSFULLY"]:
             for channel_state in [self.delivery_state_email,
                                   self.delivery_state_push,
@@ -939,6 +943,11 @@ class Person(MixinUUIDs, MixinAuthorization, AbstractUser):
 
     @property
     def permission_level(self):
+        """
+        str (NONE|ORGANIZATION|PROJECT|OPERATION): Returns the highest
+            hierarchical level for which the user has ADMIN rights. Used as
+            indicator for clients to adjust the interface accordingly.
+        """
         level = "NONE"
         for ace in self.ace_set.all():
             obj = ace.access_object
