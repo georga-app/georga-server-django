@@ -282,6 +282,7 @@ class ACE(MixinUUIDs, MixinAuthorization, models.Model):
         indexes = [
             models.Index(fields=["access_object_ct", "access_object_id"]),
         ]
+        unique_together = ('access_object_ct', 'access_object_id', 'person', 'ace_string',)
 
     def clean(self):
         super().clean()
