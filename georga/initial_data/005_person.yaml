@@ -4,6 +4,7 @@
   pk: 1
   fields:
     uuid: "00000005-0000-0000-0000-000000000001"
+    # gid: "UGVyc29uVHlwZTowMDAwMDAwNS0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDE="
     password: pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
     last_login: null
     is_superuser: true
@@ -21,6 +22,7 @@
   pk: 2
   fields:
     uuid: "00000005-0000-0000-0000-000000000002"
+    # gid: "UGVyc29uVHlwZTowMDAwMDAwNS0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDI="
     password: pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
     last_login: null
     is_superuser: false
@@ -41,6 +43,7 @@
   pk: 3
   fields:
     uuid: "00000005-0000-0000-0000-000000000003"
+    # gid: "UGVyc29uVHlwZTowMDAwMDAwNS0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDM="
     password: pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
     last_login: null
     is_superuser: false
@@ -59,6 +62,7 @@
   pk: 4
   fields:
     uuid: "00000005-0000-0000-0000-000000000004"
+    # gid: "UGVyc29uVHlwZTowMDAwMDAwNS0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDQ="
     password: pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
     last_login: null
     is_superuser: false
@@ -77,6 +81,7 @@
   pk: 5
   fields:
     uuid: "00000005-0000-0000-0000-000000000005"
+    # gid: "UGVyc29uVHlwZTowMDAwMDAwNS0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDU="
     password: pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
     last_login: null
     is_superuser: false
@@ -97,6 +102,7 @@
   pk: 6
   fields:
     uuid: "00000005-0000-0000-0000-000000000006"
+    # gid: "UGVyc29uVHlwZTowMDAwMDAwNS0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDY="
     password: pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
     last_login: null
     is_superuser: false
