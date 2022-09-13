@@ -318,23 +318,42 @@ class ACE(MixinUUIDs, MixinAuthorization, models.Model):
         if instance and not instance.id:
             match action:
                 case 'create':
-                    if isinstance(instance.access_object, Project):
-                        return instance.access_object.organization in admin_organizations
-                    if isinstance(instance.access_object, Operation):
-                        return instance.access_object.project in admin_projects
+                    obj = instance.access_object
+                    # ACEs for projects can be created by organization admins
+                    if isinstance(obj, Project):
+                        return obj.organization in admin_organizations
+                    # ACEs for operations can be created by organization/project admins
+                    if isinstance(obj, Operation):
+                        return obj.project in admin_projects
                 case _:
                     return False
         # queryset filtering and persisted instances (read, write, delete, etc)
         match action:
-            case 'read' | 'update':
+            case 'read':
                 return reduce(or_, [
+                    # ACEs for the user can be read by the user
+                    Q(person=user),
+                    # ACEs for organizations can be read by organization admins
                     Q(organization__in=admin_organizations),
+                    # ACEs for projects can be read by organization/project admins
                     Q(project__in=admin_projects),
+                    # ACEs for operations can be read by organization/project/operation admins
+                    Q(operation__in=admin_operations),
+                ])
+            case 'update':
+                return reduce(or_, [
+                    # ACEs for organizations can be updated by organization admins
+                    Q(organization__in=admin_organizations),
+                    # ACEs for projects can be updated by organization/project admins
+                    Q(project__in=admin_projects),
+                    # ACEs for operations can be updated by organization/project/operation admins
                     Q(operation__in=admin_operations),
                 ])
             case 'delete':
                 return reduce(or_, [
+                    # ACEs for projects can be deleted by organization admins
                     Q(project__organization__in=admin_organizations),
+                    # ACEs for operations can be deleted by organization/project admins
                     Q(operation__project__in=admin_projects),
                 ])
             case _:
