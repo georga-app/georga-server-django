@@ -2,12 +2,12 @@ Django==4.1
 psycopg2==2.9.3
 python-dotenv==0.21.0
 PyYAML==6.0
-django-phonenumber-field==6.4.0
-phonenumbers==8.12.54
+django-phonenumber-field==7.0.0
+phonenumbers==8.12.55
 graphene-django==2.15.0
 django-graphql-jwt==0.3.4
 django-filter==22.1
-cryptography==37.0.4
+cryptography==38.0.1
 channels==3.0.5
 channels-redis==3.4.1
 django-cors-headers==3.13.0
