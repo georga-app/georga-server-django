@@ -875,6 +875,13 @@ class Person(MixinUUIDs, MixinAuthorization, AbstractUser):
         to='Organization',
         blank=True,
         verbose_name=_("organizations subscribed to"),
+        related_name='persons_subscribed',
+    )
+    organizations_employed = models.ManyToManyField(
+        to='Organization',
+        blank=True,
+        verbose_name=_("organizations employed at"),
+        related_name='persons_employed',
     )
 
     devices = models.ManyToManyField(

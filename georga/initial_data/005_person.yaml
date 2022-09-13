@@ -14,7 +14,6 @@
     date_joined: 2022-03-13 16:13:36.048326+00:00
     email: admin@georga.test
     password_modified: 2022-03-13 16:13:36.048338+00:00
-    organizations_subscribed: [1, 2, 3]
     is_active: true
 
 # helper
@@ -34,6 +33,7 @@
     password_modified: 2022-03-13 16:13:36.048338+00:00
     properties: [2, 5, 7, 10]
     organizations_subscribed: [1, 2, 3]
+    organizations_employed: []
     is_active: true
 
 # staff
@@ -53,6 +53,7 @@
     password_modified: 2022-03-13 16:13:36.048338+00:00
     properties: [3, 16, 21, 23]
     organizations_subscribed: [1]
+    organizations_employed: [1]
     is_active: true
 - model: georga.person
   pk: 4
@@ -69,7 +70,8 @@
     email: project@georga.test
     password_modified: 2022-03-13 16:13:36.048338+00:00
     properties: [4, 26]
-    organizations_subscribed: [2, 3]
+    organizations_subscribed: [1, 2, 3]
+    organizations_employed: [1, 2, 3]
     is_active: true
 - model: georga.person
   pk: 5
@@ -86,7 +88,8 @@
     email: operation@georga.test
     password_modified: 2022-03-13 16:13:36.048338+00:00
     properties: [7, 10]
-    organizations_subscribed: [3]
+    organizations_subscribed: [1]
+    organizations_employed: [1]
     is_active: true
 
 # inactive user
@@ -106,4 +109,5 @@
     password_modified: 2022-03-13 16:13:36.048338+00:00
     properties: [2, 5, 7, 10]
     organizations_subscribed: [1, 2, 3]
+    organizations_employed: []
     is_active: false
