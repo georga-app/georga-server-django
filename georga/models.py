@@ -706,6 +706,11 @@ class Operation(MixinUUIDs, MixinAuthorization, models.Model):
         verbose_name_plural = _("operations")
         # TODO: translate: Einsatz
 
+    @property
+    def organization(self):
+        """Organisation(): Returns the Organization of the Operation."""
+        return self.project.organization
+
 
 class Organization(MixinUUIDs, MixinAuthorization, models.Model):
     name = models.CharField(
@@ -742,6 +747,14 @@ class Organization(MixinUUIDs, MixinAuthorization, models.Model):
         verbose_name = _("organization")
         verbose_name_plural = _("organizations")
         # TODO: translation: Organisation
+
+    @property
+    def organization(self):
+        """
+        Organisation(): Returns self. Added to ease the handling of all
+            `ACL.access_object`s by being able to get the organization attribute.
+        """
+        return self
 
 
 class Participant(MixinUUIDs, MixinAuthorization, models.Model):
