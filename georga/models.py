@@ -18,7 +18,12 @@ from graphql_relay import to_global_id
 # --- MIXINS
 
 class MixinUUIDs(models.Model):
-    """Public facing UUIDs."""
+    """
+    Public facing UUIDs.
+
+    Attributes:
+        uuid (models.UUIDField()): uuid for web/app clients.
+    """
     class Meta:
         abstract = True
     # uuid for web/app clients
@@ -31,6 +36,7 @@ class MixinUUIDs(models.Model):
     # global relay id
     @cached_property
     def gid(self):
+        """str: global relay id (base64 encoded `<ModelName>,<UUID>`)"""
         return to_global_id(f"{self._meta.object_name}Type", self.uuid)
 
 
@@ -38,102 +44,206 @@ class MixinAuthorization(models.Model):
     """
     Methods for instance level authorization.
 
-    Access rules for a model are defined by overriding `Model.permitted()`
-    to return a dictionary of lookup expressions and values,
-    which select the accessible instances.
+    Permissions are deduced from:
+    - an instance: Model instance to be inquired.
+    - a user: Person instance, for which permission is requested.
+    - an action: Actions may be arbitrary strings, e.G. CRUD operations.
 
-    Access to an instance can be inquired via `instance.permits()`.
-    A filtered queryset can be obtained via `Model.filter_permitted()`.
+    Access rules for a model are defined by overriding `Model.permitted()`,
+    which has to return a bool or a Q object to filter the accessible instances.
+    For details on how to override, see the docstring of the method.
 
-    All methods need to be called with the parameters:
-        user: Person instance
-        access_string: arbitraty description of a role or permission
+    Permission on instances can be inquired by `instance.permits()`,
+    querysets can be filtered by `Model.filter_permitted()`.
 
-    If the granting of some role or permission should be configurable via ACEs,
-    the access_string should match the choices of ACE.access_string field.
+    Examples:
+        Set permissions for Person instances to read and write only itself::
 
-    For usage with graphene_django see `georga.auth.object_permits_user()`.
+            class Person(MixinAuthorization, models.Model):
+                @classmethod
+                def permitted(cls, instance, user, action):
+                    # unpersisted instance (create)
+                    if instance and not instance.id:
+                        return False
+                    # none or persisted instance (read, write, delete, etc)
+                    if action in ['read', 'write']:
+                        return Q(pk=user.pk)
+                    return None
 
-    Example: permitted lookup expressions
+        Check permission::
 
-        class Person(MixinAuthorization, models.Model):
-            @classmethod
-            def permitted(cls, user, access_string):
-                permitted = None
-                if access_string == 'admin':
-                    permitted = {
-                        'pk': user.pk
-                    }
-                return permitted
+            if person.permits(context.user, 'write'):
+                person.save()
 
-    Example: permit execution^
+        Check multiple permission (logical OR)::
 
-        if person.permits(context.user, 'admin'):
-            person.change_password('secret')
-            person.save()
+            if person.permits(context.user, ('read', 'write')):
+                person.save()
 
-    Example: filter queryset
+        Filter queryset::
 
-        queryset = Person.objects.all()
-        filtered_queryset = Person.filter_permitted(
-            queryset, context.user, 'admin')
+            qs = Person.filter_permitted(Person.objects, context.user, 'read')
+
+    Note:
+        For usage with graphene_django, see `georga.auth.object_permits_user()`.
     """
     class Meta:
         abstract = True
 
+    @staticmethod
+    def _prepare_permission_actions(actions):
+        """
+        Helper method to ensure actions to be a tuple of strings.
+
+        Args:
+            actions (str|tuple[str]): Action or tuple of actions.
+
+        Returns:
+            tuple[str]: Tuple of action strings.
+
+        Raises:
+            AssertionError: If `actions` is not a str or a tuple[str].
+        """
+        # convert string to tuple
+        if isinstance(actions, str):
+            actions = tuple([actions])
+        # allow only tuple
+        assert isinstance(actions, tuple), f"Error: actions {actions} is not a tuple."
+        # allow only strings in tuple
+        for action in actions:
+            assert isinstance(action, str), f"Error: action {action} is not a string."
+        return actions
+
     @classmethod
-    def filter_permitted(cls, queryset, user, access_strings):
+    def filter_permitted(cls, queryset, instance, user, actions):
         """
         Filters a queryset to include only permitted instances for the user.
 
-        Multiple access_strings (tuple of strings) are combined with an OR.
-        Returns a queryset filtered by the Q objects defined in permitted().
+        Args:
+            queryset (QuerySet()): Instance of QuerySet to filter.
+            instance (Model()|None): Model instance to be inquired or None.
+            user (Person()): Person instance, for which permission is requested.
+            actions (str|tuple[str]): Action or tuple of actions, one of which
+                the user is required to have (logical OR, if multiple are given).
+                Actions may be arbitrary strings, e.G. CRUD operations.
+
+        Returns:
+            The `queryset` filtered by the Q object returned by `permitted()`.
         """
-        # convert string to tuple
-        if isinstance(access_strings, str):
-            access_strings = tuple([access_strings])
-        # allow only tuple
-        assert isinstance(access_strings, tuple), (
-            f"Error: access_strings is not a tuple. \n"
-            f"cls {cls}, queryset {queryset}, access_strings {access_strings}"
-        )
-        # combine query objects for each access string
+        # prepare actions
+        actions = cls._prepare_permission_actions(actions)
+        # combine Q objects for each action
         q = Q()
-        for access_string in access_strings:
-            # allow only strings
-            assert isinstance(access_string, str), (
-                f"Error: access string is not a string. \n"
-                f"cls {cls}, queryset {queryset}, access_string {access_string}"
-            )
-            # get and combine q object
-            permitted = cls.permitted(user, access_string)
-            if permitted is None:
+        for action in actions:
+            # get the Q object
+            permitted = cls.permitted(instance, user, action)
+            # don't combine, if False or None
+            if permitted in [False, None]:
                 continue
+            # return full queryset, if True
             if permitted is True:
                 return queryset
+            # combine Q objects (logical OR)
             q |= permitted
         # return filtered queryset or none queryset
         return q and queryset.filter(q) or queryset.none()
 
     @classmethod
-    def permitted(cls, user, access_string):
+    def permitted(cls, instance, user, action):
         """
-        Defines the permissions of the object.
+        Defines the permissions for the user, instance and action.
 
-        Returns a Q object for some given access_string to filter a queryset,
-        or True to allow all, or None to deny all. Denies all by default.
-        """
-        return None
+        This method has to be overridden in each model to define the permissions.
+        To specify the permissions, two cases have to be handeled differently:
+        1. Queryset filtering and persisted instances:
+           The return value has to be
+           - a `Q` object to obtain the filtered queryset, which should only
+             include the accessible instances.
+           - `True` to allow all and obtain a queryset with all instances
+             included (via `Model.objects.all()`).
+           - `False|None` to deny all and obtain a queryset with no instances
+             included (via `Model.objects.none()`).
+           The resulting queryset is directly used for queryset filtering.
+           Inquiries on persisted instances add an additional constraint for
+           its pk and query the database for the existance of a match.
+           This way the load is delegated to the database service and only
+           one access rule needs to be defined in `permitted()` for both access
+           control and filtering.
+        2. Unpersisted instances:
+           As the database can't be queried for unpersisted instances, the
+           permission should be derived directly and the return value has to
+           evaluate to bool, e.G.:
+           - `True` to permit the action.
+           - `False|None` to deny the action.
 
-    def permits(self, user, access_strings):
-        """
-        Asks an object, if it grants some user certain permissions.
+        Args:
+            instance (Model()|None): Model instance to be inquired or None.
+            user (Person()): Person instance, for which permission is requested.
+            action (str): Actions may be arbitrary strings, e.G. CRUD operations.
 
-        Multiple access_strings (tuple of strings) are combined with an OR.
-        Issues database queries using the Q objects defined in permitted().
-        Returns True if permission was granted, False otherwise.
+        Returns:
+            Q object: To filter a queryset.
+            True: To allow all or permit the action.
+            False|None: To deny all or deny the action.
+
+        Examples:
+            Set permissions for Person instances to read and write only itself::
+
+                class Person(MixinAuthorization, models.Model):
+                    @classmethod
+                    def permitted(cls, instance, user, action):
+                        # unpersisted instance (create)
+                        if instance and not instance.id:
+                            return False
+                        # none or persisted instance (read, write, delete, etc)
+                        if action in ['read', 'write']:
+                            return Q(pk=user.pk)
+                        return None
+
+        Note:
+            All permissions are denied by default when inherited from the Mixin.
         """
-        qs = self.filter_permitted(self._meta.model.objects, user, access_strings)
+        # unpersisted instances (create)
+        if instance and not instance.id:
+            match action:
+                case _:
+                    return False
+        # queryset filtering and persisted instances (read, write, delete, etc)
+        match action:
+            case _:
+                return None
+
+    def permits(self, user, actions):
+        """
+        Inquires a Model instance, if it grants some user certain permissions.
+
+        Persisted instances use the filtered queryset result of
+        `filter_permitted()`, add another constraint for its pk, and query the
+        database for the existance of a match.
+
+        Unpersisted instances evaluate the return value of `permitted()` to
+        bool to decide, if the permission is granted or not.
+
+        Args:
+            user (Person()): Person instance, for which permission is requested.
+            actions (str|tuple[str]): Action or tuple of actions, one of which
+                the user is required to have (logical OR, if multiple are given).
+                Actions may be arbitrary strings, e.G. CRUD operations.
+
+        Returns:
+            True if permission was granted, False otherwise.
+        """
+        # unpersisted instances (create)
+        if not self.pk:
+            # prepare actions
+            actions = self._prepare_permission_actions(actions)
+            # get and combine permitted results
+            permit = False
+            for action in actions:
+                permit |= bool(self.permitted(self, user, action))
+            return permit
+        # queryset filtering and persisted instances (read, write, delete, etc)
+        qs = self.filter_permitted(self._meta.model.objects, self, user, actions)
         return qs.filter(pk=self.pk).exists()
 
 
@@ -186,28 +296,48 @@ class ACE(MixinUUIDs, MixinAuthorization, models.Model):
                 "content type for ACE.access_object")
 
     @classmethod
-    def permitted(cls, user, access_string):
+    def permitted(cls, instance, user, action):
         if not user.is_staff:
-            return None
-        admin_orgs = Organization.objects.filter(ace__person=user.id, ace__ace_string="ADMIN")
-        admin_pros = Project.objects.filter(ace__person=user.id, ace__ace_string="ADMIN")
-        admin_ops = Operation.objects.filter(ace__person=user.id, ace__ace_string="ADMIN")
-        if access_string == 'read':
-            return reduce(or_, [
-                Q(organization__in=admin_orgs),
-                Q(project__in=admin_pros),
-                Q(project__organization__in=admin_orgs),
-                Q(operation__in=admin_ops),
-                Q(operation__project__in=admin_pros),
-                Q(operation__project__organization__in=admin_orgs),
-            ])
-        if access_string in ['create', 'update', 'delete']:
-            return reduce(or_, [
-                Q(project__organization__in=admin_orgs),
-                Q(operation__project__in=admin_pros),
-                Q(operation__project__organization__in=admin_orgs),
-            ])
-        return None
+            return False
+        admin_organizations = Organization.objects.filter(
+            Q(ace__person=user.id, ace__ace_string="ADMIN")
+        )
+        admin_projects = Project.objects.filter(
+            Q(organization__ace__person=user.id,
+              organization__ace__ace_string="ADMIN")
+            | Q(ace__person=user.id, ace__ace_string="ADMIN")
+        )
+        admin_operations = Operation.objects.filter(
+            Q(project__organization__ace__person=user.id,
+              project__organization__ace__ace_string="ADMIN")
+            | Q(project__ace__person=user.id, project__ace__ace_string="ADMIN")
+            | Q(ace__person=user.id, ace__ace_string="ADMIN")
+        )
+        # unpersisted instances (create)
+        if instance and not instance.id:
+            match action:
+                case 'create':
+                    if isinstance(instance.access_object, Project):
+                        return instance.access_object.organization in admin_organizations
+                    if isinstance(instance.access_object, Operation):
+                        return instance.access_object.project in admin_projects
+                case _:
+                    return False
+        # queryset filtering and persisted instances (read, write, delete, etc)
+        match action:
+            case 'read' | 'update':
+                return reduce(or_, [
+                    Q(organization__in=admin_organizations),
+                    Q(project__in=admin_projects),
+                    Q(operation__in=admin_operations),
+                ])
+            case 'delete':
+                return reduce(or_, [
+                    Q(project__organization__in=admin_organizations),
+                    Q(operation__project__in=admin_projects),
+                ])
+            case _:
+                return None
 
 
 class Device(MixinUUIDs, MixinAuthorization, models.Model):
@@ -794,10 +924,18 @@ class Person(MixinUUIDs, MixinAuthorization, AbstractUser):
         return level
 
     @classmethod
-    def permitted(cls, user, access_string):
-        if access_string in ['read', 'write']:
-            return Q(pk=user.pk)
-        return None
+    def permitted(cls, instance, user, action):
+        # unpersisted instances (create)
+        if instance and not instance.id:
+            match action:
+                case _:
+                    return False
+        # queryset filtering and persisted instances (read, write, delete, etc)
+        match action:
+            case 'read' | 'write':
+                return Q(pk=user.pk)
+            case _:
+                return None
 
 
 class PersonProperty(MixinUUIDs, MixinAuthorization, models.Model):

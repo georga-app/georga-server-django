@@ -303,6 +303,7 @@ class UUIDDjangoModelFormMutation(DjangoModelFormMutation):
         # set permissions for mutation specified in Meta.permissions
         for permission in kwargs.get('permissions', []):
             cls.get_form_kwargs = permission(cls.get_form_kwargs)
+            cls.perform_mutate = permission(cls.perform_mutate)
 
         # remove schema id field if Meta.only_fields is given and does not contain it
         if 'id' not in kwargs.get('only_fields', ['id']):
@@ -335,12 +336,30 @@ class UUIDDjangoModelFormMutation(DjangoModelFormMutation):
 
         # replace foreign model reference ids with uuids
         for name, field in vars(cls.Input).items():
-            if name not in input or name.startswith("_") or name == "id":
+            # skip fields, that were not provided
+            if name not in input:
+                continue
+            # skip fields starting with an underscore
+            elif name.startswith("_"):
+                continue
+            # skip id field
+            elif name == "id":
+                continue
+            # skip generic foreign key fields (model class needs to be passed)
+            elif name in getattr(cls._meta.form_class._meta, 'gfk_fields', []):
                 continue
             _type = field.type
-            if isinstance(_type, ID) or isinstance(_type, type) and issubclass(_type, ID):
+            # ID instance
+            if isinstance(_type, ID):
                 kwargs["data"][name] = from_global_id(input[name])[1]
-            if isinstance(_type, List) and _type.of_type == ID and input[name]:
+            # ID class
+            elif isinstance(_type, type) and issubclass(_type, ID):
+                kwargs["data"][name] = from_global_id(input[name])[1]
+            # NonNull instance wrapping ID
+            elif isinstance(_type, NonNull) and _type.of_type == ID:
+                kwargs["data"][name] = from_global_id(input[name])[1]
+            # List containing IDs
+            elif isinstance(_type, List) and _type.of_type == ID and input[name]:
                 kwargs["data"][name] = [from_global_id(id)[1] for id in input[name]]
 
         return kwargs
@@ -476,6 +495,7 @@ ace_wo_fields = [
 ace_rw_fields = [
     'person',
     'ace_string',
+    'access_object',
 ]
 ace_filter_fields = {
     'id': LOOKUPS_ID,
@@ -536,7 +556,7 @@ class DeleteACEMutation(UUIDDjangoModelFormMutation):
     def perform_mutate(cls, form, info):
         ace = form.instance
         ace.delete()
-        return cls(ace=ace, errors=[])
+        return cls(aCE=ace, errors=[])
 
 
 # Device ----------------------------------------------------------------------
@@ -2090,7 +2110,7 @@ class QueryType(ObjectType):
     # Relay
     node = Node.Field()
     # ACE
-    list_aces = UUIDDjangoFilterConnectionField(ACEType)
+    list_aces = UUIDDjangoFilterConnectionField(ACEType, filterset_class=ACEFilter)
     # Device
     list_devices = UUIDDjangoFilterConnectionField(DeviceType)
     # Equipment
