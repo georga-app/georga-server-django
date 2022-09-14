@@ -1260,12 +1260,13 @@ class RoleSpecification(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.
         related_name='person_properties',
     )
     NECESSITIES = [
-        ('RECOMMENDED', _("recommended")),
         ('MANDATORY', _("mandatory")),
-        ('NOT_POSSIBLE', _("not possible")),
+        ('RECOMMENDED', _("recommended")),
+        ('UNRECOMMENDED', _("unrecommended")),
+        ('IMPOSSIBLE', _("impossible")),  # TODO: translate: ausgeschlossen
     ]
     necessity = models.CharField(
-        max_length=12,
+        max_length=13,
         choices=NECESSITIES,
         default="RECOMMENDED",
         verbose_name=_("necessity"),
