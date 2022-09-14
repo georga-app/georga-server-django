@@ -9,10 +9,25 @@ from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelatio
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.db.models import Q
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
 from django.utils import timezone
 from django.utils.translation import gettext as _
 from phonenumber_field.modelfields import PhoneNumberField
 from graphql_relay import to_global_id
+
+
+# --- FIELDS
+
+@receiver(pre_save)
+def set_fixture_timestamps(sender, instance, raw, **kwargs):
+    """
+    Sets timestamps of MixinTimestamps for fixtures.
+    """
+    if raw:
+        instance.modified_at = timezone.now()
+        if not instance.created_at:
+            instance.created_at = timezone.now()
 
 
 # --- MIXINS
