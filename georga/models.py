@@ -1327,6 +1327,10 @@ class Shift(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
 
 
 class Task(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
+    operation = models.ForeignKey(
+        to='Operation',
+        on_delete=models.CASCADE,
+    )
     field = models.ForeignKey(
         to='TaskField',
         on_delete=models.DO_NOTHING,  # TODO: implement sane strategy how to cope with field deletion
