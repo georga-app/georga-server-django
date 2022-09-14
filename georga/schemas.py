@@ -488,7 +488,6 @@ class ObtainJSONWebToken(graphql_jwt.relay.JSONWebTokenMutation):
 
 # fields
 ace_ro_fields = [
-    'uuid',
 ]
 ace_wo_fields = [
 ]
@@ -499,7 +498,6 @@ ace_rw_fields = [
 ]
 ace_filter_fields = {
     'id': LOOKUPS_ID,
-    'uuid': LOOKUPS_ID,
 }
 
 
@@ -563,7 +561,6 @@ class DeleteACEMutation(UUIDDjangoModelFormMutation):
 
 # fields
 device_ro_fields = [
-    'uuid',
     'push_token',
 ]
 device_wo_fields = [
@@ -577,7 +574,6 @@ device_rw_fields = [
 ]
 device_filter_fields = {
     'id': LOOKUPS_ID,
-    'uuid': LOOKUPS_ID
 }
 
 
@@ -629,7 +625,6 @@ class DeleteDeviceMutation(UUIDDjangoModelFormMutation):
 
 # fields
 equipment_ro_fields = [
-    'uuid',
 ]
 equipment_wo_fields = []
 equipment_rw_fields = [
@@ -638,7 +633,6 @@ equipment_rw_fields = [
 ]
 equipment_filter_fields = {
     'id': LOOKUPS_ID,
-    'uuid': LOOKUPS_ID,
     'name': LOOKUPS_STRING,
 }
 
@@ -691,7 +685,6 @@ class DeleteEquipmentMutation(UUIDDjangoModelFormMutation):
 
 # fields
 location_ro_fields = [
-    'uuid',
 ]
 location_wo_fields = []
 location_rw_fields = [
@@ -707,7 +700,6 @@ location_rw_fields = [
 ]
 location_filter_fields = {
     'id': LOOKUPS_ID,
-    'uuid': LOOKUPS_ID,
     'postal_address_name': LOOKUPS_STRING,
 }
 
@@ -760,7 +752,6 @@ class DeleteLocationMutation(UUIDDjangoModelFormMutation):
 
 # fields
 location_category_ro_fields = [
-    'uuid',
 ]
 location_category_wo_fields = [
 ]
@@ -770,7 +761,6 @@ location_category_rw_fields = [
 ]
 location_category_filter_fields = {
     'id': LOOKUPS_ID,
-    'uuid': LOOKUPS_ID,
 }
 
 
@@ -822,7 +812,6 @@ class DeleteLocationCategoryMutation(UUIDDjangoModelFormMutation):
 
 # fields
 message_ro_fields = [
-    'uuid',
     'category',
     'priority',
     'state',
@@ -840,7 +829,6 @@ message_rw_fields = [
 ]
 message_filter_fields = {
     'id': LOOKUPS_ID,
-    'uuid': LOOKUPS_ID,
     'state': LOOKUPS_ENUM,
 }
 
@@ -933,7 +921,6 @@ class DeleteMessageMutation(UUIDDjangoModelFormMutation):
 
 # fields
 operation_ro_fields = [
-    'uuid',
 ]
 operation_wo_fields = [
 ]
@@ -945,7 +932,6 @@ operation_rw_fields = [
 ]
 operation_filter_fields = {
     'id': LOOKUPS_ID,
-    'uuid': LOOKUPS_ID,
 }
 
 
@@ -1001,7 +987,6 @@ class DeleteOperationMutation(UUIDDjangoModelFormMutation):
 
 # fields
 organization_ro_fields = [
-    'uuid',
 ]
 organization_wo_fields = [
 ]
@@ -1011,7 +996,6 @@ organization_rw_fields = [
 ]
 organization_filter_fields = {
     'id': LOOKUPS_ID,
-    'uuid': LOOKUPS_ID
 }
 
 
@@ -1067,7 +1051,6 @@ class DeleteOrganizationMutation(UUIDDjangoModelFormMutation):
 
 # fields
 participant_ro_fields = [
-    'uuid',
 ]
 participant_wo_fields = [
 ]
@@ -1077,7 +1060,6 @@ participant_rw_fields = [
 ]
 participant_filter_fields = {
     'id': LOOKUPS_ID,
-    'uuid': LOOKUPS_ID,
 }
 
 
@@ -1129,7 +1111,6 @@ class DeleteParticipantMutation(UUIDDjangoModelFormMutation):
 
 # fields
 person_ro_fields = [
-    'uuid',
     'date_joined',
     'last_login',
     'ace_set',
@@ -1155,7 +1136,6 @@ person_rw_fields = [
 ]
 person_filter_fields = {
     'id': LOOKUPS_ID,
-    'uuid': LOOKUPS_ID,
     'date_joined': LOOKUPS_DATETIME,
     'last_login': LOOKUPS_DATETIME,
     'first_name': LOOKUPS_STRING,
@@ -1390,7 +1370,6 @@ class ChangePersonPasswordMutation(UUIDDjangoModelFormMutation):
 
 # fields
 person_property_ro_fields = [
-    'uuid',
     'person_set',
 ]
 person_property_wo_fields = []
@@ -1401,7 +1380,6 @@ person_property_rw_fields = [
 ]
 person_property_filter_fields = {
     'id': LOOKUPS_ID,
-    'uuid': LOOKUPS_ID,
     'group': LOOKUPS_ID,
     'group__name': LOOKUPS_STRING,
     'group__codename': LOOKUPS_STRING,
@@ -1457,7 +1435,6 @@ class DeletePersonPropertyMutation(UUIDDjangoModelFormMutation):
 
 # fields
 person_property_group_ro_fields = [
-    'uuid',
     'personproperty_set',
 ]
 person_property_group_wo_fields = [
@@ -1471,7 +1448,6 @@ person_property_group_rw_fields = [
 ]
 person_property_group_filter_fields = {
     'id': LOOKUPS_ID,
-    'uuid': LOOKUPS_ID,
     'name': LOOKUPS_STRING,
     'codename': LOOKUPS_STRING,
     'necessity': LOOKUPS_ENUM,
@@ -1527,7 +1503,6 @@ class DeletePersonPropertyGroupMutation(UUIDDjangoModelFormMutation):
 
 # fields
 person_to_object_ro_fields = [
-    'uuid',
 ]
 person_to_object_wo_fields = [
 ]
@@ -1538,7 +1513,6 @@ person_to_object_rw_fields = [
 ]
 person_to_object_filter_fields = {
     'id': LOOKUPS_ID,
-    'uuid': LOOKUPS_ID,
 }
 
 
@@ -1602,7 +1576,6 @@ class DeletePersonToObjectMutation(UUIDDjangoModelFormMutation):
 
 # fields
 project_ro_fields = [
-    'uuid',
 ]
 project_wo_fields = [
 ]
@@ -1613,7 +1586,6 @@ project_rw_fields = [
 ]
 project_filter_fields = {
     'id': LOOKUPS_ID,
-    'uuid': LOOKUPS_ID,
 }
 
 
@@ -1669,7 +1641,6 @@ class DeleteProjectMutation(UUIDDjangoModelFormMutation):
 
 # fields
 resource_ro_fields = [
-    'uuid',
 ]
 resource_wo_fields = [
 ]
@@ -1682,7 +1653,6 @@ resource_rw_fields = [
 ]
 resource_filter_fields = {
     'id': LOOKUPS_ID,
-    'uuid': LOOKUPS_ID
 }
 
 
@@ -1734,7 +1704,6 @@ class DeleteResourceMutation(UUIDDjangoModelFormMutation):
 
 # fields
 role_ro_fields = [
-    'uuid',
     'participant_set'
 ]
 role_wo_fields = [
@@ -1747,7 +1716,6 @@ role_rw_fields = [
 ]
 role_filter_fields = {
     'id': LOOKUPS_ID,
-    'uuid': LOOKUPS_ID,
 }
 
 
@@ -1801,7 +1769,6 @@ class DeleteRoleMutation(UUIDDjangoModelFormMutation):
 
 # fields
 role_specification_ro_fields = [
-    'uuid',
 ]
 role_specification_wo_fields = [
 ]
@@ -1812,7 +1779,6 @@ role_specification_rw_fields = [
 ]
 role_specification_filter_fields = {
     'id': LOOKUPS_ID,
-    'uuid': LOOKUPS_ID,
 }
 
 
@@ -1864,7 +1830,6 @@ class DeleteRoleSpecificationMutation(UUIDDjangoModelFormMutation):
 
 # fields
 shift_ro_fields = [
-    'uuid',
 ]
 shift_wo_fields = [
 ]
@@ -1877,7 +1842,6 @@ shift_rw_fields = [
 ]
 shift_filter_fields = {
     'id': LOOKUPS_ID,
-    'uuid': LOOKUPS_ID,
 }
 
 
@@ -1932,7 +1896,6 @@ class DeleteShiftMutation(UUIDDjangoModelFormMutation):
 
 # fields
 task_ro_fields = [
-    'uuid',
 ]
 task_wo_fields = [
 ]
@@ -1948,7 +1911,6 @@ task_rw_fields = [
 ]
 task_filter_fields = {
     'id': LOOKUPS_ID,
-    'uuid': LOOKUPS_ID
 }
 
 
@@ -2003,7 +1965,6 @@ class DeleteTaskMutation(UUIDDjangoModelFormMutation):
 
 # fields
 task_field_ro_fields = [
-    'uuid',
 ]
 task_field_wo_fields = [
 ]
@@ -2014,7 +1975,6 @@ task_field_rw_fields = [
 ]
 task_field_filter_fields = {
     'id': LOOKUPS_ID,
-    'uuid': LOOKUPS_ID
 }
 
 
