@@ -1416,7 +1416,6 @@ person_property_ro_fields = [
 ]
 person_property_wo_fields = []
 person_property_rw_fields = [
-    'organization',
     'name',
     'group',
 ]
@@ -1427,7 +1426,6 @@ person_property_filter_fields = {
     'group': LOOKUPS_ID,
     'group__name': LOOKUPS_STRING,
     'group__codename': LOOKUPS_STRING,
-    'organization': LOOKUPS_ID,
 }
 
 

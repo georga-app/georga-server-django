@@ -1066,18 +1066,12 @@ class Person(MixinTimestamps, MixinUUIDs, MixinAuthorization, AbstractUser):
 
 
 class PersonProperty(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
-    organization = models.ForeignKey(
-        to='Organization',
+    group = models.ForeignKey(
+        to='PersonPropertyGroup',
         on_delete=models.CASCADE,
     )
     name = models.CharField(
         max_length=50,
-        null=True,
-        blank=True,
-    )
-    group = models.ForeignKey(
-        to='PersonPropertyGroup',
-        on_delete=models.CASCADE,
         null=True,
         blank=True,
     )
