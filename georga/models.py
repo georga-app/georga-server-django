@@ -317,20 +317,6 @@ class ACE(MixinUUIDs, MixinAuthorization, models.Model):
     def permitted(cls, instance, user, action):
         if not user.is_staff:
             return False
-        admin_organizations = Organization.objects.filter(
-            Q(ace__person=user.id, ace__ace_string="ADMIN")
-        )
-        admin_projects = Project.objects.filter(
-            Q(organization__ace__person=user.id,
-              organization__ace__ace_string="ADMIN")
-            | Q(ace__person=user.id, ace__ace_string="ADMIN")
-        )
-        admin_operations = Operation.objects.filter(
-            Q(project__organization__ace__person=user.id,
-              project__organization__ace__ace_string="ADMIN")
-            | Q(project__ace__person=user.id, project__ace__ace_string="ADMIN")
-            | Q(ace__person=user.id, ace__ace_string="ADMIN")
-        )
         # unpersisted instances (create)
         if instance and not instance.id:
             match action:
@@ -338,10 +324,10 @@ class ACE(MixinUUIDs, MixinAuthorization, models.Model):
                     obj = instance.access_object
                     # ACEs for projects can be created by organization admins
                     if isinstance(obj, Project):
-                        return obj.organization in admin_organizations
+                        return obj.organization.id in user.admin_organization_ids
                     # ACEs for operations can be created by organization/project admins
                     if isinstance(obj, Operation):
-                        return obj.project in admin_projects
+                        return obj.project.id in user.admin_project_ids
                 case _:
                     return False
         # queryset filtering and persisted instances (read, write, delete, etc)
@@ -351,27 +337,27 @@ class ACE(MixinUUIDs, MixinAuthorization, models.Model):
                     # ACEs for the user can be read by the user
                     Q(person=user),
                     # ACEs for organizations can be read by organization admins
-                    Q(organization__in=admin_organizations),
+                    Q(organization__in=user.admin_organization_ids),
                     # ACEs for projects can be read by organization/project admins
-                    Q(project__in=admin_projects),
+                    Q(project__in=user.admin_project_ids),
                     # ACEs for operations can be read by organization/project/operation admins
-                    Q(operation__in=admin_operations),
+                    Q(operation__in=user.admin_operation_ids),
                 ])
             case 'update':
                 return reduce(or_, [
                     # ACEs for organizations can be updated by organization admins
-                    Q(organization__in=admin_organizations),
+                    Q(organization__in=user.admin_organization_ids),
                     # ACEs for projects can be updated by organization/project admins
-                    Q(project__in=admin_projects),
+                    Q(project__in=user.admin_project_ids),
                     # ACEs for operations can be updated by organization/project/operation admins
-                    Q(operation__in=admin_operations),
+                    Q(operation__in=user.admin_operation_ids),
                 ])
             case 'delete':
                 return reduce(or_, [
                     # ACEs for projects can be deleted by organization admins
-                    Q(project__organization__in=admin_organizations),
+                    Q(project__organization__in=user.admin_organization_ids),
                     # ACEs for operations can be deleted by organization/project admins
-                    Q(operation__project__in=admin_projects),
+                    Q(operation__project__in=user.admin_project_ids),
                 ])
             case _:
                 return None
@@ -990,6 +976,29 @@ class Person(MixinUUIDs, MixinAuthorization, AbstractUser):
             if level != "PROJECT" and isinstance(obj, Operation):
                 level = "OPERATION"
         return level
+
+    @cached_property
+    def admin_organization_ids(self):
+        return list(Organization.objects.filter(
+            Q(ace__person=self.id, ace__ace_string="ADMIN")
+        ).values_list('id', flat=True))
+
+    @cached_property
+    def admin_project_ids(self):
+        return list(Project.objects.filter(
+            Q(organization__ace__person=self.id,
+              organization__ace__ace_string="ADMIN")
+            | Q(ace__person=self.id, ace__ace_string="ADMIN")
+        ).values_list('id', flat=True))
+
+    @cached_property
+    def admin_operation_ids(self):
+        return list(Operation.objects.filter(
+            Q(project__organization__ace__person=self.id,
+              project__organization__ace__ace_string="ADMIN")
+            | Q(project__ace__person=self.id, project__ace__ace_string="ADMIN")
+            | Q(ace__person=self.id, ace__ace_string="ADMIN")
+        ).values_list('id', flat=True))
 
     @classmethod
     def permitted(cls, instance, user, action):
