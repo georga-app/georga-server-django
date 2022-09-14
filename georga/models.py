@@ -130,6 +130,9 @@ class MixinAuthorization(models.Model):
         Returns:
             The `queryset` filtered by the Q object returned by `permitted()`.
         """
+        # prepare queryset
+        if queryset is None:
+            queryset = cls.objects
         # prepare actions
         actions = cls._prepare_permission_actions(actions)
         # combine Q objects for each action
