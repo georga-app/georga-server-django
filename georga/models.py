@@ -1333,7 +1333,7 @@ class Task(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     )
     field = models.ForeignKey(
         to='TaskField',
-        on_delete=models.DO_NOTHING,  # TODO: implement sane strategy how to cope with field deletion
+        on_delete=models.CASCADE,
     )
     resources_required = models.ManyToManyField(
         to='Resource',
