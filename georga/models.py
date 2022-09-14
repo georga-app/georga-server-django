@@ -464,6 +464,10 @@ class Location(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         null=True,
         blank=True,
     )
+
+    is_template = models.BooleanField(
+        default=False,
+    )
     task = models.ForeignKey(  # if set: template for all subsequent shifts of the task
         to='Task',
         blank=True,
@@ -625,6 +629,7 @@ class Message(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     STATES = [
         ('DRAFT', 'draft'),
         ('PUBLISHED', 'published'),
+        ('DELETED', 'deleted'),
     ]
     state = models.CharField(
         max_length=9,
@@ -699,6 +704,17 @@ class Operation(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         to='Project',
         on_delete=models.CASCADE,
     )
+    STATES = [
+        ('DRAFT', 'draft'),
+        ('PUBLISHED', 'published'),
+        ('ARCHIVED', 'archived'),
+        ('DELETED', 'deleted'),
+    ]
+    state = models.CharField(
+        max_length=9,
+        choices=STATES,
+        default='DRAFT',
+    )
     name = models.CharField(
         max_length=100,
     )
@@ -747,6 +763,17 @@ class Operation(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
 
 
 class Organization(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
+    STATES = [
+        ('DRAFT', 'draft'),
+        ('PUBLISHED', 'published'),
+        ('ARCHIVED', 'archived'),
+        ('DELETED', 'deleted'),
+    ]
+    state = models.CharField(
+        max_length=9,
+        choices=STATES,
+        default='DRAFT',
+    )
     name = models.CharField(
         max_length=50,
     )
@@ -792,6 +819,24 @@ class Organization(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model
 
 
 class Participant(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
+    ACCEPTANCE_STATES = [
+        ('ACCEPTED', 'accepted'),
+        ('DECLINED', 'declined'),
+        ('PENDING', 'pending'),
+    ]
+    acceptance = models.CharField(
+        max_length=8,
+        choices=ACCEPTANCE_STATES,
+        default='ACCEPTED',
+    )
+    ADMIN_ACCEPTANCE_STATES = ACCEPTANCE_STATES + [
+        ('NONE', 'none'),
+    ]
+    admin_acceptance = models.CharField(
+        max_length=8,
+        choices=ADMIN_ACCEPTANCE_STATES,
+        default='NONE',
+    )
     role = models.ForeignKey(
         to='Role',
         on_delete=models.CASCADE,
@@ -1146,6 +1191,17 @@ class Project(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         to='Organization',
         on_delete=models.CASCADE,
     )
+    STATES = [
+        ('DRAFT', 'draft'),
+        ('PUBLISHED', 'published'),
+        ('ARCHIVED', 'archived'),
+        ('DELETED', 'deleted'),
+    ]
+    state = models.CharField(
+        max_length=9,
+        choices=STATES,
+        default='DRAFT',
+    )
     name = models.CharField(
         max_length=50,
     )
@@ -1231,9 +1287,14 @@ class Role(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         null=True,
         blank=True,
     )
+    quantity = models.PositiveIntegerField()
+    is_active = models.BooleanField(
+        default=True,
+    )
     is_template = models.BooleanField(
-        null=True,
-        blank=True,
+        default=False,
+    )
+    needs_admin_acceptance = models.BooleanField(
         default=False,
     )
 
@@ -1278,7 +1339,6 @@ class RoleSpecification(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.
     necessity = models.CharField(
         max_length=13,
         choices=NECESSITIES,
-        default="RECOMMENDED",
         verbose_name=_("necessity"),
         # TODO: translate: "Erforderlichkeit"
     )
@@ -1290,9 +1350,9 @@ class Shift(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     STATES = [
         ('DRAFT', 'draft'),
         ('PUBLISHED', 'published'),
+        ('FINISHED', 'finished'),
         ('CANCELED', 'canceled'),
         ('DELETED', 'deleted'),
-        ('DONE', 'done'),
     ]
     state = models.CharField(
         max_length=9,
@@ -1335,15 +1395,16 @@ class Task(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         to='TaskField',
         on_delete=models.CASCADE,
     )
-    resources_required = models.ManyToManyField(
-        to='Resource',
-        blank=True,
-        related_name='resources_required',
-    )
-    resources_desirable = models.ManyToManyField(
-        to='Resource',
-        blank=True,
-        related_name='resources_desirable',
+    STATES = [
+        ('DRAFT', 'draft'),
+        ('PUBLISHED', 'published'),
+        ('ARCHIVED', 'archived'),
+        ('DELETED', 'deleted'),
+    ]
+    state = models.CharField(
+        max_length=9,
+        choices=STATES,
+        default='DRAFT',
     )
     name = models.CharField(
         max_length=100,
@@ -1357,6 +1418,17 @@ class Task(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     end_time = models.DateTimeField(
         null=True,
         blank=True,
+    )
+
+    resources_required = models.ManyToManyField(
+        to='Resource',
+        blank=True,
+        related_name='resources_required',
+    )
+    resources_desirable = models.ManyToManyField(
+        to='Resource',
+        blank=True,
+        related_name='resources_desirable',
     )
 
     messages = GenericRelation(

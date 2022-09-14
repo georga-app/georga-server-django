@@ -4,7 +4,7 @@
     uuid: "00000008-0000-0000-0000-000000000001"
     start_time: 2022-08-05 08:00:36.048326+00:00
     end_time: 2022-08-05 18:00:36.048326+00:00
-    state: DRAFT
+    state: PUBLISHED
     enrollment_deadline: 2022-08-04 18:00:36.048326+00:00
     task: 1
 - model: georga.shift
@@ -13,7 +13,7 @@
     uuid: "00000008-0000-0000-0000-000000000002"
     start_time: 2022-08-06 08:00:36.048326+00:00
     end_time: 2022-08-06 18:00:36.048326+00:00
-    state: DELETED
+    state: DRAFT
     enrollment_deadline: 2022-08-04 18:00:36.048326+00:00
     task: 1
 - model: georga.shift
@@ -22,7 +22,7 @@
     uuid: "00000008-0000-0000-0000-000000000003"
     start_time: 2022-08-07 08:00:36.048326+00:00
     end_time: 2022-08-07 18:00:36.048326+00:00
-    state: PUBLISHED
+    state: FINISHED
     enrollment_deadline: 2022-08-04 18:00:36.048326+00:00
     task: 1
 - model: georga.shift
@@ -40,7 +40,7 @@
     uuid: "00000008-0000-0000-0000-000000000005"
     start_time: 2022-08-09 08:00:36.048326+00:00
     end_time: 2022-08-09 18:00:36.048326+00:00
-    state: DRAFT
+    state: ARCHIVED
     enrollment_deadline: 2022-08-04 18:00:36.048326+00:00
     task: 1
 - model: georga.shift
@@ -67,7 +67,7 @@
     uuid: "00000008-0000-0000-0000-000000000008"
     start_time: 2022-08-12 08:00:36.048326+00:00
     end_time: 2022-08-12 18:00:36.048326+00:00
-    state: CANCELED
+    state: PUBLISHED
     enrollment_deadline: 2022-08-04 18:00:36.048326+00:00
     task: 1
 - model: georga.shift
@@ -76,7 +76,7 @@
     uuid: "00000008-0000-0000-0000-000000000009"
     start_time: 2022-08-13 08:00:36.048326+00:00
     end_time: 2022-08-13 18:00:36.048326+00:00
-    state: DRAFT
+    state: PUBLISHED
     enrollment_deadline: 2022-08-04 18:00:36.048326+00:00
     task: 1
 - model: georga.shift
@@ -85,7 +85,7 @@
     uuid: "00000008-0000-0000-0000-000000000010"
     start_time: 2022-08-14 08:00:36.048326+00:00
     end_time: 2022-08-14 18:00:36.048326+00:00
-    state: DELETED
+    state: PUBLISHED
     enrollment_deadline: 2022-08-04 18:00:36.048326+00:00
     task: 1
 - model: georga.shift
@@ -103,7 +103,7 @@
     uuid: "00000008-0000-0000-0000-000000000012"
     start_time: 2021-07-16 14:00:36.048326+00:00
     end_time: 2021-07-16 18:00:36.048326+00:00
-    state: CANCELED
+    state: PUBLISHED
     enrollment_deadline: 2022-08-04 18:00:36.048326+00:00
     task: 1
 - model: georga.shift
@@ -112,7 +112,7 @@
     uuid: "00000008-0000-0000-0000-000000000013"
     start_time: 2021-07-17 08:00:36.048326+00:00
     end_time: 2021-07-17 13:00:36.048326+00:00
-    state: DRAFT
+    state: PUBLISHED
     enrollment_deadline: 2022-08-04 18:00:36.048326+00:00
     task: 1
 - model: georga.shift
@@ -130,7 +130,7 @@
     uuid: "00000008-0000-0000-0000-000000000015"
     start_time: 2021-07-18 08:00:36.048326+00:00
     end_time: 2021-07-18 13:00:36.048326+00:00
-    state: DELETED
+    state: PUBLISHED
     enrollment_deadline: 2022-08-04 18:00:36.048326+00:00
     task: 1
 - model: georga.shift
@@ -139,6 +139,6 @@
     uuid: "00000008-0000-0000-0000-000000000016"
     start_time: 2021-07-18 14:00:36.048326+00:00
     end_time: 2021-07-18 18:00:36.048326+00:00
-    state: CANCELED
+    state: PUBLISHED
     enrollment_deadline: 2022-08-04 18:00:36.048326+00:00
     task: 1

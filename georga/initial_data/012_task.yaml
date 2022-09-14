@@ -2,6 +2,7 @@
   pk: 1
   fields:
     uuid: "00000012-0000-0000-0000-000000000001"
+    state: PUBLISHED
     name: "Dolmetscher Ukrainisch"
     description: "Übersetzung zwischen Notunterkunft-Bewohnern und Betreuern"
     operation: 1
@@ -11,6 +12,7 @@
   pk: 2
   fields:
     uuid: "00000012-0000-0000-0000-000000000002"
+    state: DRAFT
     name: "Registrierung"
     description: "Registrierung jeglicher Besucher und Bewohner"
     operation: 1
@@ -20,6 +22,7 @@
   pk: 3
   fields:
     uuid: "00000012-0000-0000-0000-000000000003"
+    state: ARCHIVED
     name: "Dolmetscher Ukrainisch"
     description: "Übersetzung zwischen Notunterkunft-Bewohnern und Betreuern"
     operation: 2
@@ -29,6 +32,7 @@
   pk: 5
   fields:
     uuid: "00000012-0000-0000-0000-000000000004"
+    state: DELETED
     name: "Registrierung"
     description: "Registrierung jeglicher Besucher und Bewohner"
     operation: 2
@@ -38,6 +42,7 @@
   pk: 5
   fields:
     uuid: "00000012-0000-0000-0000-000000000005"
+    state: PUBLISHED
     name: "Rettungshelfer"
     operation: 3
     start_time: 2022-08-07 08:00:36.048326+00:00
@@ -46,6 +51,7 @@
   pk: 6
   fields:
     uuid: "00000012-0000-0000-0000-000000000006"
+    state: PUBLISHED
     name: "Sanitäter"
     operation: 3
     start_time: 2022-08-07 08:00:36.048326+00:00
@@ -54,6 +60,7 @@
   pk: 7
   fields:
     uuid: "00000012-0000-0000-0000-000000000007"
+    state: PUBLISHED
     name: "Rettungshelfer"
     operation: 4
     start_time: 2022-08-08 08:00:36.048326+00:00
@@ -62,6 +69,7 @@
   pk: 8
   fields:
     uuid: "00000012-0000-0000-0000-000000000008"
+    state: PUBLISHED
     name: "Notarzt"
     operation: 4
     start_time: 2022-08-08 08:00:36.048326+00:00
@@ -70,6 +78,7 @@
   pk: 9
   fields:
     uuid: "00000012-0000-0000-0000-000000000009"
+    state: PUBLISHED
     name: "Übersetzung Behördenformulare"
     description: "Jeden Mo. Mi. und Do. gibt es nachmittags Treffen mit den Notunterkunft-Bewohnern zur gegenseitigen Hilfe beim Ausfüllen von Anträgen. Hierbei ist eine Unterstützung durch Dolmetscher wichtig."
     operation: 5
@@ -79,6 +88,7 @@
   pk: 10
   fields:
     uuid: "00000012-0000-0000-0000-000000000010"
+    state: PUBLISHED
     name: "Begleitung und Übersetzung Behördengänge"
     operation: 5
     start_time: 2021-02-05 08:00:36.048326+00:00
@@ -87,6 +97,7 @@
   pk: 11
   fields:
     uuid: "00000012-0000-0000-0000-000000000011"
+    state: PUBLISHED
     name: "Sandsäcke füllen"
     operation: 6
     start_time: 2002-08-05 08:00:36.048326+00:00
@@ -95,6 +106,7 @@
   pk: 12
   fields:
     uuid: "00000012-0000-0000-0000-000000000012"
+    state: PUBLISHED
     name: "Schlammräumung"
     operation: 7
     start_time: 2002-08-18 20:00:36.048326+00:00
@@ -103,6 +115,7 @@
   pk: 13
   fields:
     uuid: "00000012-0000-0000-0000-000000000013"
+    state: PUBLISHED
     name: "Schlammräumung"
     operation: 8
     start_time: 1962-02-17 15:30:36.048326+00:00
@@ -111,6 +124,7 @@
   pk: 14
   fields:
     uuid: "00000012-0000-0000-0000-000000000014"
+    state: PUBLISHED
     name: "Schlammräumung"
     operation: 9
     start_time: 2021-07-16 08:00:36.048326+00:00
@@ -119,6 +133,7 @@
   pk: 15
   fields:
     uuid: "00000012-0000-0000-0000-000000000015"
+    state: PUBLISHED
     name: "Registrierung"
     operation: 10
     start_time: 2022-08-05 08:00:36.048326+00:00
@@ -127,6 +142,7 @@
   pk: 16
   fields:
     uuid: "00000012-0000-0000-0000-000000000016"
+    state: PUBLISHED
     name: "Zuteilung Impfräume"
     operation: 11
     start_time: 2022-08-05 08:00:36.048326+00:00
@@ -135,6 +151,7 @@
   pk: 17
   fields:
     uuid: "00000012-0000-0000-0000-000000000017"
+    state: PUBLISHED
     name: "Neue Wäsche in Wohnräumen verteilen"
     operation: 12
     start_time: 2022-08-05 08:00:36.048326+00:00
@@ -143,6 +160,7 @@
   pk: 18
   fields:
     uuid: "00000012-0000-0000-0000-000000000018"
+    state: PUBLISHED
     name: "Abgelaufene Lebensmittel aus Lagerräumen aussortieren"
     operation: 12
     start_time: 2022-08-05 08:00:36.048326+00:00
@@ -151,6 +169,7 @@
   pk: 19
   fields:
     uuid: "00000012-0000-0000-0000-000000000019"
+    state: PUBLISHED
     name: "Neue Lebensmittel in Lagerräume füllen"
     operation: 12
     start_time: 2022-08-05 08:00:36.048326+00:00
@@ -159,6 +178,7 @@
   pk: 20
   fields:
     uuid: "00000012-0000-0000-0000-000000000020"
+    state: PUBLISHED
     name: "Netzwerkgeräteprotokolle sichern"
     operation: 13
     start_time: 2022-08-05 08:00:36.048326+00:00
@@ -167,6 +187,7 @@
   pk: 21
   fields:
     uuid: "00000012-0000-0000-0000-000000000021"
+    state: PUBLISHED
     name: "SSH-Zugriffsprotokolle sichern"
     operation: 13
     start_time: 2022-08-05 08:00:36.048326+00:00
@@ -175,6 +196,7 @@
   pk: 22
   fields:
     uuid: "00000012-0000-0000-0000-000000000022"
+    state: PUBLISHED
     name: "Abgeflossene Datenstreams analysieren"
     operation: 13
     start_time: 2022-08-05 08:00:36.048326+00:00
@@ -183,6 +205,7 @@
   pk: 23
   fields:
     uuid: "00000012-0000-0000-0000-000000000023"
+    state: PUBLISHED
     name: "Extern erreichbare Systeme und deren Softwarestände analysieren"
     operation: 13
     start_time: 2022-08-05 08:00:36.048326+00:00
@@ -191,6 +214,7 @@
   pk: 24
   fields:
     uuid: "00000012-0000-0000-0000-000000000024"
+    state: PUBLISHED
     name: "Netzwerkgeräteprotokolle sichern"
     operation: 14
     start_time: 2022-08-05 08:00:36.048326+00:00
@@ -199,6 +223,7 @@
   pk: 25
   fields:
     uuid: "00000012-0000-0000-0000-000000000025"
+    state: PUBLISHED
     name: "SSH-Zugriffsprotokolle sichern"
     operation: 14
     start_time: 2022-08-05 08:00:36.048326+00:00
@@ -207,6 +232,7 @@
   pk: 26
   fields:
     uuid: "00000012-0000-0000-0000-000000000026"
+    state: PUBLISHED
     name: "Abgeflossene Datenstreams analysieren"
     operation: 14
     start_time: 2022-08-05 08:00:36.048326+00:00
@@ -215,6 +241,7 @@
   pk: 27
   fields:
     uuid: "00000012-0000-0000-0000-000000000027"
+    state: PUBLISHED
     name: "Extern erreichbare Systeme und deren Softwarestände analysieren"
     operation: 14
     start_time: 2022-08-05 08:00:36.048326+00:00

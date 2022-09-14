@@ -2,32 +2,45 @@
   pk: 1
   fields:
     uuid: "00000010-0000-0000-0000-000000000001"
+    necessity: RECOMMENDED
     role: 1
     person_properties: [42, 45]
 - model: georga.rolespecification
   pk: 2
   fields:
     uuid: "00000010-0000-0000-0000-000000000002"
-    role: 2
+    necessity: UNRECOMMENDED
+    role: 1
     person_properties: [44]
 - model: georga.rolespecification
   pk: 3
   fields:
     uuid: "00000010-0000-0000-0000-000000000003"
-    role: 3
+    necessity: MANDATORY
+    role: 2
     person_properties: [48, 49, 50, 51, 52]
 - model: georga.rolespecification
   pk: 4
   fields:
     uuid: "00000010-0000-0000-0000-000000000004"
-    role: 4
+    necessity: UNRECOMMENDED
+    role: 3
     person_properties: [39, 40, 41]
 - model: georga.rolespecification
   pk: 5
   fields:
     uuid: "00000010-0000-0000-0000-000000000005"
-    role: 5
+    necessity: IMPOSSIBLE
+    role: 4
 - model: georga.rolespecification
   pk: 6
   fields:
+    uuid: "00000010-0000-0000-0000-000000000006"
+    necessity: RECOMMENDED
+    role: 5
+- model: georga.rolespecification
+  pk: 7
+  fields:
+    uuid: "00000010-0000-0000-0000-000000000007"
+    necessity: RECOMMENDED
     role: 6

@@ -2,6 +2,7 @@
   pk: 1
   fields:
     uuid: "00000002-0000-0000-0000-000000000001"
+    state: "PUBLISHED"
     name: "Care Service"
     description: "Care for people who aren't able to care for oneselves alone."
     organization: 1
@@ -9,6 +10,7 @@
   pk: 2
   fields:
     uuid: "00000002-0000-0000-0000-000000000002"
+    state: "DRAFT"
     name: "Sanitary Service"
     description: "Clean houses and property and make everything shine again."
     organization: 1
@@ -16,6 +18,7 @@
   pk: 3
   fields:
     uuid: "00000002-0000-0000-0000-000000000003"
+    state: "ARCHIVED"
     name: "Refugee Aid Ukraine Crisis 2022"
     description: "Help with authorities, translation service, shelter."
     organization: 1
@@ -23,6 +26,7 @@
   pk: 4
   fields:
     uuid: "00000002-0000-0000-0000-000000000004"
+    state: "DELETED"
     name: "Elbe River Flood Hamburg 2002"
     description: "General disaster countermeasures, dike reinforcement, draining basements, clean up rubble."
     organization: 1
@@ -30,6 +34,7 @@
   pk: 5
   fields:
     uuid: "00000002-0000-0000-0000-000000000005"
+    state: "PUBLISHED"
     name: "Flood Catastrophy Hamburg 1962"
     description: "General disaster countermeasures, dike reinforcement, draining basements, clean up rubble."
     organization: 1
@@ -37,6 +42,7 @@
   pk: 6
   fields:
     uuid: "00000002-0000-0000-0000-000000000006"
+    state: "PUBLISHED"
     name: "Ahrtal Hochwasser 2021"
     description: "General disaster countermeasures, dike reinforcement, draining basements, clean up rubble."
     organization: 1
@@ -44,6 +50,7 @@
   pk: 7
   fields:
     uuid: "00000002-0000-0000-0000-000000000007"
+    state: "PUBLISHED"
     name: "Corona Impfzentrum Musterdorf 2020-11"
     description: "Supporting measures to organize vaccinations."
     organization: 1
@@ -51,6 +58,7 @@
   pk: 8
   fields:
     uuid: "00000002-0000-0000-0000-000000000008"
+    state: "PUBLISHED"
     name: "Prepare vessel for sailing"
     description: "Getting supplies on board, decorative repairs, administrative work, buerocratic necessities."
     organization: 2
@@ -58,6 +66,7 @@
   pk: 9
   fields:
     uuid: "00000002-0000-0000-0000-000000000009"
+    state: "PUBLISHED"
     name: "Urgency Deployment of Cyber Defence Measures"
     organization: 3
     description: "Updating infrastructure, replacing vulnerable devices, setup firewalls, pentests."
