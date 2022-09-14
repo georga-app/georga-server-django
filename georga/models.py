@@ -474,13 +474,13 @@ class Location(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         null=True,
         blank=True,
     )
-    task = models.ForeignKey(  # if set, this becomes a template to all subsequent shifts of the task
+    task = models.ForeignKey(  # if set: template for all subsequent shifts of the task
         to='Task',
         blank=True,
         null=True,
         on_delete=models.CASCADE,
     )
-    shift = models.ForeignKey(  # if set, concrete location associated to a shift
+    shift = models.ForeignKey(  # if set: concrete location of a shift
         to='Shift',
         blank=True,
         null=True,
@@ -994,24 +994,42 @@ class Person(MixinTimestamps, MixinUUIDs, MixinAuthorization, AbstractUser):
 
     @cached_property
     def admin_organization_ids(self):
+        """
+        list[int]: Cached list of organization ids, for which the user has
+            ADMIN rights. Used to minimize db load for permission requests.
+        """
         return list(Organization.objects.filter(
+            # user is admin for organizations
             Q(ace__person=self.id, ace__ace_string="ADMIN")
         ).values_list('id', flat=True))
 
     @cached_property
     def admin_project_ids(self):
+        """
+        list[int]: Cached list of project ids, for which the user has
+            ADMIN rights. Used to minimize db load for permission requests.
+        """
         return list(Project.objects.filter(
+            # user is admin for project.organizations
             Q(organization__ace__person=self.id,
               organization__ace__ace_string="ADMIN")
+            # user is admin for projects
             | Q(ace__person=self.id, ace__ace_string="ADMIN")
         ).values_list('id', flat=True))
 
     @cached_property
     def admin_operation_ids(self):
+        """
+        list[int]: Cached list of operation ids, for which the user has
+            ADMIN rights. Used to minimize db load for permission requests.
+        """
         return list(Operation.objects.filter(
+            # user is admin for operation.project.organizations
             Q(project__organization__ace__person=self.id,
               project__organization__ace__ace_string="ADMIN")
+            # user is admin for operation.projects
             | Q(project__ace__person=self.id, project__ace__ace_string="ADMIN")
+            # user is admin for projects
             | Q(ace__person=self.id, ace__ace_string="ADMIN")
         ).values_list('id', flat=True))
 
@@ -1025,6 +1043,7 @@ class Person(MixinTimestamps, MixinUUIDs, MixinAuthorization, AbstractUser):
         # queryset filtering and persisted instances (read, write, delete, etc)
         match action:
             case 'read' | 'write':
+                # user can read and edit itself
                 return Q(pk=user.pk)
             case _:
                 return None
