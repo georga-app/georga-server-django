@@ -17,12 +17,27 @@ from graphql_relay import to_global_id
 
 # --- MIXINS
 
+class MixinTimestamps(models.Model):
+    """
+    Timestamps for creation and last modification
+
+    Attributes:
+        created_at (models.DateTimeField()): Creation timestamp.
+        modified_at (models.DateTimeField()): Last modification timestamp.
+    """
+    class Meta:
+        abstract = True
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
+
+
 class MixinUUIDs(models.Model):
     """
     Public facing UUIDs.
 
     Attributes:
-        uuid (models.UUIDField()): uuid for web/app clients.
+        uuid (models.UUIDField()): UUID for web/app clients.
     """
     class Meta:
         abstract = True
@@ -254,7 +269,7 @@ class MixinAuthorization(models.Model):
 
 # --- CLASSES
 
-class ACE(MixinUUIDs, MixinAuthorization, models.Model):
+class ACE(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     # *_cts list: list of valid models
     # checked in ForeignKey.limit_choices_to, Model.clean() and GQLFilterSet
     access_object_cts = ['organization', 'project', 'operation']
@@ -363,7 +378,7 @@ class ACE(MixinUUIDs, MixinAuthorization, models.Model):
                 return None
 
 
-class Device(MixinUUIDs, MixinAuthorization, models.Model):
+class Device(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     organization = models.ForeignKey(
         to='Organization',
         on_delete=models.CASCADE,
@@ -391,7 +406,7 @@ class Device(MixinUUIDs, MixinAuthorization, models.Model):
         # TODO: translation: Client-Gerät
 
 
-class Equipment(MixinUUIDs, MixinAuthorization, models.Model):
+class Equipment(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     organization = models.ForeignKey(
         to='Organization',
         on_delete=models.CASCADE,
@@ -423,7 +438,7 @@ class Equipment(MixinUUIDs, MixinAuthorization, models.Model):
         # TODO: translate: Eigenes oder Material der Organisation
 
 
-class Location(MixinUUIDs, MixinAuthorization, models.Model):
+class Location(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     organization = models.ForeignKey(
         to='Organization',
         on_delete=models.CASCADE,
@@ -478,7 +493,7 @@ class Location(MixinUUIDs, MixinAuthorization, models.Model):
         # TODO: translate: Ort
 
 
-class LocationCategory(MixinUUIDs, MixinAuthorization, models.Model):
+class LocationCategory(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     organization = models.ForeignKey(
         to='Organization',
         on_delete=models.CASCADE,
@@ -494,7 +509,7 @@ class LocationCategory(MixinUUIDs, MixinAuthorization, models.Model):
         # e.g. operation location
 
 
-class PersonToObject(MixinUUIDs, MixinAuthorization, models.Model):
+class PersonToObject(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     person = models.ForeignKey(
         to='Person',
         on_delete=models.CASCADE,
@@ -540,7 +555,7 @@ class PersonToObject(MixinUUIDs, MixinAuthorization, models.Model):
                 "content type for PersonToObject.relation_object")
 
 
-class Message(MixinUUIDs, MixinAuthorization, models.Model):
+class Message(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     '''
     A Message is sent via different channels to registered persons.
 
@@ -663,7 +678,7 @@ class Message(MixinUUIDs, MixinAuthorization, models.Model):
         return "NONE"
 
 
-class Operation(MixinUUIDs, MixinAuthorization, models.Model):
+class Operation(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     project = models.ForeignKey(
         to='Project',
         on_delete=models.CASCADE,
@@ -715,7 +730,7 @@ class Operation(MixinUUIDs, MixinAuthorization, models.Model):
         return self.project.organization
 
 
-class Organization(MixinUUIDs, MixinAuthorization, models.Model):
+class Organization(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     name = models.CharField(
         max_length=50,
     )
@@ -760,7 +775,7 @@ class Organization(MixinUUIDs, MixinAuthorization, models.Model):
         return self
 
 
-class Participant(MixinUUIDs, MixinAuthorization, models.Model):
+class Participant(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     role = models.ForeignKey(
         to='Role',
         on_delete=models.CASCADE,
@@ -771,7 +786,7 @@ class Participant(MixinUUIDs, MixinAuthorization, models.Model):
     )
 
 
-class Person(MixinUUIDs, MixinAuthorization, AbstractUser):
+class Person(MixinTimestamps, MixinUUIDs, MixinAuthorization, AbstractUser):
     email = models.EmailField(
         'email address',
         unique=True,
@@ -1015,7 +1030,7 @@ class Person(MixinUUIDs, MixinAuthorization, AbstractUser):
                 return None
 
 
-class PersonProperty(MixinUUIDs, MixinAuthorization, models.Model):
+class PersonProperty(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     organization = models.ForeignKey(
         to='Organization',
         on_delete=models.CASCADE,
@@ -1044,7 +1059,7 @@ class PersonProperty(MixinUUIDs, MixinAuthorization, models.Model):
         # TODO: translate: PersonProperty
 
 
-class PersonPropertyGroup(MixinUUIDs, MixinAuthorization, models.Model):
+class PersonPropertyGroup(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     organization = models.ForeignKey(
         to='Organization',
         on_delete=models.CASCADE,
@@ -1097,7 +1112,7 @@ class PersonPropertyGroup(MixinUUIDs, MixinAuthorization, models.Model):
         # TODO: translate: PersonPropertyGroup
 
 
-class Project(MixinUUIDs, MixinAuthorization, models.Model):
+class Project(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     organization = models.ForeignKey(
         to='Organization',
         on_delete=models.CASCADE,
@@ -1139,7 +1154,7 @@ class Project(MixinUUIDs, MixinAuthorization, models.Model):
         # TODO: translation: Projekt
 
 
-class Resource(MixinUUIDs, MixinAuthorization, models.Model):
+class Resource(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     shift = models.ForeignKey(
         to='Shift',
         on_delete=models.CASCADE,
@@ -1173,7 +1188,7 @@ class Resource(MixinUUIDs, MixinAuthorization, models.Model):
         # TODO: translation: Ressource
 
 
-class Role(MixinUUIDs, MixinAuthorization, models.Model):
+class Role(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     shift = models.ForeignKey(
         to='Shift',
         on_delete=models.CASCADE,
@@ -1215,7 +1230,7 @@ class Role(MixinUUIDs, MixinAuthorization, models.Model):
         # TODO: translate: Einsatzrolle
 
 
-class RoleSpecification(MixinUUIDs, MixinAuthorization, models.Model):
+class RoleSpecification(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     role = models.ForeignKey(
         to='Role',
         on_delete=models.CASCADE,
@@ -1239,7 +1254,7 @@ class RoleSpecification(MixinUUIDs, MixinAuthorization, models.Model):
     )
 
 
-class Shift(MixinUUIDs, MixinAuthorization, models.Model):
+class Shift(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
     STATES = [
@@ -1281,7 +1296,7 @@ class Shift(MixinUUIDs, MixinAuthorization, models.Model):
         # TODO: translate: Schicht
 
 
-class Task(MixinUUIDs, MixinAuthorization, models.Model):
+class Task(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     operation = models.ForeignKey(
         to='Operation',
         on_delete=models.CASCADE,
@@ -1336,7 +1351,7 @@ class Task(MixinUUIDs, MixinAuthorization, models.Model):
         # TODO: translate: Aufgabe
 
 
-class TaskField(MixinUUIDs, MixinAuthorization, models.Model):
+class TaskField(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     organization = models.ForeignKey(
         to='Organization',
         on_delete=models.CASCADE,

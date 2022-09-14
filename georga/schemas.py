@@ -469,7 +469,7 @@ LOOKUPS_INT = ['exact']
 LOOKUPS_STRING = ['exact']
 LOOKUPS_ENUM = ['exact']
 LOOKUPS_CONNECTION = ['exact']
-LOOKUPS_DATETIME = ['exact']
+LOOKUPS_DATETIME = ['exact', 'gt', 'lte']
 
 
 # Authorization ===============================================================
@@ -488,6 +488,8 @@ class ObtainJSONWebToken(graphql_jwt.relay.JSONWebTokenMutation):
 
 # fields
 ace_ro_fields = [
+    'created_at',
+    'modified_at',
 ]
 ace_wo_fields = [
 ]
@@ -498,6 +500,8 @@ ace_rw_fields = [
 ]
 ace_filter_fields = {
     'id': LOOKUPS_ID,
+    'created_at': LOOKUPS_DATETIME,
+    'modified_at': LOOKUPS_DATETIME,
 }
 
 
@@ -561,6 +565,8 @@ class DeleteACEMutation(UUIDDjangoModelFormMutation):
 
 # fields
 device_ro_fields = [
+    'created_at',
+    'modified_at',
     'push_token',
 ]
 device_wo_fields = [
@@ -574,6 +580,8 @@ device_rw_fields = [
 ]
 device_filter_fields = {
     'id': LOOKUPS_ID,
+    'created_at': LOOKUPS_DATETIME,
+    'modified_at': LOOKUPS_DATETIME,
 }
 
 
@@ -625,6 +633,8 @@ class DeleteDeviceMutation(UUIDDjangoModelFormMutation):
 
 # fields
 equipment_ro_fields = [
+    'created_at',
+    'modified_at',
 ]
 equipment_wo_fields = []
 equipment_rw_fields = [
@@ -633,6 +643,8 @@ equipment_rw_fields = [
 ]
 equipment_filter_fields = {
     'id': LOOKUPS_ID,
+    'created_at': LOOKUPS_DATETIME,
+    'modified_at': LOOKUPS_DATETIME,
     'name': LOOKUPS_STRING,
 }
 
@@ -685,6 +697,8 @@ class DeleteEquipmentMutation(UUIDDjangoModelFormMutation):
 
 # fields
 location_ro_fields = [
+    'created_at',
+    'modified_at',
 ]
 location_wo_fields = []
 location_rw_fields = [
@@ -700,6 +714,8 @@ location_rw_fields = [
 ]
 location_filter_fields = {
     'id': LOOKUPS_ID,
+    'created_at': LOOKUPS_DATETIME,
+    'modified_at': LOOKUPS_DATETIME,
     'postal_address_name': LOOKUPS_STRING,
 }
 
@@ -752,6 +768,8 @@ class DeleteLocationMutation(UUIDDjangoModelFormMutation):
 
 # fields
 location_category_ro_fields = [
+    'created_at',
+    'modified_at',
 ]
 location_category_wo_fields = [
 ]
@@ -761,6 +779,8 @@ location_category_rw_fields = [
 ]
 location_category_filter_fields = {
     'id': LOOKUPS_ID,
+    'created_at': LOOKUPS_DATETIME,
+    'modified_at': LOOKUPS_DATETIME,
 }
 
 
@@ -812,6 +832,8 @@ class DeleteLocationCategoryMutation(UUIDDjangoModelFormMutation):
 
 # fields
 message_ro_fields = [
+    'created_at',
+    'modified_at',
     'category',
     'priority',
     'state',
@@ -829,6 +851,8 @@ message_rw_fields = [
 ]
 message_filter_fields = {
     'id': LOOKUPS_ID,
+    'created_at': LOOKUPS_DATETIME,
+    'modified_at': LOOKUPS_DATETIME,
     'state': LOOKUPS_ENUM,
 }
 
@@ -921,6 +945,8 @@ class DeleteMessageMutation(UUIDDjangoModelFormMutation):
 
 # fields
 operation_ro_fields = [
+    'created_at',
+    'modified_at',
 ]
 operation_wo_fields = [
 ]
@@ -932,6 +958,8 @@ operation_rw_fields = [
 ]
 operation_filter_fields = {
     'id': LOOKUPS_ID,
+    'created_at': LOOKUPS_DATETIME,
+    'modified_at': LOOKUPS_DATETIME,
 }
 
 
@@ -987,6 +1015,8 @@ class DeleteOperationMutation(UUIDDjangoModelFormMutation):
 
 # fields
 organization_ro_fields = [
+    'created_at',
+    'modified_at',
 ]
 organization_wo_fields = [
 ]
@@ -996,6 +1026,8 @@ organization_rw_fields = [
 ]
 organization_filter_fields = {
     'id': LOOKUPS_ID,
+    'created_at': LOOKUPS_DATETIME,
+    'modified_at': LOOKUPS_DATETIME,
 }
 
 
@@ -1051,6 +1083,8 @@ class DeleteOrganizationMutation(UUIDDjangoModelFormMutation):
 
 # fields
 participant_ro_fields = [
+    'created_at',
+    'modified_at',
 ]
 participant_wo_fields = [
 ]
@@ -1060,6 +1094,8 @@ participant_rw_fields = [
 ]
 participant_filter_fields = {
     'id': LOOKUPS_ID,
+    'created_at': LOOKUPS_DATETIME,
+    'modified_at': LOOKUPS_DATETIME,
 }
 
 
@@ -1111,6 +1147,8 @@ class DeleteParticipantMutation(UUIDDjangoModelFormMutation):
 
 # fields
 person_ro_fields = [
+    'created_at',
+    'modified_at',
     'date_joined',
     'last_login',
     'ace_set',
@@ -1136,6 +1174,8 @@ person_rw_fields = [
 ]
 person_filter_fields = {
     'id': LOOKUPS_ID,
+    'created_at': LOOKUPS_DATETIME,
+    'modified_at': LOOKUPS_DATETIME,
     'date_joined': LOOKUPS_DATETIME,
     'last_login': LOOKUPS_DATETIME,
     'first_name': LOOKUPS_STRING,
@@ -1370,6 +1410,8 @@ class ChangePersonPasswordMutation(UUIDDjangoModelFormMutation):
 
 # fields
 person_property_ro_fields = [
+    'created_at',
+    'modified_at',
     'person_set',
 ]
 person_property_wo_fields = []
@@ -1380,6 +1422,8 @@ person_property_rw_fields = [
 ]
 person_property_filter_fields = {
     'id': LOOKUPS_ID,
+    'created_at': LOOKUPS_DATETIME,
+    'modified_at': LOOKUPS_DATETIME,
     'group': LOOKUPS_ID,
     'group__name': LOOKUPS_STRING,
     'group__codename': LOOKUPS_STRING,
@@ -1435,6 +1479,8 @@ class DeletePersonPropertyMutation(UUIDDjangoModelFormMutation):
 
 # fields
 person_property_group_ro_fields = [
+    'created_at',
+    'modified_at',
     'personproperty_set',
 ]
 person_property_group_wo_fields = [
@@ -1448,6 +1494,8 @@ person_property_group_rw_fields = [
 ]
 person_property_group_filter_fields = {
     'id': LOOKUPS_ID,
+    'created_at': LOOKUPS_DATETIME,
+    'modified_at': LOOKUPS_DATETIME,
     'name': LOOKUPS_STRING,
     'codename': LOOKUPS_STRING,
     'necessity': LOOKUPS_ENUM,
@@ -1503,6 +1551,8 @@ class DeletePersonPropertyGroupMutation(UUIDDjangoModelFormMutation):
 
 # fields
 person_to_object_ro_fields = [
+    'created_at',
+    'modified_at',
 ]
 person_to_object_wo_fields = [
 ]
@@ -1513,6 +1563,8 @@ person_to_object_rw_fields = [
 ]
 person_to_object_filter_fields = {
     'id': LOOKUPS_ID,
+    'created_at': LOOKUPS_DATETIME,
+    'modified_at': LOOKUPS_DATETIME,
 }
 
 
@@ -1576,6 +1628,8 @@ class DeletePersonToObjectMutation(UUIDDjangoModelFormMutation):
 
 # fields
 project_ro_fields = [
+    'created_at',
+    'modified_at',
 ]
 project_wo_fields = [
 ]
@@ -1586,6 +1640,8 @@ project_rw_fields = [
 ]
 project_filter_fields = {
     'id': LOOKUPS_ID,
+    'created_at': LOOKUPS_DATETIME,
+    'modified_at': LOOKUPS_DATETIME,
 }
 
 
@@ -1641,6 +1697,8 @@ class DeleteProjectMutation(UUIDDjangoModelFormMutation):
 
 # fields
 resource_ro_fields = [
+    'created_at',
+    'modified_at',
 ]
 resource_wo_fields = [
 ]
@@ -1653,6 +1711,8 @@ resource_rw_fields = [
 ]
 resource_filter_fields = {
     'id': LOOKUPS_ID,
+    'created_at': LOOKUPS_DATETIME,
+    'modified_at': LOOKUPS_DATETIME,
 }
 
 
@@ -1704,6 +1764,8 @@ class DeleteResourceMutation(UUIDDjangoModelFormMutation):
 
 # fields
 role_ro_fields = [
+    'created_at',
+    'modified_at',
     'participant_set'
 ]
 role_wo_fields = [
@@ -1716,6 +1778,8 @@ role_rw_fields = [
 ]
 role_filter_fields = {
     'id': LOOKUPS_ID,
+    'created_at': LOOKUPS_DATETIME,
+    'modified_at': LOOKUPS_DATETIME,
 }
 
 
@@ -1769,6 +1833,8 @@ class DeleteRoleMutation(UUIDDjangoModelFormMutation):
 
 # fields
 role_specification_ro_fields = [
+    'created_at',
+    'modified_at',
 ]
 role_specification_wo_fields = [
 ]
@@ -1779,6 +1845,8 @@ role_specification_rw_fields = [
 ]
 role_specification_filter_fields = {
     'id': LOOKUPS_ID,
+    'created_at': LOOKUPS_DATETIME,
+    'modified_at': LOOKUPS_DATETIME,
 }
 
 
@@ -1830,6 +1898,8 @@ class DeleteRoleSpecificationMutation(UUIDDjangoModelFormMutation):
 
 # fields
 shift_ro_fields = [
+    'created_at',
+    'modified_at',
 ]
 shift_wo_fields = [
 ]
@@ -1842,6 +1912,8 @@ shift_rw_fields = [
 ]
 shift_filter_fields = {
     'id': LOOKUPS_ID,
+    'created_at': LOOKUPS_DATETIME,
+    'modified_at': LOOKUPS_DATETIME,
 }
 
 
@@ -1896,6 +1968,8 @@ class DeleteShiftMutation(UUIDDjangoModelFormMutation):
 
 # fields
 task_ro_fields = [
+    'created_at',
+    'modified_at',
 ]
 task_wo_fields = [
 ]
@@ -1911,6 +1985,8 @@ task_rw_fields = [
 ]
 task_filter_fields = {
     'id': LOOKUPS_ID,
+    'created_at': LOOKUPS_DATETIME,
+    'modified_at': LOOKUPS_DATETIME,
 }
 
 
@@ -1965,6 +2041,8 @@ class DeleteTaskMutation(UUIDDjangoModelFormMutation):
 
 # fields
 task_field_ro_fields = [
+    'created_at',
+    'modified_at',
 ]
 task_field_wo_fields = [
 ]
@@ -1975,6 +2053,8 @@ task_field_rw_fields = [
 ]
 task_field_filter_fields = {
     'id': LOOKUPS_ID,
+    'created_at': LOOKUPS_DATETIME,
+    'modified_at': LOOKUPS_DATETIME,
 }
 
 
