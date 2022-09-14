@@ -1974,7 +1974,6 @@ task_ro_fields = [
 task_wo_fields = [
 ]
 task_rw_fields = [
-    'operation',
     'field',
     'resources_required',
     'resources_desirable',
