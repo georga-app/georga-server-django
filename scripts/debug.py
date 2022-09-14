@@ -3,6 +3,8 @@
 # ./manage.py shell
 # >>> import * from scripts.debug
 
+# imports ---------------------------------------------------------------------
+
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q, F
 from georga.schemas import *
@@ -10,28 +12,7 @@ from georga.schemas import *
 from django.db import connection
 from django.db import reset_queries
 
-
-def profile_queries(func):
-    """Decorator for performance measures on database queries."""
-    def inner_func(*args, **kwargs):
-        reset_queries()
-        results = func()
-        query_info = connection.queries
-        print('function_name: {}'.format(func.__name__))
-        print('query_count: {}'.format(len(query_info)))
-        queries = ['{}\n\n'.format(query['sql']) for query in query_info]
-        print('queries: \n\n{}'.format(''.join(queries)))
-        return results
-    return inner_func
-
-
-@profile_queries
-def profile_permits():
-    org_admin = Person.objects.get(email="organization@georga.test")
-    ace1 = ACE.objects.get(pk=1)
-    ace1.permits(org_admin, 'read')
-    ace1.permits(org_admin, 'read')
-
+# objects ---------------------------------------------------------------------
 
 persons = Person.objects.all()
 aces = ACE.objects.all()
@@ -59,3 +40,37 @@ ace0 = ACE()
 ace0.person = pro_admin
 ace0.access_object = pro2
 ace0.ace_string = "ADMIN"
+
+# profiling -------------------------------------------------------------------
+
+def profile_queries(func):
+    """Decorator for performance measures on database queries."""
+    def inner_func(*args, **kwargs):
+        reset_queries()
+        results = func()
+        query_info = connection.queries
+        print('function_name: {}'.format(func.__name__))
+        print('query_count: {}'.format(len(query_info)))
+        queries = ['{}\n\n'.format(query['sql']) for query in query_info]
+        print('queries: \n\n{}'.format(''.join(queries)))
+        return results
+    return inner_func
+
+@profile_queries
+def profile_permits():
+    ace1.permits(org_admin, 'read')
+    ace1.permits(org_admin, 'read')
+
+
+@profile_queries
+def profile_filter_permitted():
+    bool(ACE.filter_permitted(None, None, org_admin, 'read'))
+    bool(ACE.filter_permitted(None, None, org_admin, 'read'))
+
+
+@profile_queries
+def profile_cached_property():
+    print(org_admin.admin_organizations)
+    print(org_admin.admin_organizations)
+
+
