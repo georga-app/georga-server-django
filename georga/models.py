@@ -443,6 +443,25 @@ class Location(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         to='Organization',
         on_delete=models.CASCADE,
     )
+    category = models.ForeignKey(
+        to='LocationCategory',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+    )
+    task = models.ForeignKey(  # if set: template for all subsequent shifts of the task
+        to='Task',
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE,
+    )
+    shift = models.ForeignKey(  # if set: concrete location of a shift
+        to='Shift',
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE,
+    )
+
     postal_address_name = models.CharField(
         max_length=50,
         null=True,
@@ -467,24 +486,6 @@ class Location(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         max_length=50,
         null=True,
         blank=True,
-    )
-    location_category = models.ForeignKey(
-        to='LocationCategory',
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True,
-    )
-    task = models.ForeignKey(  # if set: template for all subsequent shifts of the task
-        to='Task',
-        blank=True,
-        null=True,
-        on_delete=models.CASCADE,
-    )
-    shift = models.ForeignKey(  # if set: concrete location of a shift
-        to='Shift',
-        blank=True,
-        null=True,
-        on_delete=models.CASCADE,
     )
 
     class Meta:

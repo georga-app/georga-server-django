@@ -70,7 +70,7 @@
   pk: 2
   fields:
     uuid: "00000007-0000-0000-0000-000000000012"
-    location_category: 3
+    category: 3
     organization: 1
     postal_address_name: Snowslide
     postal_address_street: Snowslide Lane 12

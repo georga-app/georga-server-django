@@ -703,7 +703,7 @@ location_ro_fields = [
 location_wo_fields = []
 location_rw_fields = [
     'organization',
-    'location_category',
+    'category',
     'postal_address_name',
     'postal_address_street',
     'postal_address_zip_code',
