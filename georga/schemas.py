@@ -519,7 +519,7 @@ class ACEFilter(GFKFilterSet):
 
     class Meta:
         model = ACE
-        fields = ace_ro_fields + ace_rw_fields
+        fields = ace_filter_fields
 
 
 # forms
@@ -855,7 +855,7 @@ class MessageFilter(GFKFilterSet):
 
     class Meta:
         model = Message
-        fields = message_ro_fields + message_rw_fields
+        fields = message_filter_fields
 
 
 # forms
@@ -1534,7 +1534,7 @@ class PersonToObjectFilter(GFKFilterSet):
 
     class Meta:
         model = PersonToObject
-        fields = person_to_object_ro_fields + person_to_object_rw_fields
+        fields = person_to_object_filter_fields
 
 
 # forms
