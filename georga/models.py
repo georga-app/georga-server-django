@@ -971,6 +971,15 @@ class Organization(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model
 
 
 class Participant(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
+    role = models.ForeignKey(
+        to='Role',
+        on_delete=models.CASCADE,
+    )
+    person = models.ForeignKey(
+        to='Person',
+        on_delete=models.CASCADE,
+    )
+
     ACCEPTANCE_STATES = [
         ('ACCEPTED', _('Accepted')),
         ('DECLINED', _('Declined')),
@@ -989,13 +998,12 @@ class Participant(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model)
         choices=ADMIN_ACCEPTANCE_STATES,
         default='NONE',
     )
-    role = models.ForeignKey(
-        to='Role',
-        on_delete=models.CASCADE,
-    )
-    person = models.ForeignKey(
+    admin_acceptance_user = models.ForeignKey(
         to='Person',
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
+        related_name='participants_decided',
+        blank=True,
+        null=True,
     )
 
     # acceptance transitions
