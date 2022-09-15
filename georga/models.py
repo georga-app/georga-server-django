@@ -389,13 +389,12 @@ class ACE(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         if ace and not ace.id:
             match action:
                 case 'create':
-                    obj = ace.instance
                     # ACEs for projects can be created by organization admins
-                    if isinstance(obj, Project):
-                        return obj.organization.id in user.admin_organization_ids
+                    if isinstance(ace.instance, Project):
+                        return ace.instance.organization.id in user.admin_organization_ids
                     # ACEs for operations can be created by organization/project admins
-                    if isinstance(obj, Operation):
-                        return obj.project.id in user.admin_project_ids
+                    if isinstance(ace.instance, Operation):
+                        return ace.instance.project.id in user.admin_project_ids
                 case _:
                     return False
         # queryset filtering and persisted instances (read, write, delete, etc)
@@ -1330,7 +1329,7 @@ class Person(MixinTimestamps, MixinUUIDs, MixinAuthorization, AbstractUser):
         # queryset filtering and persisted instances (read, write, delete, etc)
         match action:
             case 'read' | 'write':
-                # user can read and edit itself
+                # users can read and edit themself
                 return Q(pk=user.pk)
             case _:
                 return None
