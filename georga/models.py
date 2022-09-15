@@ -991,6 +991,12 @@ class Organization(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model
         """
         return self
 
+    def subscribe(self, person):
+        # TODO: generate default organization scope MessageFilter
+        # TODO: track GPDR relevant consent
+        # TODO: trigger mandatory non digital processes (forms to sign, etc)
+        pass
+
     # state transitions
     @transition(state, 'DRAFT', 'PUBLISHED')
     def publish(self):
