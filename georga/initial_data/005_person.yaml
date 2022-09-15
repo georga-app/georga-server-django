@@ -33,7 +33,11 @@
     date_joined: 2022-03-13 16:13:36.048326+00:00
     email: helper@georga.test
     password_modified: 2022-03-13 16:13:36.048338+00:00
-    properties: [2, 5, 7, 10]
+    properties: [
+      2, 5, 7, 10, 90,     # Org1
+      102, 105, 107, 110,  # Org2
+      250, 270, 280, 281,  # Org2
+    ]
     organizations_subscribed: [1, 2, 3]
     organizations_employed: []
     is_active: true
@@ -54,7 +58,9 @@
     date_joined: 2022-03-13 16:13:36.048326+00:00
     email: organization@georga.test
     password_modified: 2022-03-13 16:13:36.048338+00:00
-    properties: [3, 16, 21, 23]
+    properties: [
+      3, 16, 21, 31,  # Org1
+    ]
     organizations_subscribed: [1]
     organizations_employed: [1]
     is_active: true
@@ -73,7 +79,11 @@
     date_joined: 2022-03-13 16:13:36.048326+00:00
     email: project@georga.test
     password_modified: 2022-03-13 16:13:36.048338+00:00
-    properties: [4, 26]
+    properties: [
+      4, 34,     # Org1
+      104, 160,  # Org2
+      250, 280,  # Org3
+    ]
     organizations_subscribed: [1, 2, 3]
     organizations_employed: [1, 2, 3]
     is_active: true
@@ -92,7 +102,9 @@
     date_joined: 2022-03-13 16:13:36.048326+00:00
     email: operation@georga.test
     password_modified: 2022-03-13 16:13:36.048338+00:00
-    properties: [7, 10]
+    properties: [
+      7, 10,  # Org1
+    ]
     organizations_subscribed: [1]
     organizations_employed: [1]
     is_active: true
@@ -113,7 +125,11 @@
     date_joined: 2022-03-13 16:13:36.048326+00:00
     email: inactive@georga.test
     password_modified: 2022-03-13 16:13:36.048338+00:00
-    properties: [2, 5, 7, 10]
+    properties: [
+      2, 5, 7, 10,         # Org1
+      102, 105, 107, 110,  # Org2
+      251, 271, 281, 283,  # Org2
+    ]
     organizations_subscribed: [1, 2, 3]
     organizations_employed: []
     is_active: false
