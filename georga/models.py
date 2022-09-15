@@ -753,8 +753,7 @@ class Message(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         # TODO: transition
         pass
 
-    @transition(email_delivery, 'SCHEDULED', 'SENT',
-                on_error='FAILED')
+    @transition(email_delivery, 'SCHEDULED', 'SENT', on_error='FAILED')
     def send_email(self):
         # TODO: transition
         pass
