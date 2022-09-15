@@ -32,14 +32,26 @@ ope1 = Operation.objects.get(pk=1)
 ope2 = Operation.objects.get(pk=2)
 ope3 = Operation.objects.get(pk=3)
 
-ace1 = ACE.objects.get(pk=1)
-ace2 = ACE.objects.get(pk=2)
-ace3 = ACE.objects.get(pk=3)
-
 ace0 = ACE()
 ace0.person = pro_admin
 ace0.access_object = pro2
 ace0.ace_string = "ADMIN"
+ace1 = ACE.objects.get(pk=1)
+ace2 = ACE.objects.get(pk=2)
+ace3 = ACE.objects.get(pk=3)
+
+msg0 = Message()
+msg0.scope = org1
+msg0.title = "TestMessage Title"
+msg0.contents = "TestMessage Content"
+msg0.priority = "NORMAL"
+msg0.category = "NEWS"
+msg0.delivery_state_email = "NONE"
+msg0.delivery_state_push = "NONE"
+msg0.delivery_state_sms = "NONE"
+msg1 = Message.objects.get(pk=1)
+msg2 = Message.objects.get(pk=2)
+msg3 = Message.objects.get(pk=3)
 
 # profiling -------------------------------------------------------------------
 
