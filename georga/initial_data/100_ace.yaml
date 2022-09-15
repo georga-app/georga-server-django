@@ -2,20 +2,23 @@
   pk: 1
   fields:
     uuid: "00000100-0000-0000-0000-000000000001"
-    access_object_ct: ["georga", "organization"]
-    access_object_id: 1
+    instance_ct: ["georga", "organization"]
+    instance_id: 1
+    permission: ADMIN
     person: 3
 - model: georga.ace
   pk: 2
   fields:
     uuid: "00000100-0000-0000-0000-000000000002"
-    access_object_ct: ["georga", "project"]
-    access_object_id: 1
+    instance_ct: ["georga", "project"]
+    instance_id: 1
+    permission: ADMIN
     person: 4
 - model: georga.ace
   pk: 3
   fields:
     uuid: "00000100-0000-0000-0000-000000000003"
-    access_object_ct: ["georga", "operation"]
-    access_object_id: 1
+    instance_ct: ["georga", "operation"]
+    instance_id: 1
+    permission: ADMIN
     person: 5

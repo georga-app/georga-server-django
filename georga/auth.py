@@ -153,9 +153,9 @@ def object_permits_user(*actions, exc=exceptions.PermissionDenied):
                     permissions = [object_permits_user('write')]
     """
     # allow only tuple of strings
-    assert isinstance(actions, tuple), f"Error: access_strings {actions} is not a tuple."
+    assert isinstance(actions, tuple), f"Error: actions {actions} is not a tuple."
     for action in actions:
-        assert isinstance(action, str), f"Error: access string {action} is not a string."
+        assert isinstance(action, str), f"Error: action {action} is not a string."
 
     def decorator(func):
         @wraps(func)

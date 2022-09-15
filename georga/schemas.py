@@ -495,8 +495,8 @@ ace_wo_fields = [
 ]
 ace_rw_fields = [
     'person',
-    'ace_string',
-    'access_object',
+    'instance',
+    'permission',
 ]
 ace_filter_fields = {
     'id': LOOKUPS_ID,
@@ -507,7 +507,7 @@ ace_filter_fields = {
 
 # types
 class ACEType(UUIDDjangoObjectType):
-    access_object = Field('georga.schemas.ACEAccessObjectUnion', required=True)
+    instance = Field('georga.schemas.ACEAccessObjectUnion', required=True)
 
     class Meta:
         model = ACE
@@ -518,8 +518,8 @@ class ACEType(UUIDDjangoObjectType):
 
 # filters
 class ACEFilter(GFKFilterSet):
-    access_object = GlobalIDFilter(method='filterExact')
-    access_object__in = GlobalIDMultipleChoiceFilter(method='filterIn')
+    instance = GlobalIDFilter(method='filterExact')
+    instance__in = GlobalIDMultipleChoiceFilter(method='filterIn')
 
     class Meta:
         model = ACE
@@ -2101,7 +2101,7 @@ class DeleteTaskFieldMutation(UUIDDjangoModelFormMutation):
 
 # Unions ======================================================================
 
-# ACE.access_object
+# ACEinstance.
 class ACEAccessObjectUnion(Union):
     class Meta:
         types = [OrganizationType, ProjectType, OperationType]

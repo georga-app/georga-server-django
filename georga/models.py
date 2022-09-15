@@ -288,16 +288,16 @@ class MixinAuthorization(models.Model):
 class ACE(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     # *_cts list: list of valid models
     # checked in ForeignKey.limit_choices_to, Model.clean() and GQLFilterSet
-    access_object_cts = ['organization', 'project', 'operation']
-    access_object_ct = models.ForeignKey(
+    instance_cts = ['organization', 'project', 'operation']
+    instance_ct = models.ForeignKey(
         ContentType,
         on_delete=models.CASCADE,
-        limit_choices_to={'model__in': access_object_cts},
+        limit_choices_to={'model__in': instance_cts},
     )
-    access_object_id = models.PositiveIntegerField()
-    access_object = GenericForeignKey(
-        'access_object_ct',
-        'access_object_id',
+    instance_id = models.PositiveIntegerField()
+    instance = GenericForeignKey(
+        'instance_ct',
+        'instance_id',
     )
 
     person = models.ForeignKey(
@@ -305,54 +305,53 @@ class ACE(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         on_delete=models.CASCADE,
     )
 
-    ACE_CODENAMES = [
+    PERMISSIONS = [
         ('ADMIN', _('Admin')),
     ]
-    ace_string = models.CharField(
+    permission = models.CharField(
         max_length=5,
-        choices=ACE_CODENAMES,
-        default='ADMIN',
+        choices=PERMISSIONS,
     )
 
     class Meta:
         indexes = [
-            models.Index(fields=["access_object_ct", "access_object_id"]),
+            models.Index(fields=["instance_ct", "instance_id"]),
         ]
-        unique_together = ('access_object_ct', 'access_object_id', 'person', 'ace_string',)
+        unique_together = ('instance_ct', 'instance_id', 'person', 'permission',)
 
     def clean(self):
         super().clean()
 
         # restrict foreign models of access object
-        label = self.access_object_ct.app_label
-        model = self.access_object_ct.model
-        valid_models = {'georga': self.access_object_cts}
+        label = self.instance_ct.app_label
+        model = self.instance_ct.model
+        valid_models = {'georga': self.instance_cts}
         if label not in valid_models or model not in valid_models[label]:
             raise ValidationError(
-                f"'{self.access_object_ct.app_labeled_name}' is not a valid "
-                "content type for ACE.access_object")
+                f"'{self.instance_ct.app_labeled_name}' is not a valid "
+                "content type for ACE.instance")
 
         # restrict persons to have a true is_staff flag
         if not self.person.is_staff:
             raise ValidationError(f"person {self.person.gid} is not staff")
 
         # restrict persons to be employed by the organization
-        organization = self.access_object.organization
+        organization = self.instance.organization
         valid_organizations = self.person.organizations_employed.all()
         if organization not in valid_organizations:
             raise ValidationError(
                 f"person {self.person.gid} is not employed by organization "
-                f"of access_object {self.access_object.gid}")
+                f"of instance {self.instance.gid}")
 
     @classmethod
-    def permitted(cls, instance, user, action):
+    def permitted(cls, ace, user, action):
         if not user.is_staff:
             return False
         # unpersisted instances (create)
-        if instance and not instance.id:
+        if ace and not ace.id:
             match action:
                 case 'create':
-                    obj = instance.access_object
+                    obj = ace.instance
                     # ACEs for projects can be created by organization admins
                     if isinstance(obj, Project):
                         return obj.organization.id in user.admin_organization_ids
@@ -849,8 +848,8 @@ class Operation(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
 
     ace = GenericRelation(
         ACE,
-        content_type_field='access_object_ct',
-        object_id_field='access_object_id',
+        content_type_field='instance_ct',
+        object_id_field='instance_id',
         related_query_name='operation'
     )
     messages = GenericRelation(
@@ -919,8 +918,8 @@ class Organization(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model
 
     ace = GenericRelation(
         ACE,
-        content_type_field='access_object_ct',
-        object_id_field='access_object_id',
+        content_type_field='instance_ct',
+        object_id_field='instance_id',
         related_query_name='organization'
     )
     messages = GenericRelation(
@@ -948,7 +947,7 @@ class Organization(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model
     def organization(self):
         """
         Organisation(): Returns self. Added to ease the handling of all
-            `ACL.access_object`s by being able to get the organization attribute.
+            `ACL.instance`s by being able to get the organization attribute.
         """
         return self
 
@@ -1232,14 +1231,13 @@ class Person(MixinTimestamps, MixinUUIDs, MixinAuthorization, AbstractUser):
         """
         level = "NONE"
         for ace in self.ace_set.all():
-            if ace.ace_string != "ADMIN":
+            if ace.permission != "ADMIN":
                 continue
-            obj = ace.access_object
-            if isinstance(obj, Organization):
+            if isinstance(ace.instance, Organization):
                 return "ORGANIZATION"
-            if isinstance(obj, Project):
+            if isinstance(ace.instance, Project):
                 level = "PROJECT"
-            if level != "PROJECT" and isinstance(obj, Operation):
+            if level != "PROJECT" and isinstance(ace.instance, Operation):
                 level = "OPERATION"
         return level
 
@@ -1251,7 +1249,7 @@ class Person(MixinTimestamps, MixinUUIDs, MixinAuthorization, AbstractUser):
         """
         return list(Organization.objects.filter(
             # user is admin for organizations
-            Q(ace__person=self.id, ace__ace_string="ADMIN")
+            Q(ace__person=self.id, ace__permission="ADMIN")
         ).values_list('id', flat=True))
 
     @cached_property
@@ -1263,9 +1261,9 @@ class Person(MixinTimestamps, MixinUUIDs, MixinAuthorization, AbstractUser):
         return list(Project.objects.filter(
             # user is admin for project.organizations
             Q(organization__ace__person=self.id,
-              organization__ace__ace_string="ADMIN")
+              organization__ace__permission="ADMIN")
             # user is admin for projects
-            | Q(ace__person=self.id, ace__ace_string="ADMIN")
+            | Q(ace__person=self.id, ace__permission="ADMIN")
         ).values_list('id', flat=True))
 
     @cached_property
@@ -1277,17 +1275,17 @@ class Person(MixinTimestamps, MixinUUIDs, MixinAuthorization, AbstractUser):
         return list(Operation.objects.filter(
             # user is admin for operation.project.organizations
             Q(project__organization__ace__person=self.id,
-              project__organization__ace__ace_string="ADMIN")
+              project__organization__ace__permission="ADMIN")
             # user is admin for operation.projects
-            | Q(project__ace__person=self.id, project__ace__ace_string="ADMIN")
+            | Q(project__ace__person=self.id, project__ace__permission="ADMIN")
             # user is admin for projects
-            | Q(ace__person=self.id, ace__ace_string="ADMIN")
+            | Q(ace__person=self.id, ace__permission="ADMIN")
         ).values_list('id', flat=True))
 
     @classmethod
-    def permitted(cls, instance, user, action):
+    def permitted(cls, person, user, action):
         # unpersisted instances (create)
-        if instance and not instance.id:
+        if person and not person.id:
             match action:
                 case _:
                     return False
@@ -1404,8 +1402,8 @@ class Project(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
 
     ace = GenericRelation(
         ACE,
-        content_type_field='access_object_ct',
-        object_id_field='access_object_id',
+        content_type_field='instance_ct',
+        object_id_field='instance_id',
         related_query_name='project'
     )
     messages = GenericRelation(
