@@ -617,8 +617,10 @@ class Message(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     A Message is sent via different channels to registered persons.
 
     Priority: describes, how disruptive the message should be
-    - Normal: Not disruptive.
-    - Important: More disruptive automated messages, e.g. shift canceled.
+    - Low: Non disruptive automated messages, filtered by default.
+    - Normal: Decently disruptive automated and manual messages, default case.
+    - Important: Moderately disruptive automated and manual messages,
+        e.g. when shift has canceled or location has changed.
     - Urgent: Highly disruptive manual messages.
 
     Category:
@@ -646,14 +648,15 @@ class Message(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     contents = models.CharField(
         max_length=1000,
     )
-    PRIORITY = [
+    PRIORITIES = [
         ('URGENT', _('Urgent')),
         ('IMPORTANT', _('Important')),
         ('NORMAL', _('Normal')),
+        ('LOW', _('Low')),
     ]
     priority = models.CharField(
         max_length=9,
-        choices=PRIORITY,
+        choices=PRIORITIES,
         default='NORMAL',
     )
     CATEGORIES = [
