@@ -190,7 +190,7 @@ def object_permits_user(*actions, exc=exceptions.PermissionDenied):
                 # obj: QuerySet instance
                 # args: queryset, info
                 try:
-                    return obj.model.filter_permitted(obj, None, info.context.user, actions)
+                    return obj.model.filter_permitted(info.context.user, actions, obj)
                 except AssertionError as e:
                     logger.error(e)
                     return obj.none()

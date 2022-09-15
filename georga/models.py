@@ -88,13 +88,16 @@ class MixinAuthorization(models.Model):
     querysets can be filtered by `Model.filter_permitted()`.
 
     Examples:
-        Set permissions for Person instances to read and write only itself::
+        Set permissions for Person instances to be read and written only by
+        themself and to be created only by staff members::
 
             class Person(MixinAuthorization, models.Model):
                 @classmethod
-                def permitted(cls, instance, user, action):
+                def permitted(cls, person, user, action):
                     # unpersisted instance (create)
-                    if instance and not instance.id:
+                    if person and not person.id:
+                        if user.is_staff:
+                            return True
                         return False
                     # none or persisted instance (read, write, delete, etc)
                     if action in ['read', 'write']:
@@ -111,9 +114,20 @@ class MixinAuthorization(models.Model):
             if person.permits(context.user, ('read', 'write')):
                 person.save()
 
-        Filter queryset::
+        Filter queryset for single permission::
 
-            qs = Person.filter_permitted(Person.objects, context.user, 'read')
+            qs = Person.filter_permitted(context.user, 'read')
+
+        Filter queryset for multiple permission (logical OR)::
+
+            qs = Person.filter_permitted(context.user, ('read', 'write'))
+
+        Filter a certain queryset::
+
+            qs = Person.filter_permitted(context.user, 'read', Person.objects)
+
+    Note:
+        All permissions are denied by default when inherited from the Mixin.
 
     Note:
         For usage with graphene_django, see `georga.auth.object_permits_user()`.
@@ -146,20 +160,33 @@ class MixinAuthorization(models.Model):
         return actions
 
     @classmethod
-    def filter_permitted(cls, queryset, instance, user, actions):
+    def filter_permitted(cls, user, actions, queryset=None, instance=None):
         """
         Filters a queryset to include only permitted instances for the user.
 
         Args:
-            queryset (QuerySet()): Instance of QuerySet to filter.
-            instance (Model()|None): Model instance to be inquired or None.
             user (Person()): Person instance, for which permission is requested.
             actions (str|tuple[str]): Action or tuple of actions, one of which
                 the user is required to have (logical OR, if multiple are given).
                 Actions may be arbitrary strings, e.G. CRUD operations.
+            queryset (QuerySet(), optional): Instance of QuerySet to filter.
+            instance (Model(), optional): Model instance to be inquired.
 
         Returns:
             The `queryset` filtered by the Q object returned by `permitted()`.
+
+        Examples:
+            Filter queryset for single permission::
+
+                qs = Person.filter_permitted(context.user, 'read')
+
+            Filter queryset for multiple permission (logical OR)::
+
+                qs = Person.filter_permitted(context.user, ('read', 'write'))
+
+            Filter a certain queryset::
+
+                qs = Person.filter_permitted(context.user, 'read', Person.objects)
         """
         # prepare queryset
         if queryset is None:
@@ -223,21 +250,21 @@ class MixinAuthorization(models.Model):
             False|None: To deny all or deny the action.
 
         Examples:
-            Set permissions for Person instances to read and write only itself::
+            Set permissions for Person instances to be read and written only by
+            themself and to be created only by staff members::
 
                 class Person(MixinAuthorization, models.Model):
                     @classmethod
-                    def permitted(cls, instance, user, action):
+                    def permitted(cls, person, user, action):
                         # unpersisted instance (create)
-                        if instance and not instance.id:
+                        if person and not person.id:
+                            if user.is_staff:
+                                return True
                             return False
                         # none or persisted instance (read, write, delete, etc)
                         if action in ['read', 'write']:
                             return Q(pk=user.pk)
                         return None
-
-        Note:
-            All permissions are denied by default when inherited from the Mixin.
         """
         # unpersisted instances (create)
         if instance and not instance.id:
@@ -268,6 +295,17 @@ class MixinAuthorization(models.Model):
 
         Returns:
             True if permission was granted, False otherwise.
+
+        Examples:
+            Check permission::
+
+                if person.permits(context.user, 'write'):
+                    person.save()
+
+            Check multiple permissions (logical OR)::
+
+                if person.permits(context.user, ('read', 'write')):
+                    person.save()
         """
         # unpersisted instances (create)
         if not self.pk:
@@ -279,7 +317,7 @@ class MixinAuthorization(models.Model):
                 permit |= bool(self.permitted(self, user, action))
             return permit
         # queryset filtering and persisted instances (read, write, delete, etc)
-        qs = self.filter_permitted(self._meta.model.objects, self, user, actions)
+        qs = self.filter_permitted(user, actions, instance=self)
         return qs.filter(pk=self.pk).exists()
 
 
