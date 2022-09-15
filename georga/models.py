@@ -13,6 +13,7 @@ from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from django.utils import timezone
 from django.utils.translation import gettext as _
+from django_fsm import FSMField, transition, RETURN_VALUE
 from phonenumber_field.modelfields import PhoneNumberField
 from graphql_relay import to_global_id
 
@@ -305,7 +306,7 @@ class ACE(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     )
 
     ACE_CODENAMES = [
-        ('ADMIN', 'admin'),
+        ('ADMIN', _('Admin')),
     ]
     ace_string = models.CharField(
         max_length=5,
@@ -431,9 +432,9 @@ class Equipment(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         default='',
     )
     OWNER = [
-        ('SELF', 'person itself'),
-        ('ORG', 'provided by organization'),
-        ('THIRDPARTY', 'other party'),
+        ('SELF', _('Person itself')),
+        ('ORG', _('Provided by organization')),
+        ('THIRDPARTY', _('Other party')),
     ]
     owner = models.CharField(
         max_length=10,
@@ -579,12 +580,15 @@ class Message(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     '''
     A Message is sent via different channels to registered persons.
 
-    priority: describes, how disruptive the message should be
-    - disturb:
-    category:
-    - news: manually sent contents
-    - alert: triggered by the system by cronjobs based on analysis
-    - activity: on change of objects, which are relevant to the persons
+    Priority: describes, how disruptive the message should be
+    - Normal: Not disruptive.
+    - Important: More disruptive automated messages, e.g. shift canceled.
+    - Urgent: Highly disruptive manual messages.
+
+    Category:
+    - News: Manually sent contents.
+    - Alert: Triggered by the system by cronjobs based on analysis.
+    - Activity: On change of objects, which are relevant to the persons
     '''
     # *_cts list: list of valid models
     # checked in ForeignKey.limit_choices_to, Model.clean() and GQLFilterSet
@@ -607,9 +611,9 @@ class Message(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         max_length=1000,
     )
     PRIORITY = [
-        ('URGENT', 'Urgent'),
-        ('IMPORTANT', 'Important'),
-        ('NORMAL', 'Normal'),
+        ('URGENT', _('Urgent')),
+        ('IMPORTANT', _('Important')),
+        ('NORMAL', _('Normal')),
     ]
     priority = models.CharField(
         max_length=9,
@@ -617,49 +621,15 @@ class Message(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         default='NORMAL',
     )
     CATEGORIES = [
-        ('NEWS', 'news'),
-        ('ALERT', 'alert'),
-        ('ACTIVITY', 'activity'),
+        ('NEWS', _('News')),
+        ('ALERT', _('Alert')),
+        ('ACTIVITY', _('Activity')),
     ]
     category = models.CharField(
         max_length=8,
         choices=CATEGORIES,
         default='NEWS',
     )
-    STATES = [
-        ('DRAFT', 'draft'),
-        ('PUBLISHED', 'published'),
-        ('DELETED', 'deleted'),
-    ]
-    state = models.CharField(
-        max_length=9,
-        choices=STATES,
-        default='DRAFT',
-    )
-
-    DELIVERY_STATES = [
-        ('NONE', 'none'),
-        ('PENDING', 'pending'),
-        ('SENT', 'sent'),
-        ('SENT_SUCCESSFULLY', 'sent successfully'),
-        ('SENT_ERROR', 'sent error'),
-    ]
-    delivery_state_email = models.CharField(
-        max_length=17,
-        choices=DELIVERY_STATES,
-        default='NONE',
-    )
-    delivery_state_push = models.CharField(
-        max_length=17,
-        choices=DELIVERY_STATES,
-        default='NONE',
-    )
-    delivery_state_sms = models.CharField(
-        max_length=17,
-        choices=DELIVERY_STATES,
-        default='NONE',
-    )
-
     person_attributes = GenericRelation(
         PersonToObject,
         content_type_field='relation_object_ct',
@@ -667,14 +637,90 @@ class Message(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         related_query_name='message'
     )
 
+    STATES = [
+        ('DRAFT', _('Draft')),
+        ('PUBLISHED', _('Published')),
+        ('ARCHIVED', _('Archived')),
+        ('DELETED', _('Deleted')),
+    ]
+    state = FSMField(
+        max_length=9,
+        choices=STATES,
+        default='DRAFT',
+    )
+
+    # delivery
+    DELIVERY_STATES = [
+        ('NONE', _('None')),
+        ('PENDING', _('Pending')),
+        ('SENT', _('Sent')),
+        ('SUCCEEDED', _('Succeeded')),
+        ('FAILED', _('Failed')),
+    ]
+    email_delivery = FSMField(
+        max_length=9,
+        choices=DELIVERY_STATES,
+        default='NONE',
+    )
+    email_delivery_start = models.DateTimeField(
+        null=True,
+        blank=True,
+    )
+    email_delivery_end = models.DateTimeField(
+        null=True,
+        blank=True,
+    )
+    email_delivery_error = models.CharField(
+        max_length=100,
+        null=True,
+        blank=True,
+    )
+    push_delivery = FSMField(
+        max_length=9,
+        choices=DELIVERY_STATES,
+        default='NONE',
+    )
+    push_delivery_start = models.DateTimeField(
+        null=True,
+        blank=True,
+    )
+    push_delivery_end = models.DateTimeField(
+        null=True,
+        blank=True,
+    )
+    sms_delivery = FSMField(
+        max_length=9,
+        choices=DELIVERY_STATES,
+        default='NONE',
+    )
+    push_delivery_start = models.DateTimeField(
+        null=True,
+        blank=True,
+    )
+    push_delivery_end = models.DateTimeField(
+        null=True,
+        blank=True,
+    )
+
     class Meta:
         indexes = [
             models.Index(fields=["scope_ct", "scope_id"]),
         ]
 
+    @property
+    def delivery_state(self):
+        """
+        str (ERROR|PENDING|SENT|SUCCESS|NONE): Returns the least
+            optimal delivery state of all channels in the given order.
+        """
+        for state in ["ERROR", "PENDING", "SENT", "SUCCESS"]:
+            for channel_state in [self.email_delivery, self.push_delivery, self.sms_delivery]:
+                if channel_state == state:
+                    return state
+        return "NONE"
+
     def clean(self):
         super().clean()
-
         # restrict foreign models of scope
         label = self.scope_ct.app_label
         model = self.scope_ct.model
@@ -684,19 +730,92 @@ class Message(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
                 f"'{self.scope_ct.app_labeled_name}' is not a valid "
                 "content type for Message.scope")
 
-    @property
-    def delivery_state(self):
-        """
-        str (SENT_ERROR|PENDING|SENT|SENT_SUCCESSFULLY): Returns the least
-            optimal delivery state of all channels in the given order.
-        """
-        for state in ["SENT_ERROR", "PENDING", "SENT", "SENT_SUCCESSFULLY"]:
-            for channel_state in [self.delivery_state_email,
-                                  self.delivery_state_push,
-                                  self.delivery_state_sms]:
-                if channel_state == state:
-                    return state
-        return "NONE"
+    # state transitions
+    @transition(state, 'DRAFT', 'PUBLISHED')
+    def publish(self):
+        # TODO: transition
+        pass
+
+    @transition(state, 'PUBLISHED', 'ARCHIVED')
+    def archive(self):
+        # TODO: transition
+        pass
+
+    @transition(state, '*', 'DELETED')
+    def delete(self, hard=False):
+        # TODO: transition
+        if hard:
+            super().delete()
+
+    # email_delivery transitions
+    @transition(email_delivery, 'NONE', 'SCHEDULED')
+    def schedule_email(self):
+        # TODO: transition
+        pass
+
+    @transition(email_delivery, 'SCHEDULED', 'SENT',
+                on_error='FAILED')
+    def send_email(self):
+        # TODO: transition
+        pass
+
+    @transition(email_delivery, 'SENT', RETURN_VALUE('SUCCEEDED', 'FAILED'))
+    def check_email_delivery(self):
+        # TODO: transition
+        if True:
+            return 'SUCCEEDED'
+        return 'FAILED'
+
+    @transition(email_delivery, 'FAILED', 'SENT', on_error='FAILED')
+    def resend_email(self):
+        # TODO: transition
+        pass
+
+    # push_delivery transitions
+    @transition(push_delivery, 'NONE', 'SCHEDULED')
+    def schedule_push(self):
+        # TODO: transition
+        pass
+
+    @transition(push_delivery, 'SCHEDULED', 'SENT', on_error='FAILED')
+    def send_push(self):
+        # TODO: transition
+        pass
+
+    @transition(push_delivery, 'SENT', RETURN_VALUE('SUCCEEDED', 'FAILED'))
+    def check_push_delivery(self):
+        # TODO: transition
+        if True:
+            return 'SUCCEEDED'
+        return 'FAILED'
+
+    @transition(push_delivery, 'FAILED', 'SENT', on_error='FAILED')
+    def resend_push(self):
+        # TODO: transition
+        pass
+
+    # sms_delivery transitions
+    @transition(sms_delivery, 'NONE', 'SCHEDULED')
+    def schedule_sms(self):
+        # TODO: transition
+        pass
+
+    @transition(sms_delivery, 'SCHEDULED', 'SENT', on_error='FAILED')
+    def send_sms(self):
+        # TODO: transition
+        pass
+
+    @transition(sms_delivery, 'SENT', RETURN_VALUE('SUCCEEDED', 'FAILED'))
+    def check_sms_delivery(self):
+        # TODO: transition
+        if True:
+            return 'SUCCEEDED'
+        return 'FAILED'
+
+    @transition(sms_delivery, 'FAILED', 'SENT', on_error='FAILED')
+    def resend_sms(self):
+        # TODO: transition
+        pass
 
 
 class Operation(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
@@ -705,12 +824,12 @@ class Operation(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         on_delete=models.CASCADE,
     )
     STATES = [
-        ('DRAFT', 'draft'),
-        ('PUBLISHED', 'published'),
-        ('ARCHIVED', 'archived'),
-        ('DELETED', 'deleted'),
+        ('DRAFT', _('Draft')),
+        ('PUBLISHED', _('Published')),
+        ('ARCHIVED', _('Archived')),
+        ('DELETED', _('Deleted')),
     ]
-    state = models.CharField(
+    state = FSMField(
         max_length=9,
         choices=STATES,
         default='DRAFT',
@@ -761,15 +880,32 @@ class Operation(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         """Organisation(): Returns the Organization of the Operation."""
         return self.project.organization
 
+    # state transitions
+    @transition(state, 'DRAFT', 'PUBLISHED')
+    def publish(self):
+        # TODO: transition
+        pass
+
+    @transition(state, 'PUBLISHED', 'ARCHIVED')
+    def archive(self):
+        # TODO: transition
+        pass
+
+    @transition(state, '*', 'DELETED')
+    def delete(self, hard=False):
+        # TODO: transition
+        if hard:
+            super().delete()
+
 
 class Organization(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     STATES = [
-        ('DRAFT', 'draft'),
-        ('PUBLISHED', 'published'),
-        ('ARCHIVED', 'archived'),
-        ('DELETED', 'deleted'),
+        ('DRAFT', _('Draft')),
+        ('PUBLISHED', _('Published')),
+        ('ARCHIVED', _('Archived')),
+        ('DELETED', _('Deleted')),
     ]
-    state = models.CharField(
+    state = FSMField(
         max_length=9,
         choices=STATES,
         default='DRAFT',
@@ -817,22 +953,39 @@ class Organization(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model
         """
         return self
 
+    # state transitions
+    @transition(state, 'DRAFT', 'PUBLISHED')
+    def publish(self):
+        # TODO: transition
+        pass
+
+    @transition(state, 'PUBLISHED', 'ARCHIVED')
+    def archive(self):
+        # TODO: transition
+        pass
+
+    @transition(state, '*', 'DELETED')
+    def delete(self, hard=False):
+        # TODO: transition
+        if hard:
+            super().delete()
+
 
 class Participant(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     ACCEPTANCE_STATES = [
-        ('ACCEPTED', 'accepted'),
-        ('DECLINED', 'declined'),
-        ('PENDING', 'pending'),
+        ('ACCEPTED', _('Accepted')),
+        ('DECLINED', _('Declined')),
+        ('PENDING', _('Pending')),
     ]
-    acceptance = models.CharField(
+    acceptance = FSMField(
         max_length=8,
         choices=ACCEPTANCE_STATES,
-        default='ACCEPTED',
+        default='PENDING',
     )
     ADMIN_ACCEPTANCE_STATES = ACCEPTANCE_STATES + [
-        ('NONE', 'none'),
+        ('NONE', _('None')),
     ]
-    admin_acceptance = models.CharField(
+    admin_acceptance = FSMField(
         max_length=8,
         choices=ADMIN_ACCEPTANCE_STATES,
         default='NONE',
@@ -845,6 +998,36 @@ class Participant(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model)
         to='Person',
         on_delete=models.CASCADE,
     )
+
+    # acceptance transitions
+    @transition(acceptance, '+', 'ACCEPTED')
+    def accept(self):
+        # TODO: transition
+        pass
+
+    @transition(acceptance, '+', 'DECLINED')
+    def decline(self):
+        # TODO: transition
+        pass
+
+    @transition(acceptance, '+', 'PENDING')
+    def reinquire(self):
+        # TODO: transition
+        pass
+
+    # admin_acceptance transitions
+    def has_accepted(self):
+        return self.acceptance == 'ACCEPTED'
+
+    @transition(admin_acceptance, '+', 'ACCEPTED', conditions=[has_accepted])
+    def confirm(self):
+        # TODO: transition
+        pass
+
+    @transition(admin_acceptance, '+', 'DECLINED', conditions=[has_accepted])
+    def refuse(self):
+        # TODO: transition
+        pass
 
 
 class Person(MixinTimestamps, MixinUUIDs, MixinAuthorization, AbstractUser):
@@ -955,9 +1138,9 @@ class Person(MixinTimestamps, MixinUUIDs, MixinAuthorization, AbstractUser):
     )
 
     ANSWER_TOPICS = [
-        ('UNDEFINED', _("undefined")),
-        ('ABSOLUTE', _("absolute")),
-        ('NOTONLY', _("not only")),
+        ('UNDEFINED', _("Undefined")),
+        ('ABSOLUTE', _("Absolute")),
+        ('NOTONLY', _("Not only")),
     ]
     only_job_related_topics = models.CharField(
         max_length=9,
@@ -1151,8 +1334,8 @@ class PersonPropertyGroup(MixinTimestamps, MixinUUIDs, MixinAuthorization, model
     )
 
     SELECTION_TYPES = [
-        ('MULTISELECT', _('multiselect')),
-        ('SINGLESELECT', _('singleselect')),
+        ('MULTISELECT', _('multiple choice')),
+        ('SINGLESELECT', _('single choice')),
     ]
 
     selection_type = models.CharField(
@@ -1162,12 +1345,13 @@ class PersonPropertyGroup(MixinTimestamps, MixinUUIDs, MixinAuthorization, model
         verbose_name=_("selection type"),
     )
     NECESSITIES = [
-        ('RECOMMENDED', _("recommended")),
-        ('MANDATORY', _("mandatory")),
-        ('NOT_POSSIBLE', _("not possible")),
+        ('MANDATORY', _("Mandatory")),
+        ('RECOMMENDED', _("Recommended")),
+        ('UNRECOMMENDED', _("Unrecommended")),
+        ('IMPOSSIBLE', _("Impossible")),  # TODO: translate: ausgeschlossen
     ]
     necessity = models.CharField(
-        max_length=12,
+        max_length=13,
         choices=NECESSITIES,
         default="RECOMMENDED",
         verbose_name=_("necessity"),
@@ -1192,12 +1376,12 @@ class Project(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         on_delete=models.CASCADE,
     )
     STATES = [
-        ('DRAFT', 'draft'),
-        ('PUBLISHED', 'published'),
-        ('ARCHIVED', 'archived'),
-        ('DELETED', 'deleted'),
+        ('DRAFT', _('Draft')),
+        ('PUBLISHED', _('Published')),
+        ('ARCHIVED', _('Archived')),
+        ('DELETED', _('Deleted')),
     ]
-    state = models.CharField(
+    state = FSMField(
         max_length=9,
         choices=STATES,
         default='DRAFT',
@@ -1238,6 +1422,23 @@ class Project(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         verbose_name_plural = _("projects")
         # TODO: translation: Projekt
 
+    # state transitions
+    @transition(state, 'DRAFT', 'PUBLISHED')
+    def publish(self):
+        # TODO: transition
+        pass
+
+    @transition(state, 'PUBLISHED', 'ARCHIVED')
+    def archive(self):
+        # TODO: transition
+        pass
+
+    @transition(state, '*', 'DELETED')
+    def delete(self, hard=False):
+        # TODO: transition
+        if hard:
+            super().delete()
+
 
 class Resource(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     shift = models.ForeignKey(
@@ -1260,7 +1461,7 @@ class Resource(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         related_name='equipment_needed',
     )
     amount = models.IntegerField(
-        verbose_name=_("Amount of resources desirable with this role"),
+        verbose_name=_("amount of resources desirable with this role"),
         default=1,
     )
 
@@ -1330,12 +1531,7 @@ class RoleSpecification(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.
         blank=True,
         related_name='person_properties',
     )
-    NECESSITIES = [
-        ('MANDATORY', _("mandatory")),
-        ('RECOMMENDED', _("recommended")),
-        ('UNRECOMMENDED', _("unrecommended")),
-        ('IMPOSSIBLE', _("impossible")),  # TODO: translate: ausgeschlossen
-    ]
+    NECESSITIES = PersonPropertyGroup.NECESSITIES
     necessity = models.CharField(
         max_length=13,
         choices=NECESSITIES,
@@ -1348,13 +1544,14 @@ class Shift(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
     STATES = [
-        ('DRAFT', 'draft'),
-        ('PUBLISHED', 'published'),
-        ('FINISHED', 'finished'),
-        ('CANCELED', 'canceled'),
-        ('DELETED', 'deleted'),
+        ('DRAFT', _('Draft')),
+        ('PUBLISHED', _('Published')),
+        ('FINISHED', _('Finished')),
+        ('CANCELED', _('Canceled')),
+        ('ARCHIVED', _('Archived')),
+        ('DELETED', _('Deleted')),
     ]
-    state = models.CharField(
+    state = FSMField(
         max_length=9,
         choices=STATES,
         default='DRAFT',
@@ -1385,6 +1582,33 @@ class Shift(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         verbose_name_plural = _("shifts")
         # TODO: translate: Schicht
 
+    # state transitions
+    @transition(state, 'DRAFT', 'PUBLISHED')
+    def publish(self):
+        # TODO: transition
+        pass
+
+    @transition(state, 'PUBLISHED', 'FINISHED')
+    def finish(self):
+        # TODO: transition
+        pass
+
+    @transition(state, 'PUBLISHED', 'CANCELED')
+    def cancel(self):
+        # TODO: transition
+        pass
+
+    @transition(state, ['PUBLISHED', 'FINISHED', 'CANCELLED'], 'ARCHIVED')
+    def archive(self):
+        # TODO: transition
+        pass
+
+    @transition(state, '*', 'DELETED')
+    def delete(self, hard=False):
+        # TODO: transition
+        if hard:
+            super().delete()
+
 
 class Task(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     operation = models.ForeignKey(
@@ -1396,12 +1620,12 @@ class Task(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         on_delete=models.CASCADE,
     )
     STATES = [
-        ('DRAFT', 'draft'),
-        ('PUBLISHED', 'published'),
-        ('ARCHIVED', 'archived'),
-        ('DELETED', 'deleted'),
+        ('DRAFT', _('Draft')),
+        ('PUBLISHED', _('Published')),
+        ('ARCHIVED', _('Archived')),
+        ('DELETED', _('Deleted')),
     ]
-    state = models.CharField(
+    state = FSMField(
         max_length=9,
         choices=STATES,
         default='DRAFT',
@@ -1451,6 +1675,23 @@ class Task(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         verbose_name = _("task")
         verbose_name_plural = _("tasks")
         # TODO: translate: Aufgabe
+
+    # state transitions
+    @transition(state, 'DRAFT', 'PUBLISHED')
+    def publish(self):
+        # TODO: transition
+        pass
+
+    @transition(state, 'PUBLISHED', 'ARCHIVED')
+    def archive(self):
+        # TODO: transition
+        pass
+
+    @transition(state, '*', 'DELETED')
+    def delete(self, hard=False):
+        # TODO: transition
+        if hard:
+            super().delete()
 
 
 class TaskField(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):

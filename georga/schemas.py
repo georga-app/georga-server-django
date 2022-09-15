@@ -837,9 +837,9 @@ message_ro_fields = [
     'category',
     'priority',
     'state',
-    'delivery_state_email',
-    'delivery_state_push',
-    'delivery_state_sms',
+    'email_delivery',
+    'push_delivery',
+    'sms_delivery',
 ]
 message_wo_fields = [
 ]

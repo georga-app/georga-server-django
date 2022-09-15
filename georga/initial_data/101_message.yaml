@@ -7,9 +7,9 @@
     priority: IMPORTANT
     category: NEWS
     state: DRAFT
-    delivery_state_email: NONE
-    delivery_state_push: NONE
-    delivery_state_sms: NONE
+    email_delivery: NONE
+    push_delivery: NONE
+    sms_delivery: NONE
     scope_ct: ["georga", "shift"]
     scope_id: 1
 - model: georga.message
@@ -21,9 +21,9 @@
     priority: URGENT
     category: NEWS
     state: PUBLISHED
-    delivery_state_email: SENT_SUCCESSFULLY
-    delivery_state_push: SENT_SUCCESSFULLY
-    delivery_state_sms: SENT_SUCCESSFULLY
+    email_delivery: SUCCEEDED
+    push_delivery: SUCCEEDED
+    sms_delivery: SUCCEEDED
     scope_ct: ["georga", "organization"]
     scope_id: 1
 - model: georga.message
@@ -35,9 +35,9 @@
     priority: IMPORTANT
     category: ALERT
     state: PUBLISHED
-    delivery_state_email: SENT
-    delivery_state_push: SENT
-    delivery_state_sms: SENT
+    email_delivery: SENT
+    push_delivery: SENT
+    sms_delivery: SENT
     scope_ct: ["georga", "project"]
     scope_id: 1
 - model: georga.message
@@ -49,9 +49,9 @@
     priority: NORMAL
     category: ACTIVITY
     state: PUBLISHED
-    delivery_state_email: PENDING
-    delivery_state_push: PENDING
-    delivery_state_sms: PENDING
+    email_delivery: PENDING
+    push_delivery: PENDING
+    sms_delivery: PENDING
     scope_ct: ["georga", "task"]
     scope_id: 1
 - model: georga.message
@@ -63,9 +63,9 @@
     priority: NORMAL
     category: ACTIVITY
     state: DRAFT
-    delivery_state_email: SENT_ERROR
-    delivery_state_push: SENT_ERROR
-    delivery_state_sms: SENT_ERROR
+    email_delivery: FAILED
+    push_delivery: FAILED
+    sms_delivery: FAILED
     scope_ct: ["georga", "operation"]
     scope_id: 1
 - model: georga.message
@@ -77,8 +77,8 @@
     priority: NORMAL
     category: ACTIVITY
     state: DRAFT
-    delivery_state_email: PENDING
-    delivery_state_push: SENT
-    delivery_state_sms: SENT_ERROR
+    email_delivery: PENDING
+    push_delivery: SENT
+    sms_delivery: FAILED
     scope_ct: ["georga", "operation"]
     scope_id: 1
