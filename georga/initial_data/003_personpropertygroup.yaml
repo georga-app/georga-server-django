@@ -1,3 +1,4 @@
+# Org1
 - model: georga.personpropertygroup
   pk: 1
   fields:
@@ -9,84 +10,88 @@
   pk: 2
   fields:
     uuid: "00000003-0000-0000-0000-000000000002"
-    codename: LANGUAGE
-    name: Language
-    organization: 2
+    codename: LICENSE
+    name: License
+    organization: 1
 - model: georga.personpropertygroup
   pk: 3
   fields:
     uuid: "00000003-0000-0000-0000-000000000003"
-    codename: LICENSE
-    name: License
+    codename: ADMINISTRATIVE
+    name: Administrative
     organization: 1
 - model: georga.personpropertygroup
   pk: 4
   fields:
     uuid: "00000003-0000-0000-0000-000000000004"
-    codename: ADMINISTRATIVE
-    name: Administrative
-    organization: 2
+    codename: MEDICAL
+    name: Medical
+    organization: 1
 - model: georga.personpropertygroup
   pk: 5
   fields:
     uuid: "00000003-0000-0000-0000-000000000005"
-    codename: ADMINISTRATIVE
-    name: Administrative
-    organization: 3
+    codename: TECHNICAL
+    name: Technical
+    organization: 1
 - model: georga.personpropertygroup
   pk: 6
   fields:
     uuid: "00000003-0000-0000-0000-000000000006"
-    codename: MEDICAL
-    name: Medical
+    codename: GENERAL
+    name: General
     organization: 1
 - model: georga.personpropertygroup
   pk: 7
   fields:
     uuid: "00000003-0000-0000-0000-000000000007"
+    codename: ADULT
+    name: Adult
+    organization: 1
+    selection_type: SINGLESELECT
+
+# Org2
+- model: georga.personpropertygroup
+  pk: 101
+  fields:
+    uuid: "00000003-0000-0000-0000-000000000101"
+    codename: LANGUAGE
+    name: Language
+    organization: 2
+- model: georga.personpropertygroup
+  pk: 104
+  fields:
+    uuid: "00000003-0000-0000-0000-000000000104"
     codename: MEDICAL
     name: Medical
     organization: 2
 - model: georga.personpropertygroup
-  pk: 8
+  pk: 106
   fields:
-    uuid: "00000003-0000-0000-0000-000000000008"
-    codename: TECHNICAL
-    name: Technical
-    organization: 2
-- model: georga.personpropertygroup
-  pk: 9
-  fields:
-    uuid: "00000003-0000-0000-0000-000000000009"
-    codename: TECHNICAL
-    name: Technical
-    organization: 3
-- model: georga.personpropertygroup
-  pk: 10
-  fields:
-    uuid: "00000003-0000-0000-0000-000000000010"
-    codename: GENERAL
-    name: General
-    organization: 1
-- model: georga.personpropertygroup
-  pk: 11
-  fields:
-    uuid: "00000003-0000-0000-0000-000000000011"
+    uuid: "00000003-0000-0000-0000-000000000106"
     codename: GENERAL
     name: General
     organization: 2
+
+# Org3
 - model: georga.personpropertygroup
-  pk: 12
+  pk: 203
   fields:
-    uuid: "00000003-0000-0000-0000-000000000012"
+    uuid: "00000003-0000-0000-0000-000000000203"
+    codename: ADMINISTRATIVE
+    name: Administrative
+    organization: 3
+- model: georga.personpropertygroup
+  pk: 205
+  fields:
+    uuid: "00000003-0000-0000-0000-000000000205"
+    codename: TECHNICAL
+    name: Technical
+    organization: 3
+- model: georga.personpropertygroup
+  pk: 206
+  fields:
+    uuid: "00000003-0000-0000-0000-000000000206"
     codename: GENERAL
     name: General
     organization: 3
-- model: georga.personpropertygroup
-  pk: 13
-  fields:
-    uuid: "00000003-0000-0000-0000-000000000013"
-    codename: ADULT
-    name: Adult
-    organization: 3
-    selection_type: SINGLESELECT
