@@ -12,13 +12,14 @@ Load the demo data `python manage.py loaddata georga/initial_data/*`
 
 Start the server `python manage.py runserver`
 
-You can login under /admin/ with the user `admin@georga.app` and `verysafePassword`
+You can login under /admin/ with the user `admin@georga.test` and `georga`
 
-Further current testusers are:
+Further current testusers are (use password `georga` for all accounts):
 
-`simpleuser@georga.app` and `simpleuserPassword`
-
-`staffuser@georga.app` and `staffuserPassword` - is staff but not superuser
+- Registered helper: `helper@georga.test`
+- Organization admin: `organization@georga.test`
+- Project admin`project@georga.test`
+- Operation admin: `operation@georga.test`
 
 
 ## Contribute
@@ -37,7 +38,7 @@ In GraphiQL you find the api docs in the top right corner.
 #### Obtain an JWT
 ```
 mutation {
-  tokenAuth(email:"admin@georga.app", password:"verysafePassword") {
+  tokenAuth(email:"admin@georga.test", password:"georga") {
     payload
     refreshExpiresIn
     token
@@ -57,7 +58,7 @@ In GraphiQL you can archive this by setting in the bottom left under `Request He
 And then execute the query:
 ```
 query {
-  allPersons {
+  listPersons {
     edges {
       node {
         email
@@ -83,18 +84,20 @@ Use another desktop client like Altair or Playground instead.
 
 ```
 subscription {
-  mySubscription(arg1: "arg1", arg2: "arg2") {
+  testSubscription() {
     event
   }
 }
 ```
 
-To test push messages, connect to a django shell and broadcast some messages:
+To test push messages, use the testSubscription mutation:
 
 ```
-./manage.py shell
-from georga.schemas import TestSubscription
-TestSubscription.broadcast(group="TestSubscriptionEvents", payload="message")
+mutation {
+  testSubscription(message="message") {
+    response
+  }
+}
 ```
 
 #### Relay
