@@ -1,0 +1,152 @@
+# helper
+- model: georga.messagefilter
+  pk: 1
+  fields:
+    uuid: "00000102-0000-0000-0000-000000000001"
+    person: 2
+    scope_ct: ["georga", "person"]
+    scope_id: 2
+    app: NORMAL
+    email: IMPORTANT
+    push: URGENT
+    sms: URGENT
+- model: georga.messagefilter
+  pk: 2
+  fields:
+    uuid: "00000102-0000-0000-0000-000000000002"
+    person: 2
+    scope_ct: ["georga", "organization"]
+    scope_id: 1
+    app: INHERITED
+    email: LOW
+    push: INHERITED
+    sms: INHERITED
+- model: georga.messagefilter
+  pk: 3
+  fields:
+    uuid: "00000102-0000-0000-0000-000000000003"
+    person: 2
+    scope_ct: ["georga", "project"]
+    scope_id: 1
+    app: INHERITED
+    email: INHERITED
+    push: LOW
+    sms: INHERITED
+- model: georga.messagefilter
+  pk: 4
+  fields:
+    uuid: "00000102-0000-0000-0000-000000000004"
+    person: 2
+    scope_ct: ["georga", "operation"]
+    scope_id: 1
+    app: INHERITED
+    email: INHERITED
+    push: INHERITED
+    sms: LOW
+- model: georga.messagefilter
+  pk: 6
+  fields:
+    uuid: "00000102-0000-0000-0000-000000000006"
+    person: 2
+    scope_ct: ["georga", "shift"]
+    scope_id: 1
+    app: INHERITED
+    email: NONE
+    push: NONE
+    sms: NONE
+
+# organization admin
+- model: georga.messagefilter
+  pk: 10
+  fields:
+    uuid: "00000102-0000-0000-0000-000000000010"
+    person: 3
+    scope_ct: ["georga", "shift"]
+    scope_id: 1
+    app: INHERITED
+    email: NONE
+    push: NONE
+    sms: NONE
+- model: georga.messagefilter
+  pk: 11
+  fields:
+    uuid: "00000102-0000-0000-0000-000000000011"
+    person: 3
+    scope_ct: ["georga", "project"]
+    scope_id: 1
+    app: INHERITED
+    email: INHERITED
+    push: LOW
+    sms: INHERITED
+- model: georga.messagefilter
+  pk: 12
+  fields:
+    uuid: "00000102-0000-0000-0000-000000000012"
+    person: 3
+    scope_ct: ["georga", "operation"]
+    scope_id: 1
+    app: INHERITED
+    email: INHERITED
+    push: INHERITED
+    sms: LOW
+- model: georga.messagefilter
+  pk: 13
+  fields:
+    uuid: "00000102-0000-0000-0000-000000000013"
+    person: 3
+    scope_ct: ["georga", "organization"]
+    scope_id: 1
+    app: INHERITED
+    email: LOW
+    push: INHERITED
+    sms: INHERITED
+- model: georga.messagefilter
+  pk: 14
+  fields:
+    uuid: "00000102-0000-0000-0000-000000000014"
+    person: 3
+    scope_ct: ["georga", "person"]
+    scope_id: 3
+    app: NORMAL
+    email: IMPORTANT
+    push: URGENT
+    sms: URGENT
+
+# project admin
+- model: georga.messagefilter
+  pk: 20
+  fields:
+    uuid: "00000102-0000-0000-0000-000000000020"
+    person: 4
+    scope_ct: ["georga", "person"]
+    scope_id: 4
+    app: NORMAL
+    email: IMPORTANT
+    push: URGENT
+    sms: URGENT
+
+# operation admin
+- model: georga.messagefilter
+  pk: 30
+  fields:
+    uuid: "00000102-0000-0000-0000-000000000030"
+    person: 5
+    scope_ct: ["georga", "person"]
+    scope_id: 5
+    app: NORMAL
+    email: IMPORTANT
+    push: URGENT
+    sms: URGENT
+
+# inactive user
+- model: georga.messagefilter
+  pk: 40
+  fields:
+    uuid: "00000102-0000-0000-0000-000000000040"
+    person: 6
+    scope_ct: ["georga", "person"]
+    scope_id: 6
+    app: NORMAL
+    email: IMPORTANT
+    push: URGENT
+    sms: URGENT

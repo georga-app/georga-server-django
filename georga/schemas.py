@@ -47,6 +47,7 @@ from .models import (
     Location,
     LocationCategory,
     Message,
+    MessageFilter,
     Operation,
     Organization,
     Participant,
@@ -432,7 +433,7 @@ class GFKFilterSet(FilterSet):
 
 # Lookups =====================================================================
 
-# see https://docs.djangoproject.com/en/4.0/ref/models/querysets/#field-lookups-1
+# see https://docs.djangoproject.com/en/4.1/ref/models/querysets/#field-lookups-1
 # LOOKUPS_ID = ['exact']
 # LOOKUPS_INT = [
 #     'exact', 'gt', 'gte', 'lt', 'lte',
@@ -507,7 +508,7 @@ ace_filter_fields = {
 
 # types
 class ACEType(UUIDDjangoObjectType):
-    instance = Field('georga.schemas.ACEAccessObjectUnion', required=True)
+    instance = Field('georga.schemas.ACEInstanceUnion', required=True)
 
     class Meta:
         model = ACE
@@ -517,7 +518,7 @@ class ACEType(UUIDDjangoObjectType):
 
 
 # filters
-class ACEFilter(GFKFilterSet):
+class ACEFilterSet(GFKFilterSet):
     instance = GlobalIDFilter(method='filterExact')
     instance__in = GlobalIDMultipleChoiceFilter(method='filterIn')
 
@@ -860,7 +861,7 @@ message_filter_fields = {
 # types
 class MessageType(UUIDDjangoObjectType):
     scope = Field('georga.schemas.MessageScopeUnion', required=True)
-    delivery_state = Field(
+    delivery = Field(
         convert_choices_to_named_enum_with_descriptions(
             'MessageDeliveryState', Message.DELIVERY_STATES),
         required=True)
@@ -873,7 +874,7 @@ class MessageType(UUIDDjangoObjectType):
 
 
 # filters
-class MessageFilter(GFKFilterSet):
+class MessageFilterSet(GFKFilterSet):
     scope = GlobalIDFilter(method='filterExact')
     scope__in = GlobalIDMultipleChoiceFilter(method='filterIn')
 
@@ -941,6 +942,86 @@ class DeleteMessageMutation(UUIDDjangoModelFormMutation):
         return cls(message=message, errors=[])
 
 
+# MessageFilter ---------------------------------------------------------------
+
+# fields
+message_filter_ro_fields = [
+    'created_at',
+    'modified_at',
+]
+message_filter_wo_fields = [
+]
+message_filter_rw_fields = [
+    'scope',
+    'person',
+    'app',
+    'email',
+    'push',
+    'sms',
+]
+message_filter_filter_fields = {
+    'id': LOOKUPS_ID,
+    'created_at': LOOKUPS_DATETIME,
+    'modified_at': LOOKUPS_DATETIME,
+}
+
+
+# types
+class MessageFilterType(UUIDDjangoObjectType):
+    scope = Field('georga.schemas.MessageFilterScopeUnion', required=True)
+
+    class Meta:
+        model = MessageFilter
+        fields = message_filter_ro_fields + message_filter_rw_fields
+        filter_fields = message_filter_filter_fields
+        permissions = [login_required, object_permits_user('read')]
+
+
+# filters
+class MessageFilterFilterSet(GFKFilterSet):
+    scope = GlobalIDFilter(method='filterExact')
+    scope__in = GlobalIDMultipleChoiceFilter(method='filterIn')
+
+    class Meta:
+        model = MessageFilter
+        fields = message_filter_filter_fields
+
+
+# forms
+class MessageFilterModelForm(UUIDModelForm):
+    class Meta:
+        model = MessageFilter
+        fields = message_filter_wo_fields + message_filter_rw_fields
+
+
+# mutations
+class CreateMessageFilterMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = MessageFilterModelForm
+        exclude_fields = ['id']
+        permissions = [login_required, object_permits_user('create')]
+
+
+class UpdateMessageFilterMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = MessageFilterModelForm
+        required_fields = ['id']
+        permissions = [login_required, object_permits_user('update')]
+
+
+class DeleteMessageFilterMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = MessageFilterModelForm
+        only_fields = ['id']
+        permissions = [login_required, object_permits_user('delete')]
+
+    @classmethod
+    def perform_mutate(cls, form, info):
+        message_filter = form.instance
+        message_filter.delete()
+        return cls(messageFilter=message_filter, errors=[])
+
+
 # Operation -------------------------------------------------------------------
 
 # fields
@@ -967,6 +1048,7 @@ operation_filter_fields = {
 class OperationType(UUIDDjangoObjectType):
     ace = UUIDDjangoFilterConnectionField('georga.schemas.ACEType')
     messages = UUIDDjangoFilterConnectionField('georga.schemas.MessageType')
+    message_filters = UUIDDjangoFilterConnectionField('georga.schemas.MessageFilterType')
     person_attributes = UUIDDjangoFilterConnectionField('georga.schemas.PersonToObjectType')
 
     class Meta:
@@ -1035,6 +1117,7 @@ organization_filter_fields = {
 class OrganizationType(UUIDDjangoObjectType):
     ace = UUIDDjangoFilterConnectionField('georga.schemas.ACEType')
     messages = UUIDDjangoFilterConnectionField('georga.schemas.MessageType')
+    message_filters = UUIDDjangoFilterConnectionField('georga.schemas.MessageFilterType')
     person_attributes = UUIDDjangoFilterConnectionField('georga.schemas.PersonToObjectType')
 
     class Meta:
@@ -1196,6 +1279,7 @@ person_filter_fields = {
 
 # types
 class PersonType(UUIDDjangoObjectType):
+    default_message_filter = UUIDDjangoFilterConnectionField('georga.schemas.MessageFilterType')
     admin_level = Field(
         convert_choices_to_named_enum_with_descriptions(
             'AdminLevel', Person.ADMIN_LEVELS),
@@ -1578,7 +1662,7 @@ class PersonToObjectType(UUIDDjangoObjectType):
 
 
 # filters
-class PersonToObjectFilter(GFKFilterSet):
+class PersonToObjectFilterSet(GFKFilterSet):
     relation_object = GlobalIDFilter(method='filterExact')
     relation_object__in = GlobalIDMultipleChoiceFilter(method='filterIn')
 
@@ -1647,6 +1731,7 @@ project_filter_fields = {
 class ProjectType(UUIDDjangoObjectType):
     ace = UUIDDjangoFilterConnectionField('georga.schemas.ACEType')
     messages = UUIDDjangoFilterConnectionField('georga.schemas.MessageType')
+    message_filters = UUIDDjangoFilterConnectionField('georga.schemas.MessageFilterType')
     person_attributes = UUIDDjangoFilterConnectionField('georga.schemas.PersonToObjectType')
 
     class Meta:
@@ -1918,6 +2003,7 @@ shift_filter_fields = {
 # types
 class ShiftType(UUIDDjangoObjectType):
     messages = UUIDDjangoFilterConnectionField('georga.schemas.MessageType')
+    message_filters = UUIDDjangoFilterConnectionField('georga.schemas.MessageFilterType')
     person_attributes = UUIDDjangoFilterConnectionField('georga.schemas.PersonToObjectType')
 
     class Meta:
@@ -1990,6 +2076,7 @@ task_filter_fields = {
 # types
 class TaskType(UUIDDjangoObjectType):
     messages = UUIDDjangoFilterConnectionField('georga.schemas.MessageType')
+    message_filters = UUIDDjangoFilterConnectionField('georga.schemas.MessageFilterType')
     person_attributes = UUIDDjangoFilterConnectionField('georga.schemas.PersonToObjectType')
 
     class Meta:
@@ -2102,7 +2189,7 @@ class DeleteTaskFieldMutation(UUIDDjangoModelFormMutation):
 # Unions ======================================================================
 
 # ACEinstance.
-class ACEAccessObjectUnion(Union):
+class ACEInstanceUnion(Union):
     class Meta:
         types = [OrganizationType, ProjectType, OperationType]
 
@@ -2111,6 +2198,12 @@ class ACEAccessObjectUnion(Union):
 class MessageScopeUnion(Union):
     class Meta:
         types = [OrganizationType, ProjectType, OperationType, TaskType, ShiftType]
+
+
+# MessageFilter.scope
+class MessageFilterScopeUnion(Union):
+    class Meta:
+        types = [PersonType, OrganizationType, ProjectType, OperationType, TaskType, ShiftType]
 
 
 # PersonToObject
@@ -2143,50 +2236,59 @@ class TestSubscriptionEventMutation(Mutation):
 
 # Schema ======================================================================
 
+Connection = UUIDDjangoFilterConnectionField
+
+
 class QueryType(ObjectType):
     # Relay
     node = Node.Field()
     # ACE
-    list_aces = UUIDDjangoFilterConnectionField(ACEType, filterset_class=ACEFilter)
+    list_aces = Connection(
+        ACEType, filterset_class=ACEFilterSet)
     # Device
-    list_devices = UUIDDjangoFilterConnectionField(DeviceType)
+    list_devices = Connection(DeviceType)
     # Equipment
-    list_equipment = UUIDDjangoFilterConnectionField(EquipmentType)
+    list_equipment = Connection(EquipmentType)
     # Location
-    list_locations = UUIDDjangoFilterConnectionField(LocationType)
+    list_locations = Connection(LocationType)
     # LocationCategory
-    list_location_categories = UUIDDjangoFilterConnectionField(LocationCategoryType)
+    list_location_categories = Connection(LocationCategoryType)
     # Message
-    list_messages = UUIDDjangoFilterConnectionField(MessageType, filterset_class=MessageFilter)
+    list_messages = Connection(
+        MessageType, filterset_class=MessageFilterSet)
+    # MessageFilter
+    list_message_filters = Connection(
+        MessageFilterType, filterset_class=MessageFilterFilterSet)
     # Operation
-    list_operations = UUIDDjangoFilterConnectionField(OperationType)
+    list_operations = Connection(OperationType)
     # Organization
-    list_organizations = UUIDDjangoFilterConnectionField(OrganizationType)
+    list_organizations = Connection(OrganizationType)
     # Participant
-    list_participants = UUIDDjangoFilterConnectionField(ParticipantType)
+    list_participants = Connection(ParticipantType)
     # Person
-    list_persons = UUIDDjangoFilterConnectionField(PersonType)
+    list_persons = Connection(PersonType)
     get_person_profile = Field(PersonType)
     # PersonProperty
-    list_person_properties = UUIDDjangoFilterConnectionField(PersonPropertyType)
+    list_person_properties = Connection(PersonPropertyType)
     # PersonPropertyGroup
-    list_person_property_groups = UUIDDjangoFilterConnectionField(PersonPropertyGroupType)
+    list_person_property_groups = Connection(PersonPropertyGroupType)
     # PersonToObject
-    list_person_to_objects = UUIDDjangoFilterConnectionField(PersonToObjectType)
+    list_person_to_objects = Connection(
+        PersonToObjectType, filterset_class=PersonToObjectFilterSet)
     # Project
-    list_projects = UUIDDjangoFilterConnectionField(ProjectType)
+    list_projects = Connection(ProjectType)
     # Resource
-    list_resources = UUIDDjangoFilterConnectionField(ResourceType)
+    list_resources = Connection(ResourceType)
     # Role
-    list_roles = UUIDDjangoFilterConnectionField(RoleType)
+    list_roles = Connection(RoleType)
     # RoleSpecification
-    list_role_specifications = UUIDDjangoFilterConnectionField(RoleSpecificationType)
+    list_role_specifications = Connection(RoleSpecificationType)
     # Shift
-    list_shifts = UUIDDjangoFilterConnectionField(ShiftType)
+    list_shifts = Connection(ShiftType)
     # Task
-    list_tasks = UUIDDjangoFilterConnectionField(TaskType)
+    list_tasks = Connection(TaskType)
     # TaskField
-    list_task_fields = UUIDDjangoFilterConnectionField(TaskFieldType)
+    list_task_fields = Connection(TaskFieldType)
 
     @object_permits_user('read')
     def resolve_get_person_profile(parent, info):
@@ -2219,10 +2321,14 @@ class MutationType(ObjectType):
     create_location_category = CreateLocationCategoryMutation.Field()
     update_location_category = UpdateLocationCategoryMutation.Field()
     delete_location_category = DeleteLocationCategoryMutation.Field()
-    # Messages
+    # Message
     create_message = CreateMessageMutation.Field()
     update_message = UpdateMessageMutation.Field()
     delete_message = DeleteMessageMutation.Field()
+    # MessageFilter
+    create_message_filter = CreateMessageFilterMutation.Field()
+    update_message_filter = UpdateMessageFilterMutation.Field()
+    delete_message_filter = DeleteMessageFilterMutation.Field()
     # Operation
     create_operation = CreateOperationMutation.Field()
     update_operation = UpdateOperationMutation.Field()

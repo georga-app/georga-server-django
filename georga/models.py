@@ -8,7 +8,7 @@ from django.contrib.auth.models import AbstractUser
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
-from django.db.models import Q
+from django.db.models import Q, When, Case
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from django.utils import timezone
@@ -691,7 +691,7 @@ class Message(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     # delivery
     DELIVERY_STATES = [
         ('NONE', _('None')),
-        ('PENDING', _('Pending')),
+        ('SCHEDULED', _('Scheduled')),
         ('SENT', _('Sent')),
         ('SUCCEEDED', _('Succeeded')),
         ('FAILED', _('Failed')),
@@ -746,18 +746,6 @@ class Message(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
             models.Index(fields=["scope_ct", "scope_id"]),
         ]
 
-    @property
-    def delivery_state(self):
-        """
-        str (ERROR|PENDING|SENT|SUCCESS|NONE): Returns the least
-            optimal delivery state of all channels in the given order.
-        """
-        for state in ["ERROR", "PENDING", "SENT", "SUCCESS"]:
-            for channel_state in [self.email_delivery, self.push_delivery, self.sms_delivery]:
-                if channel_state == state:
-                    return state
-        return "NONE"
-
     def clean(self):
         super().clean()
         # restrict foreign models of scope
@@ -769,11 +757,27 @@ class Message(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
                 f"'{self.scope_ct.app_labeled_name}' is not a valid "
                 "content type for Message.scope")
 
+    @property
+    def delivery(self):
+        """
+        str (ERROR|SCHEDULED|SENT|SUCCESS|NONE): Returns the least
+            optimal delivery state of all channels in the given order.
+        """
+        for state in ["ERROR", "SCHEDULED", "SENT", "SUCCESS"]:
+            for channel_state in [self.email_delivery, self.push_delivery, self.sms_delivery]:
+                if channel_state == state:
+                    return state
+        return "NONE"
+
     # state transitions
     @transition(state, 'DRAFT', 'PUBLISHED')
     def publish(self):
         # TODO: transition
-        pass
+        # TODO: create service/command for each channel, per user filtering
+        #   via Person.channel_filters() should probably happen there
+        self.schedule_email()
+        self.schedule_push()
+        self.schedule_sms()
 
     @transition(state, 'PUBLISHED', 'ARCHIVED')
     def archive(self):
@@ -781,14 +785,19 @@ class Message(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         pass
 
     @transition(state, '*', 'DELETED')
-    def delete(self, hard=False):
+    def delete(self, *args, hard=False, **kwargs):
         # TODO: transition
         if hard:
-            super().delete()
+            super().delete(*args, **kwargs)
 
     # email_delivery transitions
     @transition(email_delivery, 'NONE', 'SCHEDULED')
     def schedule_email(self):
+        # TODO: transition
+        pass
+
+    @transition(email_delivery, 'SCHEDULED', 'NONE')
+    def cancel_email(self):
         # TODO: transition
         pass
 
@@ -797,15 +806,15 @@ class Message(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         # TODO: transition
         pass
 
-    @transition(email_delivery, 'SENT', RETURN_VALUE('SUCCEEDED', 'FAILED'))
-    def check_email_delivery(self):
+    @transition(email_delivery, 'SENT', RETURN_VALUE('SENT', 'SUCCEEDED', 'FAILED'))
+    def check_email(self):
         # TODO: transition
-        if True:
-            return 'SUCCEEDED'
-        return 'FAILED'
+        if 'FEEDBACK':
+            return 'SUCCEEDED' or 'FAILED'
+        return 'SENT'
 
     @transition(email_delivery, 'FAILED', 'SENT', on_error='FAILED')
-    def resend_email(self):
+    def retry_email(self):
         # TODO: transition
         pass
 
@@ -815,20 +824,25 @@ class Message(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         # TODO: transition
         pass
 
+    @transition(push_delivery, 'SCHEDULED', 'NONE')
+    def cancel_push(self):
+        # TODO: transition
+        pass
+
     @transition(push_delivery, 'SCHEDULED', 'SENT', on_error='FAILED')
     def send_push(self):
         # TODO: transition
         pass
 
-    @transition(push_delivery, 'SENT', RETURN_VALUE('SUCCEEDED', 'FAILED'))
-    def check_push_delivery(self):
+    @transition(push_delivery, 'SENT', RETURN_VALUE('SENT', 'SUCCEEDED', 'FAILED'))
+    def check_push(self):
         # TODO: transition
-        if True:
-            return 'SUCCEEDED'
-        return 'FAILED'
+        if 'FEEDBACK':
+            return 'SUCCEEDED' or 'FAILED'
+        return 'SENT'
 
     @transition(push_delivery, 'FAILED', 'SENT', on_error='FAILED')
-    def resend_push(self):
+    def retry_push(self):
         # TODO: transition
         pass
 
@@ -838,22 +852,199 @@ class Message(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         # TODO: transition
         pass
 
+    @transition(sms_delivery, 'SCHEDULED', 'NONE')
+    def cancel_sms(self):
+        # TODO: transition
+        pass
+
     @transition(sms_delivery, 'SCHEDULED', 'SENT', on_error='FAILED')
     def send_sms(self):
         # TODO: transition
         pass
 
-    @transition(sms_delivery, 'SENT', RETURN_VALUE('SUCCEEDED', 'FAILED'))
+    @transition(sms_delivery, 'SENT', RETURN_VALUE('SENT', 'SUCCEEDED', 'FAILED'))
     def check_sms_delivery(self):
         # TODO: transition
-        if True:
-            return 'SUCCEEDED'
-        return 'FAILED'
+        if 'FEEDBACK':
+            return 'SUCCEEDED' or 'FAILED'
+        return 'SENT'
 
     @transition(sms_delivery, 'FAILED', 'SENT', on_error='FAILED')
-    def resend_sms(self):
+    def retry_sms(self):
         # TODO: transition
         pass
+
+
+class MessageFilter(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
+    # *_cts list: list of valid models
+    # checked in ForeignKey.limit_choices_to, Model.clean() and GQLFilterSet
+    scope_cts = ['person', 'organization', 'project', 'operation', 'task', 'shift']
+    scope_ct = models.ForeignKey(
+        ContentType,
+        on_delete=models.CASCADE,
+        limit_choices_to={'model__in': scope_cts},
+    )
+    scope_id = models.PositiveIntegerField()
+    scope = GenericForeignKey(
+        'scope_ct',
+        'scope_id',
+    )
+
+    person = models.ForeignKey(
+        to='Person',
+        on_delete=models.CASCADE,
+    )
+
+    CHANNELS = ['app', 'email', 'push', 'sms']
+    FILTERS = [
+        ('INHERITED', _('Inherited')),
+        ('NONE', _('None')),
+        *Message.PRIORITIES,
+    ]
+    app = models.CharField(
+        max_length=9,
+        choices=FILTERS,
+        default='INHERITED',
+    )
+    email = models.CharField(
+        max_length=9,
+        choices=FILTERS,
+        default='INHERITED',
+    )
+    push = models.CharField(
+        max_length=9,
+        choices=FILTERS,
+        default='INHERITED',
+    )
+    sms = models.CharField(
+        max_length=9,
+        choices=FILTERS,
+        default='INHERITED',
+    )
+
+    class Meta:
+        indexes = [
+            models.Index(fields=["scope_ct", "scope_id"]),
+        ]
+        unique_together = ('scope_ct', 'scope_id', 'person')
+
+    def clean(self):
+        super().clean()
+
+        # restrict foreign models of access object
+        label = self.scope_ct.app_label
+        model = self.scope_ct.model
+        valid_models = {'georga': self.scope_cts}
+        if label not in valid_models or model not in valid_models[label]:
+            raise ValidationError(
+                f"'{self.scope_ct.app_labeled_name}' is not a valid "
+                "content type for Filter.scope")
+
+    @classmethod
+    def channel_filters(cls, person, scope):
+        """
+        Returns merged channel filters for a scope.
+
+        Queries the database for an ordered set of message filters of the
+        person and the scope plus all the parent filters, if existant. Merges
+        the default filter of the person down the hierarchy. Filters with the
+        value INHERITED are ignored, other values override the last one picked.
+        Missing objects behave like all channels on INHERITED.
+
+        Args:
+            scope (Person|Organization|Project|Operation|Task|Shift): Scope
+                of MessageFilter.
+
+        Returns:
+            dict[str: str]: Dictionary of channels and filter level.
+
+        Example::
+
+            MessageFilter.channel_filters(person, task):
+
+                | Person:       {'app': 'NORMAL',    'email': 'IMPORTANT'}
+                | Organization: {'app': 'INHERITED', 'email': 'LOW'}
+                | Project:      {'app': 'INHERITED', 'email': 'INHERITED'}
+                | Operation:    {'app': 'INHERITED', 'email': 'INHERITED'}
+                | Task:         {'app': 'INHERITED', 'email': 'NONE'}
+                v Result:       {'app': 'NORMAL', '   email': 'NONE'}
+
+            MessageFilter.channel_filters(person, operation):
+
+                | Person:       {'app': 'NORMAL',    'email': 'IMPORTANT'}
+                | Organization: {'app': 'INHERITED', 'email': 'LOW'}
+                | Project:      {'app': 'INHERITED', 'email': 'INHERITED'}
+                | Operation:    {'app': 'INHERITED', 'email': 'INHERITED'}
+                v Result:       {'app': 'NORMAL', '   email': 'LOW'}
+        """
+        # prepare q objects to fetch relevant message filters
+        q = Q(default=person)
+        if isinstance(scope, Shift):
+            q |= reduce(or_, [
+                Q(shift=scope),
+                Q(task=scope.task),
+                Q(operation=scope.task.operation),
+                Q(project=scope.task.operation.project),
+                Q(organization=scope.task.operation.project.organization),
+            ])
+        elif isinstance(scope, Task):
+            q |= reduce(or_, [
+                Q(task=scope),
+                Q(operation=scope.operation),
+                Q(project=scope.operation.project),
+                Q(organization=scope.operation.project.organization),
+            ])
+        elif isinstance(scope, Operation):
+            q |= reduce(or_, [
+                Q(operation=scope),
+                Q(project=scope.project),
+                Q(organization=scope.project.organization),
+            ])
+        elif isinstance(scope, Project):
+            q |= reduce(or_, [
+                Q(project=scope),
+                Q(organization=scope.organization),
+            ])
+        elif isinstance(scope, Organization):
+            q |= Q(organization=scope.organization)
+        q &= Q(person=person)
+
+        # fetch channel values from message filters, ensure hierarchical order
+        scope_order = Case(*[  # ordered content ids for message filter hierarchy
+            When(scope_ct=ContentType.objects.get(model=model).id, then=index)
+            for index, model in enumerate(cls.scope_cts)
+        ])
+        channel_filters = list(
+            cls.objects.filter(q).order_by(scope_order).values(*cls.CHANNELS))
+
+        # merge and return channel filters (choose most specific level)
+        result = channel_filters.pop(0)  # default filter of person
+        for channel_filter in channel_filters:
+            for channel, level in channel_filter.items():
+                if level == "INHERITED":
+                    continue
+                result[channel] = level
+        return result
+
+    @classmethod
+    def permitted(cls, message_filter, user, action):
+        # unpersisted instances (create)
+        if message_filter and not message_filter.id:
+            match action:
+                case 'create':
+                    # MessageFilters for the user can be created by themself
+                    return message_filter.person.id == user.id
+                case _:
+                    return False
+        # queryset filtering and persisted instances (read, write, delete, etc)
+        match action:
+            case 'read' | 'update' | 'delete':
+                return reduce(or_, [
+                    # MessageFilters for the user can be read/updated/deleted by themself
+                    Q(person=user),
+                ])
+            case _:
+                return None
 
 
 class Operation(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
@@ -898,6 +1089,12 @@ class Operation(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         object_id_field='scope_id',
         related_query_name='operation'
     )
+    message_filters = GenericRelation(
+        MessageFilter,
+        content_type_field='scope_ct',
+        object_id_field='scope_id',
+        related_query_name='operation'
+    )
     person_attributes = GenericRelation(
         PersonToObject,
         content_type_field='relation_object_ct',
@@ -912,6 +1109,9 @@ class Operation(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         verbose_name = _("operation")
         verbose_name_plural = _("operations")
         # TODO: translate: Einsatz
+
+    def channel_filters(self, person):
+        return MessageFilter.channel_filters(person, self)
 
     @property
     def organization(self):
@@ -930,10 +1130,10 @@ class Operation(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         pass
 
     @transition(state, '*', 'DELETED')
-    def delete(self, hard=False):
+    def delete(self, *args, hard=False, **kwargs):
         # TODO: transition
         if hard:
-            super().delete()
+            super().delete(*args, **kwargs)
 
 
 class Organization(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
@@ -968,6 +1168,12 @@ class Organization(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model
         object_id_field='scope_id',
         related_query_name='organization'
     )
+    message_filters = GenericRelation(
+        MessageFilter,
+        content_type_field='scope_ct',
+        object_id_field='scope_id',
+        related_query_name='organization'
+    )
     person_attributes = GenericRelation(
         PersonToObject,
         content_type_field='relation_object_ct',
@@ -986,13 +1192,15 @@ class Organization(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model
     @property
     def organization(self):
         """
-        Organisation(): Returns self. Added to ease the handling of all
-            `ACL.instance`s by being able to get the organization attribute.
+        Organisation(): Returns self. Added to ease the api for `ACL.instance`
+        by being able to access acl.instance.organization for all content types.
         """
         return self
 
+    def channel_filters(self, person):
+        return MessageFilter.channel_filters(person, self)
+
     def subscribe(self, person):
-        # TODO: generate default organization scope MessageFilter
         # TODO: track GPDR relevant consent
         # TODO: trigger mandatory non digital processes (forms to sign, etc)
         pass
@@ -1009,10 +1217,10 @@ class Organization(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model
         pass
 
     @transition(state, '*', 'DELETED')
-    def delete(self, hard=False):
+    def delete(self, *args, hard=False, **kwargs):
         # TODO: transition
         if hard:
-            super().delete()
+            super().delete(*args, **kwargs)
 
 
 class Participant(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
@@ -1213,7 +1421,6 @@ class Person(MixinTimestamps, MixinUUIDs, MixinAuthorization, AbstractUser):
         verbose_name=_("agreement to roles"),
     )
 
-    # geolocation
     activity_radius_km = models.IntegerField(
         default=0,
         null=True,
@@ -1221,7 +1428,7 @@ class Person(MixinTimestamps, MixinUUIDs, MixinAuthorization, AbstractUser):
         verbose_name=_("agreement to activity radius in km"),
     )
 
-    organizations_subscribed = models.ManyToManyField(
+    organizations_subscribed = models.ManyToManyField(  # TODO: PersonToObject?
         to='Organization',
         blank=True,
         verbose_name=_("organizations subscribed to"),
@@ -1246,6 +1453,13 @@ class Person(MixinTimestamps, MixinUUIDs, MixinAuthorization, AbstractUser):
         verbose_name=_("resources provided")
     )
 
+    default_message_filter = GenericRelation(
+        MessageFilter,
+        content_type_field='scope_ct',
+        object_id_field='scope_id',
+        related_query_name='default'
+    )
+
     def __name__(self):
         return self.email
 
@@ -1261,11 +1475,20 @@ class Person(MixinTimestamps, MixinUUIDs, MixinAuthorization, AbstractUser):
         verbose_name_plural = _("registered helpers")
         # TODO: translation: Registrierter Helfer
 
-    ADMIN_LEVELS = [
+    def save(self, *args, **kwargs):
+        if not self.id:
+            # TODO: create default MessageFilter
+            pass
+        super().save(*args, **kwargs)
+
+    def channel_filters(self, scope):
+        return MessageFilter.channel_filters(self, scope)
+
+    ADMIN_LEVELS = [  # neccessary for graphene enum field
         ('NONE', _('None')),
-        ('OPERATION', _('Operation')),
+        ('ORGANIZATION', _("Organization")),
         ('PROJECT', _("Project")),
-        ('ORGANIZATION', _("Organization"))
+        ('OPERATION', _('Operation')),
     ]
 
     @property
@@ -1458,6 +1681,12 @@ class Project(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         object_id_field='scope_id',
         related_query_name='project'
     )
+    message_filters = GenericRelation(
+        MessageFilter,
+        content_type_field='scope_ct',
+        object_id_field='scope_id',
+        related_query_name='project'
+    )
     person_attributes = GenericRelation(
         PersonToObject,
         content_type_field='relation_object_ct',
@@ -1473,6 +1702,9 @@ class Project(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         verbose_name_plural = _("projects")
         # TODO: translation: Projekt
 
+    def channel_filters(self, person):
+        return MessageFilter.channel_filters(person, self)
+
     # state transitions
     @transition(state, 'DRAFT', 'PUBLISHED')
     def publish(self):
@@ -1485,10 +1717,10 @@ class Project(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         pass
 
     @transition(state, '*', 'DELETED')
-    def delete(self, hard=False):
+    def delete(self, *args, hard=False, **kwargs):
         # TODO: transition
         if hard:
-            super().delete()
+            super().delete(*args, **kwargs)
 
 
 class Resource(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
@@ -1582,10 +1814,9 @@ class RoleSpecification(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.
         blank=True,
         related_name='person_properties',
     )
-    NECESSITIES = PersonPropertyGroup.NECESSITIES
     necessity = models.CharField(
         max_length=13,
-        choices=NECESSITIES,
+        choices=PersonPropertyGroup.NECESSITIES,
         verbose_name=_("necessity"),
         # TODO: translate: "Erforderlichkeit"
     )
@@ -1621,6 +1852,12 @@ class Shift(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         object_id_field='scope_id',
         related_query_name='shift'
     )
+    message_filters = GenericRelation(
+        MessageFilter,
+        content_type_field='scope_ct',
+        object_id_field='scope_id',
+        related_query_name='shift'
+    )
     person_attributes = GenericRelation(
         PersonToObject,
         content_type_field='relation_object_ct',
@@ -1632,6 +1869,9 @@ class Shift(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         verbose_name = _("shift")
         verbose_name_plural = _("shifts")
         # TODO: translate: Schicht
+
+    def channel_filters(self, person):
+        return MessageFilter.channel_filters(person, self)
 
     # state transitions
     @transition(state, 'DRAFT', 'PUBLISHED')
@@ -1655,10 +1895,10 @@ class Shift(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         pass
 
     @transition(state, '*', 'DELETED')
-    def delete(self, hard=False):
+    def delete(self, *args, hard=False, **kwargs):
         # TODO: transition
         if hard:
-            super().delete()
+            super().delete(*args, **kwargs)
 
 
 class Task(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
@@ -1712,6 +1952,12 @@ class Task(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         object_id_field='scope_id',
         related_query_name='task'
     )
+    message_filters = GenericRelation(
+        MessageFilter,
+        content_type_field='scope_ct',
+        object_id_field='scope_id',
+        related_query_name='task'
+    )
     person_attributes = GenericRelation(
         PersonToObject,
         content_type_field='relation_object_ct',
@@ -1727,6 +1973,9 @@ class Task(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         verbose_name_plural = _("tasks")
         # TODO: translate: Aufgabe
 
+    def channel_filters(self, person):
+        return MessageFilter.channel_filters(person, self)
+
     # state transitions
     @transition(state, 'DRAFT', 'PUBLISHED')
     def publish(self):
@@ -1739,10 +1988,10 @@ class Task(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         pass
 
     @transition(state, '*', 'DELETED')
-    def delete(self, hard=False):
+    def delete(self, *args, hard=False, **kwargs):
         # TODO: transition
         if hard:
-            super().delete()
+            super().delete(*args, **kwargs)
 
 
 class TaskField(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):

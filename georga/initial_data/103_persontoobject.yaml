@@ -2,7 +2,7 @@
 - model: georga.persontoobject
   pk: 1
   fields:
-    uuid: "00000102-0000-0000-0000-000000000001"
+    uuid: "00000103-0000-0000-0000-000000000001"
     person: 2
     relation_object_ct: ["georga", "message"]
     relation_object_id: 1
@@ -11,7 +11,7 @@
 - model: georga.persontoobject
   pk: 2
   fields:
-    uuid: "00000102-0000-0000-0000-000000000002"
+    uuid: "00000103-0000-0000-0000-000000000002"
     person: 2
     relation_object_ct: ["georga", "message"]
     relation_object_id: 1
@@ -20,7 +20,7 @@
 - model: georga.persontoobject
   pk: 3
   fields:
-    uuid: "00000102-0000-0000-0000-000000000003"
+    uuid: "00000103-0000-0000-0000-000000000003"
     person: 2
     relation_object_ct: ["georga", "message"]
     relation_object_id: 3
@@ -31,7 +31,7 @@
 - model: georga.persontoobject
   pk: 4
   fields:
-    uuid: "00000102-0000-0000-0000-000000000004"
+    uuid: "00000103-0000-0000-0000-000000000004"
     person: 2
     relation_object_ct: ["georga", "role"]
     relation_object_id: 1
@@ -40,7 +40,7 @@
 - model: georga.persontoobject
   pk: 5
   fields:
-    uuid: "00000102-0000-0000-0000-000000000005"
+    uuid: "00000103-0000-0000-0000-000000000005"
     person: 2
     relation_object_ct: ["georga", "role"]
     relation_object_id: 2
@@ -51,7 +51,7 @@
 - model: georga.persontoobject
   pk: 6
   fields:
-    uuid: "00000102-0000-0000-0000-000000000006"
+    uuid: "00000103-0000-0000-0000-000000000006"
     person: 2
     relation_object_ct: ["georga", "project"]
     relation_object_id: 1
@@ -60,7 +60,7 @@
 - model: georga.persontoobject
   pk: 7
   fields:
-    uuid: "00000102-0000-0000-0000-000000000007"
+    uuid: "00000103-0000-0000-0000-000000000007"
     person: 2
     relation_object_ct: ["georga", "task"]
     relation_object_id: 1
@@ -69,7 +69,7 @@
 - model: georga.persontoobject
   pk: 8
   fields:
-    uuid: "00000102-0000-0000-0000-000000000008"
+    uuid: "00000103-0000-0000-0000-000000000008"
     person: 2
     relation_object_ct: ["georga", "shift"]
     relation_object_id: 1
