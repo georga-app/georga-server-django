@@ -483,6 +483,13 @@ class ObtainJSONWebToken(graphql_jwt.relay.JSONWebTokenMutation):
         return cls(id=info.context.user.gid)
 
 
+# Non-Model ===================================================================
+
+class ChannelFiltersType(ObjectType):
+    for channel in MessageFilter.CHANNELS:
+        vars()[channel] = String()
+
+
 # Models ======================================================================
 
 # ACE -------------------------------------------------------------------------
@@ -1050,12 +1057,16 @@ class OperationType(UUIDDjangoObjectType):
     messages = UUIDDjangoFilterConnectionField('georga.schemas.MessageType')
     message_filters = UUIDDjangoFilterConnectionField('georga.schemas.MessageFilterType')
     person_attributes = UUIDDjangoFilterConnectionField('georga.schemas.PersonToObjectType')
+    channel_filters = Field(ChannelFiltersType)
 
     class Meta:
         model = Operation
         fields = operation_ro_fields + operation_rw_fields
         filter_fields = operation_filter_fields
         permissions = [login_required]
+
+    def resolve_channel_filters(parent, info):
+        return parent.channel_filters(info.context.user)
 
 
 # forms
@@ -1119,12 +1130,16 @@ class OrganizationType(UUIDDjangoObjectType):
     messages = UUIDDjangoFilterConnectionField('georga.schemas.MessageType')
     message_filters = UUIDDjangoFilterConnectionField('georga.schemas.MessageFilterType')
     person_attributes = UUIDDjangoFilterConnectionField('georga.schemas.PersonToObjectType')
+    channel_filters = Field(ChannelFiltersType)
 
     class Meta:
         model = Organization
         fields = organization_ro_fields + organization_rw_fields
         filter_fields = organization_filter_fields
         permissions = [login_required]
+
+    def resolve_channel_filters(parent, info):
+        return parent.channel_filters(info.context.user)
 
 
 # forms
@@ -1712,6 +1727,7 @@ class DeletePersonToObjectMutation(UUIDDjangoModelFormMutation):
 project_ro_fields = [
     'created_at',
     'modified_at',
+    'channel_filters',
 ]
 project_wo_fields = [
 ]
@@ -1733,12 +1749,16 @@ class ProjectType(UUIDDjangoObjectType):
     messages = UUIDDjangoFilterConnectionField('georga.schemas.MessageType')
     message_filters = UUIDDjangoFilterConnectionField('georga.schemas.MessageFilterType')
     person_attributes = UUIDDjangoFilterConnectionField('georga.schemas.PersonToObjectType')
+    channel_filters = Field(ChannelFiltersType)
 
     class Meta:
         model = Project
         fields = project_ro_fields + project_rw_fields
         filter_fields = project_filter_fields
         permissions = [login_required]
+
+    def resolve_channel_filters(parent, info):
+        return parent.channel_filters(info.context.user)
 
 
 # forms
@@ -2005,6 +2025,7 @@ class ShiftType(UUIDDjangoObjectType):
     messages = UUIDDjangoFilterConnectionField('georga.schemas.MessageType')
     message_filters = UUIDDjangoFilterConnectionField('georga.schemas.MessageFilterType')
     person_attributes = UUIDDjangoFilterConnectionField('georga.schemas.PersonToObjectType')
+    channel_filters = Field(ChannelFiltersType)
 
     class Meta:
         model = Shift
@@ -2012,6 +2033,8 @@ class ShiftType(UUIDDjangoObjectType):
         filter_fields = shift_filter_fields
         permissions = [login_required]
 
+    def resolve_channel_filters(parent, info):
+        return parent.channel_filters(info.context.user)
 
 # forms
 class ShiftModelForm(UUIDModelForm):
@@ -2078,12 +2101,16 @@ class TaskType(UUIDDjangoObjectType):
     messages = UUIDDjangoFilterConnectionField('georga.schemas.MessageType')
     message_filters = UUIDDjangoFilterConnectionField('georga.schemas.MessageFilterType')
     person_attributes = UUIDDjangoFilterConnectionField('georga.schemas.PersonToObjectType')
+    channel_filters = Field(ChannelFiltersType)
 
     class Meta:
         model = Task
         fields = task_ro_fields + task_rw_fields
         filter_fields = task_filter_fields
         permissions = [login_required]
+
+    def resolve_channel_filters(parent, info):
+        return parent.channel_filters(info.context.user)
 
 
 # forms

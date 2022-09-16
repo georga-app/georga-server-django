@@ -360,7 +360,7 @@ class ACE(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     def clean(self):
         super().clean()
 
-        # restrict foreign models of access object
+        # restrict foreign models of instance
         label = self.instance_ct.app_label
         model = self.instance_ct.model
         valid_models = {'georga': self.instance_cts}
@@ -931,7 +931,7 @@ class MessageFilter(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Mode
     def clean(self):
         super().clean()
 
-        # restrict foreign models of access object
+        # restrict foreign models of scope
         label = self.scope_ct.app_label
         model = self.scope_ct.model
         valid_models = {'georga': self.scope_cts}
