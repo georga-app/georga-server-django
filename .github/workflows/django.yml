@@ -20,6 +20,8 @@ jobs:
       postgres:
         image: postgres
         env:
+          POSTGRES_NAME: georga
+          POSTGRES_USER: georga
           POSTGRES_PASSWORD: georga
         options: >-
           --health-cmd pg_isready
@@ -48,6 +50,8 @@ jobs:
         REDIS_PORT: 6379
         DATABASE_HOST: postgres
         DATABASE_PORT: 5432
+        DATABASE_NAME: georga
+        DATABASE_USER: georga
         DATABASE_PASSWORD: georga
         DJANGO_JWT_PRIVATE_KEY: keys/jwtRS256.pem
         DJANGO_JWT_PUBLIC_KEY: keys/jwtRS256_pub.pem
