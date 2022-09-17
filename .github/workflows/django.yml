@@ -10,11 +10,11 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    strategy:
-      max-parallel: 4
-      matrix:
-        python-version: ['3.10']
-    container: python:bullseye
+    # strategy:
+    #   max-parallel: 4
+    #   matrix:
+    #     python-version: ['3.10']
+    container: python:3.10-bullseye
 
     services:
       postgres:
@@ -31,10 +31,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
-      with:
-        python-version: ${{ matrix.python-version }}
+    # - name: Set up Python ${{ matrix.python-version }}
+    #   uses: actions/setup-python@v2
+    #   with:
+    #     python-version: ${{ matrix.python-version }}
     - name: Install Dependencies
       run: |
         python -m pip install --upgrade pip
@@ -43,8 +43,8 @@ jobs:
       run: |
         python manage.py test
       env:
-          DATABASE_HOST: postgres
-          DATABASE_PORT: 5432
-          DATABASE_NAME: georga
-          DATABASE_USER: georga
-          DATABASE_PASSWORD: georga
+        DATABASE_HOST: postgres
+        DATABASE_PORT: 5432
+        DATABASE_NAME: georga
+        DATABASE_USER: georga
+        DATABASE_PASSWORD: georga
