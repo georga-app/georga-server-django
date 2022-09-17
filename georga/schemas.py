@@ -2036,6 +2036,7 @@ class ShiftType(UUIDDjangoObjectType):
     def resolve_channel_filters(parent, info):
         return parent.channel_filters(info.context.user)
 
+
 # forms
 class ShiftModelForm(UUIDModelForm):
     class Meta:
