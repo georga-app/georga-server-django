@@ -28,6 +28,13 @@ Further current testusers are (use password `georga` for all accounts):
 ## Deploy
 
 
+## Test
+
+Run django tests:
+
+    ./manage.py test
+
+
 ## Use
 
 ### GraphQL
@@ -69,11 +76,11 @@ query {
 ```
 
 #### Initial and demo data
-For initial contents and/or demodata in the database, the yaml-files in folder initial_data can be used.
+For initial contents and/or demodata in the database, the yaml-files in folder fixtures can be used.
 
-Load the demo data `python manage.py loaddata georga/initial_data/*`
+Load the demo data `python manage.py loaddata georga/fixtures/*`
 
-For getting the password hash for a users' password, e.g. to insert it into demodata in initial_data/person.yaml the following custom management command can be used:
+For getting the password hash for a users' password, e.g. to insert it into demodata in `fixtures/005_person.yaml` the following custom management command can be used:
 
 `python manage.py get_pw_hash passwordstring`
 
