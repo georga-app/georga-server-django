@@ -9,7 +9,7 @@ from graphql_jwt.settings import jwt_settings
 
 from georga.models import MixinAuthorization, Person
 
-SUPERADMIN_USER = Person.objects.get(email="admin@georga.test")
+SUPERADMIN_USER = "admin@georga.test"
 FIXTURES_DIR = join("georga", "fixtures")
 
 VARIABLES = """
