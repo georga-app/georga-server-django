@@ -15,10 +15,10 @@ from django.forms import (
     IntegerField, CharField, ChoiceField
 )
 from django.forms.models import ModelFormMetaclass, model_to_dict
-from django_filters import FilterSet
+from django_filters import FilterSet, UUIDFilter
 from graphene import (
     Schema, Mutation, ObjectType, Field, Union, List,
-    ID, DateTime, String, Int, NonNull
+    ID, UUID, DateTime, String, Int, NonNull
 )
 from graphene.relay import Node
 from graphene.types.dynamic import Dynamic
@@ -255,6 +255,8 @@ class UUIDDjangoFilterConnectionField(DjangoFilterConnectionField):
     ):
         # move queryset id arg to uuid arg
         if 'id' in args:
+            filterset_class.base_filters['uuid'] = UUIDFilter('uuid')
+            filtering_args['uuid'] = UUID('uuid')
             _, args['uuid'] = from_global_id(args['id'])
             del (args['id'])
 
