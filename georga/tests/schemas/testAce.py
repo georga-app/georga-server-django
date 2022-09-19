@@ -1,11 +1,20 @@
-from . import SchemasTestCase
-
-from georga.models import Person
+from . import ListQueryTestCase
+from ...schemas import QueryType
 
 listAcesQuery = """
-query ListAces {
-    listAces {
+query (
+    [VARIABLES]
+    $instance: ID
+    $instance_In: [ID]
+){
+    listAces (
+        [ARGUMENTS]
+        instance: $instance
+        instance_In: $instance_In
+    ) {
+        [PAGEINFO]
         edges {
+            cursor
             node {
                 id
                 createdAt
@@ -39,12 +48,7 @@ query ListAces {
 """
 
 
-class ACLTestCase(SchemasTestCase):
-
-    def setUp(self):
-        self.user = Person.objects.get(email="organization@georga.test")
-        self.client.authenticate(self.user)
-
-    def test_some_query(self):
-        response = self.client.execute(listAcesQuery)
-        print(response)
+class ListAcesTestCase(ListQueryTestCase):
+    field = QueryType.list_aces
+    # TODO: use schema introspection to fetch objects
+    operation = listAcesQuery
