@@ -9,9 +9,13 @@ django-fsm==2.8.1
 django-graphql-jwt==0.3.4
 graphene-django==2.15.0
 graphql-ws==0.4.4
-pdbpp==0.10.3
 phonenumbers==8.12.55
 psycopg2==2.9.3
-ptvsd==4.3.2
 python-dotenv==0.21.0
 PyYAML==6.0
+# testing
+tblib==1.7.0
+# dev
+pdbpp==0.10.3
+ptvsd==4.3.2
+
