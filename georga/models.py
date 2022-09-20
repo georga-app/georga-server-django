@@ -381,6 +381,7 @@ class ACE(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
                 f"person {self.person.gid} is not employed by organization "
                 f"of instance {self.instance.gid}")
 
+    # permissions
     @classmethod
     def permitted(cls, ace, user, action):
         if not user.is_staff:
@@ -1026,6 +1027,7 @@ class MessageFilter(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Mode
                 result[channel] = level
         return result
 
+    # permissions
     @classmethod
     def permitted(cls, message_filter, user, action):
         # unpersisted instances (create)
@@ -1551,6 +1553,7 @@ class Person(MixinTimestamps, MixinUUIDs, MixinAuthorization, AbstractUser):
             | Q(ace__person=self.id, ace__permission="ADMIN")
         ).values_list('id', flat=True))
 
+    # permissions
     @classmethod
     def permitted(cls, person, user, action):
         # unpersisted instances (create)

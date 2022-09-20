@@ -510,7 +510,7 @@ class ListQueryTestCase(SchemaTestCase, metaclass=QueryTestCaseMetaclass):
         # iterate over pages
         after = ""
         for page in range(1, pages+1):
-            offset = page * page_size - 1
+            offset = page * page_size - page_size
             with self.subTest(pages=pages, page=page, page_size=page_size, after=after):
                 # execute operation
                 result = self.client.execute(
@@ -564,7 +564,7 @@ class ListQueryTestCase(SchemaTestCase, metaclass=QueryTestCaseMetaclass):
         before = ""
         for page in range(1, pages+1):
             page_items = pages * page_size
-            offset = count - page_items + (pages - page + 1) * page_size - 1
+            offset = count - page_items + (pages - page + 1) * page_size - page_size
             with self.subTest(pages=pages, page=page, page_size=page_size, before=before):
                 # execute operation
                 result = self.client.execute(
