@@ -16,6 +16,7 @@ from ...schemas import schema
 
 SUPERADMIN_USER = "admin@georga.test"
 FIXTURES_DIR = join("georga", "fixtures")
+DEFAULT_BATCH_SIZE = 5  # number of entries tested in automated tests
 
 VARIABLES = """
     $id: ID
@@ -269,18 +270,21 @@ class QueryTestCaseMetaclass(SchemaTestCaseMetaclass):
     @classmethod
     def create_exact_filter_test(
             cls, name, user=SUPERADMIN_USER, actions=None, permitted=True,
-            min_entries=1, default_size=5):
+            min_entries=1, default_batch_size=DEFAULT_BATCH_SIZE):
         def getter(item):
             return getattr(item, cls.getter_map.get(name, name))
 
         @auth(user, actions, permitted)
-        def exact_filter_test(self):
+        def test(self):
+            # skip if filter not set
+            if name not in self.operation_args:
+                raise SkipTest("filter not set")
             # skip if not enough entries
             count = len(self.entries)
             if count < min_entries:
                 raise SkipTest("not enough entries")
             # configure variables
-            size = min(count, default_size)
+            size = min(count, default_batch_size)
             # iterate over entries
             for item in self.entries[:size]:
                 variables = {name: getter(item)}
@@ -330,155 +334,178 @@ class ListQueryTestCase(SchemaTestCase, metaclass=QueryTestCaseMetaclass):
     def test_first_filter(self):
         """first filter returns only first entries"""
         # skip if filter not set
-        if 'first' not in self.field.args:
+        if 'first' not in self.operation_args:
             raise SkipTest("filter not set")
         # skip if not enough entries
         count = len(self.entries)
         if count < 1:
             raise SkipTest("not enough entries")
         # configure variables
-        size = round(count / 2)
-        # execute operation
-        result = self.client.execute(
-            self.operation,
-            variables={'first': size}
-        )
-        # assert no errors
-        self.assertIsNone(result.errors)
-        # assert all database objects are delivered
-        data = next(iter(result.data.values()))
-        self.assertEqual(
-            len(data['edges']),
-            size)
-        # assert first/last nodes are equal to first/last database entries
-        self.assertEqual(
-            data['edges'][0]['node']['id'],
-            self.entries[0].gid)
-        self.assertEqual(
-            data['edges'][-1]['node']['id'],
-            self.entries[size-1].gid)
+        batch_size = min(count, DEFAULT_BATCH_SIZE)
+        # iterate over batch
+        for first in range(batch_size):
+            with self.subTest(first=first):
+                # execute operation
+                result = self.client.execute(
+                    self.operation,
+                    variables={'first': first}
+                )
+                # assert no errors
+                self.assertIsNone(result.errors)
+                # assert all database objects are delivered
+                data = next(iter(result.data.values()))
+                self.assertEqual(
+                    len(data['edges']),
+                    first)
+                # assert first/last node is equal to first/last database entry
+                if first:
+                    self.assertEqual(
+                        data['edges'][0]['node']['id'],
+                        self.entries[0].gid)
+                    self.assertEqual(
+                        data['edges'][-1]['node']['id'],
+                        self.entries[first-1].gid)
 
     @auth(SUPERADMIN_USER, permitted=True)
     def test_last_filter(self):
         """last filter returns only last entries"""
         # skip if filter not set
-        if 'last' not in self.field.args:
+        if 'last' not in self.operation_args:
             raise SkipTest("filter not set")
         # skip if not enough entries
         count = len(self.entries)
         if count < 1:
             raise SkipTest("not enough entries")
         # configure variables
-        size = round(count / 2)
-        # execute operation
-        result = self.client.execute(
-            self.operation,
-            variables={'last': size}
-        )
-        # assert no errors
-        self.assertIsNone(result.errors)
-        # assert all database objects are delivered
-        data = next(iter(result.data.values()))
-        self.assertEqual(
-            len(data['edges']),
-            size)
-        # assert first/last nodes are equal to first/last database entries
-        self.assertEqual(
-            data['edges'][0]['node']['id'],
-            self.entries[len(self.entries)-size].gid)
-        self.assertEqual(
-            data['edges'][-1]['node']['id'],
-            self.entries[len(self.entries)-1].gid)
+        batch_size = min(count, DEFAULT_BATCH_SIZE)
+        # iterate over batch
+        for last in range(batch_size):
+            with self.subTest(last=last):
+                # execute operation
+                result = self.client.execute(
+                    self.operation,
+                    variables={'last': last}
+                )
+                # assert no errors
+                self.assertIsNone(result.errors)
+                # assert all database objects are delivered
+                data = next(iter(result.data.values()))
+                self.assertEqual(
+                    len(data['edges']),
+                    last)
+                # assert first/last node is equal to first/last database entry
+                if last:
+                    self.assertEqual(
+                        data['edges'][0]['node']['id'],
+                        self.entries[count-last].gid)
+                    self.assertEqual(
+                        data['edges'][-1]['node']['id'],
+                        self.entries[count-1].gid)
 
     @auth(SUPERADMIN_USER, permitted=True)
     def test_offset_filter(self):
         """offset filter returns offsetted entries"""
         # skip if filter not set
-        if 'offset' not in self.field.args:
+        if 'offset' not in self.operation_args:
             raise SkipTest("filter not set")
         # skip if not enough entries
         count = len(self.entries)
         if count < 2:
             raise SkipTest("not enough entries")
         # configure variables
-        size = round(count / 2)
-        # execute operation
-        result = self.client.execute(
-            self.operation,
-            variables={'offset': size}
-        )
-        # assert no errors
-        self.assertIsNone(result.errors)
-        # assert all database objects are delivered
-        data = next(iter(result.data.values()))
-        self.assertEqual(
-            data['edges'][0]['node']['id'],
-            self.entries[size].gid)
+        batch_size = min(count, DEFAULT_BATCH_SIZE)
+        # iterate over batch
+        for offset in range(batch_size):
+            with self.subTest(offset=offset):
+                # execute operation
+                result = self.client.execute(
+                    self.operation,
+                    variables={'offset': offset}
+                )
+                # assert no errors
+                self.assertIsNone(result.errors)
+                # assert all database objects are delivered
+                data = next(iter(result.data.values()))
+                self.assertEqual(
+                    data['edges'][0]['node']['id'],
+                    self.entries[offset].gid)
 
     @auth(SUPERADMIN_USER, permitted=True)
     def test_after_filter(self):
         """after filter returns entries after specified cursor"""
         # skip if filter not set
-        if 'after' not in self.field.args:
-            raise SkipTest("filter not set")
-        # skip if not enough entries
-        count = len(self.entries)
-        if count < 2:
-            raise SkipTest("not enough entries")
-        # execute operation
-        result = self.client.execute(
-            self.operation,
-            variables={'after': base64("arrayconnection:0")}
-        )
-        # assert no errors
-        self.assertIsNone(result.errors)
-        # assert all database objects are delivered
-        data = next(iter(result.data.values()))
-        self.assertEqual(
-            data['edges'][0]['node']['id'],
-            self.entries[1].gid)
-        self.assertEqual(
-            len(data['edges']),
-            count-1)
-
-    @auth(SUPERADMIN_USER, permitted=True)
-    def test_before_filter(self):
-        """before filter returns entries before specified cursor"""
-        # skip if filter not set
-        if 'before' not in self.field.args:
-            raise SkipTest("filter not set")
-        # skip if not enough entries
-        count = len(self.entries)
-        if count < 2:
-            raise SkipTest("not enough entries")
-        # execute operation
-        result = self.client.execute(
-            self.operation,
-            variables={'before': base64("arrayconnection:1")}
-        )
-        # assert no errors
-        self.assertIsNone(result.errors)
-        # assert all database objects are delivered
-        data = next(iter(result.data.values()))
-        self.assertEqual(
-            data['edges'][0]['node']['id'],
-            self.entries[0].gid)
-        self.assertEqual(
-            len(data['edges']),
-            1)
-
-    @auth(SUPERADMIN_USER, permitted=True)
-    def test_forward_pagination_filter(self):
-        """forward pagination returns correct slices"""
-        # skip if filter not set
-        if any(arg not in self.field.args for arg in ['first', 'after']):
+        if 'after' not in self.operation_args:
             raise SkipTest("filter not set")
         # skip if not enough entries
         count = len(self.entries)
         if count < 2:
             raise SkipTest("not enough entries")
         # configure variables
-        pages = min(count, 3)
+        batch_size = min(count, DEFAULT_BATCH_SIZE)
+        # iterate over batch
+        for after in range(batch_size):
+            with self.subTest(after=after):
+                # execute operation
+                result = self.client.execute(
+                    self.operation,
+                    variables={'after': base64(f"arrayconnection:{after}")}
+                )
+                # assert no errors
+                self.assertIsNone(result.errors)
+                # assert all database objects are delivered
+                data = next(iter(result.data.values()))
+                self.assertEqual(
+                    len(data['edges']),
+                    count-after-1)
+                if count-after-1 > 0:
+                    self.assertEqual(
+                        data['edges'][0]['node']['id'],
+                        self.entries[after+1].gid)
+
+    @auth(SUPERADMIN_USER, permitted=True)
+    def test_before_filter(self):
+        """before filter returns entries before specified cursor"""
+        # skip if filter not set
+        if 'before' not in self.operation_args:
+            raise SkipTest("filter not set")
+        # skip if not enough entries
+        count = len(self.entries)
+        if count < 2:
+            raise SkipTest("not enough entries")
+        # configure variables
+        batch_size = min(count, DEFAULT_BATCH_SIZE)
+        # iterate over batch
+        for before in range(batch_size):
+            with self.subTest(before=before):
+                # execute operation
+                result = self.client.execute(
+                    self.operation,
+                    variables={'before': base64(f"arrayconnection:{before}")}
+                )
+                # assert no errors
+                self.assertIsNone(result.errors)
+                # assert all database objects are delivered
+                data = next(iter(result.data.values()))
+                self.assertEqual(
+                    len(data['edges']),
+                    before)
+                if before:
+                    self.assertEqual(
+                        data['edges'][-1]['node']['id'],
+                        self.entries[before-1].gid)
+
+    @auth(SUPERADMIN_USER, permitted=True)
+    def test_forward_pagination_filter(self):
+        """forward pagination returns correct slices"""
+        # skip if filter not set
+        if any(arg not in self.operation_args for arg in ['first', 'after']):
+            raise SkipTest("filter not set")
+        # skip if not enough entries
+        count = len(self.entries)
+        if count < 2:
+            raise SkipTest("not enough entries")
+        # configure variables
+        pages = min(count, DEFAULT_BATCH_SIZE)
         size = int(count / pages)
         # iterate over pages
         after = ""
@@ -530,7 +557,7 @@ class ListQueryTestCase(SchemaTestCase, metaclass=QueryTestCaseMetaclass):
         if count < 2:
             raise SkipTest("not enough entries")
         # configure variables
-        pages = min(count, 3)
+        pages = min(count, DEFAULT_BATCH_SIZE)
         size = int(count / pages)
         # iterate over pages
         before = ""
