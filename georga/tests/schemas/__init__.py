@@ -505,17 +505,18 @@ class ListQueryTestCase(SchemaTestCase, metaclass=QueryTestCaseMetaclass):
         if count < 2:
             raise SkipTest("not enough entries")
         # configure variables
-        pages = min(count, DEFAULT_BATCH_SIZE)
-        size = int(count / pages)
+        page_size = max(1, int(count / DEFAULT_BATCH_SIZE))
+        pages = int(count / page_size)
         # iterate over pages
         after = ""
-        for page in range(pages):
-            with self.subTest(pages=pages, page=page, after=after, size=size):
+        for page in range(1, pages+1):
+            offset = page * page_size - 1
+            with self.subTest(pages=pages, page=page, page_size=page_size, after=after):
                 # execute operation
                 result = self.client.execute(
                     self.operation,
                     variables={
-                        'first': size,
+                        'first': page_size,
                         'after': after,
                     }
                 )
@@ -525,15 +526,15 @@ class ListQueryTestCase(SchemaTestCase, metaclass=QueryTestCaseMetaclass):
                 data = next(iter(result.data.values()))
                 self.assertEqual(
                     data['edges'][0]['node']['id'],
-                    self.entries[page*size].gid)
+                    self.entries[offset].gid)
                 self.assertEqual(
                     data['edges'][-1]['node']['id'],
-                    self.entries[page*size+size-1].gid)
+                    self.entries[offset+page_size-1].gid)
                 self.assertFalse(  # https://github.com/graphql-python/graphene/issues/395
                     data['pageInfo']['hasPreviousPage'])
                 self.assertEqual(
                     data['pageInfo']['hasNextPage'],
-                    page != pages - 1)
+                    page != pages)
                 page_start_cursor = data['pageInfo']['startCursor']
                 edge_start_cursor = data['edges'][0]['cursor']
                 self.assertEqual(
@@ -550,24 +551,26 @@ class ListQueryTestCase(SchemaTestCase, metaclass=QueryTestCaseMetaclass):
     def test_backward_pagination_filter(self):
         """backward pagination returns correct slices"""
         # skip if filter not set
-        if any(arg not in self.field.args for arg in ['last', 'before']):
+        if any(arg not in self.operation_args for arg in ['last', 'before']):
             raise SkipTest("filter not set")
         # skip if not enough entries
         count = len(self.entries)
         if count < 2:
             raise SkipTest("not enough entries")
         # configure variables
-        pages = min(count, DEFAULT_BATCH_SIZE)
-        size = int(count / pages)
+        page_size = max(1, int(count / DEFAULT_BATCH_SIZE))
+        pages = int(count / page_size)
         # iterate over pages
         before = ""
-        for page in reversed(range(pages)):
-            with self.subTest(pages=pages, page=page, before=before, size=size):
+        for page in range(1, pages+1):
+            page_items = pages * page_size
+            offset = count - page_items + (pages - page + 1) * page_size - 1
+            with self.subTest(pages=pages, page=page, page_size=page_size, before=before):
                 # execute operation
                 result = self.client.execute(
                     self.operation,
                     variables={
-                        'last': size,
+                        'last': page_size,
                         'before': before,
                     }
                 )
@@ -577,13 +580,13 @@ class ListQueryTestCase(SchemaTestCase, metaclass=QueryTestCaseMetaclass):
                 data = next(iter(result.data.values()))
                 self.assertEqual(
                     data['edges'][0]['node']['id'],
-                    self.entries[page*size].gid)
+                    self.entries[offset].gid)
                 self.assertEqual(
                     data['edges'][-1]['node']['id'],
-                    self.entries[page*size+size-1].gid)
+                    self.entries[offset+page_size-1].gid)
                 self.assertEqual(
                     data['pageInfo']['hasPreviousPage'],
-                    page != 0)
+                    page != pages)
                 self.assertFalse(  # https://github.com/graphql-python/graphene/issues/395
                     data['pageInfo']['hasNextPage'])
                 page_start_cursor = data['pageInfo']['startCursor']
