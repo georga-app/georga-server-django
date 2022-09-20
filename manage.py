@@ -2,6 +2,7 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
+import subprocess
 
 import dotenv
 
@@ -55,3 +56,12 @@ if __name__ == '__main__':
 
     # start
     main()
+
+    # run linter after tests
+    if (sys.argv[1] == 'test'):
+        print("\nRunning linter ... ")
+        result = subprocess.run(('flake8', '.'))
+        if not result.returncode:
+            print("OK")
+        else:
+            sys.exit(1)
