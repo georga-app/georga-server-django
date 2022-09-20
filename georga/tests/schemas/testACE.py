@@ -1,5 +1,4 @@
 from . import ListQueryTestCase
-from ...schemas import QueryType
 
 listAcesQuery = """
 query (
@@ -49,6 +48,4 @@ query (
 
 
 class ListAcesTestCase(ListQueryTestCase):
-    field = QueryType.list_aces
-    # TODO: use schema introspection to fetch objects
     operation = listAcesQuery

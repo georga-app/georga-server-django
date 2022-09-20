@@ -879,7 +879,7 @@ class MessageType(UUIDDjangoObjectType):
         model = Message
         fields = message_ro_fields + message_rw_fields
         filter_fields = message_filter_fields
-        permissions = [login_required]
+        permissions = [login_required, object_permits_user('read')]
 
 
 # filters
@@ -904,7 +904,7 @@ class CreateMessageMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = MessageModelForm
         exclude_fields = ['id']
-        permissions = [login_required]
+        permissions = [staff_member_required, object_permits_user('create')]
 
     @classmethod
     def perform_mutate(cls, form, info):
@@ -917,7 +917,7 @@ class UpdateMessageMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = MessageModelForm
         required_fields = ['id']
-        permissions = [login_required, object_permits_user('ADMIN')]
+        permissions = [staff_member_required, object_permits_user('update')]
 
 
 # class UpdateMessageBatchMutationPayload(ObjectType):
@@ -942,7 +942,7 @@ class DeleteMessageMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = MessageModelForm
         only_fields = ['id']
-        permissions = [staff_member_required]
+        permissions = [staff_member_required, object_permits_user('delete')]
 
     @classmethod
     def perform_mutate(cls, form, info):

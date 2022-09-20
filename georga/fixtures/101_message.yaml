@@ -49,9 +49,9 @@
     priority: NORMAL
     category: ACTIVITY
     state: PUBLISHED
-    email_delivery: PENDING
-    push_delivery: PENDING
-    sms_delivery: PENDING
+    email_delivery: SCHEDULED
+    push_delivery: SCHEDULED
+    sms_delivery: SCHEDULED
     scope_ct: ["georga", "task"]
     scope_id: 1
 - model: georga.message
@@ -77,7 +77,7 @@
     priority: NORMAL
     category: ACTIVITY
     state: DRAFT
-    email_delivery: PENDING
+    email_delivery: SCHEDULED
     push_delivery: SENT
     sms_delivery: FAILED
     scope_ct: ["georga", "operation"]

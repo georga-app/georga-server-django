@@ -1,0 +1,63 @@
+from . import ListQueryTestCase
+
+listMessagesQuery = """
+query (
+    [VARIABLES]
+    $state: String
+    $scope: ID
+    $scope_In: [ID]
+){
+    listMessages (
+        [ARGUMENTS]
+        state: $state
+        scope: $scope
+        scope_In: $scope_In
+    ) {
+        [PAGEINFO]
+        edges {
+            cursor
+            node {
+                id
+                createdAt
+                modifiedAt
+                category
+                state
+                title
+                priority
+                delivery
+                emailDelivery
+                pushDelivery
+                smsDelivery
+                scope {
+                    __typename
+                    ... on OrganizationType {
+                        id
+                        name
+                    }
+                    ... on ProjectType {
+                        id
+                        name
+                    }
+                    ... on OperationType {
+                        id
+                        name
+                    }
+                    ... on TaskType {
+                        id
+                        name
+                    }
+                    ... on ShiftType {
+                        id
+                        startTime
+                        endTime
+                    }
+                }
+            }
+        }
+    }
+}
+"""
+
+
+class ListMessagesTestCase(ListQueryTestCase):
+    operation = listMessagesQuery
