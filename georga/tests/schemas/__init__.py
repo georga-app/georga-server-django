@@ -632,9 +632,15 @@ class ListQueryTestCase(SchemaTestCase, metaclass=QueryTestCaseMetaclass):
     @auth(SUPERADMIN_USER, permitted=True)
     def test_all_permitted(self):
         """all permitted returns all entries"""
-        # skip if model has no permissions
+        # skip if model has not inherited MixinAuthorization
         if not issubclass(self.model, MixinAuthorization):
-            raise SkipTest("model has no permissions")
+            raise SkipTest(
+                "WARNING: model is public (not inherited MixinAuthorization)")
+        # skip if graphene type did not set object_permits_user in permission
+        if not any(p.__qualname__.startswith('object_permits_user')
+                   for p in self.permission):
+            raise SkipTest(
+                "WARNING: operation has no permission check (object_permits_user)")
         # skip if not enough entries
         count = len(self.entries)
         if count < 1:
@@ -652,9 +658,15 @@ class ListQueryTestCase(SchemaTestCase, metaclass=QueryTestCaseMetaclass):
     @auth(SUPERADMIN_USER, permitted=False)
     def test_none_permitted(self):
         """none permitted returns no entries"""
-        # skip if model has no permissions
+        # skip if model has not inherited MixinAuthorization
         if not issubclass(self.model, MixinAuthorization):
-            raise SkipTest("model has no permissions")
+            raise SkipTest(
+                "WARNING: model is public (not inherited MixinAuthorization)")
+        # skip if graphene type did not set object_permits_user in permission
+        if not any(p.__qualname__.startswith('object_permits_user')
+                   for p in self.permission):
+            raise SkipTest(
+                "WARNING: operation has no permission check (object_permits_user)")
         # skip if not enough entries
         count = self.model.objects.count()
         if count < 1:
@@ -677,9 +689,15 @@ class ListQueryTestCase(SchemaTestCase, metaclass=QueryTestCaseMetaclass):
     @auth(SUPERADMIN_USER, permitted=_one_permitted)
     def test_one_permitted(self):
         """one permitted returns only one entry"""
-        # skip if model has no permissions
+        # skip if model has not inherited MixinAuthorization
         if not issubclass(self.model, MixinAuthorization):
-            raise SkipTest("model has no permissions")
+            raise SkipTest(
+                "WARNING: model is public (not inherited MixinAuthorization)")
+        # skip if graphene type did not set object_permits_user in permission
+        if not any(p.__qualname__.startswith('object_permits_user')
+                   for p in self.permission):
+            raise SkipTest(
+                "WARNING: operation has no permission check (object_permits_user)")
         # skip if not enough entries
         all_entries = self.model.objects.all()
         count = all_entries.count()
