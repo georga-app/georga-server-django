@@ -263,12 +263,15 @@ class SchemaTestCase(JSONWebTokenTestCase, metaclass=SchemaTestCaseMetaclass):
 
 class QueryTestCaseMetaclass(SchemaTestCaseMetaclass):
     """Adds tests for query operations based on the field."""
+    # TODO:
+    # id filter: incorrect padding
+    # id filter: not pemitted: no entries
+
     def __new__(cls, name, bases, dct):
         new = super().__new__(cls, name, bases, dct)
         if not new.field:
             return new
         # add tests for filters
-        print(new.field.args.keys())
         for filter_arg in new.field.args.keys():
             # skip otherwise implemented filter tests
             if filter_arg in ['first', 'last', 'offset', 'before', 'after']:
@@ -276,6 +279,7 @@ class QueryTestCaseMetaclass(SchemaTestCaseMetaclass):
             model_field_name, *lookup = to_snake_case(filter_arg).split("__", maxsplit=1)
             model_field = new.model._meta.get_field(model_field_name)
             if lookup:  # TODO: implement other filters
+                print(name, filter_arg)
                 continue
             setattr(new, f"test_{filter_arg}_filter",
                     cls.create_filter_test(filter_arg, model_field))
@@ -361,6 +365,7 @@ class ListQueryTestCase(SchemaTestCase, metaclass=QueryTestCaseMetaclass):
     Adds tests for permissions:
     - all permitted
     - none permitted
+    - one permitted
 
     Metaclass adds some tests for:
     - filter
@@ -369,6 +374,14 @@ class ListQueryTestCase(SchemaTestCase, metaclass=QueryTestCaseMetaclass):
     __test__ = False
 
     # filters -----------------------------------------------------------------
+
+    # TODO:
+    # - last negative: no entries
+    # - offset > db entries: all entries
+    # - offset/first negative: "Negative indexing is not supported"
+    # - before/after 'arrayconnection:-1': "Negative indexing is not supported"
+    # - before/after 'invalidstrings': no entries
+    # - first/last > 100: "exceeds the limit of 100 records"
 
     @auth(SUPERADMIN_USER, permitted=True)
     def test_first_filter(self):
