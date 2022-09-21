@@ -176,6 +176,7 @@ class SchemaTestCaseMetaclass(type):
             field = root.fields[operation_name]
             graphene_type_name = field.type.name.removesuffix('Connection')
             graphene_type = schema.get_type(graphene_type_name).graphene_type
+            permission = getattr(graphene_type._meta.class_type, 'permission', [])
             model = graphene_type._meta.model
             # assign variables
             new.field = field
@@ -186,6 +187,7 @@ class SchemaTestCaseMetaclass(type):
             new.operation_name = operation_name
             new.operation_args = operation_args
             new.graphene_type = graphene_type
+            new.permission = permission
         return new
 
 
@@ -212,6 +214,7 @@ class SchemaTestCase(JSONWebTokenTestCase, metaclass=SchemaTestCaseMetaclass):
         operation_ast (graphql.language.ast.Field()): Parsed operation.
         operation_args (list[str]): List of filter args in parsed operation.
         graphene_type (obj): Graphene type of the model.
+        permission (list[func]): List of permission decorators for graphene type.
 
     Attrs set in `@auth()` decorator:
         user (georga.models.Person()): The user, which is authenticated for
@@ -233,6 +236,7 @@ class SchemaTestCase(JSONWebTokenTestCase, metaclass=SchemaTestCaseMetaclass):
     operation_ast = None
     operation_args = None
     graphene_type = None
+    permission = []
 
     # set in @auth()
     user = None
