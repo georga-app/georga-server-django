@@ -343,6 +343,9 @@ class QueryTestCaseMetaclass(SchemaTestCaseMetaclass):
                         api_values.append(value)
                     # assert length of result and queryset are equal
                     self.assertEqual(len(edges), queryset.count())
+                    # assert only one result for id fields
+                    if attr == "gid":
+                        self.assertEqual(len(edges), 1)
                     # assert queried database item is in the result
                     self.assertIn(database_value, api_values)
         test.__doc__ = f"""{filter_arg} filter returns correct entries"""
