@@ -207,7 +207,8 @@ class UUIDDjangoObjectType(DjangoObjectType):
             kwargs['interfaces'] = (Node,)
 
         # set permissions for query specified in Meta.permissions
-        for permission in kwargs.get('permissions', []):
+        cls.permission = kwargs.get('permissions', [])
+        for permission in cls.permission:
             cls.get_node = permission(cls.get_node)
             cls.get_queryset = permission(cls.get_queryset)
 
@@ -304,7 +305,8 @@ class UUIDDjangoModelFormMutation(DjangoModelFormMutation):
             setattr(kwargs['form_class'].Meta, 'required_fields', kwargs['required_fields'])
 
         # set permissions for mutation specified in Meta.permissions
-        for permission in kwargs.get('permissions', []):
+        cls.permission = kwargs.get('permissions', [])
+        for permission in cls.permission:
             cls.get_form_kwargs = permission(cls.get_form_kwargs)
             cls.perform_mutate = permission(cls.perform_mutate)
 
@@ -879,7 +881,8 @@ class MessageType(UUIDDjangoObjectType):
         model = Message
         fields = message_ro_fields + message_rw_fields
         filter_fields = message_filter_fields
-        permissions = [login_required, object_permits_user('read')]
+        # permissions = [login_required, object_permits_user('read')]
+        permissions = [login_required]
 
 
 # filters
