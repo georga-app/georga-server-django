@@ -2,6 +2,7 @@ from os import listdir
 from os.path import isfile, join
 from unittest import SkipTest
 from functools import wraps
+from datetime import datetime
 
 from graphql import parse
 from graphql_jwt.testcases import JSONWebTokenTestCase, JSONWebTokenClient
@@ -9,15 +10,20 @@ from graphql_jwt.shortcuts import get_token
 from graphql_jwt.settings import jwt_settings
 from graphql_relay.utils import base64
 from graphene.utils.str_converters import to_snake_case
+from django.db import models
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes.fields import GenericForeignKey
 
 from ...models import MixinAuthorization, Person
 from ...schemas import schema
 
 
-SUPERADMIN_USER = "admin@georga.test"
-FIXTURES_DIR = join("georga", "fixtures")
+# configuration variables
+SUPERADMIN_USER = "admin@georga.test"  # email of superadmin user
+FIXTURES_DIR = join("georga", "fixtures")  # fixtures directory
 DEFAULT_BATCH_SIZE = 5  # number of entries tested in automated tests
 
+# shared query variables (relay node interface, MixinTimestamps)
 VARIABLES = """
     $id: ID
     $offset: Int
@@ -32,6 +38,7 @@ VARIABLES = """
     $modifiedAt_Gt: DateTime
     $modifiedAt_Lte: DateTime
 """
+# shared query arguments (relay node interface, MixinTimestamps)
 ARGUMENTS = """
         id: $id
         offset: $offset
@@ -46,6 +53,7 @@ ARGUMENTS = """
         modifiedAt_Gt: $modifiedAt_Gt
         modifiedAt_Lte: $modifiedAt_Lte
 """
+# shared query result fields (relay node interface)
 PAGEINFO = """
         pageInfo {
             hasNextPage
@@ -55,10 +63,11 @@ PAGEINFO = """
         }
 """
 
-TOKEN_CACHE = {}
-
 
 # jwt -------------------------------------------------------------------------
+
+TOKEN_CACHE = {}  # cache for authentication tokens
+
 
 class CachedJSONWebTokenClient(JSONWebTokenClient):
     """JSONWebTokenClient with cached tokens, requested only once per run."""
@@ -72,11 +81,68 @@ class CachedJSONWebTokenClient(JSONWebTokenClient):
         }
 
 
-# base ------------------------------------------------------------------------
+def auth(user, actions=None, permitted=None):
+    """
+    Decorator to authenticate a user before the graphql operation is executed.
+
+    Args:
+        user (georga.models.Person()|str): Person instance or email adress.
+        actions (tuple[str]|str, optional): Action or tuple of actions. Used
+            to filter the queryset in `self.entries` to match the expected
+            graphql results.
+        permitted (Function|True|False|None, optional): Function to override
+            the model method `permitted()` with. If True/False, an function is
+            used, that always returns True/False. Used to bypass permissions.
+
+    Returns:
+        The decorated function.
+    """
+    _permitted = permitted
+    _actions = actions
+    if permitted in [True, False]:
+        def _permitted(*args, **kwargs):
+            return permitted
+        if not _actions:
+            _actions = r"¯\_(ツ)_/¯"
+    permission_override = callable(_permitted)
+
+    def decorator(func):
+        @wraps(func)
+        def wrapper(self, *args, **kwargs):
+            # set and authenticate user
+            self.user = user
+            if isinstance(self.user, str):
+                self.user = Person.objects.get(email=self.user)
+            self.client.authenticate(self.user)
+            # override permissions
+            if permission_override:
+                self._permitted = self.model.permitted
+                setattr(self.model, 'permitted', _permitted)
+            # fetch database entries for user
+            self.entries = self.model.objects
+            if self.user and _actions:
+                self.entries = self.model.filter_permitted(self.user, _actions)
+            self.entries = self.entries.all()
+            # execute test
+            func(self, *args, **kwargs)
+            # reset entries
+            self.entries = None
+            # reset permissions
+            if permission_override:
+                self.model.permitted = self._permitted
+                self._permitted = None
+            # reset and logout user
+            self.user = None
+            self.client.logout()
+        return wrapper
+    return decorator
+
+
+# schema ----------------------------------------------------------------------
 
 class SchemaTestCaseMetaclass(type):
     """
-    Metaclass for schema tests
+    Metaclass for schema tests.
 
     Skips tests if class attribute __test__ is False.
     Fetches some variables for easy access within the tests.
@@ -105,18 +171,21 @@ class SchemaTestCaseMetaclass(type):
             operation_type = definition.operation
             operation_ast = definition.selection_set.selections[0]
             operation_name = operation_ast.name.value
+            operation_args = [item.name.value for item in operation_ast.arguments]
             root = schema.get_type(f"{operation_type.capitalize()}Type")
             field = root.fields[operation_name]
             graphene_type_name = field.type.name.removesuffix('Connection')
             graphene_type = schema.get_type(graphene_type_name).graphene_type
             model = graphene_type._meta.model
             # assign variables
+            new.field = field
+            new.model = model
             new.operation = operation
             new.operation_type = operation_type
             new.operation_ast = operation_ast
             new.operation_name = operation_name
-            new.field = field
-            new.model = model
+            new.operation_args = operation_args
+            new.graphene_type = graphene_type
         return new
 
 
@@ -141,6 +210,8 @@ class SchemaTestCase(JSONWebTokenTestCase, metaclass=SchemaTestCaseMetaclass):
         operation_type (str): query|mutation|subscription.
         operation_name (str): Name of the operation.
         operation_ast (graphql.language.ast.Field()): Parsed operation.
+        operation_args (list[str]): List of filter args in parsed operation.
+        graphene_type (obj): Graphene type of the model.
 
     Attrs set in `@auth()` decorator:
         user (georga.models.Person()): The user, which is authenticated for
@@ -160,6 +231,8 @@ class SchemaTestCase(JSONWebTokenTestCase, metaclass=SchemaTestCaseMetaclass):
     operation_type = None
     operation_name = None
     operation_ast = None
+    operation_args = None
+    graphene_type = None
 
     # set in @auth()
     user = None
@@ -182,112 +255,65 @@ class SchemaTestCase(JSONWebTokenTestCase, metaclass=SchemaTestCaseMetaclass):
         return f"{module} | {type_} | {operation} | {name} | {description}"
 
 
-def auth(user, actions=None, permitted=None):
-    """
-    Decorator to authenticate a user before the graphql operation is executed.
-
-    Args:
-        user (georga.models.Person()|str): Person instance or email adress.
-        actions (tuple[str]|str, optional): Action or tuple of actions. Used
-            to filter the queryset in `self.entries` to match the expected
-            graphql results.
-        permitted (Function|True|False|None, optional): Function to override
-            the model method `permitted()` with. If True/False, an function is
-            used, that always returns True/False. Used to bypass permissions.
-
-    Returns:
-        The decorated function.
-    """
-    _permitted = permitted
-    if permitted in [True, False]:
-        def _permitted(*args, **kwargs):
-            return permitted
-
-    def decorator(func):
-        @wraps(func)
-        def wrapper(self, *args, **kwargs):
-            # set and authenticate user
-            self.user = user
-            if isinstance(self.user, str):
-                self.user = Person.objects.get(email=self.user)
-            self.client.authenticate(self.user)
-            # override permissions
-            if callable(_permitted):
-                self._permitted = self.model.permitted
-                setattr(self.model, 'permitted', _permitted)
-            # fetch database entries for user
-            self.entries = self.model.objects
-            if self.user and actions:
-                self.entries = self.model.filter_permitted(self.user, actions)
-            self.entries = self.entries.all()
-            # execute test
-            func(self, *args, **kwargs)
-            # reset entries
-            self.entries = None
-            # reset permissions
-            if callable(permitted):
-                self.model.permitted = self._permitted
-                self._permitted = None
-            # reset and logout user
-            self.user = None
-            self.client.logout()
-        return wrapper
-    return decorator
-
-
 # query -----------------------------------------------------------------------
 
 class QueryTestCaseMetaclass(SchemaTestCaseMetaclass):
     """Adds tests for query operations based on the field."""
-    getter_map = {
-        'id': 'gid'
-    }
-
     def __new__(cls, name, bases, dct):
         new = super().__new__(cls, name, bases, dct)
         if not new.field:
             return new
         # add tests for filters
-        for name in new.field.args.keys():
+        print(new.field.args.keys())
+        for filter_arg in new.field.args.keys():
             # skip otherwise implemented filter tests
-            if name in ['first', 'last', 'offset', 'before', 'after']:
+            if filter_arg in ['first', 'last', 'offset', 'before', 'after']:
                 continue
-            if name != 'id':  # TODO: implement other filters
+            model_field_name, *lookup = to_snake_case(filter_arg).split("__", maxsplit=1)
+            model_field = new.model._meta.get_field(model_field_name)
+            if lookup:  # TODO: implement other filters
                 continue
-            # add test for the model attribute and lookup
-            model_field, *lookup = to_snake_case(name).split("__", maxsplit=1)
-            lookup = lookup and lookup[0] or "exact"
-            match lookup:
-                # TODO: skip filters not in args new.operation_ast.arguments
-                case "exact":
-                    setattr(new, f'test_{name}_filter',
-                            cls.create_exact_filter_test(model_field))
-                case _:
-                    # TODO: skip with unimplemented warning
-                    pass
+            setattr(new, f"test_{filter_arg}_filter",
+                    cls.create_filter_test(filter_arg, model_field))
         return new
 
     @classmethod
-    def create_exact_filter_test(
-            cls, name, user=SUPERADMIN_USER, actions=None, permitted=True,
+    def create_filter_test(
+            cls, filter_arg, model_field,
+            user=SUPERADMIN_USER, actions=None, permitted=True,
             min_entries=1, default_batch_size=DEFAULT_BATCH_SIZE):
-        def getter(item):
-            return getattr(item, cls.getter_map.get(name, name))
 
         @auth(user, actions, permitted)
         def test(self):
             # skip if filter not set
-            if name not in self.operation_args:
+            if filter_arg not in self.operation_args:
                 raise SkipTest("filter not set")
             # skip if not enough entries
             count = len(self.entries)
             if count < min_entries:
                 raise SkipTest("not enough entries")
             # configure variables
-            size = min(count, default_batch_size)
-            # iterate over entries
-            for item in self.entries[:size]:
-                variables = {name: getter(item)}
+            batch_size = min(count, default_batch_size)
+            # iterate over batch
+            for item in self.entries[:batch_size]:
+                # get expected queryset
+                attr = model_field.name
+                database_value = getattr(item, attr)
+                key = to_snake_case(filter_arg)
+                if isinstance(model_field, GenericForeignKey):  # use _id/_ct
+                    queryset = self.entries.filter(**{          # for GenericForeignKey
+                        key+"_id": database_value.id,
+                        key+"_ct": ContentType.objects.get_for_model(database_value).id
+                    })
+                else:
+                    queryset = self.entries.filter(**{key: database_value})
+                # get database value for graphql operation variables
+                if attr == "id":  # id fields
+                    attr = "gid"
+                database_value = getattr(item, attr)
+                if isinstance(database_value, models.Model):  # model fields
+                    database_value = database_value.gid
+                variables = {filter_arg: database_value}
                 with self.subTest(item=item, **variables):
                     # execute operation
                     result = self.client.execute(
@@ -296,13 +322,23 @@ class QueryTestCaseMetaclass(SchemaTestCaseMetaclass):
                     )
                     # assert no errors
                     self.assertIsNone(result.errors)
-                    # assert all database objects are delivered
+                    # prepare query results
                     data = next(iter(result.data.values()))
-                    self.assertEqual(
-                        data['edges'][0]['node'][name],
-                        variables[name])
-        exact_filter_test.__doc__ = f"""{name} filter returns correct entries"""
-        return exact_filter_test
+                    edges = data['edges']
+                    api_values = []
+                    for edge in edges:
+                        value = edge['node'][filter_arg]
+                        if isinstance(value, dict):  # model fields
+                            value = value['id']
+                        if model_field.__class__.__name__ == "DateTimeField":
+                            value = datetime.fromisoformat(value)
+                        api_values.append(value)
+                    # assert length of result and queryset are equal
+                    self.assertEqual(len(edges), queryset.count())
+                    # assert queried database item is in the result
+                    self.assertIn(database_value, api_values)
+        test.__doc__ = f"""{filter_arg} filter returns correct entries"""
+        return test
 
 
 class ListQueryTestCase(SchemaTestCase, metaclass=QueryTestCaseMetaclass):
@@ -352,19 +388,15 @@ class ListQueryTestCase(SchemaTestCase, metaclass=QueryTestCaseMetaclass):
                 )
                 # assert no errors
                 self.assertIsNone(result.errors)
-                # assert all database objects are delivered
+                # prepare query results
                 data = next(iter(result.data.values()))
-                self.assertEqual(
-                    len(data['edges']),
-                    first)
+                edges = data['edges']
+                # assert length of query result matched the request
+                self.assertEqual(len(edges), first)
                 # assert first/last node is equal to first/last database entry
                 if first:
-                    self.assertEqual(
-                        data['edges'][0]['node']['id'],
-                        self.entries[0].gid)
-                    self.assertEqual(
-                        data['edges'][-1]['node']['id'],
-                        self.entries[first-1].gid)
+                    self.assertEqual(edges[0]['node']['id'], self.entries[0].gid)
+                    self.assertEqual(edges[-1]['node']['id'], self.entries[first-1].gid)
 
     @auth(SUPERADMIN_USER, permitted=True)
     def test_last_filter(self):
@@ -388,19 +420,15 @@ class ListQueryTestCase(SchemaTestCase, metaclass=QueryTestCaseMetaclass):
                 )
                 # assert no errors
                 self.assertIsNone(result.errors)
-                # assert all database objects are delivered
+                # prepare query results
                 data = next(iter(result.data.values()))
-                self.assertEqual(
-                    len(data['edges']),
-                    last)
+                edges = data['edges']
+                # assert length of query result matched the request
+                self.assertEqual(len(edges), last)
                 # assert first/last node is equal to first/last database entry
                 if last:
-                    self.assertEqual(
-                        data['edges'][0]['node']['id'],
-                        self.entries[count-last].gid)
-                    self.assertEqual(
-                        data['edges'][-1]['node']['id'],
-                        self.entries[count-1].gid)
+                    self.assertEqual(edges[0]['node']['id'], self.entries[count-last].gid)
+                    self.assertEqual(edges[-1]['node']['id'], self.entries[count-1].gid)
 
     @auth(SUPERADMIN_USER, permitted=True)
     def test_offset_filter(self):
@@ -424,11 +452,11 @@ class ListQueryTestCase(SchemaTestCase, metaclass=QueryTestCaseMetaclass):
                 )
                 # assert no errors
                 self.assertIsNone(result.errors)
-                # assert all database objects are delivered
+                # prepare query results
                 data = next(iter(result.data.values()))
-                self.assertEqual(
-                    data['edges'][0]['node']['id'],
-                    self.entries[offset].gid)
+                edges = data['edges']
+                # assert first result has the right offset
+                self.assertEqual(edges[0]['node']['id'], self.entries[offset].gid)
 
     @auth(SUPERADMIN_USER, permitted=True)
     def test_after_filter(self):
@@ -452,15 +480,14 @@ class ListQueryTestCase(SchemaTestCase, metaclass=QueryTestCaseMetaclass):
                 )
                 # assert no errors
                 self.assertIsNone(result.errors)
-                # assert all database objects are delivered
+                # prepare query results
                 data = next(iter(result.data.values()))
-                self.assertEqual(
-                    len(data['edges']),
-                    count-after-1)
-                if count-after-1 > 0:
-                    self.assertEqual(
-                        data['edges'][0]['node']['id'],
-                        self.entries[after+1].gid)
+                edges = data['edges']
+                # assert query result length shrinks with omitted entries
+                self.assertEqual(len(edges), count-after-1)
+                # assert first query result is the expected one
+                if count-after-1 > 0:  # skip if no entries are left
+                    self.assertEqual(edges[0]['node']['id'], self.entries[after+1].gid)
 
     @auth(SUPERADMIN_USER, permitted=True)
     def test_before_filter(self):
@@ -484,15 +511,14 @@ class ListQueryTestCase(SchemaTestCase, metaclass=QueryTestCaseMetaclass):
                 )
                 # assert no errors
                 self.assertIsNone(result.errors)
-                # assert all database objects are delivered
+                # prepare query results
                 data = next(iter(result.data.values()))
-                self.assertEqual(
-                    len(data['edges']),
-                    before)
-                if before:
-                    self.assertEqual(
-                        data['edges'][-1]['node']['id'],
-                        self.entries[before-1].gid)
+                edges = data['edges']
+                # assert query result length shrinks with omitted entries
+                self.assertEqual(len(edges), before)
+                # assert last query result is the expected one
+                if before:  # skip if no entries are left
+                    self.assertEqual(edges[-1]['node']['id'], self.entries[before-1].gid)
 
     @auth(SUPERADMIN_USER, permitted=True)
     def test_forward_pagination_filter(self):
@@ -522,29 +548,27 @@ class ListQueryTestCase(SchemaTestCase, metaclass=QueryTestCaseMetaclass):
                 )
                 # assert no errors
                 self.assertIsNone(result.errors)
-                # assert all database objects are delivered
+                # prepare query results
                 data = next(iter(result.data.values()))
-                self.assertEqual(
-                    data['edges'][0]['node']['id'],
-                    self.entries[offset].gid)
-                self.assertEqual(
-                    data['edges'][-1]['node']['id'],
-                    self.entries[offset+page_size-1].gid)
-                self.assertFalse(  # https://github.com/graphql-python/graphene/issues/395
-                    data['pageInfo']['hasPreviousPage'])
-                self.assertEqual(
-                    data['pageInfo']['hasNextPage'],
-                    page != pages)
-                page_start_cursor = data['pageInfo']['startCursor']
-                edge_start_cursor = data['edges'][0]['cursor']
-                self.assertEqual(
-                    page_start_cursor,
-                    edge_start_cursor)
-                page_end_cursor = data['pageInfo']['endCursor']
-                edge_end_cursor = data['edges'][-1]['cursor']
-                self.assertEqual(
-                    page_end_cursor,
-                    edge_end_cursor)
+                edges = data['edges']
+                pageinfo = data['pageInfo']
+                page_start_cursor = pageinfo['startCursor']
+                edge_start_cursor = edges[0]['cursor']
+                page_end_cursor = pageinfo['endCursor']
+                edge_end_cursor = edges[-1]['cursor']
+                # assert first item is the expected one
+                self.assertEqual(edges[0]['node']['id'], self.entries[offset].gid)
+                # assert last item is the expected one
+                self.assertEqual(edges[-1]['node']['id'], self.entries[offset+page_size-1].gid)
+                # assert no previous page, https://github.com/graphql-python/graphene/issues/395
+                self.assertFalse(pageinfo['hasPreviousPage'])
+                # assert next page, if not the last one
+                self.assertEqual(pageinfo['hasNextPage'], page != pages)
+                # assert first edge cursor and page start cursor are the same
+                self.assertEqual(page_start_cursor, edge_start_cursor)
+                # assert last edge cursor and page end cursor are the same
+                self.assertEqual(page_end_cursor, edge_end_cursor)
+                # assign the cursor for the next batch
                 after = page_end_cursor
 
     @auth(SUPERADMIN_USER, permitted=True)
@@ -564,7 +588,7 @@ class ListQueryTestCase(SchemaTestCase, metaclass=QueryTestCaseMetaclass):
         before = ""
         for page in range(1, pages+1):
             page_items = pages * page_size
-            offset = count - page_items + (pages - page + 1) * page_size - page_size
+            offset = count - page_items + (pages - page) * page_size
             with self.subTest(pages=pages, page=page, page_size=page_size, before=before):
                 # execute operation
                 result = self.client.execute(
@@ -576,34 +600,32 @@ class ListQueryTestCase(SchemaTestCase, metaclass=QueryTestCaseMetaclass):
                 )
                 # assert no errors
                 self.assertIsNone(result.errors)
-                # assert all database objects are delivered
+                # prepare query results
                 data = next(iter(result.data.values()))
-                self.assertEqual(
-                    data['edges'][0]['node']['id'],
-                    self.entries[offset].gid)
-                self.assertEqual(
-                    data['edges'][-1]['node']['id'],
-                    self.entries[offset+page_size-1].gid)
-                self.assertEqual(
-                    data['pageInfo']['hasPreviousPage'],
-                    page != pages)
-                self.assertFalse(  # https://github.com/graphql-python/graphene/issues/395
-                    data['pageInfo']['hasNextPage'])
-                page_start_cursor = data['pageInfo']['startCursor']
-                edge_start_cursor = data['edges'][0]['cursor']
-                self.assertEqual(
-                    page_start_cursor,
-                    edge_start_cursor)
-                page_end_cursor = data['pageInfo']['endCursor']
-                edge_end_cursor = data['edges'][-1]['cursor']
-                self.assertEqual(
-                    page_end_cursor,
-                    edge_end_cursor)
+                edges = data['edges']
+                pageinfo = data['pageInfo']
+                page_start_cursor = pageinfo['startCursor']
+                edge_start_cursor = edges[0]['cursor']
+                page_end_cursor = pageinfo['endCursor']
+                edge_end_cursor = edges[-1]['cursor']
+                # assert first item is the expected one
+                self.assertEqual(edges[0]['node']['id'], self.entries[offset].gid)
+                # assert last item is the expected one
+                self.assertEqual(edges[-1]['node']['id'], self.entries[offset+page_size-1].gid)
+                # assert previous page, if not the last one
+                self.assertEqual(pageinfo['hasPreviousPage'], page != pages)
+                # assert no next page, https://github.com/graphql-python/graphene/issues/395
+                self.assertFalse(pageinfo['hasNextPage'])
+                # assert first edge cursor and page start cursor are the same
+                self.assertEqual(page_start_cursor, edge_start_cursor)
+                # assert last edge cursor and page end cursor are the same
+                self.assertEqual(page_end_cursor, edge_end_cursor)
+                # assign the cursor for the next batch
                 before = page_start_cursor
 
     # permissions -------------------------------------------------------------
 
-    @auth(SUPERADMIN_USER, actions='read', permitted=True)
+    @auth(SUPERADMIN_USER, permitted=True)
     def test_all_permitted(self):
         """all permitted returns all entries"""
         # skip if model has no permissions
@@ -617,13 +639,13 @@ class ListQueryTestCase(SchemaTestCase, metaclass=QueryTestCaseMetaclass):
         result = self.client.execute(self.operation)
         # assert no errors
         self.assertIsNone(result.errors)
-        # assert all database objects are delivered
+        # prepare query results
         data = next(iter(result.data.values()))
-        self.assertEqual(
-            len(data['edges']),
-            len(self.entries))
+        edges = data['edges']
+        # assert length of query result matches the number of database entries
+        self.assertEqual(len(edges), len(self.entries))
 
-    @auth(SUPERADMIN_USER, actions='read', permitted=False)
+    @auth(SUPERADMIN_USER, permitted=False)
     def test_none_permitted(self):
         """none permitted returns no entries"""
         # skip if model has no permissions
@@ -637,8 +659,42 @@ class ListQueryTestCase(SchemaTestCase, metaclass=QueryTestCaseMetaclass):
         result = self.client.execute(self.operation)
         # assert no errors
         self.assertIsNone(result.errors)
-        # assert all database objects are delivered
+        # prepare query results
         data = next(iter(result.data.values()))
-        self.assertEqual(
-            len(data['edges']),
-            0)
+        edges = data['edges']
+        # assert no results
+        self.assertEqual(len(edges), 0)
+
+    _one_permitted_id = 0
+
+    def _one_permitted(*args, **kwargs):
+        return models.Q(id=ListQueryTestCase._one_permitted_id)
+
+    @auth(SUPERADMIN_USER, permitted=_one_permitted)
+    def test_one_permitted(self):
+        """one permitted returns only one entry"""
+        # skip if model has no permissions
+        if not issubclass(self.model, MixinAuthorization):
+            raise SkipTest("model has no permissions")
+        # skip if not enough entries
+        all_entries = self.model.objects.all()
+        count = all_entries.count()
+        if count < 1:
+            raise SkipTest("not enough entries")
+        # configure variables
+        batch_size = min(count, DEFAULT_BATCH_SIZE)
+        # iterate over batch
+        for item in all_entries[:batch_size]:
+            ListQueryTestCase._one_permitted_id = item.id
+            with self.subTest(item=item):
+                # execute operation
+                result = self.client.execute(self.operation)
+                # assert no errors
+                self.assertIsNone(result.errors)
+                # prepare query results
+                data = next(iter(result.data.values()))
+                edges = data['edges']
+                # assert only one result
+                self.assertEqual(len(edges), 1)
+                # assert identiy of result
+                self.assertEqual(edges[0]['node']['id'], item.gid)
