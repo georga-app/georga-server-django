@@ -9,7 +9,7 @@ from graphql_jwt.testcases import JSONWebTokenTestCase, JSONWebTokenClient
 from graphql_jwt.shortcuts import get_token
 from graphql_jwt.settings import jwt_settings
 from graphql_relay.utils import base64
-from graphene.utils.str_converters import to_snake_case
+from graphene.utils.str_converters import to_snake_case, to_camel_case
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
@@ -21,7 +21,7 @@ from ...schemas import schema
 # configuration variables
 SUPERADMIN_USER = "admin@georga.test"  # email of superadmin user
 FIXTURES_DIR = join("georga", "fixtures")  # fixtures directory
-DEFAULT_BATCH_SIZE = 5  # number of entries tested in automated tests
+DEFAULT_BATCH_SIZE = 0  # number of entries tested, 0 = all
 
 # shared query variables (relay node interface, MixinTimestamps)
 VARIABLES = """
@@ -278,7 +278,7 @@ class QueryTestCaseMetaclass(SchemaTestCaseMetaclass):
                 continue
             model_field_name, *lookup = to_snake_case(filter_arg).split("__", maxsplit=1)
             model_field = new.model._meta.get_field(model_field_name)
-            if lookup:  # TODO: implement other filters
+            if lookup not in [[], ['in']]:  # TODO: implement other filters
                 print(name, filter_arg)
                 continue
             setattr(new, f"test_{filter_arg}_filter",
@@ -301,20 +301,22 @@ class QueryTestCaseMetaclass(SchemaTestCaseMetaclass):
             if count < min_entries:
                 raise SkipTest("not enough entries")
             # configure variables
-            batch_size = min(count, default_batch_size)
+            batch_size = min(count, default_batch_size) or count
+            lookup = to_snake_case(filter_arg)
             # iterate over batch
             for item in self.entries[:batch_size]:
                 # get expected queryset
                 attr = model_field.name
                 database_value = getattr(item, attr)
-                key = to_snake_case(filter_arg)
                 if isinstance(model_field, GenericForeignKey):  # use _id/_ct
                     queryset = self.entries.filter(**{          # for GenericForeignKey
-                        key+"_id": database_value.id,
-                        key+"_ct": ContentType.objects.get_for_model(database_value).id
+                        f"{attr}_id": database_value.id,
+                        f"{attr}_ct": ContentType.objects.get_for_model(database_value).id
                     })
                 else:
-                    queryset = self.entries.filter(**{key: database_value})
+                    if lookup.endswith("__in"):  # in filter
+                        database_value = [database_value]
+                    queryset = self.entries.filter(**{lookup: database_value})
                 # get database value for graphql operation variables
                 if attr == "id":  # id fields
                     attr = "gid"
@@ -322,6 +324,8 @@ class QueryTestCaseMetaclass(SchemaTestCaseMetaclass):
                 if isinstance(database_value, models.Model):  # model fields
                     database_value = database_value.gid
                 variables = {filter_arg: database_value}
+                if lookup.endswith("__in"):  # in filter
+                    variables = {filter_arg: [database_value]}
                 with self.subTest(item=item, **variables):
                     # execute operation
                     result = self.client.execute(
@@ -335,7 +339,7 @@ class QueryTestCaseMetaclass(SchemaTestCaseMetaclass):
                     edges = data['edges']
                     api_values = []
                     for edge in edges:
-                        value = edge['node'][filter_arg]
+                        value = edge['node'][to_camel_case(model_field.name)]
                         if isinstance(value, dict):  # model fields
                             value = value['id']
                         if model_field.__class__.__name__ == "DateTimeField":
@@ -397,7 +401,7 @@ class ListQueryTestCase(SchemaTestCase, metaclass=QueryTestCaseMetaclass):
         if count < 1:
             raise SkipTest("not enough entries")
         # configure variables
-        batch_size = min(count, DEFAULT_BATCH_SIZE)
+        batch_size = min(count, DEFAULT_BATCH_SIZE) or count
         # iterate over batch
         for first in range(batch_size):
             with self.subTest(first=first):
@@ -429,7 +433,7 @@ class ListQueryTestCase(SchemaTestCase, metaclass=QueryTestCaseMetaclass):
         if count < 1:
             raise SkipTest("not enough entries")
         # configure variables
-        batch_size = min(count, DEFAULT_BATCH_SIZE)
+        batch_size = min(count, DEFAULT_BATCH_SIZE) or count
         # iterate over batch
         for last in range(batch_size):
             with self.subTest(last=last):
@@ -461,7 +465,7 @@ class ListQueryTestCase(SchemaTestCase, metaclass=QueryTestCaseMetaclass):
         if count < 2:
             raise SkipTest("not enough entries")
         # configure variables
-        batch_size = min(count, DEFAULT_BATCH_SIZE)
+        batch_size = min(count, DEFAULT_BATCH_SIZE) or count
         # iterate over batch
         for offset in range(batch_size):
             with self.subTest(offset=offset):
@@ -489,7 +493,7 @@ class ListQueryTestCase(SchemaTestCase, metaclass=QueryTestCaseMetaclass):
         if count < 2:
             raise SkipTest("not enough entries")
         # configure variables
-        batch_size = min(count, DEFAULT_BATCH_SIZE)
+        batch_size = min(count, DEFAULT_BATCH_SIZE) or count
         # iterate over batch
         for after in range(batch_size):
             with self.subTest(after=after):
@@ -520,7 +524,7 @@ class ListQueryTestCase(SchemaTestCase, metaclass=QueryTestCaseMetaclass):
         if count < 2:
             raise SkipTest("not enough entries")
         # configure variables
-        batch_size = min(count, DEFAULT_BATCH_SIZE)
+        batch_size = min(count, DEFAULT_BATCH_SIZE) or count
         # iterate over batch
         for before in range(batch_size):
             with self.subTest(before=before):
@@ -551,7 +555,8 @@ class ListQueryTestCase(SchemaTestCase, metaclass=QueryTestCaseMetaclass):
         if count < 2:
             raise SkipTest("not enough entries")
         # configure variables
-        page_size = max(1, int(count / DEFAULT_BATCH_SIZE))
+        batch_size = min(count, DEFAULT_BATCH_SIZE) or count
+        page_size = max(1, int(count / batch_size))
         pages = int(count / page_size)
         # iterate over pages
         after = ""
@@ -602,7 +607,8 @@ class ListQueryTestCase(SchemaTestCase, metaclass=QueryTestCaseMetaclass):
         if count < 2:
             raise SkipTest("not enough entries")
         # configure variables
-        page_size = max(1, int(count / DEFAULT_BATCH_SIZE))
+        batch_size = min(count, DEFAULT_BATCH_SIZE) or count
+        page_size = max(1, int(count / batch_size))
         pages = int(count / page_size)
         # iterate over pages
         before = ""
@@ -720,7 +726,7 @@ class ListQueryTestCase(SchemaTestCase, metaclass=QueryTestCaseMetaclass):
         if count < 1:
             raise SkipTest("not enough entries")
         # configure variables
-        batch_size = min(count, DEFAULT_BATCH_SIZE)
+        batch_size = min(count, DEFAULT_BATCH_SIZE) or count
         # iterate over batch
         for item in all_entries[:batch_size]:
             ListQueryTestCase._one_permitted_id = item.id
