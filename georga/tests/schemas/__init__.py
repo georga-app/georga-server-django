@@ -13,6 +13,7 @@ from graphene.utils.str_converters import to_snake_case, to_camel_case
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
+from graphene_django.registry import get_global_registry
 
 from ...models import MixinAuthorization, Person
 from ...schemas import schema
@@ -140,6 +141,9 @@ def auth(user, actions=None, permitted=None):
 
 # schema ----------------------------------------------------------------------
 
+GRAPHENE_DJANGO_REGISTRY = get_global_registry()
+
+
 class SchemaTestCaseMetaclass(type):
     """
     Metaclass for schema tests.
@@ -262,49 +266,125 @@ class SchemaTestCase(JSONWebTokenTestCase, metaclass=SchemaTestCaseMetaclass):
 # query -----------------------------------------------------------------------
 
 class QueryTestCaseMetaclass(SchemaTestCaseMetaclass):
-    """Adds tests for query operations based on the field."""
+    """Adds fields and filter tests for the provided query."""
     # TODO:
     # id filter: incorrect padding
     # id filter: not pemitted: no entries
+
+    filters_skipped = ['first', 'last', 'offset', 'before', 'after']
 
     def __new__(cls, name, bases, dct):
         new = super().__new__(cls, name, bases, dct)
         if not new.field:
             return new
+        # add tests for fields
+        setattr(new, "test_fields", cls.create_fields_test())
         # add tests for filters
-        for filter_arg in new.field.args.keys():
+        for filter_arg in new.operation_args:
             # skip otherwise implemented filter tests
-            if filter_arg in ['first', 'last', 'offset', 'before', 'after']:
+            if filter_arg in cls.filters_skipped:
                 continue
-            model_field_name, *lookup = to_snake_case(filter_arg).split("__", maxsplit=1)
-            model_field = new.model._meta.get_field(model_field_name)
-            setattr(new, f"test_{filter_arg}_filter",
-                    cls.create_filter_test(filter_arg, model_field))
+            # add test
+            setattr(new, f"test_{filter_arg}_filter", cls.create_filter_test(filter_arg))
         return new
 
     @classmethod
-    def create_filter_test(
-            cls, filter_arg, model_field,
-            user=SUPERADMIN_USER, actions=None, permitted=True,
+    def create_fields_test(
+            cls, user=SUPERADMIN_USER, actions=None, permitted=True,
             min_entries=1, default_batch_size=DEFAULT_BATCH_SIZE):
+        """
+        Creates a test for all fields of a query.
+
+        Traverses the query result and asserts equality of all fields.
+        Ignores all introspection vars but __typename.
+        """
+
+        @staticmethod
+        def walk(node, entry, path=''):
+            """Traverses a query result, yields api/database values to compare."""
+            for key, item in node.items():
+                subpath = f"{path}.{key}"
+                match key:
+                    case "__typename":
+                        _type = GRAPHENE_DJANGO_REGISTRY.get_type_for_model(entry._meta.model)
+                        database_value = _type._meta.name
+                    case key if key.startswith("__"):
+                        continue
+                    case _:
+                        database_value = getattr(entry, to_snake_case(key))
+                if isinstance(item, dict):
+                    yield from walk(item, database_value, path=subpath)
+                else:
+                    # id
+                    if key == "id":
+                        database_value = entry.gid
+                    # datetime fields
+                    if isinstance(database_value, datetime):
+                        database_value = database_value.isoformat()
+                    yield {
+                        'api_value': item,
+                        'database_value': database_value,
+                        'path': subpath.removeprefix(".")
+                    }
 
         @auth(user, actions, permitted)
         def test(self):
-            # skip if filter not set
-            if filter_arg not in self.operation_args:
-                raise SkipTest("filter not set")
             # skip if not enough entries
             count = len(self.entries)
             if count < min_entries:
                 raise SkipTest("not enough entries")
             # configure variables
             batch_size = min(count, default_batch_size) or count
+            # execute operation
+            result = self.client.execute(
+                self.operation,
+                variables={'first': batch_size}
+            )
+            # assert no errors
+            self.assertIsNone(result.errors)
+            # prepare query results
+            data = next(iter(result.data.values()))
+            edges = data['edges']
+            # iterate over batch
+            for index, entry in enumerate(self.entries[:batch_size]):
+                node = edges[index]['node']
+                # traverse result
+                for field in walk(node, entry):
+                    with self.subTest(entry=entry, **field):
+                        self.assertEqual(
+                            field['api_value'],
+                            field['database_value'])
+
+        test.__doc__ = """returned fields have the correct value"""
+        return test
+
+    @classmethod
+    def create_filter_test(
+            cls, filter_arg, user=SUPERADMIN_USER, actions=None, permitted=True,
+            min_entries=1, default_batch_size=DEFAULT_BATCH_SIZE):
+        """
+        Creates a test for one filter `filter_arg`.
+
+        Executes a query with the filter set to the values of the database entries
+        and expects the result to include (or exclude for gt/lt) the entry.
+        """
+
+        @auth(user, actions, permitted)
+        def test(self):
+            # skip if not enough entries
+            count = len(self.entries)
+            if count < min_entries:
+                raise SkipTest("not enough entries")
+            # configure variables
+            batch_size = min(count, default_batch_size) or count
+            model_field_name, *lookup = to_snake_case(filter_arg).split("__", maxsplit=1)
+            model_field = self.model._meta.get_field(model_field_name)
             lookup = to_snake_case(filter_arg)
             # iterate over batch
-            for item in self.entries[:batch_size]:
+            for entry in self.entries[:batch_size]:
                 # get expected queryset
                 attr = model_field.name
-                database_value = getattr(item, attr)
+                database_value = getattr(entry, attr)
                 if isinstance(model_field, GenericForeignKey):  # use _id/_ct
                     queryset = self.entries.filter(**{          # for GenericForeignKey
                         f"{attr}_id": database_value.id,
@@ -317,13 +397,13 @@ class QueryTestCaseMetaclass(SchemaTestCaseMetaclass):
                 # get database value for graphql operation variables
                 if attr == "id":  # id fields
                     attr = "gid"
-                database_value = getattr(item, attr)
+                database_value = getattr(entry, attr)
                 if isinstance(database_value, models.Model):  # model fields
                     database_value = database_value.gid
                 variables = {filter_arg: database_value}
                 if lookup.endswith("__in"):  # in filter
                     variables = {filter_arg: [database_value]}
-                with self.subTest(item=item, **variables):
+                with self.subTest(entry=entry, **variables):
                     # execute operation
                     result = self.client.execute(
                         self.operation,
@@ -337,8 +417,10 @@ class QueryTestCaseMetaclass(SchemaTestCaseMetaclass):
                     api_values = []
                     for edge in edges:
                         value = edge['node'][to_camel_case(model_field.name)]
-                        if isinstance(value, dict):  # model fields
+                        # model fields
+                        if isinstance(value, dict):
                             value = value['id']
+                        # datetime fields
                         if model_field.__class__.__name__ == "DateTimeField":
                             value = datetime.fromisoformat(value)
                         api_values.append(value)
@@ -348,10 +430,11 @@ class QueryTestCaseMetaclass(SchemaTestCaseMetaclass):
                     if attr == "gid":
                         self.assertEqual(len(edges), 1)
                     # assert queried database item is in the result
-                    if lookup.endswith("__gt"):
+                    if lookup.endswith(("__gt", "__lt")):
                         self.assertNotIn(database_value, api_values)
                     else:
                         self.assertIn(database_value, api_values)
+
         test.__doc__ = f"""{filter_arg} filter returns correct entries"""
         return test
 
@@ -374,9 +457,9 @@ class ListQueryTestCase(SchemaTestCase, metaclass=QueryTestCaseMetaclass):
     - none permitted
     - one permitted
 
-    Metaclass adds some tests for:
-    - filter
-    - fields
+    Metaclass parses query and adds tests for:
+    - all filters
+    - all fields
     """
     __test__ = False
 
@@ -728,9 +811,9 @@ class ListQueryTestCase(SchemaTestCase, metaclass=QueryTestCaseMetaclass):
         # configure variables
         batch_size = min(count, DEFAULT_BATCH_SIZE) or count
         # iterate over batch
-        for item in all_entries[:batch_size]:
-            ListQueryTestCase._one_permitted_id = item.id
-            with self.subTest(item=item):
+        for entry in all_entries[:batch_size]:
+            ListQueryTestCase._one_permitted_id = entry.id
+            with self.subTest(entry=entry):
                 # execute operation
                 result = self.client.execute(self.operation)
                 # assert no errors
@@ -741,4 +824,4 @@ class ListQueryTestCase(SchemaTestCase, metaclass=QueryTestCaseMetaclass):
                 # assert only one result
                 self.assertEqual(len(edges), 1)
                 # assert identiy of result
-                self.assertEqual(edges[0]['node']['id'], item.gid)
+                self.assertEqual(edges[0]['node']['id'], entry.gid)
