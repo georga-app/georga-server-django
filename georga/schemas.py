@@ -881,8 +881,7 @@ class MessageType(UUIDDjangoObjectType):
         model = Message
         fields = message_ro_fields + message_rw_fields
         filter_fields = message_filter_fields
-        # permissions = [login_required, object_permits_user('read')]
-        permissions = [login_required]
+        permissions = [login_required, object_permits_user('read')]
 
 
 # filters

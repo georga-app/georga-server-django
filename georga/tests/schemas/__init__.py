@@ -278,9 +278,6 @@ class QueryTestCaseMetaclass(SchemaTestCaseMetaclass):
                 continue
             model_field_name, *lookup = to_snake_case(filter_arg).split("__", maxsplit=1)
             model_field = new.model._meta.get_field(model_field_name)
-            if lookup not in [[], ['in']]:  # TODO: implement other filters
-                print(name, filter_arg)
-                continue
             setattr(new, f"test_{filter_arg}_filter",
                     cls.create_filter_test(filter_arg, model_field))
         return new
@@ -351,7 +348,10 @@ class QueryTestCaseMetaclass(SchemaTestCaseMetaclass):
                     if attr == "gid":
                         self.assertEqual(len(edges), 1)
                     # assert queried database item is in the result
-                    self.assertIn(database_value, api_values)
+                    if lookup.endswith("__gt"):
+                        self.assertNotIn(database_value, api_values)
+                    else:
+                        self.assertIn(database_value, api_values)
         test.__doc__ = f"""{filter_arg} filter returns correct entries"""
         return test
 
