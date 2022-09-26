@@ -24,7 +24,7 @@ from ...schemas import schema
 SUPERADMIN_USER = "admin@georga.test"  # email of superadmin user
 INACTIVE_USER = "inactive@georga.test"  # email of inactive user
 FIXTURES_DIR = join("georga", "fixtures")  # fixtures directory
-DEFAULT_BATCH_SIZE = 0  # number of entries tested, 0 = all
+DEFAULT_BATCH_SIZE = 10  # number of entries tested, 0 = all
 
 # shared query variables (relay node interface, MixinTimestamps)
 VARIABLES = """
