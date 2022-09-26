@@ -1,3 +1,4 @@
+import logging
 from datetime import datetime
 import asyncio
 
@@ -35,6 +36,7 @@ from graphene_django.filter import (
 )
 from graphene_django.forms import GlobalIDMultipleChoiceField, GlobalIDFormField
 from graphene_django.forms.mutation import DjangoModelFormMutation
+from graphql_jwt.exceptions import JSONWebTokenError
 from graphql_jwt.decorators import login_required, staff_member_required
 from graphql_relay import from_global_id
 
@@ -65,6 +67,19 @@ from .models import (
 )
 
 channel_layer = get_channel_layer()
+
+
+# Logging =====================================================================
+
+def not_jwt_error(record):
+    err_type, err_obj, traceback = record.exc_info
+    return not isinstance(err_obj, JSONWebTokenError)
+
+
+# see https://github.com/graphql-python/graphene-django/issues/413
+logging.getLogger('graphql.execution.executor').addFilter(not_jwt_error)
+# see https://github.com/graphql-python/graphene-django/issues/735
+logging.getLogger("graphql.execution.utils").setLevel(logging.CRITICAL)
 
 
 # Subclasses ==================================================================
