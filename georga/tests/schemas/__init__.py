@@ -831,15 +831,15 @@ class ListQueryTestCase(SchemaTestCase, metaclass=QueryTestCaseMetaclass):
                 # assert identiy of result
                 self.assertEqual(edges[0]['node']['id'], entry.gid)
 
-    @auth(INACTIVE_USER, permitted=True)
+    @auth(INACTIVE_USER)
     def test_inactive_authentication_fails(self):
-        """authentication of inactive user throws an error"""
+        """authentication of inactive user throws jwt error"""
         # execute operation
         result = self.client.execute(self.operation)
-        # assert only one error
+        # assert only one jwt error
         self.assertEqual(len(result.errors), 1)
-        # assert specific error
         self.assertIsInstance(result.errors[0].original_error, JSONWebTokenError)
+        self.assertIn("disabled", result.errors[0].message)
 
 
 # mutation --------------------------------------------------------------------
