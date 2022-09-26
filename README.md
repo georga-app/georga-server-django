@@ -12,14 +12,31 @@ Load the demo data `python manage.py loaddata georga/initial_data/*`
 
 Start the server `python manage.py runserver`
 
-You can login under /admin/ with the user `admin@georga.test` and `georga`
+You can login under /admin/ with the superadmin user `admin@georga.test` and `georga`
 
 Further current testusers are (use password `georga` for all accounts):
 
-- Registered helper: `helper@georga.test`
-- Organization admin: `organization@georga.test`
-- Project admin`project@georga.test`
-- Operation admin: `operation@georga.test`
+- Registered helpers
+    - `helper.001@georga.test`
+    - `helper.002@georga.test`
+    - `helper.003@georga.test`
+    - `helper.004@georga.test`
+    - `helper.005@georga.test`
+- Organization admins
+    - `organization@georga.test`
+    - `organization.admin.1@frenchbluecircle.test`
+    - `organization.admin.1@seaeyesinternational.test`
+    - `organization.admin.1@cyberaidworldwide.test`
+- Project admins
+    - `project@georga.test`
+    - `project.admin.1@frenchbluecircle.test`
+    - `project.admin.1@seaeyesinternational.test`
+    - `project.admin.1@cyberaidworldwide.test`
+- Operation admin
+    - `operation@georga.test`
+    - `operation.admin.1@frenchbluecircle.test`
+    - `operation.admin.1@seaeyesinternational.test`
+    - `operation.admin.1@cyberaidworldwide.test`
 
 
 ## Contribute
@@ -33,6 +50,8 @@ Further current testusers are (use password `georga` for all accounts):
 Run django tests:
 
     ./manage.py test
+    ./manage.py test --verbosity 2 --failfast --timing --keepdb --parallel auto
+    ./manage.py test --verbosity 2 --keepdb --pdb
 
 
 ## Use
