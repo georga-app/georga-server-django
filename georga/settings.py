@@ -10,12 +10,17 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 import os
+import sys
 from pathlib import Path
 
 
 import django
 from django.utils.encoding import force_str
 django.utils.encoding.force_text = force_str
+
+# Testing flag
+# TODO: convert to env var
+TESTING = 'test' in sys.argv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -200,6 +205,12 @@ GRAPHQL_JWT = {
     'JWT_PRIVATE_KEY': JWT_PRIVATE,
     'JWT_ALLOW_ANY_HANDLER': 'georga.auth.handled_allow_any',
 }
+if TESTING:
+    GRAPHQL_JWT['JWT_VERIFY'] = False
+    GRAPHQL_JWT['JWT_ALGORITHM'] = None
+    GRAPHQL_JWT['JWT_PUBLIC_KEY'] = None
+    GRAPHQL_JWT['JWT_PRIVATE_KEY'] = None
+    GRAPHQL_JWT['JWT_SECRET_KEY'] = None
 
 ACTIVATION_URL = os.getenv("DJANGO_ACTIVATION_URL", '')
 ACTIVATION_DAYS = int(os.getenv('DJANGO_ACCOUNT_ACTIVATION_DAYS', '7'))
