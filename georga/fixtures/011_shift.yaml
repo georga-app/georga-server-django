@@ -1,0 +1,230 @@
+# Org1 ------------------------------------------------------------------------
+
+- model: georga.shift
+  pk: 100
+  fields:
+    uuid: 00000011-0000-0000-0000-000000000100
+    start_time: 2022-08-05 08:00:00.000000+00:00
+    end_time: 2022-08-05 18:00:00.000000+00:00
+    state: PUBLISHED
+    enrollment_deadline: 2022-08-04 18:00:00.000000+00:00
+    task: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch
+    ]
+- model: georga.shift
+  pk: 101
+  fields:
+    uuid: 00000011-0000-0000-0000-000000000101
+    start_time: 2022-08-06 08:00:00.000000+00:00
+    end_time: 2022-08-06 18:00:00.000000+00:00
+    state: DRAFT
+    enrollment_deadline: 2022-08-04 18:00:00.000000+00:00
+    task: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch
+    ]
+- model: georga.shift
+  pk: 102
+  fields:
+    uuid: 00000011-0000-0000-0000-000000000102
+    start_time: 2022-08-07 08:00:00.000000+00:00
+    end_time: 2022-08-07 18:00:00.000000+00:00
+    state: FINISHED
+    enrollment_deadline: 2022-08-04 18:00:00.000000+00:00
+    task: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch
+    ]
+- model: georga.shift
+  pk: 103
+  fields:
+    uuid: 00000011-0000-0000-0000-000000000103
+    start_time: 2022-08-08 08:00:00.000000+00:00
+    end_time: 2022-08-08 18:00:00.000000+00:00
+    state: CANCELED
+    enrollment_deadline: 2022-08-04 18:00:00.000000+00:00
+    task: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch
+    ]
+- model: georga.shift
+  pk: 104
+  fields:
+    uuid: 00000011-0000-0000-0000-000000000104
+    start_time: 2022-08-09 08:00:00.000000+00:00
+    end_time: 2022-08-09 18:00:00.000000+00:00
+    state: ARCHIVED
+    enrollment_deadline: 2022-08-04 18:00:00.000000+00:00
+    task: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch
+    ]
+- model: georga.shift
+  pk: 105
+  fields:
+    uuid: 00000011-0000-0000-0000-000000000105
+    start_time: 2022-08-10 08:00:00.000000+00:00
+    end_time: 2022-08-10 18:00:00.000000+00:00
+    state: DELETED
+    enrollment_deadline: 2022-08-04 18:00:00.000000+00:00
+    task: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch
+    ]
+- model: georga.shift
+  pk: 106
+  fields:
+    uuid: 00000011-0000-0000-0000-000000000106
+    start_time: 2022-08-11 08:00:00.000000+00:00
+    end_time: 2022-08-11 18:00:00.000000+00:00
+    state: PUBLISHED
+    enrollment_deadline: 2022-08-04 18:00:00.000000+00:00
+    task: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch
+    ]
+- model: georga.shift
+  pk: 107
+  fields:
+    uuid: 00000011-0000-0000-0000-000000000107
+    start_time: 2022-08-12 08:00:00.000000+00:00
+    end_time: 2022-08-12 18:00:00.000000+00:00
+    state: PUBLISHED
+    enrollment_deadline: 2022-08-04 18:00:00.000000+00:00
+    task: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch
+    ]
+- model: georga.shift
+  pk: 108
+  fields:
+    uuid: 00000011-0000-0000-0000-000000000108
+    start_time: 2022-08-13 08:00:00.000000+00:00
+    end_time: 2022-08-13 18:00:00.000000+00:00
+    state: PUBLISHED
+    enrollment_deadline: 2022-08-04 18:00:00.000000+00:00
+    task: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch
+    ]
+- model: georga.shift
+  pk: 109
+  fields:
+    uuid: 00000011-0000-0000-0000-000000000109
+    start_time: 2022-08-14 08:00:00.000000+00:00
+    end_time: 2022-08-14 18:00:00.000000+00:00
+    state: PUBLISHED
+    enrollment_deadline: 2022-08-04 18:00:00.000000+00:00
+    task: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch
+    ]
+- model: georga.shift
+  pk: 110
+  fields:
+    uuid: 00000011-0000-0000-0000-000000000110
+    start_time: 2021-07-16 08:00:00.000000+00:00
+    end_time: 2021-07-16 13:00:00.000000+00:00
+    state: PUBLISHED
+    enrollment_deadline: 2022-08-04 18:00:00.000000+00:00
+    task: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch
+    ]
+- model: georga.shift
+  pk: 111
+  fields:
+    uuid: 00000011-0000-0000-0000-000000000111
+    start_time: 2021-07-16 14:00:00.000000+00:00
+    end_time: 2021-07-16 18:00:00.000000+00:00
+    state: PUBLISHED
+    enrollment_deadline: 2022-08-04 18:00:00.000000+00:00
+    task: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch
+    ]
+- model: georga.shift
+  pk: 112
+  fields:
+    uuid: 00000011-0000-0000-0000-000000000112
+    start_time: 2021-07-17 08:00:00.000000+00:00
+    end_time: 2021-07-17 13:00:00.000000+00:00
+    state: PUBLISHED
+    enrollment_deadline: 2022-08-04 18:00:00.000000+00:00
+    task: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch
+    ]
+- model: georga.shift
+  pk: 113
+  fields:
+    uuid: 00000011-0000-0000-0000-000000000113
+    start_time: 2021-07-17 14:00:00.000000+00:00
+    end_time: 2021-07-17 18:00:00.000000+00:00
+    state: PUBLISHED
+    enrollment_deadline: 2022-08-04 18:00:00.000000+00:00
+    task: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch
+    ]
+- model: georga.shift
+  pk: 114
+  fields:
+    uuid: 00000011-0000-0000-0000-000000000114
+    start_time: 2021-07-18 08:00:00.000000+00:00
+    end_time: 2021-07-18 13:00:00.000000+00:00
+    state: PUBLISHED
+    enrollment_deadline: 2022-08-04 18:00:00.000000+00:00
+    task: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch
+    ]
+- model: georga.shift
+  pk: 115
+  fields:
+    uuid: 00000011-0000-0000-0000-000000000115
+    start_time: 2021-07-18 14:00:00.000000+00:00
+    end_time: 2021-07-18 18:00:00.000000+00:00
+    state: PUBLISHED
+    enrollment_deadline: 2022-08-04 18:00:00.000000+00:00
+    task: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch
+    ]
+
+# Org2 ------------------------------------------------------------------------
+
+# Org3 ------------------------------------------------------------------------

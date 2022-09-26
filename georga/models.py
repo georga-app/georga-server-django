@@ -4,7 +4,7 @@ from functools import cached_property, reduce
 import uuid
 
 from django.core.exceptions import ValidationError
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, UserManager
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
@@ -18,7 +18,7 @@ from phonenumber_field.modelfields import PhoneNumberField
 from graphql_relay import to_global_id
 
 
-# --- FIELDS
+# fields ----------------------------------------------------------------------
 
 @receiver(pre_save)
 def set_fixture_timestamps(sender, instance, raw, **kwargs):
@@ -31,7 +31,7 @@ def set_fixture_timestamps(sender, instance, raw, **kwargs):
             instance.created_at = timezone.now()
 
 
-# --- MIXINS
+# mixins ----------------------------------------------------------------------
 
 class MixinTimestamps(models.Model):
     """
@@ -321,7 +321,103 @@ class MixinAuthorization(models.Model):
         return qs.filter(pk=self.pk).exists()
 
 
-# --- CLASSES
+# manager ---------------------------------------------------------------------
+
+class LocationCategoryManager(models.Manager):
+    def get_by_natural_key(self, organization_name, location_category_name):
+        return self.get(
+            organization__name=organization_name,
+            name=location_category_name)
+
+
+class OperationManager(models.Manager):
+    def get_by_natural_key(self, organization_name, project_name, operation_name):
+        return self.get(
+            project__organization__name=organization_name,
+            project__name=project_name,
+            name=operation_name)
+
+
+class OrganizationManager(models.Manager):
+    def get_by_natural_key(self, organization_name):
+        return self.get(name=organization_name)
+
+
+class PersonManager(UserManager):
+    def get_by_natural_key(self, email):
+        return self.get(email=email)
+
+
+class PersonPropertyManager(models.Manager):
+    def get_by_natural_key(self, organization_name, group_name, property_name):
+        return self.get(
+            group__organization__name=organization_name,
+            group__name=group_name,
+            name=property_name)
+
+
+class PersonPropertyGroupManager(models.Manager):
+    def get_by_natural_key(self, organization_name, group_name):
+        return self.get(
+            organization__name=organization_name,
+            name=group_name)
+
+
+class ProjectManager(models.Manager):
+    def get_by_natural_key(self, organization_name, project_name):
+        return self.get(
+            organization__name=organization_name,
+            name=project_name)
+
+
+class RoleManager(models.Manager):
+    def get_by_natural_key(self, organization_name, project_name, operation_name,
+                           task_name, shift_start_time, role_title):
+        if shift_start_time:
+            return self.get(
+                shift__task__operation__project__organization__name=organization_name,
+                shift__task__operation__project__name=project_name,
+                shift__task__operation__name=operation_name,
+                shift__task__name=task_name,
+                shift__start_time=shift_start_time,
+                title=role_title)
+        return self.get(
+            shift__task__operation__project__organization__name=organization_name,
+            shift__task__operation__project__name=project_name,
+            shift__task__operation__name=operation_name,
+            task__name=task_name,
+            title=role_title)
+
+
+class ShiftManager(models.Manager):
+    def get_by_natural_key(self, organization_name, project_name, operation_name,
+                           task_name, shift_start_time):
+        return self.get(
+            task__operation__project__organization__name=organization_name,
+            task__operation__project__name=project_name,
+            task__operation__name=operation_name,
+            task__name=task_name,
+            start_time=shift_start_time)
+
+
+class TaskManager(models.Manager):
+    def get_by_natural_key(self, organization_name, project_name, operation_name,
+                           task_name):
+        return self.get(
+            operation__project__organization__name=organization_name,
+            operation__project__name=project_name,
+            operation__name=operation_name,
+            name=task_name)
+
+
+class TaskFieldManager(models.Manager):
+    def get_by_natural_key(self, organization_name, task_field_name):
+        return self.get(
+            organization__name=organization_name,
+            name=task_field_name)
+
+
+# models ----------------------------------------------------------------------
 
 class ACE(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     # *_cts list: list of valid models
@@ -552,6 +648,8 @@ class Location(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
 
 
 class LocationCategory(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
+    objects = LocationCategoryManager()
+
     organization = models.ForeignKey(
         to='Organization',
         on_delete=models.CASCADE,
@@ -559,6 +657,9 @@ class LocationCategory(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.M
     name = models.CharField(
         max_length=50,
     )
+
+    def natural_key(self):
+        return self.organization.natural_key() + (self.name,)
 
     class Meta:
         verbose_name = _("location category")
@@ -1050,6 +1151,8 @@ class MessageFilter(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Mode
 
 
 class Operation(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
+    objects = OperationManager()
+
     project = models.ForeignKey(
         to='Project',
         on_delete=models.CASCADE,
@@ -1107,6 +1210,9 @@ class Operation(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     def __str__(self):
         return '%s' % self.name
 
+    def natural_key(self):
+        return self.project.natural_key() + (self.name,)
+
     class Meta:
         verbose_name = _("operation")
         verbose_name_plural = _("operations")
@@ -1139,6 +1245,8 @@ class Operation(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
 
 
 class Organization(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
+    objects = OrganizationManager()
+
     STATES = [
         ('DRAFT', _('Draft')),
         ('PUBLISHED', _('Published')),
@@ -1185,6 +1293,9 @@ class Organization(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model
 
     def __str__(self):
         return '%s' % self.name
+
+    def natural_key(self):
+        return (self.name,)
 
     class Meta:
         verbose_name = _("organization")
@@ -1293,6 +1404,8 @@ class Participant(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model)
 
 
 class Person(MixinTimestamps, MixinUUIDs, MixinAuthorization, AbstractUser):
+    objects = PersonManager()
+
     email = models.EmailField(
         'email address',
         unique=True,
@@ -1468,6 +1581,9 @@ class Person(MixinTimestamps, MixinUUIDs, MixinAuthorization, AbstractUser):
     def __str__(self):
         return self.email
 
+    def natural_key(self):
+        return (self.email,)
+
     def set_password(self, raw_password):
         super().set_password(raw_password)
         self.password_modified = timezone.now()
@@ -1571,6 +1687,8 @@ class Person(MixinTimestamps, MixinUUIDs, MixinAuthorization, AbstractUser):
 
 
 class PersonProperty(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
+    objects = PersonPropertyManager()
+
     group = models.ForeignKey(
         to='PersonPropertyGroup',
         on_delete=models.CASCADE,
@@ -1587,6 +1705,9 @@ class PersonProperty(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Mod
     def __unicode__(self):
         return '%s' % self.name
 
+    def natural_key(self):
+        return self.group.natural_key() + (self.name,)
+
     class Meta:
         verbose_name = _("person property")
         verbose_name_plural = _("person properties")
@@ -1594,6 +1715,8 @@ class PersonProperty(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Mod
 
 
 class PersonPropertyGroup(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
+    objects = PersonPropertyGroupManager()
+
     organization = models.ForeignKey(
         to='Organization',
         on_delete=models.CASCADE,
@@ -1641,6 +1764,9 @@ class PersonPropertyGroup(MixinTimestamps, MixinUUIDs, MixinAuthorization, model
     def __unicode__(self):
         return '%s' % self.name
 
+    def natural_key(self):
+        return self.organization.natural_key() + (self.name,)
+
     class Meta:
         verbose_name = _("group of person properties")
         verbose_name_plural = _("groups of person properties")
@@ -1648,6 +1774,8 @@ class PersonPropertyGroup(MixinTimestamps, MixinUUIDs, MixinAuthorization, model
 
 
 class Project(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
+    objects = ProjectManager()
+
     organization = models.ForeignKey(
         to='Organization',
         on_delete=models.CASCADE,
@@ -1699,6 +1827,9 @@ class Project(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
 
     def __str__(self):
         return '%s' % self.name
+
+    def natural_key(self):
+        return self.organization.natural_key() + (self.name,)
 
     class Meta:
         verbose_name = _("project")
@@ -1761,6 +1892,8 @@ class Resource(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
 
 
 class Role(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
+    objects = RoleManager()
+
     shift = models.ForeignKey(
         to='Shift',
         on_delete=models.CASCADE,
@@ -1801,6 +1934,11 @@ class Role(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     def __str__(self):
         return '%s' % self.description
 
+    def natural_key(self):
+        if self.is_template:
+            return self.task.natural_key() + (None, self.title)
+        return self.shift.natural_key() + (self.title,)
+
     class Meta:
         verbose_name = _("role")
         verbose_name_plural = _("roles")
@@ -1826,6 +1964,8 @@ class RoleSpecification(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.
 
 
 class Shift(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
+    objects = ShiftManager()
+
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
     STATES = [
@@ -1868,6 +2008,9 @@ class Shift(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         related_query_name='shift'
     )
 
+    def natural_key(self):
+        return self.task.natural_key() + (self.start_time,)
+
     class Meta:
         verbose_name = _("shift")
         verbose_name_plural = _("shifts")
@@ -1905,6 +2048,8 @@ class Shift(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
 
 
 class Task(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
+    objects = TaskManager()
+
     operation = models.ForeignKey(
         to='Operation',
         on_delete=models.CASCADE,
@@ -1971,6 +2116,9 @@ class Task(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     def __str__(self):
         return '%s' % self.title
 
+    def natural_key(self):
+        return self.operation.natural_key() + (self.name,)
+
     class Meta:
         verbose_name = _("task")
         verbose_name_plural = _("tasks")
@@ -1998,6 +2146,8 @@ class Task(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
 
 
 class TaskField(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
+    objects = TaskFieldManager()
+
     organization = models.ForeignKey(
         to='Organization',
         on_delete=models.CASCADE,
@@ -2013,6 +2163,9 @@ class TaskField(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
 
     def __str__(self):
         return '%s' % self.name
+
+    def natural_key(self):
+        return self.organization.natural_key() + (self.name,)
 
     class Meta:
         verbose_name = _("task field")

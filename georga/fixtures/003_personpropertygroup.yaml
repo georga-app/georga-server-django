@@ -1,97 +1,100 @@
-# Org1
+# Org1 ------------------------------------------------------------------------
+
 - model: georga.personpropertygroup
-  pk: 1
+  pk: 100
   fields:
-    uuid: "00000003-0000-0000-0000-000000000001"
+    uuid: 00000003-0000-0000-0000-000000000100
     codename: LANGUAGE
     name: Language
-    organization: 1
-- model: georga.personpropertygroup
-  pk: 2
-  fields:
-    uuid: "00000003-0000-0000-0000-000000000002"
-    codename: LICENSE
-    name: License
-    organization: 1
-- model: georga.personpropertygroup
-  pk: 3
-  fields:
-    uuid: "00000003-0000-0000-0000-000000000003"
-    codename: ADMINISTRATIVE
-    name: Administrative
-    organization: 1
-- model: georga.personpropertygroup
-  pk: 4
-  fields:
-    uuid: "00000003-0000-0000-0000-000000000004"
-    codename: MEDICAL
-    name: Medical
-    organization: 1
-- model: georga.personpropertygroup
-  pk: 5
-  fields:
-    uuid: "00000003-0000-0000-0000-000000000005"
-    codename: TECHNICAL
-    name: Technical
-    organization: 1
-- model: georga.personpropertygroup
-  pk: 6
-  fields:
-    uuid: "00000003-0000-0000-0000-000000000006"
-    codename: GENERAL
-    name: General
-    organization: 1
-- model: georga.personpropertygroup
-  pk: 7
-  fields:
-    uuid: "00000003-0000-0000-0000-000000000007"
-    codename: ADULT
-    name: Adult
-    organization: 1
-    selection_type: SINGLESELECT
-
-# Org2
+    organization: [French Blue Circle]
 - model: georga.personpropertygroup
   pk: 101
   fields:
-    uuid: "00000003-0000-0000-0000-000000000101"
-    codename: LANGUAGE
-    name: Language
-    organization: 2
+    uuid: 00000003-0000-0000-0000-000000000101
+    codename: LICENSE
+    name: License
+    organization: [French Blue Circle]
+- model: georga.personpropertygroup
+  pk: 102
+  fields:
+    uuid: 00000003-0000-0000-0000-000000000102
+    codename: ADMINISTRATIVE
+    name: Administrative
+    organization: [French Blue Circle]
+- model: georga.personpropertygroup
+  pk: 103
+  fields:
+    uuid: 00000003-0000-0000-0000-000000000103
+    codename: MEDICAL
+    name: Medical
+    organization: [French Blue Circle]
 - model: georga.personpropertygroup
   pk: 104
   fields:
-    uuid: "00000003-0000-0000-0000-000000000104"
-    codename: MEDICAL
-    name: Medical
-    organization: 2
+    uuid: 00000003-0000-0000-0000-000000000104
+    codename: TECHNICAL
+    name: Technical
+    organization: [French Blue Circle]
+- model: georga.personpropertygroup
+  pk: 105
+  fields:
+    uuid: 00000003-0000-0000-0000-000000000105
+    codename: GENERAL
+    name: General
+    organization: [French Blue Circle]
 - model: georga.personpropertygroup
   pk: 106
   fields:
-    uuid: "00000003-0000-0000-0000-000000000106"
-    codename: GENERAL
-    name: General
-    organization: 2
+    uuid: 00000003-0000-0000-0000-000000000106
+    codename: ADULT
+    name: Adult
+    organization: [French Blue Circle]
+    selection_type: SINGLESELECT
 
-# Org3
+# Org2 ------------------------------------------------------------------------
+
 - model: georga.personpropertygroup
-  pk: 203
+  pk: 200
   fields:
-    uuid: "00000003-0000-0000-0000-000000000203"
-    codename: ADMINISTRATIVE
-    name: Administrative
-    organization: 3
+    uuid: 00000003-0000-0000-0000-000000000200
+    codename: LANGUAGE
+    name: Language
+    organization: [Sea Eyes International]
+- model: georga.personpropertygroup
+  pk: 204
+  fields:
+    uuid: 00000003-0000-0000-0000-000000000204
+    codename: MEDICAL
+    name: Medical
+    organization: [Sea Eyes International]
 - model: georga.personpropertygroup
   pk: 205
   fields:
-    uuid: "00000003-0000-0000-0000-000000000205"
-    codename: TECHNICAL
-    name: Technical
-    organization: 3
-- model: georga.personpropertygroup
-  pk: 206
-  fields:
-    uuid: "00000003-0000-0000-0000-000000000206"
+    uuid: 00000003-0000-0000-0000-000000000205
     codename: GENERAL
     name: General
-    organization: 3
+    organization: [Sea Eyes International]
+
+# Org3 ------------------------------------------------------------------------
+
+- model: georga.personpropertygroup
+  pk: 302
+  fields:
+    uuid: 00000003-0000-0000-0000-000000000302
+    codename: ADMINISTRATIVE
+    name: Administrative
+    organization: [Cyber Aid Worldwide]
+- model: georga.personpropertygroup
+  pk: 304
+  fields:
+    uuid: 00000003-0000-0000-0000-000000000304
+    codename: TECHNICAL
+    name: Technical
+    organization: [Cyber Aid Worldwide]
+- model: georga.personpropertygroup
+  pk: 305
+  fields:
+    uuid: 00000003-0000-0000-0000-000000000206
+    codename: GENERAL
+    name: General
+    organization: [Cyber Aid Worldwide]

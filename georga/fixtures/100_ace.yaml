@@ -1,24 +1,167 @@
+# Org1 ------------------------------------------------------------------------
+
+# organization admins
 - model: georga.ace
-  pk: 1
+  pk: 100
   fields:
-    uuid: "00000100-0000-0000-0000-000000000001"
-    instance_ct: ["georga", "organization"]
-    instance_id: 1
+    uuid: 00000100-0000-0000-0000-000000000100
+    instance_ct: [georga, organization]
+    instance_id: 100
     permission: ADMIN
-    person: 3
+    person: [organization.admin.1@frenchbluecircle.test]
 - model: georga.ace
-  pk: 2
+  pk: 101
   fields:
-    uuid: "00000100-0000-0000-0000-000000000002"
-    instance_ct: ["georga", "project"]
-    instance_id: 1
+    uuid: 00000100-0000-0000-0000-000000000101
+    instance_ct: [georga, organization]
+    instance_id: 100
     permission: ADMIN
-    person: 4
+    person: [organization@georga.test]
+
+# project admins
 - model: georga.ace
-  pk: 3
+  pk: 120
   fields:
-    uuid: "00000100-0000-0000-0000-000000000003"
-    instance_ct: ["georga", "operation"]
-    instance_id: 1
+    uuid: 00000100-0000-0000-0000-000000000120
+    instance_ct: [georga, project]
+    instance_id: 100
     permission: ADMIN
-    person: 5
+    person: [project.admin.1@frenchbluecircle.test]
+- model: georga.ace
+  pk: 121
+  fields:
+    uuid: 00000100-0000-0000-0000-000000000121
+    instance_ct: [georga, project]
+    instance_id: 100
+    permission: ADMIN
+    person: [project@georga.test]
+
+# operation admins
+- model: georga.ace
+  pk: 140
+  fields:
+    uuid: 00000100-0000-0000-0000-000000000140
+    instance_ct: [georga, operation]
+    instance_id: 100
+    permission: ADMIN
+    person: [operation.admin.1@frenchbluecircle.test]
+- model: georga.ace
+  pk: 141
+  fields:
+    uuid: 00000100-0000-0000-0000-000000000141
+    instance_ct: [georga, operation]
+    instance_id: 100
+    permission: ADMIN
+    person: [operation@georga.test]
+
+# Org2 ------------------------------------------------------------------------
+
+# organization admins
+- model: georga.ace
+  pk: 200
+  fields:
+    uuid: 00000100-0000-0000-0000-000000000200
+    instance_ct: [georga, organization]
+    instance_id: 200
+    permission: ADMIN
+    person: [organization.admin.1@seaeyesinternational.test]
+- model: georga.ace
+  pk: 201
+  fields:
+    uuid: 00000100-0000-0000-0000-000000000201
+    instance_ct: [georga, organization]
+    instance_id: 200
+    permission: ADMIN
+    person: [organization@georga.test]
+
+# project admins
+- model: georga.ace
+  pk: 220
+  fields:
+    uuid: 00000100-0000-0000-0000-000000000220
+    instance_ct: [georga, project]
+    instance_id: 200
+    permission: ADMIN
+    person: [project.admin.1@seaeyesinternational.test]
+- model: georga.ace
+  pk: 221
+  fields:
+    uuid: 00000100-0000-0000-0000-000000000221
+    instance_ct: [georga, project]
+    instance_id: 200
+    permission: ADMIN
+    person: [project@georga.test]
+
+# operation admins
+- model: georga.ace
+  pk: 240
+  fields:
+    uuid: 00000100-0000-0000-0000-000000000240
+    instance_ct: [georga, operation]
+    instance_id: 200
+    permission: ADMIN
+    person: [operation.admin.1@seaeyesinternational.test]
+- model: georga.ace
+  pk: 241
+  fields:
+    uuid: 00000100-0000-0000-0000-000000000241
+    instance_ct: [georga, operation]
+    instance_id: 200
+    permission: ADMIN
+    person: [operation@georga.test]
+
+# Org3 ------------------------------------------------------------------------
+
+# organization admins
+- model: georga.ace
+  pk: 300
+  fields:
+    uuid: 00000100-0000-0000-0000-000000000300
+    instance_ct: [georga, organization]
+    instance_id: 300
+    permission: ADMIN
+    person: [organization.admin.1@cyberaidworldwide.test]
+- model: georga.ace
+  pk: 301
+  fields:
+    uuid: 00000100-0000-0000-0000-000000000301
+    instance_ct: [georga, organization]
+    instance_id: 300
+    permission: ADMIN
+    person: [organization@georga.test]
+
+# project admins
+- model: georga.ace
+  pk: 320
+  fields:
+    uuid: 00000100-0000-0000-0000-000000000320
+    instance_ct: [georga, project]
+    instance_id: 300
+    permission: ADMIN
+    person: [project.admin.1@cyberaidworldwide.test]
+- model: georga.ace
+  pk: 321
+  fields:
+    uuid: 00000100-0000-0000-0000-000000000321
+    instance_ct: [georga, project]
+    instance_id: 300
+    permission: ADMIN
+    person: [project@georga.test]
+
+# operation admins
+- model: georga.ace
+  pk: 340
+  fields:
+    uuid: 00000100-0000-0000-0000-000000000340
+    instance_ct: [georga, operation]
+    instance_id: 300
+    permission: ADMIN
+    person: [operation.admin.1@cyberaidworldwide.test]
+- model: georga.ace
+  pk: 341
+  fields:
+    uuid: 00000100-0000-0000-0000-000000000341
+    instance_ct: [georga, operation]
+    instance_id: 300
+    permission: ADMIN
+    person: [operation@georga.test]

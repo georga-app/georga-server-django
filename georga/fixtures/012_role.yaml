@@ -1,0 +1,162 @@
+# Org1 ------------------------------------------------------------------------
+
+- model: georga.role
+  pk: 100
+  fields:
+    uuid: 00000012-0000-0000-0000-000000000100
+    title: Emergency physician
+    quantity: 10
+    shift: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2022-08-05 08:00:00.000000+00:00
+    ]
+- model: georga.role
+  pk: 101
+  fields:
+    uuid: 00000012-0000-0000-0000-000000000101
+    title: Rescue worker
+    quantity: 4
+    shift: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2022-08-05 08:00:00.000000+00:00
+    ]
+- model: georga.role
+  pk: 102
+  fields:
+    uuid: 00000012-0000-0000-0000-000000000102
+    title: Radio operator
+    quantity: 10
+    shift: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2022-08-06 08:00:00.000000+00:00
+    ]
+- model: georga.role
+  pk: 103
+  fields:
+    uuid: 00000012-0000-0000-0000-000000000103
+    title: Staff administration
+    quantity: 10
+    shift: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2022-08-07 08:00:00.000000+00:00
+    ]
+- model: georga.role
+  pk: 104
+  fields:
+    uuid: 00000012-0000-0000-0000-000000000104
+    title: Group leader
+    quantity: 10
+    shift: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2022-08-08 08:00:00.000000+00:00
+    ]
+- model: georga.role
+  pk: 105
+  fields:
+    uuid: 00000012-0000-0000-0000-000000000105
+    title: Helpers without special qualification
+    quantity: 10
+    shift: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2022-08-08 08:00:00.000000+00:00
+    ]
+- model: georga.role
+  pk: 106
+  fields:
+    uuid: 00000012-0000-0000-0000-000000000106
+    title: Group leader
+    quantity: 10
+    shift: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2022-08-12 08:00:00.000000+00:00
+    ]
+- model: georga.role
+  pk: 107
+  fields:
+    uuid: 00000012-0000-0000-0000-000000000107
+    title: Helpers without special qualification
+    quantity: 10
+    shift: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2022-08-12 08:00:00.000000+00:00
+    ]
+- model: georga.role
+  pk: 108
+  fields:
+    uuid: 00000012-0000-0000-0000-000000000108
+    title: Group leader
+    quantity: 10
+    shift: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2022-08-13 08:00:00.000000+00:00
+    ]
+- model: georga.role
+  pk: 109
+  fields:
+    uuid: 00000012-0000-0000-0000-000000000109
+    title: Helpers without special qualification
+    quantity: 10
+    shift: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2022-08-13 08:00:00.000000+00:00
+    ]
+- model: georga.role
+  pk: 110
+  fields:
+    uuid: 00000012-0000-0000-0000-000000000110
+    title: Group leader
+    quantity: 1
+    shift: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2022-08-14 08:00:00.000000+00:00
+    ]
+- model: georga.role
+  pk: 111
+  fields:
+    uuid: 00000012-0000-0000-0000-000000000111
+    title: Helpers without special qualification
+    quantity: 10
+    shift: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2022-08-14 08:00:00.000000+00:00
+    ]
+
+# Org2 ------------------------------------------------------------------------
+
+# Org3 ------------------------------------------------------------------------

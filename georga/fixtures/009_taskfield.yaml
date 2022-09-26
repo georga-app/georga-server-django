@@ -1,0 +1,97 @@
+# Org1 ------------------------------------------------------------------------
+
+- model: georga.taskfield
+  pk: 100
+  fields:
+    uuid: 00000009-0000-0000-0000-000000000100
+    name: Dolmetscher
+    description: >
+      Dolmetscher für verschiedene Sprachen
+    organization: [French Blue Circle]
+- model: georga.taskfield
+  pk: 101
+  fields:
+    uuid: 00000009-0000-0000-0000-000000000101
+    name: Betreuung
+    description: >
+      Dolmetscher für verschiedene Sprachen
+    organization: [French Blue Circle]
+- model: georga.taskfield
+  pk: 102
+  fields:
+    uuid: 00000009-0000-0000-0000-000000000102
+    name: Sanitätsdienste
+    description: >
+      Verschieden medizinische Hilfen bei Sanitätsdiensten
+    organization: [French Blue Circle]
+- model: georga.taskfield
+  pk: 103
+  fields:
+    uuid: 00000009-0000-0000-0000-000000000103
+    name: Hochwasserprävention
+    description: >
+      Verschiedene Hilfstätigkeiten bei angekündigtem Hochwasser
+    organization: [French Blue Circle]
+- model: georga.taskfield
+  pk: 104
+  fields:
+    uuid: 00000009-0000-0000-0000-000000000104
+    name: Hilfsarbeiten nach Hochwasser
+    description: >
+      Verschiedene Hilfstätigkeiten zu Räumung, Reparatur und Wiederaufbau nach Hochwassern
+    organization: [French Blue Circle]
+- model: georga.taskfield
+  pk: 105
+  fields:
+    uuid: 00000009-0000-0000-0000-000000000105
+    name: Organisationsthemen bei Betreuungseinsätzen
+    description: >
+      Registratur, Sortierung, Zuteilungen vor Ort
+    organization: [French Blue Circle]
+- model: georga.taskfield
+  pk: 106
+  fields:
+    uuid: 00000009-0000-0000-0000-000000000106
+    name: Reinigungstätigkeiten
+    description: >
+      Tätigkeiten, die es erfordern, mit Reinigungsmitteln und -Material zu arbeiten
+    organization: [French Blue Circle]
+- model: georga.taskfield
+  pk: 107
+  fields:
+    uuid: 00000009-0000-0000-0000-000000000107
+    name: Lebensmitteltätigkeiten
+    description: >
+      Tätigkeiten, die es erfordern, mit Lebensmitteln umzugehen
+    organization: [French Blue Circle]
+
+# Org2 ------------------------------------------------------------------------
+
+- model: georga.taskfield
+  pk: 200
+  fields:
+    uuid: 00000009-0000-0000-0000-000000000200
+    name: Leichte Beladungstätigkeiten
+    description: >
+      Tätigkeiten bei der Beladung, die keine besonderen Materialien, Kenntnisse,
+      Qualifikationen oder schweres Heben voraussetzen
+    organization: [Sea Eyes International]
+- model: georga.taskfield
+  pk: 201
+  fields:
+    uuid: 00000009-0000-0000-0000-000000000201
+    name: Beladung - Hebetätigkeiten
+    description: >
+      Tätigkeiten bei der Beladung von Schiffen vor der Fahrt, die schweres Heben beinhalten
+    organization: [Sea Eyes International]
+
+# Org3 ------------------------------------------------------------------------
+
+- model: georga.taskfield
+  pk: 300
+  fields:
+    uuid: 00000009-0000-0000-0000-000000000300
+    name: Bedrohungs- und Statusanalyse
+    description: >
+      Tätigkeiten bei Verdacht eines Cyber Cyber Cyberangriffs
+    organization: [Cyber Aid Worldwide]

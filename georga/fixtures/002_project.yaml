@@ -1,72 +1,86 @@
+# Org1 ------------------------------------------------------------------------
+
 - model: georga.project
-  pk: 1
+  pk: 100
   fields:
-    uuid: "00000002-0000-0000-0000-000000000001"
-    state: "PUBLISHED"
-    name: "Care Service"
-    description: "Care for people who aren't able to care for oneselves alone."
-    organization: 1
+    uuid: 00000002-0000-0000-0000-000000000100
+    state: PUBLISHED
+    name: Care Service
+    description: Care for people who aren't able to care for oneselves alone.
+    organization: [French Blue Circle]
 - model: georga.project
-  pk: 2
+  pk: 101
   fields:
-    uuid: "00000002-0000-0000-0000-000000000002"
-    state: "DRAFT"
-    name: "Sanitary Service"
-    description: "Clean houses and property and make everything shine again."
-    organization: 1
+    uuid: 00000002-0000-0000-0000-000000000101
+    state: DRAFT
+    name: Sanitary Service
+    description: Clean houses and property and make everything shine again.
+    organization: [French Blue Circle]
 - model: georga.project
-  pk: 3
+  pk: 102
   fields:
-    uuid: "00000002-0000-0000-0000-000000000003"
-    state: "ARCHIVED"
-    name: "Refugee Aid Ukraine Crisis 2022"
-    description: "Help with authorities, translation service, shelter."
-    organization: 1
+    uuid: 00000002-0000-0000-0000-000000000102
+    state: ARCHIVED
+    name: Refugee Aid Ukraine Crisis 2022
+    description: Help with authorities, translation service, shelter.
+    organization: [French Blue Circle]
 - model: georga.project
-  pk: 4
+  pk: 103
   fields:
-    uuid: "00000002-0000-0000-0000-000000000004"
-    state: "DELETED"
-    name: "Elbe River Flood Hamburg 2002"
-    description: "General disaster countermeasures, dike reinforcement, draining basements, clean up rubble."
-    organization: 1
+    uuid: 00000002-0000-0000-0000-000000000103
+    state: DELETED
+    name: Elbe River Flood Hamburg 2002
+    description: >
+      General disaster countermeasures, dike reinforcement, draining basements, clean up rubble.
+    organization: [French Blue Circle]
 - model: georga.project
-  pk: 5
+  pk: 104
   fields:
-    uuid: "00000002-0000-0000-0000-000000000005"
-    state: "PUBLISHED"
-    name: "Flood Catastrophy Hamburg 1962"
-    description: "General disaster countermeasures, dike reinforcement, draining basements, clean up rubble."
-    organization: 1
+    uuid: 00000002-0000-0000-0000-000000000104
+    state: PUBLISHED
+    name: Flood Catastrophy Hamburg 1962
+    description: >
+      General disaster countermeasures, dike reinforcement, draining basements, clean up rubble.
+    organization: [French Blue Circle]
 - model: georga.project
-  pk: 6
+  pk: 105
   fields:
-    uuid: "00000002-0000-0000-0000-000000000006"
-    state: "PUBLISHED"
-    name: "Ahrtal Hochwasser 2021"
-    description: "General disaster countermeasures, dike reinforcement, draining basements, clean up rubble."
-    organization: 1
+    uuid: 00000002-0000-0000-0000-000000000105
+    state: PUBLISHED
+    name: Ahrtal Hochwasser 2021
+    description: >
+      General disaster countermeasures, dike reinforcement, draining basements, clean up rubble.
+    organization: [French Blue Circle]
 - model: georga.project
-  pk: 7
+  pk: 106
   fields:
-    uuid: "00000002-0000-0000-0000-000000000007"
-    state: "PUBLISHED"
-    name: "Corona Impfzentrum Musterdorf 2020-11"
-    description: "Supporting measures to organize vaccinations."
-    organization: 1
+    uuid: 00000002-0000-0000-0000-000000000106
+    state: PUBLISHED
+    name: Corona Impfzentrum Musterdorf 2020-11
+    description: >
+      Supporting measures to organize vaccinations.
+    organization: [French Blue Circle]
+
+# Org2 ------------------------------------------------------------------------
+
 - model: georga.project
-  pk: 8
+  pk: 200
   fields:
-    uuid: "00000002-0000-0000-0000-000000000008"
-    state: "PUBLISHED"
-    name: "Prepare vessel for sailing"
-    description: "Getting supplies on board, decorative repairs, administrative work, buerocratic necessities."
-    organization: 2
+    uuid: 00000002-0000-0000-0000-000000000200
+    state: PUBLISHED
+    name: Prepare vessel for sailing
+    description: >
+      Getting supplies on board, decorative repairs, administrative work, buerocratic necessities.
+    organization: [Sea Eyes International]
+
+# Org3 ------------------------------------------------------------------------
+
 - model: georga.project
-  pk: 9
+  pk: 300
   fields:
-    uuid: "00000002-0000-0000-0000-000000000009"
-    state: "PUBLISHED"
-    name: "Urgency Deployment of Cyber Defence Measures"
-    organization: 3
-    description: "Updating infrastructure, replacing vulnerable devices, setup firewalls, pentests."
+    uuid: 00000002-0000-0000-0000-000000000300
+    state: PUBLISHED
+    name: Urgency Deployment of Cyber Defence Measures
+    organization: [Cyber Aid Worldwide]
+    description: >
+      Updating infrastructure, replacing vulnerable devices, setup firewalls, pentests.

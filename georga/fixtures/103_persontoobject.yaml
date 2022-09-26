@@ -1,77 +1,83 @@
+# Org1 ------------------------------------------------------------------------
+
 # unnoticed messages
 - model: georga.persontoobject
-  pk: 1
+  pk: 100
   fields:
-    uuid: "00000103-0000-0000-0000-000000000001"
-    person: 2
-    relation_object_ct: ["georga", "message"]
+    uuid: 00000103-0000-0000-0000-000000000001
+    person: [helper.001@georga.test]
+    relation_object_ct: [georga, message]
     relation_object_id: 1
     unnoticed: true
     bookmarked: false
 - model: georga.persontoobject
-  pk: 2
+  pk: 101
   fields:
-    uuid: "00000103-0000-0000-0000-000000000002"
-    person: 2
-    relation_object_ct: ["georga", "message"]
-    relation_object_id: 1
+    uuid: 00000103-0000-0000-0000-000000000002
+    person: [helper.001@georga.test]
+    relation_object_ct: [georga, message]
+    relation_object_id: 2
     unnoticed: true
     bookmarked: false
 - model: georga.persontoobject
-  pk: 3
+  pk: 102
   fields:
-    uuid: "00000103-0000-0000-0000-000000000003"
-    person: 2
-    relation_object_ct: ["georga", "message"]
+    uuid: 00000103-0000-0000-0000-000000000003
+    person: [helper.001@georga.test]
+    relation_object_ct: [georga, message]
     relation_object_id: 3
     unnoticed: false
     bookmarked: false
 
 # unnoticed objects
 - model: georga.persontoobject
-  pk: 4
+  pk: 130
   fields:
-    uuid: "00000103-0000-0000-0000-000000000004"
-    person: 2
-    relation_object_ct: ["georga", "role"]
-    relation_object_id: 1
+    uuid: 00000103-0000-0000-0000-000000000130
+    person: [helper.001@georga.test]
+    relation_object_ct: [georga, role]
+    relation_object_id: 100
     unnoticed: true
     bookmarked: false
 - model: georga.persontoobject
-  pk: 5
+  pk: 131
   fields:
-    uuid: "00000103-0000-0000-0000-000000000005"
-    person: 2
-    relation_object_ct: ["georga", "role"]
-    relation_object_id: 2
+    uuid: 00000103-0000-0000-0000-000000000131
+    person: [helper.001@georga.test]
+    relation_object_ct: [georga, role]
+    relation_object_id: 101
     unnoticed: true
     bookmarked: false
 
 # bookmarked objects
 - model: georga.persontoobject
-  pk: 6
+  pk: 160
   fields:
-    uuid: "00000103-0000-0000-0000-000000000006"
-    person: 2
-    relation_object_ct: ["georga", "project"]
-    relation_object_id: 1
+    uuid: 00000103-0000-0000-0000-000000000160
+    person: [helper.001@georga.test]
+    relation_object_ct: [georga, project]
+    relation_object_id: 100
     unnoticed: false
     bookmarked: true
 - model: georga.persontoobject
-  pk: 7
+  pk: 161
   fields:
-    uuid: "00000103-0000-0000-0000-000000000007"
-    person: 2
-    relation_object_ct: ["georga", "task"]
-    relation_object_id: 1
+    uuid: 00000103-0000-0000-0000-000000000161
+    person: [helper.001@georga.test]
+    relation_object_ct: [georga, task]
+    relation_object_id: 100
     unnoticed: false
     bookmarked: true
 - model: georga.persontoobject
-  pk: 8
+  pk: 162
   fields:
-    uuid: "00000103-0000-0000-0000-000000000008"
-    person: 2
-    relation_object_ct: ["georga", "shift"]
-    relation_object_id: 1
+    uuid: 00000103-0000-0000-0000-000000000162
+    person: [helper.001@georga.test]
+    relation_object_ct: [georga, shift]
+    relation_object_id: 100
     unnoticed: false
     bookmarked: true
+
+# Org2 ------------------------------------------------------------------------
+
+# Org3 ------------------------------------------------------------------------

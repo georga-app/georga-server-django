@@ -1,84 +1,129 @@
+# Org1 ------------------------------------------------------------------------
+
 - model: georga.message
-  pk: 1
+  pk: 100
   fields:
-    uuid: "00000101-0000-0000-0000-000000000001"
-    title: "Dolmetschertätigkeit in der Unterkunft Hofstraße"
-    contents: "<h1>Tätigkeit:</h1><p>In der Notunkterkunft wird Hilfe für die Kommunikation zwischen Bewohnern und Betreuuern benötigt. Bitte <b>nur mit 2G-Nachweis</b><h1>Mitbringen:</h1><ul><li>Außentaugliche Kleidung für Tätigkeiten im Hof</ul>"
+    uuid: 00000101-0000-0000-0000-000000000100
+    title: Dolmetschertätigkeit in der Unterkunft Hofstraße
+    contents: >
+      <h1>Tätigkeit:</h1>
+      <p>
+        In der Notunkterkunft wird Hilfe für die Kommunikation zwischen Bewohnern und
+        Betreuuern benötigt. Bitte <b>nur mit 2G-Nachweis</b>
+      </p>
+      <h1>Mitbringen:</h1>
+      <ul><li>Außentaugliche Kleidung für Tätigkeiten im Hof</ul>
     priority: IMPORTANT
     category: NEWS
     state: DRAFT
     email_delivery: NONE
     push_delivery: NONE
     sms_delivery: NONE
-    scope_ct: ["georga", "shift"]
-    scope_id: 1
+    scope_ct: [georga, shift]
+    scope_id: 100
 - model: georga.message
-  pk: 2
+  pk: 101
   fields:
-    uuid: "00000101-0000-0000-0000-000000000002"
-    title: "Großbrand im Stahlwerk"
-    contents: "Die Bevölkerung in der näheren Umgebung von 2km Umkreis wird wegen der Rauchentwicklung gebeten, Türen und Fenster geschlossen zu halten und sich nicht im Freien aufzuhalten."
+    uuid: 00000101-0000-0000-0000-000000000101
+    title: Großbrand im Stahlwerk
+    contents: >
+      Die Bevölkerung in der näheren Umgebung von 2km Umkreis wird wegen der
+      Rauchentwicklung gebeten, Türen und Fenster geschlossen zu halten und sich
+      nicht im Freien aufzuhalten.
     priority: URGENT
     category: NEWS
     state: PUBLISHED
     email_delivery: SUCCEEDED
     push_delivery: SUCCEEDED
     sms_delivery: SUCCEEDED
-    scope_ct: ["georga", "organization"]
-    scope_id: 1
+    scope_ct: [georga, organization]
+    scope_id: 100
 - model: georga.message
-  pk: 3
+  pk: 102
   fields:
-    uuid: "00000101-0000-0000-0000-000000000003"
-    title: "Spendenbereitschaft überwältigend"
-    contents: "<p>Für die Notunterkünfte für Geflüchtet ist die Spendenbereitschaft in der Bevölkerung weiterhin überwältigend. Aktuell wird darum gebeten, dass vorerst keine neuen Küchenutensilien gespendet werden, da diese nun erst einmal sortiert und zugeteilt werden müssen und diese höchst wahrscheinlich für alle Unterkünfte ausreichen.</p>"
+    uuid: 00000101-0000-0000-0000-000000000102
+    title: Spendenbereitschaft überwältigend
+    contents: >
+      <p>Für die Notunterkünfte für Geflüchtet ist die Spendenbereitschaft in der
+      Bevölkerung weiterhin überwältigend. Aktuell wird darum gebeten, dass vorerst
+      keine neuen Küchenutensilien gespendet werden, da diese nun erst einmal sortiert
+      und zugeteilt werden müssen und diese höchst wahrscheinlich für alle Unterkünfte
+      ausreichen.</p>
     priority: IMPORTANT
     category: ALERT
     state: PUBLISHED
     email_delivery: SENT
     push_delivery: SENT
     sms_delivery: SENT
-    scope_ct: ["georga", "project"]
-    scope_id: 1
+    scope_ct: [georga, project]
+    scope_id: 100
 - model: georga.message
-  pk: 4
+  pk: 103
   fields:
-    uuid: "00000101-0000-0000-0000-000000000004"
-    title: "Bli Bla Blubb"
-    contents: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet."
+    uuid: 00000101-0000-0000-0000-000000000103
+    title: Bli Bla Blubb
+    contents: >
+      Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+      tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At
+      vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
+      no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
+      consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
+      dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo
+      duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
+      Lorem ipsum dolor sit amet.
     priority: NORMAL
     category: ACTIVITY
     state: PUBLISHED
     email_delivery: SCHEDULED
     push_delivery: SCHEDULED
     sms_delivery: SCHEDULED
-    scope_ct: ["georga", "task"]
-    scope_id: 1
+    scope_ct: [georga, task]
+    scope_id: 100
 - model: georga.message
-  pk: 5
+  pk: 104
   fields:
-    uuid: "00000101-0000-0000-0000-000000000005"
-    title: "Räuber Hotzenplotz"
-    contents: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet."
+    uuid: 00000101-0000-0000-0000-000000000104
+    title: Räuber Hotzenplotz
+    contents: >
+      Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+      tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At
+      vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
+      no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
+      consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
+      dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo
+      duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
+      Lorem ipsum dolor sit amet.
     priority: NORMAL
     category: ACTIVITY
     state: DRAFT
     email_delivery: FAILED
     push_delivery: FAILED
     sms_delivery: FAILED
-    scope_ct: ["georga", "operation"]
-    scope_id: 1
+    scope_ct: [georga, operation]
+    scope_id: 100
 - model: georga.message
-  pk: 6
+  pk: 105
   fields:
-    uuid: "00000101-0000-0000-0000-000000000006"
-    title: "Momo"
-    contents: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet."
+    uuid: 00000101-0000-0000-0000-000000000105
+    title: Momo
+    contents: >
+      Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+      tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At
+      vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
+      no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
+      consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
+      dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo
+      duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
+      Lorem ipsum dolor sit amet.
     priority: NORMAL
     category: ACTIVITY
     state: DRAFT
     email_delivery: SCHEDULED
     push_delivery: SENT
     sms_delivery: FAILED
-    scope_ct: ["georga", "operation"]
-    scope_id: 1
+    scope_ct: [georga, operation]
+    scope_id: 100
+
+# Org2 ------------------------------------------------------------------------
+
+# Org3 ------------------------------------------------------------------------

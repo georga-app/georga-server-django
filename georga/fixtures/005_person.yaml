@@ -1,135 +1,645 @@
-# password for all demo users: georga
-# super admin
+# super admin -----------------------------------------------------------------
+
 - model: georga.person
   pk: 1
   fields:
-    uuid: "00000005-0000-0000-0000-000000000001"
-    # gid: "UGVyc29uVHlwZTowMDAwMDAwNS0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDE="
-    password: pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
+    uuid: 00000005-0000-0000-0000-000000000001
+    # gid: UGVyc29uVHlwZTowMDAwMDAwNS0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDE=
+    password: >  # georga
+      pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
+    password_modified: 2022-03-13 16:13:36.048338+00:00
+    date_joined: 2022-03-13 16:13:36.048326+00:00
     last_login: null
     is_superuser: true
+    is_staff: true
+    is_active: true
     username: admin@georga.test
-    first_name: 'Admin'
-    last_name: 'admin'
-    is_staff: true
-    date_joined: 2022-03-13 16:13:36.048326+00:00
     email: admin@georga.test
-    password_modified: 2022-03-13 16:13:36.048338+00:00
-    is_active: true
+    first_name: Admin
+    last_name: admin
 
-# helper
-- model: georga.person
-  pk: 2
-  fields:
-    uuid: "00000005-0000-0000-0000-000000000002"
-    # gid: "UGVyc29uVHlwZTowMDAwMDAwNS0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDI="
-    password: pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
-    last_login: null
-    is_superuser: false
-    username: helper@georga.test
-    first_name: 'Helper'
-    last_name: 'User'
-    is_staff: false
-    date_joined: 2022-03-13 16:13:36.048326+00:00
-    email: helper@georga.test
-    password_modified: 2022-03-13 16:13:36.048338+00:00
-    properties: [
-      2, 5, 7, 10, 90,     # Org1
-      102, 105, 107, 110,  # Org2
-      250, 270, 280, 281,  # Org2
-    ]
-    organizations_subscribed: [1, 2, 3]
-    organizations_employed: []
-    is_active: true
+# Org1 staff ------------------------------------------------------------------
 
-# staff
+# organization admins
 - model: georga.person
-  pk: 3
+  pk: 100
   fields:
-    uuid: "00000005-0000-0000-0000-000000000003"
+    uuid: 00000005-0000-0000-0000-000000000100
     # gid: "UGVyc29uVHlwZTowMDAwMDAwNS0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDM="
-    password: pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
+    password: >  # georga
+      pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
+    password_modified: 2022-03-13 16:13:36.048338+00:00
+    date_joined: 2022-03-13 16:13:36.048326+00:00
     last_login: null
     is_superuser: false
-    username: organization@georga.test
-    first_name: 'Organization'
-    last_name: 'Admin'
     is_staff: true
-    date_joined: 2022-03-13 16:13:36.048326+00:00
-    email: organization@georga.test
-    password_modified: 2022-03-13 16:13:36.048338+00:00
-    properties: [
-      3, 16, 21, 31,  # Org1
-    ]
-    organizations_subscribed: [1]
-    organizations_employed: [1]
     is_active: true
-- model: georga.person
-  pk: 4
-  fields:
-    uuid: "00000005-0000-0000-0000-000000000004"
-    # gid: "UGVyc29uVHlwZTowMDAwMDAwNS0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDQ="
-    password: pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
-    last_login: null
-    is_superuser: false
-    username: project@georga.test
-    first_name: 'Project'
-    last_name: 'Admin'
-    is_staff: true
-    date_joined: 2022-03-13 16:13:36.048326+00:00
-    email: project@georga.test
-    password_modified: 2022-03-13 16:13:36.048338+00:00
+    username: organization.admin.1@frenchbluecircle.test
+    email: organization.admin.1@frenchbluecircle.test
+    first_name: Organization
+    last_name: Admin
     properties: [
-      4, 34,     # Org1
-      104, 160,  # Org2
-      250, 280,  # Org3
+      [French Blue Circle, Language, Spanish],
+      [French Blue Circle, Language, Hungarian],
+      [French Blue Circle, Language, Estonian],
+      [French Blue Circle, License, German drivers license class BE],
     ]
-    organizations_subscribed: [1, 2, 3]
-    organizations_employed: [1, 2, 3]
-    is_active: true
-- model: georga.person
-  pk: 5
-  fields:
-    uuid: "00000005-0000-0000-0000-000000000005"
-    # gid: "UGVyc29uVHlwZTowMDAwMDAwNS0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDU="
-    password: pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
-    last_login: null
-    is_superuser: false
-    username: operation@georga.test
-    first_name: 'Operation'
-    last_name: 'Admin'
-    is_staff: true
-    date_joined: 2022-03-13 16:13:36.048326+00:00
-    email: operation@georga.test
-    password_modified: 2022-03-13 16:13:36.048338+00:00
-    properties: [
-      7, 10,  # Org1
+    organizations_subscribed: [
+      [French Blue Circle],
     ]
-    organizations_subscribed: [1]
-    organizations_employed: [1]
-    is_active: true
+    organizations_employed: [
+      [French Blue Circle],
+    ]
 
-# inactive user
+# project admins
 - model: georga.person
-  pk: 6
+  pk: 120
   fields:
-    uuid: "00000005-0000-0000-0000-000000000006"
-    # gid: "UGVyc29uVHlwZTowMDAwMDAwNS0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDY="
-    password: pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
+    uuid: 00000005-0000-0000-0000-000000000120
+    # gid: "UGVyc29uVHlwZTowMDAwMDAwNS0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDQ="
+    password: >  # georga
+      pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
+    password_modified: 2022-03-13 16:13:36.048338+00:00
+    date_joined: 2022-03-13 16:13:36.048326+00:00
     last_login: null
     is_superuser: false
-    username: inactive@georga.test
-    first_name: 'Inactive'
-    last_name: 'User'
-    is_staff: false
-    date_joined: 2022-03-13 16:13:36.048326+00:00
-    email: inactive@georga.test
-    password_modified: 2022-03-13 16:13:36.048338+00:00
+    is_staff: true
+    is_active: true
+    username: project.admin.1@frenchbluecircle.test
+    email: project.admin.1@frenchbluecircle.test
+    first_name: Project
+    last_name: Admin
     properties: [
-      2, 5, 7, 10,         # Org1
-      102, 105, 107, 110,  # Org2
-      251, 271, 281, 283,  # Org2
+      [French Blue Circle, Language, Arabian],
+      [French Blue Circle, License, German drivers license class D1E],
     ]
-    organizations_subscribed: [1, 2, 3]
-    organizations_employed: []
+    organizations_subscribed: [
+      [French Blue Circle],
+    ]
+    organizations_employed: [
+      [French Blue Circle],
+    ]
+
+# operation admins
+- model: georga.person
+  pk: 140
+  fields:
+    uuid: 00000005-0000-0000-0000-000000000140
+    # gid: "UGVyc29uVHlwZTowMDAwMDAwNS0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDU="
+    password: >  # georga
+      pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
+    password_modified: 2022-03-13 16:13:36.048338+00:00
+    date_joined: 2022-03-13 16:13:36.048326+00:00
+    last_login: null
+    is_superuser: false
+    is_staff: true
+    is_active: true
+    username: operation.admin.1@frenchbluecircle.test
+    email: operation.admin.1@frenchbluecircle.test
+    first_name: Operation
+    last_name: Admin
+    properties: [
+      [French Blue Circle, Language, Italian],
+      [French Blue Circle, Language, Ukrainian],
+    ]
+    organizations_subscribed: [
+      [French Blue Circle],
+    ]
+    organizations_employed: [
+      [French Blue Circle],
+    ]
+
+# Org2 staff ------------------------------------------------------------------
+
+# organization admins
+- model: georga.person
+  pk: 200
+  fields:
+    uuid: 00000005-0000-0000-0000-000000000200
+    # gid: "UGVyc29uVHlwZTowMDAwMDAwNS0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDM="
+    password: >  # georga
+      pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
+    password_modified: 2022-03-13 16:13:36.048338+00:00
+    date_joined: 2022-03-13 16:13:36.048326+00:00
+    last_login: null
+    is_superuser: false
+    is_staff: true
+    is_active: true
+    username: organization.admin.1@seaeyesinternational.test
+    email: organization.admin.1@seaeyesinternational.test
+    first_name: Organization
+    last_name: Admin
+    properties: [
+      [Sea Eyes International, Language, Spanish],
+      [Sea Eyes International, Language, Hungarian],
+      [Sea Eyes International, Language, Estonian],
+      [Sea Eyes International, Medical, Physician],
+    ]
+    organizations_subscribed: [
+      [Sea Eyes International],
+    ]
+    organizations_employed: [
+      [Sea Eyes International],
+    ]
+
+# project admins
+- model: georga.person
+  pk: 220
+  fields:
+    uuid: 00000005-0000-0000-0000-000000000220
+    # gid: "UGVyc29uVHlwZTowMDAwMDAwNS0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDQ="
+    password: >  # georga
+      pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
+    password_modified: 2022-03-13 16:13:36.048338+00:00
+    date_joined: 2022-03-13 16:13:36.048326+00:00
+    last_login: null
+    is_superuser: false
+    is_staff: true
+    is_active: true
+    username: project.admin.1@seaeyesinternational.test
+    email: project.admin.1@seaeyesinternational.test
+    first_name: Project
+    last_name: Admin
+    properties: [
+      [Sea Eyes International, Language, Arabian],
+      [Sea Eyes International, Medical, Emergency medical services],
+    ]
+    organizations_subscribed: [
+      [Sea Eyes International],
+    ]
+    organizations_employed: [
+      [Sea Eyes International],
+    ]
+
+# operation admins
+- model: georga.person
+  pk: 240
+  fields:
+    uuid: 00000005-0000-0000-0000-000000000240
+    # gid: "UGVyc29uVHlwZTowMDAwMDAwNS0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDU="
+    password: >  # georga
+      pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
+    password_modified: 2022-03-13 16:13:36.048338+00:00
+    date_joined: 2022-03-13 16:13:36.048326+00:00
+    last_login: null
+    is_superuser: false
+    is_staff: true
+    is_active: true
+    username: operation.admin.1@seaeyesinternational.test
+    email: operation.admin.1@seaeyesinternational.test
+    first_name: Operation
+    last_name: Admin
+    properties: [
+      [Sea Eyes International, Language, Italian],
+      [Sea Eyes International, Language, Ukrainian],
+    ]
+    organizations_subscribed: [
+      [Sea Eyes International],
+    ]
+    organizations_employed: [
+      [Sea Eyes International],
+    ]
+
+# Org3 staff ------------------------------------------------------------------
+
+# organization admins
+- model: georga.person
+  pk: 300
+  fields:
+    uuid: 00000005-0000-0000-0000-000000000300
+    # gid: "UGVyc29uVHlwZTowMDAwMDAwNS0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDM="
+    password: >  # georga
+      pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
+    password_modified: 2022-03-13 16:13:36.048338+00:00
+    date_joined: 2022-03-13 16:13:36.048326+00:00
+    last_login: null
+    is_superuser: false
+    is_staff: true
+    is_active: true
+    username: organization.admin.1@cyberaidworldwide.test
+    email: organization.admin.1@cyberaidworldwide.test
+    first_name: Organization
+    last_name: Admin
+    properties: [
+      [Cyber Aid Worldwide, Technical, Information technology],
+      [Cyber Aid Worldwide, Technical, Communication technology],
+      [Cyber Aid Worldwide, General, Shopping],
+      [Cyber Aid Worldwide, General, Household],
+    ]
+    organizations_subscribed: [
+      [Cyber Aid Worldwide],
+    ]
+    organizations_employed: [
+      [Cyber Aid Worldwide],
+    ]
+
+# project admins
+- model: georga.person
+  pk: 320
+  fields:
+    uuid: 00000005-0000-0000-0000-000000000320
+    # gid: "UGVyc29uVHlwZTowMDAwMDAwNS0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDQ="
+    password: >  # georga
+      pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
+    password_modified: 2022-03-13 16:13:36.048338+00:00
+    date_joined: 2022-03-13 16:13:36.048326+00:00
+    last_login: null
+    is_superuser: false
+    is_staff: true
+    is_active: true
+    username: project.admin.1@cyberaidworldwide.test
+    email: project.admin.1@cyberaidworldwide.test
+    first_name: Project
+    last_name: Admin
+    properties: [
+      [Cyber Aid Worldwide, Administrative, Clerk],
+      [Cyber Aid Worldwide, Administrative, Accounting clerk],
+    ]
+    organizations_subscribed: [
+      [Cyber Aid Worldwide],
+    ]
+    organizations_employed: [
+      [Cyber Aid Worldwide],
+    ]
+
+# operation admins
+- model: georga.person
+  pk: 340
+  fields:
+    uuid: 00000005-0000-0000-0000-000000000340
+    # gid: "UGVyc29uVHlwZTowMDAwMDAwNS0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDU="
+    password: >  # georga
+      pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
+    password_modified: 2022-03-13 16:13:36.048338+00:00
+    date_joined: 2022-03-13 16:13:36.048326+00:00
+    last_login: null
+    is_superuser: false
+    is_staff: true
+    is_active: true
+    username: operation.admin.1@cyberaidworldwide.test
+    email: operation.admin.1@cyberaidworldwide.test
+    first_name: Operation
+    last_name: Admin
+    properties: [
+      [Cyber Aid Worldwide, General, Shopping],
+      [Cyber Aid Worldwide, General, Household],
+    ]
+    organizations_subscribed: [
+      [Cyber Aid Worldwide],
+    ]
+    organizations_employed: [
+      [Cyber Aid Worldwide],
+    ]
+
+# Org mixed staff -------------------------------------------------------------
+
+# orgnanization admins
+- model: georga.person
+  pk: 900
+  fields:
+    uuid: 00000005-0000-0000-0000-000000000900
+    # gid: "UGVyc29uVHlwZTowMDAwMDAwNS0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDM="
+    password: >  # georga
+      pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
+    password_modified: 2022-03-13 16:13:36.048338+00:00
+    date_joined: 2022-03-13 16:13:36.048326+00:00
+    last_login: null
+    is_superuser: false
+    is_staff: true
+    is_active: true
+    username: organization@georga.test
+    email: organization@georga.test
+    first_name: Organization
+    last_name: Admin
+    properties: [
+      [French Blue Circle, Language, Spanish],
+      [French Blue Circle, Language, Hungarian],
+      [French Blue Circle, Language, Estonian],
+      [French Blue Circle, License, German drivers license class BE],
+      [Sea Eyes International, Language, Spanish],
+      [Sea Eyes International, Language, Hungarian],
+      [Sea Eyes International, Language, Estonian],
+      [Sea Eyes International, Medical, Physician],
+      [Cyber Aid Worldwide, Technical, Information technology],
+      [Cyber Aid Worldwide, Technical, Communication technology],
+      [Cyber Aid Worldwide, General, Shopping],
+      [Cyber Aid Worldwide, General, Household],
+    ]
+    organizations_subscribed: [
+      [Cyber Aid Worldwide],
+      [Sea Eyes International],
+      [French Blue Circle],
+    ]
+    organizations_employed: [
+      [Cyber Aid Worldwide],
+      [Sea Eyes International],
+      [French Blue Circle],
+    ]
+
+# project admins
+- model: georga.person
+  pk: 920
+  fields:
+    uuid: 00000005-0000-0000-0000-000000000920
+    # gid: "UGVyc29uVHlwZTowMDAwMDAwNS0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDQ="
+    password: >  # georga
+      pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
+    password_modified: 2022-03-13 16:13:36.048338+00:00
+    date_joined: 2022-03-13 16:13:36.048326+00:00
+    last_login: null
+    is_superuser: false
+    is_staff: true
+    is_active: true
+    username: project@georga.test
+    email: project@georga.test
+    first_name: Project
+    last_name: Admin
+    properties: [
+      [French Blue Circle, Language, Arabian],
+      [French Blue Circle, License, German drivers license class D1E],
+      [Sea Eyes International, Language, Arabian],
+      [Sea Eyes International, Medical, Emergency medical services],
+      [Cyber Aid Worldwide, Administrative, Clerk],
+      [Cyber Aid Worldwide, Administrative, Accounting clerk],
+    ]
+    organizations_subscribed: [
+      [French Blue Circle],
+      [Sea Eyes International],
+      [Cyber Aid Worldwide],
+    ]
+    organizations_employed: [
+      [French Blue Circle],
+      [Sea Eyes International],
+      [Cyber Aid Worldwide],
+    ]
+
+# operation admins
+- model: georga.person
+  pk: 940
+  fields:
+    uuid: 00000005-0000-0000-0000-000000000940
+    # gid: "UGVyc29uVHlwZTowMDAwMDAwNS0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDU="
+    password: >  # georga
+      pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
+    password_modified: 2022-03-13 16:13:36.048338+00:00
+    date_joined: 2022-03-13 16:13:36.048326+00:00
+    last_login: null
+    is_superuser: false
+    is_staff: true
+    is_active: true
+    username: operation@georga.test
+    email: operation@georga.test
+    first_name: Operation
+    last_name: Admin
+    properties: [
+      [French Blue Circle, Language, Italian],
+      [French Blue Circle, Language, Ukrainian],
+      [Sea Eyes International, Language, Italian],
+      [Sea Eyes International, Language, Ukrainian],
+      [Cyber Aid Worldwide, General, Shopping],
+      [Cyber Aid Worldwide, General, Household],
+    ]
+    organizations_subscribed: [
+      [French Blue Circle],
+      [Cyber Aid Worldwide],
+      [Sea Eyes International],
+    ]
+    organizations_employed: [
+      [French Blue Circle],
+      [Cyber Aid Worldwide],
+      [Sea Eyes International],
+    ]
+
+# inactive helper -------------------------------------------------------------
+
+- model: georga.person
+  pk: 1000
+  fields:
+    uuid: 00000005-0000-0000-0000-000000001000
+    # gid: "UGVyc29uVHlwZTowMDAwMDAwNS0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDY="
+    password: >  # georga
+      pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
+    password_modified: 2022-03-13 16:13:36.048338+00:00
+    date_joined: 2022-03-13 16:13:36.048326+00:00
+    last_login: null
+    is_superuser: false
+    is_staff: false
     is_active: false
+    username: inactive@georga.test
+    email: inactive@georga.test
+    first_name: Inactive
+    last_name: User
+    properties: [
+      [French Blue Circle, Language, English],
+      [French Blue Circle, Language, Turkish],
+      [French Blue Circle, Language, Kurdish],
+      [French Blue Circle, Language, Dutch],
+      [French Blue Circle, Adult, 'Yes'],
+      [Sea Eyes International, Language, French],
+      [Sea Eyes International, Language, Turkish],
+      [Sea Eyes International, Language, Kurdish],
+      [Sea Eyes International, Language, Dutch],
+      [Cyber Aid Worldwide, Administrative, Clerk],
+      [Cyber Aid Worldwide, Technical, Information technology],
+      [Cyber Aid Worldwide, General, Shopping],
+      [Cyber Aid Worldwide, General, Household],
+    ]
+    organizations_subscribed: [
+      [French Blue Circle],
+      [Sea Eyes International],
+      [Cyber Aid Worldwide],
+    ]
+    organizations_employed: []
+
+# active helper ---------------------------------------------------------------
+
+- model: georga.person
+  pk: 1001
+  fields:
+    uuid: 00000005-0000-0000-0000-000000001001
+    # gid: "UGVyc29uVHlwZTowMDAwMDAwNS0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDI="
+    password: >  # georga
+      pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
+    password_modified: 2022-03-13 16:13:36.048338+00:00
+    date_joined: 2022-03-13 16:13:36.048326+00:00
+    last_login: null
+    is_superuser: false
+    is_staff: false
+    is_active: true
+    username: helper.001@georga.test
+    email: helper.001@georga.test
+    first_name: Helper
+    last_name: User
+    properties: [
+      [French Blue Circle, Language, English],
+      [French Blue Circle, Language, Turkish],
+      [French Blue Circle, Language, Kurdish],
+      [French Blue Circle, Language, Dutch],
+      [French Blue Circle, Adult, 'Yes'],
+      [Sea Eyes International, Language, French],
+      [Sea Eyes International, Language, Turkish],
+      [Sea Eyes International, Language, Kurdish],
+      [Sea Eyes International, Language, Dutch],
+      [Cyber Aid Worldwide, Administrative, Clerk],
+      [Cyber Aid Worldwide, Technical, Information technology],
+      [Cyber Aid Worldwide, General, Shopping],
+      [Cyber Aid Worldwide, General, Household],
+    ]
+    organizations_subscribed: [
+      [French Blue Circle],
+      [Sea Eyes International],
+      [Cyber Aid Worldwide],
+    ]
+    organizations_employed: []
+- model: georga.person
+  pk: 1002
+  fields:
+    uuid: 00000005-0000-0000-0000-000000001002
+    # gid: "UGVyc29uVHlwZTowMDAwMDAwNS0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDI="
+    password: >  # georga
+      pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
+    password_modified: 2022-03-13 16:13:36.048338+00:00
+    date_joined: 2022-03-13 16:13:36.048326+00:00
+    last_login: null
+    is_superuser: false
+    is_staff: false
+    is_active: true
+    username: helper.002@georga.test
+    email: helper.002@georga.test
+    first_name: Helper
+    last_name: User
+    properties: [
+      [French Blue Circle, Language, English],
+      [French Blue Circle, Language, Turkish],
+      [French Blue Circle, Language, Kurdish],
+      [French Blue Circle, Language, Dutch],
+      [French Blue Circle, Adult, 'Yes'],
+      [Sea Eyes International, Language, French],
+      [Sea Eyes International, Language, Turkish],
+      [Sea Eyes International, Language, Kurdish],
+      [Sea Eyes International, Language, Dutch],
+      [Cyber Aid Worldwide, Administrative, Clerk],
+      [Cyber Aid Worldwide, Technical, Information technology],
+      [Cyber Aid Worldwide, General, Shopping],
+      [Cyber Aid Worldwide, General, Household],
+    ]
+    organizations_subscribed: [
+      [French Blue Circle],
+      [Sea Eyes International],
+      [Cyber Aid Worldwide],
+    ]
+    organizations_employed: []
+- model: georga.person
+  pk: 1003
+  fields:
+    uuid: 00000005-0000-0000-0000-000000001003
+    # gid: "UGVyc29uVHlwZTowMDAwMDAwNS0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDI="
+    password: >  # georga
+      pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
+    password_modified: 2022-03-13 16:13:36.048338+00:00
+    date_joined: 2022-03-13 16:13:36.048326+00:00
+    last_login: null
+    is_superuser: false
+    is_staff: false
+    is_active: true
+    username: helper.003@georga.test
+    email: helper.003@georga.test
+    first_name: Helper
+    last_name: User
+    properties: [
+      [French Blue Circle, Language, English],
+      [French Blue Circle, Language, Turkish],
+      [French Blue Circle, Language, Kurdish],
+      [French Blue Circle, Language, Dutch],
+      [French Blue Circle, Adult, 'Yes'],
+      [Sea Eyes International, Language, French],
+      [Sea Eyes International, Language, Turkish],
+      [Sea Eyes International, Language, Kurdish],
+      [Sea Eyes International, Language, Dutch],
+      [Cyber Aid Worldwide, Administrative, Clerk],
+      [Cyber Aid Worldwide, Technical, Information technology],
+      [Cyber Aid Worldwide, General, Shopping],
+      [Cyber Aid Worldwide, General, Household],
+    ]
+    organizations_subscribed: [
+      [French Blue Circle],
+      [Sea Eyes International],
+      [Cyber Aid Worldwide],
+    ]
+    organizations_employed: []
+- model: georga.person
+  pk: 1004
+  fields:
+    uuid: 00000005-0000-0000-0000-000000001004
+    # gid: "UGVyc29uVHlwZTowMDAwMDAwNS0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDI="
+    password: >  # georga
+      pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
+    password_modified: 2022-03-13 16:13:36.048338+00:00
+    date_joined: 2022-03-13 16:13:36.048326+00:00
+    last_login: null
+    is_superuser: false
+    is_staff: false
+    is_active: true
+    username: helper.004@georga.test
+    email: helper.004@georga.test
+    first_name: Helper
+    last_name: User
+    properties: [
+      [French Blue Circle, Language, English],
+      [French Blue Circle, Language, Turkish],
+      [French Blue Circle, Language, Kurdish],
+      [French Blue Circle, Language, Dutch],
+      [French Blue Circle, Adult, 'Yes'],
+      [Sea Eyes International, Language, French],
+      [Sea Eyes International, Language, Turkish],
+      [Sea Eyes International, Language, Kurdish],
+      [Sea Eyes International, Language, Dutch],
+      [Cyber Aid Worldwide, Administrative, Clerk],
+      [Cyber Aid Worldwide, Technical, Information technology],
+      [Cyber Aid Worldwide, General, Shopping],
+      [Cyber Aid Worldwide, General, Household],
+    ]
+    organizations_subscribed: [
+      [French Blue Circle],
+      [Sea Eyes International],
+      [Cyber Aid Worldwide],
+    ]
+    organizations_employed: []
+- model: georga.person
+  pk: 1005
+  fields:
+    uuid: 00000005-0000-0000-0000-000000001005
+    # gid: "UGVyc29uVHlwZTowMDAwMDAwNS0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDI="
+    password: >  # georga
+      pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
+    password_modified: 2022-03-13 16:13:36.048338+00:00
+    date_joined: 2022-03-13 16:13:36.048326+00:00
+    last_login: null
+    is_superuser: false
+    is_staff: false
+    is_active: true
+    username: helper.005@georga.test
+    email: helper.005@georga.test
+    first_name: Helper
+    last_name: User
+    properties: [
+      [French Blue Circle, Language, English],
+      [French Blue Circle, Language, Turkish],
+      [French Blue Circle, Language, Kurdish],
+      [French Blue Circle, Language, Dutch],
+      [French Blue Circle, Adult, 'Yes'],
+      [Sea Eyes International, Language, French],
+      [Sea Eyes International, Language, Turkish],
+      [Sea Eyes International, Language, Kurdish],
+      [Sea Eyes International, Language, Dutch],
+      [Cyber Aid Worldwide, Administrative, Clerk],
+      [Cyber Aid Worldwide, Technical, Information technology],
+      [Cyber Aid Worldwide, General, Shopping],
+      [Cyber Aid Worldwide, General, Household],
+    ]
+    organizations_subscribed: [
+      [French Blue Circle],
+      [Sea Eyes International],
+      [Cyber Aid Worldwide],
+    ]
+    organizations_employed: []

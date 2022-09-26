@@ -231,7 +231,7 @@ class SchemaTestCase(JSONWebTokenTestCase, metaclass=SchemaTestCaseMetaclass):
             operation result is based on.
     """
     client_class = CachedJSONWebTokenClient
-    fixtures = [f for f in listdir(FIXTURES_DIR) if isfile(join(FIXTURES_DIR, f))]
+    fixtures = sorted([f for f in listdir(FIXTURES_DIR) if isfile(join(FIXTURES_DIR, f))])
 
     # mandatory attributes to override on inheritance
     operation = None

@@ -1,0 +1,188 @@
+# Org1 ------------------------------------------------------------------------
+
+- model: georga.locationcategory
+  pk: 100
+  fields:
+    uuid: 00000007-0000-0000-0000-000000000100
+    name: other
+    organization: [French Blue Circle]
+- model: georga.locationcategory
+  pk: 101
+  fields:
+    uuid: 00000007-0000-0000-0000-000000000101
+    name: flood catastropy site
+    organization: [French Blue Circle]
+- model: georga.locationcategory
+  pk: 102
+  fields:
+    uuid: 00000007-0000-0000-0000-000000000102
+    name: snowslide site
+    organization: [French Blue Circle]
+- model: georga.locationcategory
+  pk: 103
+  fields:
+    uuid: 00000007-0000-0000-0000-000000000103
+    name: landslide site
+    organization: [French Blue Circle]
+- model: georga.locationcategory
+  pk: 104
+  fields:
+    uuid: 00000007-0000-0000-0000-000000000104
+    name: earthquake site
+    organization: [French Blue Circle]
+- model: georga.locationcategory
+  pk: 105
+  fields:
+    uuid: 00000007-0000-0000-0000-000000000105
+    name: refugee housing
+    organization: [French Blue Circle]
+- model: georga.locationcategory
+  pk: 106
+  fields:
+    uuid: 00000007-0000-0000-0000-000000000106
+    name: educational institution
+    organization: [French Blue Circle]
+- model: georga.locationcategory
+  pk: 107
+  fields:
+    uuid: 00000007-0000-0000-0000-000000000107
+    name: healthcate institution
+    organization: [French Blue Circle]
+- model: georga.locationcategory
+  pk: 108
+  fields:
+    uuid: 00000007-0000-0000-0000-000000000108
+    name: confessional institution
+    organization: [French Blue Circle]
+- model: georga.locationcategory
+  pk: 109
+  fields:
+    uuid: 00000007-0000-0000-0000-000000000109
+    name: homeless shelter
+    organization: [French Blue Circle]
+
+# Org2 ------------------------------------------------------------------------
+
+- model: georga.locationcategory
+  pk: 200
+  fields:
+    uuid: 00000007-0000-0000-0000-000000000200
+    name: other
+    organization: [Sea Eyes International]
+- model: georga.locationcategory
+  pk: 201
+  fields:
+    uuid: 00000007-0000-0000-0000-000000000201
+    name: flood catastropy site
+    organization: [Sea Eyes International]
+- model: georga.locationcategory
+  pk: 202
+  fields:
+    uuid: 00000007-0000-0000-0000-000000000202
+    name: snowslide site
+    organization: [Sea Eyes International]
+- model: georga.locationcategory
+  pk: 203
+  fields:
+    uuid: 00000007-0000-0000-0000-000000000203
+    name: landslide site
+    organization: [Sea Eyes International]
+- model: georga.locationcategory
+  pk: 204
+  fields:
+    uuid: 00000007-0000-0000-0000-000000000204
+    name: earthquake site
+    organization: [Sea Eyes International]
+- model: georga.locationcategory
+  pk: 205
+  fields:
+    uuid: 00000007-0000-0000-0000-000000000205
+    name: refugee housing
+    organization: [Sea Eyes International]
+- model: georga.locationcategory
+  pk: 206
+  fields:
+    uuid: 00000007-0000-0000-0000-000000000206
+    name: educational institution
+    organization: [Sea Eyes International]
+- model: georga.locationcategory
+  pk: 207
+  fields:
+    uuid: 00000007-0000-0000-0000-000000000207
+    name: healthcate institution
+    organization: [Sea Eyes International]
+- model: georga.locationcategory
+  pk: 208
+  fields:
+    uuid: 00000007-0000-0000-0000-000000000208
+    name: confessional institution
+    organization: [Sea Eyes International]
+- model: georga.locationcategory
+  pk: 209
+  fields:
+    uuid: 00000007-0000-0000-0000-000000000209
+    name: homeless shelter
+    organization: [Sea Eyes International]
+
+# Org3 ------------------------------------------------------------------------
+
+- model: georga.locationcategory
+  pk: 300
+  fields:
+    uuid: 00000007-0000-0000-0000-000000000300
+    name: other
+    organization: [Cyber Aid Worldwide]
+- model: georga.locationcategory
+  pk: 301
+  fields:
+    uuid: 00000007-0000-0000-0000-000000000301
+    name: flood catastropy site
+    organization: [Cyber Aid Worldwide]
+- model: georga.locationcategory
+  pk: 302
+  fields:
+    uuid: 00000007-0000-0000-0000-000000000302
+    name: snowslide site
+    organization: [Cyber Aid Worldwide]
+- model: georga.locationcategory
+  pk: 303
+  fields:
+    uuid: 00000007-0000-0000-0000-000000000303
+    name: landslide site
+    organization: [Cyber Aid Worldwide]
+- model: georga.locationcategory
+  pk: 304
+  fields:
+    uuid: 00000007-0000-0000-0000-000000000304
+    name: earthquake site
+    organization: [Cyber Aid Worldwide]
+- model: georga.locationcategory
+  pk: 305
+  fields:
+    uuid: 00000007-0000-0000-0000-000000000305
+    name: refugee housing
+    organization: [Cyber Aid Worldwide]
+- model: georga.locationcategory
+  pk: 306
+  fields:
+    uuid: 00000007-0000-0000-0000-000000000306
+    name: educational institution
+    organization: [Cyber Aid Worldwide]
+- model: georga.locationcategory
+  pk: 307
+  fields:
+    uuid: 00000007-0000-0000-0000-000000000307
+    name: healthcate institution
+    organization: [Cyber Aid Worldwide]
+- model: georga.locationcategory
+  pk: 308
+  fields:
+    uuid: 00000007-0000-0000-0000-000000000308
+    name: confessional institution
+    organization: [Cyber Aid Worldwide]
+- model: georga.locationcategory
+  pk: 309
+  fields:
+    uuid: 00000007-0000-0000-0000-000000000309
+    name: homeless shelter
+    organization: [Cyber Aid Worldwide]

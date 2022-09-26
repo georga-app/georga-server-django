@@ -1,114 +1,124 @@
+# Org1 ------------------------------------------------------------------------
+
 - model: georga.operation
-  pk: 1
+  pk: 100
   fields:
-    uuid: "00000006-0000-0000-0000-000000000001"
-    state: "DRAFT"
-    name: "Betreuungsdienst Notunterkunft Hofstraße 2022"
+    uuid: 00000006-0000-0000-0000-000000000100
+    state: DRAFT
+    name: Betreuungsdienst Notunterkunft Hofstraße 2022
     is_active: true
-    project: 1
+    project: [French Blue Circle, Care Service]
 - model: georga.operation
-  pk: 2
+  pk: 101
   fields:
-    uuid: "00000006-0000-0000-0000-000000000002"
-    state: "PUBLISHED"
-    name: "Betreuungsdienst Notunterkunft Lindenstraße 2022"
+    uuid: 00000006-0000-0000-0000-000000000101
+    state: PUBLISHED
+    name: Betreuungsdienst Notunterkunft Lindenstraße 2022
     is_active: false
-    project: 1
+    project: [French Blue Circle, Care Service]
 - model: georga.operation
-  pk: 3
+  pk: 102
   fields:
-    uuid: "00000006-0000-0000-0000-000000000003"
-    state: "DELETED"
-    name: "Sanitätsdienst Fußball Lokalderby 06.08.2022"
+    uuid: 00000006-0000-0000-0000-000000000102
+    state: DELETED
+    name: Sanitätsdienst Fußball Lokalderby 06.08.2022
     is_active: true
-    project: 2
+    project: [French Blue Circle, Sanitary Service]
 - model: georga.operation
-  pk: 4
+  pk: 103
   fields:
-    uuid: "00000006-0000-0000-0000-000000000004"
-    state: "PUBLISHED"
-    name: "Sanitätsdienst Mozartkonzert Wien 07.08.2022"
+    uuid: 00000006-0000-0000-0000-000000000103
+    state: PUBLISHED
+    name: Sanitätsdienst Mozartkonzert Wien 07.08.2022
     is_active: false
-    project: 2
+    project: [French Blue Circle, Sanitary Service]
 - model: georga.operation
-  pk: 5
+  pk: 104
   fields:
-    uuid: "00000006-0000-0000-0000-000000000005"
-    state: "PUBLISHED"
-    name: "Hilfe für Behördengänge für Geflüchtete 2022-04"
+    uuid: 00000006-0000-0000-0000-000000000104
+    state: PUBLISHED
+    name: Hilfe für Behördengänge für Geflüchtete 2022-04
     is_active: true
-    project: 3
+    project: [French Blue Circle, Refugee Aid Ukraine Crisis 2022]
 - model: georga.operation
-  pk: 6
+  pk: 105
   fields:
-    uuid: "00000006-0000-0000-0000-000000000006"
-    state: "PUBLISHED"
-    name: "Sandsäcke füllen"
+    uuid: 00000006-0000-0000-0000-000000000105
+    state: PUBLISHED
+    name: Sandsäcke füllen
     is_active: true
-    project: 4
+    project: [French Blue Circle, Elbe River Flood Hamburg 2002]
 - model: georga.operation
-  pk: 7
+  pk: 106
   fields:
-    uuid: "00000006-0000-0000-0000-000000000007"
-    state: "PUBLISHED"
-    name: "Schlammräumung"
+    uuid: 00000006-0000-0000-0000-000000000106
+    state: PUBLISHED
+    name: Schlammräumung
     is_active: false
-    project: 4
+    project: [French Blue Circle, Elbe River Flood Hamburg 2002]
 - model: georga.operation
-  pk: 8
+  pk: 107
   fields:
-    uuid: "00000006-0000-0000-0000-000000000008"
-    state: "PUBLISHED"
-    name: "Schlammräumung"
+    uuid: 00000006-0000-0000-0000-000000000107
+    state: PUBLISHED
+    name: Schlammräumung
     is_active: true
-    project: 5
+    project: [French Blue Circle, Flood Catastrophy Hamburg 1962]
 - model: georga.operation
-  pk: 9
+  pk: 108
   fields:
-    uuid: "00000006-0000-0000-0000-000000000009"
-    state: "PUBLISHED"
-    name: "Schlammräumung"
+    uuid: 00000006-0000-0000-0000-000000000108
+    state: PUBLISHED
+    name: Schlammräumung
     is_active: true
-    project: 6
+    project: [French Blue Circle, Ahrtal Hochwasser 2021]
 - model: georga.operation
-  pk: 10
+  pk: 109
   fields:
-    uuid: "00000006-0000-0000-0000-000000000010"
-    state: "PUBLISHED"
-    name: "Registrierung"
+    uuid: 00000006-0000-0000-0000-000000000109
+    state: PUBLISHED
+    name: Registrierung
     is_active: true
-    project: 7
+    project: [French Blue Circle, Corona Impfzentrum Musterdorf 2020-11]
 - model: georga.operation
-  pk: 11
+  pk: 110
   fields:
-    uuid: "00000006-0000-0000-0000-000000000011"
-    state: "PUBLISHED"
-    name: "Zuteilung Impfräume"
+    uuid: 00000006-0000-0000-0000-000000000110
+    state: PUBLISHED
+    name: Zuteilung Impfräume
     is_active: false
-    project: 7
+    project: [French Blue Circle, Corona Impfzentrum Musterdorf 2020-11]
+
+# Org2 ------------------------------------------------------------------------
+
 - model: georga.operation
-  pk: 12
+  pk: 200
   fields:
-    uuid: "00000006-0000-0000-0000-000000000012"
-    state: "PUBLISHED"
-    name: "Schiff zur Abfahrt rüsten April 2023"
-    description: "Beware: stormy weather on north sea this spring!"
+    uuid: 00000006-0000-0000-0000-000000000200
+    state: PUBLISHED
+    name: Schiff zur Abfahrt rüsten April 2023
+    description: >
+      Beware: stormy weather on north sea this spring!
     is_active: true
-    project: 8
+    project: [Sea Eyes International, Prepare vessel for sailing]
+
+# Org3 ------------------------------------------------------------------------
+
 - model: georga.operation
-  pk: 13
+  pk: 300
   fields:
-    uuid: "00000006-0000-0000-0000-000000000013"
-    state: "PUBLISHED"
-    name: "Cyber Cyber Cyberabwehr Bundestag 2023-01"
+    uuid: 00000006-0000-0000-0000-000000000300
+    state: PUBLISHED
+    name: Cyber Cyber Cyberabwehr Bundestag 2023-01
     is_active: true
-    project: 9
+    project: [Cyber Aid Worldwide, Urgency Deployment of Cyber Defence Measures]
 - model: georga.operation
-  pk: 14
+  pk: 301
   fields:
-    uuid: "00000006-0000-0000-0000-000000000014"
-    state: "PUBLISHED"
-    name: "Cyber Cyber Cyber Defence KHs Luisenstift September 2022"
-    description: "This is a representative deployment for the usual cyber defence agent."
+    uuid: 00000006-0000-0000-0000-000000000301
+    state: PUBLISHED
+    name: Cyber Cyber Cyber Defence KHs Luisenstift September 2022
+    description: >
+      This is a representative deployment for the usual cyber defence agent.
     is_active: false
-    project: 9
+    project: [Cyber Aid Worldwide, Urgency Deployment of Cyber Defence Measures]

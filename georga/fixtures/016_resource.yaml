@@ -1,0 +1,45 @@
+# Org1 ------------------------------------------------------------------------
+
+- model: georga.resource
+  pk: 100
+  fields:
+    uuid: 00000016-0000-0000-0000-000000000100
+    description: Schlammschüppe
+    personal_hint: Spende
+    shift: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2022-08-05 08:00:00.000000+00:00
+    ]
+- model: georga.resource
+  pk: 101
+  fields:
+    uuid: 00000016-0000-0000-0000-000000000101
+    description: Stiefel
+    personal_hint: brauch ich danach zurück
+    shift: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2022-08-05 08:00:00.000000+00:00
+    ]
+- model: georga.resource
+  pk: 102
+  fields:
+    uuid: 00000016-0000-0000-0000-000000000102
+    description: Tauchpumpe
+    personal_hint: kann verliehen werden im August
+    shift: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2022-08-05 08:00:00.000000+00:00
+    ]
+
+# Org2 ------------------------------------------------------------------------
+
+# Org3 ------------------------------------------------------------------------

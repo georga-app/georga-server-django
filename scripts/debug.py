@@ -20,35 +20,35 @@ aces = ACE.objects.all()
 org_admin = Person.objects.get(email="organization@georga.test")
 pro_admin = Person.objects.get(email="project@georga.test")
 ope_admin = Person.objects.get(email="operation@georga.test")
-helper = Person.objects.get(email="helper@georga.test")
+helper = Person.objects.get(email="helper.001@georga.test")
 
-org1 = Organization.objects.get(pk=1)
-org2 = Organization.objects.get(pk=2)
-org3 = Organization.objects.get(pk=3)
+org1 = Organization.objects.get(pk=100)
+org2 = Organization.objects.get(pk=200)
+org3 = Organization.objects.get(pk=300)
 
-pro1 = Project.objects.get(pk=1)
-pro2 = Project.objects.get(pk=2)
-pro3 = Project.objects.get(pk=3)
+pro1 = Project.objects.get(pk=100)
+pro2 = Project.objects.get(pk=200)
+pro3 = Project.objects.get(pk=300)
 
-ope1 = Operation.objects.get(pk=1)
-ope2 = Operation.objects.get(pk=2)
-ope3 = Operation.objects.get(pk=3)
+ope1 = Operation.objects.get(pk=100)
+ope2 = Operation.objects.get(pk=200)
+ope3 = Operation.objects.get(pk=300)
 
-tas1 = Task.objects.get(pk=1)
-tas2 = Task.objects.get(pk=2)
-tas3 = Task.objects.get(pk=3)
+tas1 = Task.objects.get(pk=100)
+tas2 = Task.objects.get(pk=200)
+tas3 = Task.objects.get(pk=300)
 
-shi1 = Shift.objects.get(pk=1)
-shi2 = Shift.objects.get(pk=2)
-shi3 = Shift.objects.get(pk=3)
+shi1 = Shift.objects.get(pk=100)
+shi2 = Shift.objects.get(pk=101)
+shi3 = Shift.objects.get(pk=102)
 
 ace0 = ACE()
 ace0.person = pro_admin
 ace0.access_object = pro2
 ace0.ace_string = "ADMIN"
-ace1 = ACE.objects.get(pk=1)
-ace2 = ACE.objects.get(pk=2)
-ace3 = ACE.objects.get(pk=3)
+ace1 = ACE.objects.get(pk=100)
+ace2 = ACE.objects.get(pk=101)
+ace3 = ACE.objects.get(pk=200)
 
 msg0 = Message()
 msg0.scope = org1
@@ -59,9 +59,9 @@ msg0.category = "NEWS"
 msg0.delivery_state_email = "NONE"
 msg0.delivery_state_push = "NONE"
 msg0.delivery_state_sms = "NONE"
-msg1 = Message.objects.get(pk=1)
-msg2 = Message.objects.get(pk=2)
-msg3 = Message.objects.get(pk=3)
+msg1 = Message.objects.get(pk=100)
+msg2 = Message.objects.get(pk=101)
+msg3 = Message.objects.get(pk=102)
 
 # profiling -------------------------------------------------------------------
 

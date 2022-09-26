@@ -1,0 +1,23 @@
+# Org1 ------------------------------------------------------------------------
+
+- model: georga.location
+  pk: 1
+  fields:
+    uuid: 00000008-0000-0000-0000-000000000001
+    postal_address_name: EAS
+    organization: [French Blue Circle]
+- model: georga.location
+  pk: 2
+  fields:
+    uuid: 00000008-0000-0000-0000-000000000002
+    category: [French Blue Circle, snowslide site]
+    organization: [French Blue Circle]
+    postal_address_name: Snowslide
+    postal_address_street: Snowslide Lane 12
+    postal_address_zip_code: 52309
+    postal_address_city: Snowcity
+    postal_address_country: Snowcountry
+
+# Org2 ------------------------------------------------------------------------
+
+# Org3 ------------------------------------------------------------------------

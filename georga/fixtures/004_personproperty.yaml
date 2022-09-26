@@ -2,720 +2,720 @@
 
 # LANGUAGE, Org1
 - model: georga.personproperty
-  pk: 1
+  pk: 100
   fields:
-    uuid: "00000004-0000-0000-0000-000000000001"
+    uuid: 00000004-0000-0000-0000-000000000100
     name: English
     # Englisch
-    group: 1
+    group: [French Blue Circle, Language]
 - model: georga.personproperty
-  pk: 2
+  pk: 101
   fields:
-    uuid: "00000004-0000-0000-0000-000000000002"
+    uuid: 00000004-0000-0000-0000-000000000101
     name: French
     # Französisch
-    group: 1
+    group: [French Blue Circle, Language]
 - model: georga.personproperty
-  pk: 3
+  pk: 102
   fields:
-    uuid: "00000004-0000-0000-0000-000000000003"
+    uuid: 00000004-0000-0000-0000-000000000102
     name: Spanish
     # Spanisch
-    group: 1
+    group: [French Blue Circle, Language]
 - model: georga.personproperty
-  pk: 4
+  pk: 103
   fields:
-    uuid: "00000004-0000-0000-0000-000000000004"
+    uuid: 00000004-0000-0000-0000-000000000103
     name: Arabian
     # Arabisch
-    group: 1
+    group: [French Blue Circle, Language]
 - model: georga.personproperty
-  pk: 5
+  pk: 104
   fields:
-    uuid: "00000004-0000-0000-0000-000000000005"
+    uuid: 00000004-0000-0000-0000-000000000104
     name: Turkish
     # Türkisch
-    group: 1
+    group: [French Blue Circle, Language]
 - model: georga.personproperty
-  pk: 6
+  pk: 105
   fields:
-    uuid: "00000004-0000-0000-0000-000000000006"
+    uuid: 00000004-0000-0000-0000-000000000105
     name: Polnish
     # Polnisch
-    group: 1
+    group: [French Blue Circle, Language]
 - model: georga.personproperty
-  pk: 7
+  pk: 106
   fields:
-    uuid: "00000004-0000-0000-0000-000000000007"
+    uuid: 00000004-0000-0000-0000-000000000106
     name: Kurdish
     # Kurdisch
-    group: 1
+    group: [French Blue Circle, Language]
 - model: georga.personproperty
-  pk: 8
+  pk: 107
   fields:
-    uuid: "00000004-0000-0000-0000-000000000008"
+    uuid: 00000004-0000-0000-0000-000000000107
     name: Italian
     # Italienisch
-    group: 1
+    group: [French Blue Circle, Language]
 - model: georga.personproperty
-  pk: 9
+  pk: 108
   fields:
-    uuid: "00000004-0000-0000-0000-000000000009"
+    uuid: 00000004-0000-0000-0000-000000000108
     name: Greek
     # Griechisch
-    group: 1
+    group: [French Blue Circle, Language]
 - model: georga.personproperty
-  pk: 10
+  pk: 109
   fields:
-    uuid: "00000004-0000-0000-0000-000000000010"
+    uuid: 00000004-0000-0000-0000-000000000109
     name: Dutch
     # Niederländisch
-    group: 1
+    group: [French Blue Circle, Language]
 - model: georga.personproperty
-  pk: 11
+  pk: 110
   fields:
-    uuid: "00000004-0000-0000-0000-000000000011"
+    uuid: 00000004-0000-0000-0000-000000000110
     name: Serbian
     # Serbisch
-    group: 1
+    group: [French Blue Circle, Language]
 - model: georga.personproperty
-  pk: 12
+  pk: 111
   fields:
-    uuid: "00000004-0000-0000-0000-000000000012"
+    uuid: 00000004-0000-0000-0000-000000000111
     name: Croatian
     # Kroatisch
-    group: 1
+    group: [French Blue Circle, Language]
 - model: georga.personproperty
-  pk: 13
+  pk: 112
   fields:
-    uuid: "00000004-0000-0000-0000-000000000013"
+    uuid: 00000004-0000-0000-0000-000000000112
     name: Ukrainian
     # Ukrainisch
-    group: 1
+    group: [French Blue Circle, Language]
 - model: georga.personproperty
-  pk: 14
+  pk: 113
   fields:
-    uuid: "00000004-0000-0000-0000-000000000014"
+    uuid: 00000004-0000-0000-0000-000000000113
     name: Russian
     # Russisch
-    group: 1
+    group: [French Blue Circle, Language]
 - model: georga.personproperty
-  pk: 15
+  pk: 114
   fields:
-    uuid: "00000004-0000-0000-0000-000000000015"
+    uuid: 00000004-0000-0000-0000-000000000114
     name: Romanian
     # Rumänisch
-    group: 1
+    group: [French Blue Circle, Language]
 - model: georga.personproperty
-  pk: 16
+  pk: 115
   fields:
-    uuid: "00000004-0000-0000-0000-000000000016"
+    uuid: 00000004-0000-0000-0000-000000000115
     name: Hungarian
     # Ungarisch
-    group: 1
+    group: [French Blue Circle, Language]
 - model: georga.personproperty
-  pk: 17
+  pk: 116
   fields:
-    uuid: "00000004-0000-0000-0000-000000000017"
+    uuid: 00000004-0000-0000-0000-000000000116
     name: Slovakian
     # Slowakisch
-    group: 1
+    group: [French Blue Circle, Language]
 - model: georga.personproperty
-  pk: 18
+  pk: 117
   fields:
-    uuid: "00000004-0000-0000-0000-000000000018"
+    uuid: 00000004-0000-0000-0000-000000000117
     name: Czech
     # Tschechisch
-    group: 1
+    group: [French Blue Circle, Language]
 - model: georga.personproperty
-  pk: 19
+  pk: 118
   fields:
-    uuid: "00000004-0000-0000-0000-000000000019"
+    uuid: 00000004-0000-0000-0000-000000000118
     name: Lithuanian
     # Litauisch
-    group: 1
+    group: [French Blue Circle, Language]
 - model: georga.personproperty
-  pk: 20
+  pk: 119
   fields:
-    uuid: "00000004-0000-0000-0000-000000000020"
+    uuid: 00000004-0000-0000-0000-000000000119
     name: Latvian
     # Lettisch
-    group: 1
+    group: [French Blue Circle, Language]
 - model: georga.personproperty
-  pk: 21
+  pk: 120
   fields:
-    uuid: "00000004-0000-0000-0000-000000000021"
+    uuid: 00000004-0000-0000-0000-000000000120
     name: Estonian
     # Estnisch
-    group: 1
+    group: [French Blue Circle, Language]
 
 # LICENSE, Org1
 - model: georga.personproperty
-  pk: 30
+  pk: 130
   fields:
-    uuid: "00000004-0000-0000-0000-000000000030"
+    uuid: 00000004-0000-0000-0000-000000000130
     name: German drivers license class B
     # Führerschein B
-    group: 2
+    group: [French Blue Circle, License]
 - model: georga.personproperty
-  pk: 31
+  pk: 131
   fields:
-    uuid: "00000004-0000-0000-0000-000000000031"
+    uuid: 00000004-0000-0000-0000-000000000131
     name: German drivers license class BE
     # Führerschein BE
-    group: 2
+    group: [French Blue Circle, License]
 - model: georga.personproperty
-  pk: 32
+  pk: 132
   fields:
-    uuid: "00000004-0000-0000-0000-000000000032"
+    uuid: 00000004-0000-0000-0000-000000000132
     name: German drivers license class E
     # Führerschein E
-    group: 2
+    group: [French Blue Circle, License]
 - model: georga.personproperty
-  pk: 33
+  pk: 133
   fields:
-    uuid: "00000004-0000-0000-0000-000000000033"
+    uuid: 00000004-0000-0000-0000-000000000133
     name: German drivers license class D1
     # Führerschein D1
-    group: 2
+    group: [French Blue Circle, License]
 - model: georga.personproperty
-  pk: 34
+  pk: 134
   fields:
-    uuid: "00000004-0000-0000-0000-000000000034"
+    uuid: 00000004-0000-0000-0000-000000000134
     name: German drivers license class D1E
     # Führerschein D1E
-    group: 2
+    group: [French Blue Circle, License]
 - model: georga.personproperty
-  pk: 35
+  pk: 135
   fields:
-    uuid: "00000004-0000-0000-0000-000000000035"
+    uuid: 00000004-0000-0000-0000-000000000135
     name: German drivers license class D
     # Führerschein D
-    group: 2
+    group: [French Blue Circle, License]
 - model: georga.personproperty
-  pk: 36
+  pk: 136
   fields:
-    uuid: "00000004-0000-0000-0000-000000000036"
+    uuid: 00000004-0000-0000-0000-000000000136
     name: German drivers license class DE
     # Führerschein DE
-    group: 2
+    group: [French Blue Circle, License]
 - model: georga.personproperty
-  pk: 37
+  pk: 137
   fields:
-    uuid: "00000004-0000-0000-0000-000000000037"
+    uuid: 00000004-0000-0000-0000-000000000137
     name: German drivers license class C1
     # Führerschein C1
-    group: 2
+    group: [French Blue Circle, License]
 - model: georga.personproperty
-  pk: 38
+  pk: 138
   fields:
-    uuid: "00000004-0000-0000-0000-000000000038"
+    uuid: 00000004-0000-0000-0000-000000000138
     name: German drivers license class C1E
     # Führerschein C1E
-    group: 2
+    group: [French Blue Circle, License]
 - model: georga.personproperty
-  pk: 39
+  pk: 139
   fields:
-    uuid: "00000004-0000-0000-0000-000000000039"
+    uuid: 00000004-0000-0000-0000-000000000139
     name: German drivers license class CE
     # Führerschein CE
-    group: 2
+    group: [French Blue Circle, License]
 - model: georga.personproperty
-  pk: 40
+  pk: 140
   fields:
-    uuid: "00000004-0000-0000-0000-000000000040"
+    uuid: 00000004-0000-0000-0000-000000000140
     name: German drivers license class C
     # Führerschein C
-    group: 2
+    group: [French Blue Circle, License]
 - model: georga.personproperty
-  pk: 41
+  pk: 141
   fields:
-    uuid: "00000004-0000-0000-0000-000000000041"
+    uuid: 00000004-0000-0000-0000-000000000141
     name: German drivers license class A2
     # Führerschein A2
-    group: 2
+    group: [French Blue Circle, License]
 - model: georga.personproperty
-  pk: 42
+  pk: 142
   fields:
-    uuid: "00000004-0000-0000-0000-000000000042"
+    uuid: 00000004-0000-0000-0000-000000000142
     name: German drivers license class A1
     # Führerschein A1
-    group: 2
+    group: [French Blue Circle, License]
 - model: georga.personproperty
-  pk: 43
+  pk: 143
   fields:
-    uuid: "00000004-0000-0000-0000-000000000043"
+    uuid: 00000004-0000-0000-0000-000000000143
     name: Operating license for marine vessels
     # Führerschein Boot
-    group: 2
+    group: [French Blue Circle, License]
 - model: georga.personproperty
-  pk: 44
+  pk: 144
   fields:
-    uuid: "00000004-0000-0000-0000-000000000044"
+    uuid: 00000004-0000-0000-0000-000000000144
     name: German drivers license class A
     # Führerschein A
-    group: 2
+    group: [French Blue Circle, License]
 - model: georga.personproperty
-  pk: 45
+  pk: 145
   fields:
-    uuid: "00000004-0000-0000-0000-000000000045"
+    uuid: 00000004-0000-0000-0000-000000000145
     name: German drivers license class AM
     # Führerschein AM
-    group: 2
+    group: [French Blue Circle, License]
 - model: georga.personproperty
-  pk: 46
+  pk: 146
   fields:
-    uuid: "00000004-0000-0000-0000-000000000046"
+    uuid: 00000004-0000-0000-0000-000000000146
     name: German drivers license class L
     # Führerschein L
-    group: 2
+    group: [French Blue Circle, License]
 - model: georga.personproperty
-  pk: 47
+  pk: 147
   fields:
-    uuid: "00000004-0000-0000-0000-000000000047"
+    uuid: 00000004-0000-0000-0000-000000000147
     name: German drivers license class T
     # Führerschein T
-    group: 2
+    group: [French Blue Circle, License]
 
 # ADMINISTRATIVE, Org1
 - model: georga.personproperty
-  pk: 50
+  pk: 150
   fields:
-    uuid: "00000004-0000-0000-0000-000000000050"
+    uuid: 00000004-0000-0000-0000-000000000150
     name: Clerk
     # Bürokaufmann/-frau
-    group: 3
+    group: [French Blue Circle, Administrative]
 - model: georga.personproperty
-  pk: 51
+  pk: 151
   fields:
-    uuid: "00000004-0000-0000-0000-000000000051"
+    uuid: 00000004-0000-0000-0000-000000000151
     name: Human resouces
     # Personalverwaltung
-    group: 3
+    group: [French Blue Circle, Administrative]
 - model: georga.personproperty
-  pk: 52
+  pk: 152
   fields:
-    uuid: "00000004-0000-0000-0000-000000000052"
+    uuid: 00000004-0000-0000-0000-000000000152
     name: Accounting clerk
     # Buchhalter/-in
-    group: 3
+    group: [French Blue Circle, Administrative]
 
 # MEDICAL, Org1
 - model: georga.personproperty
-  pk: 60
+  pk: 160
   fields:
-    uuid: "00000004-0000-0000-0000-000000000060"
+    uuid: 00000004-0000-0000-0000-000000000160
     name: Emergency medical services
     # Rettungsdienst-Qualifikation (unten eintragen)
-    group: 4
+    group: [French Blue Circle, Medical]
 - model: georga.personproperty
-  pk: 61
+  pk: 161
   fields:
-    uuid: "00000004-0000-0000-0000-000000000061"
+    uuid: 00000004-0000-0000-0000-000000000161
     name: Nurse (exam)
     # Examinierte Pflegekraft
-    group: 4
+    group: [French Blue Circle, Medical]
 - model: georga.personproperty
-  pk: 62
+  pk: 162
   fields:
-    uuid: "00000004-0000-0000-0000-000000000062"
+    uuid: 00000004-0000-0000-0000-000000000162
     name: Medical technical assistant
     # Medizinisch Technische Assistenz
-    group: 4
+    group: [French Blue Circle, Medical]
 - model: georga.personproperty
-  pk: 63
+  pk: 163
   fields:
-    uuid: "00000004-0000-0000-0000-000000000063"
+    uuid: 00000004-0000-0000-0000-000000000163
     name: Physician
     # Mediziner/in
-    group: 4
+    group: [French Blue Circle, Medical]
 
 # TECHNICAL, Org1
 - model: georga.personproperty
-  pk: 70
+  pk: 170
   fields:
-    uuid: "00000004-0000-0000-0000-000000000070"
+    uuid: 00000004-0000-0000-0000-000000000170
     name: Information technology
     # Informationstechnik
-    group: 5
+    group: [French Blue Circle, Technical]
 - model: georga.personproperty
-  pk: 71
+  pk: 171
   fields:
-    uuid: "00000004-0000-0000-0000-000000000071"
+    uuid: 00000004-0000-0000-0000-000000000171
     name: Communication technology
     # Kommunikationstechnik
-    group: 5
+    group: [French Blue Circle, Technical]
 - model: georga.personproperty
-  pk: 72
+  pk: 172
   fields:
-    uuid: "00000004-0000-0000-0000-000000000072"
+    uuid: 00000004-0000-0000-0000-000000000172
     name: Small amateur radio licence (German)
     # Kleine Amateurfunklizenz
-    group: 5
+    group: [French Blue Circle, Technical]
 - model: georga.personproperty
-  pk: 73
+  pk: 173
   fields:
-    uuid: "00000004-0000-0000-0000-000000000073"
+    uuid: 00000004-0000-0000-0000-000000000173
     name: Big amateur radio licence (German)
     # Große Amateurfunklizenz
-    group: 5
+    group: [French Blue Circle, Technical]
 - model: georga.personproperty
-  pk: 74
+  pk: 174
   fields:
-    uuid: "00000004-0000-0000-0000-000000000074"
+    uuid: 00000004-0000-0000-0000-000000000174
     name: Amateur radio licence class E (German)
     # Amateurfunkzeugnis der Klasse E
-    group: 5
+    group: [French Blue Circle, Technical]
 - model: georga.personproperty
-  pk: 75
+  pk: 175
   fields:
-    uuid: "00000004-0000-0000-0000-000000000075"
+    uuid: 00000004-0000-0000-0000-000000000175
     name: Amateur radio licence class A (German)
     # Amateurfunkzeugnis der Klasse A
-    group: 5
+    group: [French Blue Circle, Technical]
 - model: georga.personproperty
-  pk: 76
+  pk: 176
   fields:
-    uuid: "00000004-0000-0000-0000-000000000076"
+    uuid: 00000004-0000-0000-0000-000000000176
     name: Own amateur radio station
     # Eigene Amateurfunkstation
-    group: 5
+    group: [French Blue Circle, Technical]
 
 # GENERAL, Org1
 - model: georga.personproperty
-  pk: 80
+  pk: 180
   fields:
-    uuid: "00000004-0000-0000-0000-000000000080"
+    uuid: 00000004-0000-0000-0000-000000000180
     name: Shopping
     # Einkaufen
-    group: 6
+    group: [French Blue Circle, General]
 - model: georga.personproperty
-  pk: 81
+  pk: 181
   fields:
-    uuid: "00000004-0000-0000-0000-000000000081"
+    uuid: 00000004-0000-0000-0000-000000000181
     name: Household
     # Haushalt
-    group: 6
+    group: [French Blue Circle, General]
 - model: georga.personproperty
-  pk: 82
+  pk: 182
   fields:
-    uuid: "00000004-0000-0000-0000-000000000082"
+    uuid: 00000004-0000-0000-0000-000000000182
     name: Craft activity
     # Handwerkliche Tätigkeit
-    group: 6
+    group: [French Blue Circle, General]
 - model: georga.personproperty
-  pk: 83
+  pk: 183
   fields:
-    uuid: "00000004-0000-0000-0000-000000000083"
+    uuid: 00000004-0000-0000-0000-000000000183
     name: Transport service - own car
     # Fahrdienst - eigener PKW
-    group: 6
+    group: [French Blue Circle, General]
 - model: georga.personproperty
-  pk: 84
+  pk: 184
   fields:
-    uuid: "00000004-0000-0000-0000-000000000084"
+    uuid: 00000004-0000-0000-0000-000000000184
     name: Transport service - own van
     # Fahrdienst - eigener Transporter
-    group: 6
+    group: [French Blue Circle, General]
 - model: georga.personproperty
-  pk: 85
+  pk: 185
   fields:
-    uuid: "00000004-0000-0000-0000-000000000085"
+    uuid: 00000004-0000-0000-0000-000000000185
     name: Transport service - provided vehicle
     # Fahrdienst - gestelltes Fahrzeug
-    group: 6
+    group: [French Blue Circle, General]
 
 # ADULT, Org1
 - model: georga.personproperty
-  pk: 90
+  pk: 190
   fields:
-    uuid: "00000004-0000-0000-0000-000000000090"
-    name: yes
-    group: 7
+    uuid: 00000004-0000-0000-0000-000000000190
+    name: 'Yes'
+    group: [French Blue Circle, Adult]
 - model: georga.personproperty
-  pk: 91
+  pk: 191
   fields:
-    uuid: "00000004-0000-0000-0000-000000000091"
-    name: no
-    group: 7
+    uuid: 00000004-0000-0000-0000-000000000091
+    name: 'No'
+    group: [French Blue Circle, Adult]
 
 # Org2 ------------------------------------------------------------------------
 
 # LANGUAGE, Org2
 - model: georga.personproperty
-  pk: 101
+  pk: 200
   fields:
-    uuid: "00000004-0000-0000-0000-000000000101"
+    uuid: 00000004-0000-0000-0000-000000000200
     name: English
-    group: 101
+    group: [Sea Eyes International, Language]
 - model: georga.personproperty
-  pk: 102
+  pk: 201
   fields:
-    uuid: "00000004-0000-0000-0000-000000000102"
+    uuid: 00000004-0000-0000-0000-000000000201
     name: French
-    group: 101
+    group: [Sea Eyes International, Language]
 - model: georga.personproperty
-  pk: 103
+  pk: 202
   fields:
-    uuid: "00000004-0000-0000-0000-000000000103"
+    uuid: 00000004-0000-0000-0000-000000000202
     name: Spanish
-    group: 101
+    group: [Sea Eyes International, Language]
 - model: georga.personproperty
-  pk: 104
+  pk: 203
   fields:
-    uuid: "00000004-0000-0000-0000-000000000104"
+    uuid: 00000004-0000-0000-0000-000000000203
     name: Arabian
-    group: 101
+    group: [Sea Eyes International, Language]
 - model: georga.personproperty
-  pk: 105
+  pk: 204
   fields:
-    uuid: "00000004-0000-0000-0000-000000000105"
+    uuid: 00000004-0000-0000-0000-000000000204
     name: Turkish
-    group: 101
+    group: [Sea Eyes International, Language]
 - model: georga.personproperty
-  pk: 106
+  pk: 205
   fields:
-    uuid: "00000004-0000-0000-0000-000000000106"
+    uuid: 00000004-0000-0000-0000-000000000205
     name: Polnish
-    group: 101
+    group: [Sea Eyes International, Language]
 - model: georga.personproperty
-  pk: 107
+  pk: 206
   fields:
-    uuid: "00000004-0000-0000-0000-000000000107"
+    uuid: 00000004-0000-0000-0000-000000000206
     name: Kurdish
-    group: 101
+    group: [Sea Eyes International, Language]
 - model: georga.personproperty
-  pk: 108
+  pk: 207
   fields:
-    uuid: "00000004-0000-0000-0000-000000000108"
+    uuid: 00000004-0000-0000-0000-000000000207
     name: Italian
-    group: 101
+    group: [Sea Eyes International, Language]
 - model: georga.personproperty
-  pk: 109
+  pk: 208
   fields:
-    uuid: "00000004-0000-0000-0000-000000000109"
+    uuid: 00000004-0000-0000-0000-000000000208
     name: Greek
-    group: 101
+    group: [Sea Eyes International, Language]
 - model: georga.personproperty
-  pk: 110
+  pk: 209
   fields:
-    uuid: "00000004-0000-0000-0000-000000000110"
+    uuid: 00000004-0000-0000-0000-000000000209
     name: Dutch
-    group: 101
+    group: [Sea Eyes International, Language]
 - model: georga.personproperty
-  pk: 111
+  pk: 210
   fields:
-    uuid: "00000004-0000-0000-0000-000000000111"
+    uuid: 00000004-0000-0000-0000-000000000210
     name: Serbian
-    group: 101
+    group: [Sea Eyes International, Language]
 - model: georga.personproperty
-  pk: 112
+  pk: 211
   fields:
-    uuid: "00000004-0000-0000-0000-000000000112"
+    uuid: 00000004-0000-0000-0000-000000000211
     name: Croatian
-    group: 101
+    group: [Sea Eyes International, Language]
 - model: georga.personproperty
-  pk: 113
+  pk: 212
   fields:
-    uuid: "00000004-0000-0000-0000-000000000113"
+    uuid: 00000004-0000-0000-0000-000000000212
     name: Ukrainian
-    group: 101
+    group: [Sea Eyes International, Language]
 - model: georga.personproperty
-  pk: 114
+  pk: 213
   fields:
-    uuid: "00000004-0000-0000-0000-000000000114"
+    uuid: 00000004-0000-0000-0000-000000000213
     name: Russian
-    group: 101
+    group: [Sea Eyes International, Language]
 - model: georga.personproperty
-  pk: 115
+  pk: 214
   fields:
-    uuid: "00000004-0000-0000-0000-000000000115"
+    uuid: 00000004-0000-0000-0000-000000000214
     name: Romanian
-    group: 101
+    group: [Sea Eyes International, Language]
 - model: georga.personproperty
-  pk: 116
+  pk: 215
   fields:
-    uuid: "00000004-0000-0000-0000-000000000116"
+    uuid: 00000004-0000-0000-0000-000000000215
     name: Hungarian
-    group: 101
+    group: [Sea Eyes International, Language]
 - model: georga.personproperty
-  pk: 117
+  pk: 216
   fields:
-    uuid: "00000004-0000-0000-0000-000000000117"
+    uuid: 00000004-0000-0000-0000-000000000216
     name: Slovakian
-    group: 101
+    group: [Sea Eyes International, Language]
 - model: georga.personproperty
-  pk: 118
+  pk: 217
   fields:
-    uuid: "00000004-0000-0000-0000-000000000118"
+    uuid: 00000004-0000-0000-0000-000000000217
     name: Czech
-    group: 101
+    group: [Sea Eyes International, Language]
 - model: georga.personproperty
-  pk: 119
+  pk: 218
   fields:
-    uuid: "00000004-0000-0000-0000-000000000119"
+    uuid: 00000004-0000-0000-0000-000000000218
     name: Lithuanian
-    group: 101
+    group: [Sea Eyes International, Language]
 - model: georga.personproperty
-  pk: 120
+  pk: 219
   fields:
-    uuid: "00000004-0000-0000-0000-000000000120"
+    uuid: 00000004-0000-0000-0000-000000000219
     name: Latvian
-    group: 101
+    group: [Sea Eyes International, Language]
 - model: georga.personproperty
-  pk: 121
+  pk: 220
   fields:
-    uuid: "00000004-0000-0000-0000-000000000121"
+    uuid: 00000004-0000-0000-0000-000000000220
     name: Estonian
-    group: 101
+    group: [Sea Eyes International, Language]
 
 # MEDICAL, Org2
 - model: georga.personproperty
-  pk: 160
+  pk: 260
   fields:
-    uuid: "00000004-0000-0000-0000-000000000160"
+    uuid: 00000004-0000-0000-0000-000000000260
     name: Emergency medical services
-    group: 104
+    group: [Sea Eyes International, Medical]
 - model: georga.personproperty
-  pk: 161
+  pk: 261
   fields:
-    uuid: "00000004-0000-0000-0000-000000000161"
+    uuid: 00000004-0000-0000-0000-000000000261
     name: Nurse (exam)
-    group: 104
+    group: [Sea Eyes International, Medical]
 - model: georga.personproperty
-  pk: 162
+  pk: 262
   fields:
-    uuid: "00000004-0000-0000-0000-000000000162"
+    uuid: 00000004-0000-0000-0000-000000000262
     name: Medical technical assistant
-    group: 104
+    group: [Sea Eyes International, Medical]
 - model: georga.personproperty
-  pk: 163
+  pk: 263
   fields:
-    uuid: "00000004-0000-0000-0000-000000000163"
+    uuid: 00000004-0000-0000-0000-000000000263
     name: Physician
-    group: 104
+    group: [Sea Eyes International, Medical]
 
 # GENERAL, Org2
 - model: georga.personproperty
-  pk: 180
+  pk: 280
   fields:
-    uuid: "00000004-0000-0000-0000-000000000180"
+    uuid: 00000004-0000-0000-0000-000000000280
     name: Shopping
-    group: 106
+    group: [Sea Eyes International, General]
 - model: georga.personproperty
-  pk: 181
+  pk: 281
   fields:
-    uuid: "00000004-0000-0000-0000-000000000181"
+    uuid: 00000004-0000-0000-0000-000000000281
     name: Household
-    group: 106
+    group: [Sea Eyes International, General]
 - model: georga.personproperty
-  pk: 183
+  pk: 283
   fields:
-    uuid: "00000004-0000-0000-0000-000000000183"
+    uuid: 00000004-0000-0000-0000-000000000283
     name: Transport service - own car
-    group: 106
+    group: [Sea Eyes International, General]
 
 # Org3 ------------------------------------------------------------------------
 
 # ADMINISTRATIVE, Org3
 - model: georga.personproperty
-  pk: 250
+  pk: 350
   fields:
-    uuid: "00000004-0000-0000-0000-000000000250"
+    uuid: 00000004-0000-0000-0000-000000000350
     name: Clerk
-    group: 203
+    group: [Cyber Aid Worldwide, Administrative]
 - model: georga.personproperty
-  pk: 251
+  pk: 351
   fields:
-    uuid: "00000004-0000-0000-0000-000000000251"
+    uuid: 00000004-0000-0000-0000-000000000351
     name: Human resouces
-    group: 203
+    group: [Cyber Aid Worldwide, Administrative]
 - model: georga.personproperty
-  pk: 252
+  pk: 352
   fields:
-    uuid: "00000004-0000-0000-0000-000000000252"
+    uuid: 00000004-0000-0000-0000-000000000352
     name: Accounting clerk
-    group: 203
+    group: [Cyber Aid Worldwide, Administrative]
 
 # TECHNICAL, Org3
 - model: georga.personproperty
-  pk: 270
+  pk: 370
   fields:
-    uuid: "00000004-0000-0000-0000-000000000270"
+    uuid: 00000004-0000-0000-0000-000000000370
     name: Information technology
-    group: 205
+    group: [Cyber Aid Worldwide, Technical]
 - model: georga.personproperty
-  pk: 271
+  pk: 371
   fields:
-    uuid: "00000004-0000-0000-0000-000000000271"
+    uuid: 00000004-0000-0000-0000-000000000371
     name: Communication technology
-    group: 205
+    group: [Cyber Aid Worldwide, Technical]
 - model: georga.personproperty
-  pk: 272
+  pk: 372
   fields:
-    uuid: "00000004-0000-0000-0000-000000000272"
+    uuid: 00000004-0000-0000-0000-000000000372
     name: Small amateur radio licence (German)
-    group: 205
+    group: [Cyber Aid Worldwide, Technical]
 - model: georga.personproperty
-  pk: 273
+  pk: 373
   fields:
-    uuid: "00000004-0000-0000-0000-000000000273"
+    uuid: 00000004-0000-0000-0000-000000000373
     name: Big amateur radio licence (German)
-    group: 205
+    group: [Cyber Aid Worldwide, Technical]
 - model: georga.personproperty
-  pk: 274
+  pk: 374
   fields:
-    uuid: "00000004-0000-0000-0000-000000000274"
+    uuid: 00000004-0000-0000-0000-000000000374
     name: Amateur radio licence class E (German)
-    group: 205
+    group: [Cyber Aid Worldwide, Technical]
 - model: georga.personproperty
-  pk: 275
+  pk: 375
   fields:
-    uuid: "00000004-0000-0000-0000-000000000275"
+    uuid: 00000004-0000-0000-0000-000000000375
     name: Amateur radio licence class A (German)
-    group: 205
+    group: [Cyber Aid Worldwide, Technical]
 - model: georga.personproperty
-  pk: 276
+  pk: 376
   fields:
-    uuid: "00000004-0000-0000-0000-000000000276"
+    uuid: 00000004-0000-0000-0000-000000000376
     name: Own amateur radio station
-    group: 205
+    group: [Cyber Aid Worldwide, Technical]
 
 # GENERAL, Org3
 - model: georga.personproperty
-  pk: 280
+  pk: 380
   fields:
-    uuid: "00000004-0000-0000-0000-000000000280"
+    uuid: 00000004-0000-0000-0000-000000000380
     name: Shopping
-    group: 206
+    group: [Cyber Aid Worldwide, General]
 - model: georga.personproperty
-  pk: 281
+  pk: 381
   fields:
-    uuid: "00000004-0000-0000-0000-000000000281"
+    uuid: 00000004-0000-0000-0000-000000000381
     name: Household
-    group: 206
+    group: [Cyber Aid Worldwide, General]
 - model: georga.personproperty
-  pk: 282
+  pk: 382
   fields:
-    uuid: "00000004-0000-0000-0000-000000000282"
+    uuid: 00000004-0000-0000-0000-000000000382
     name: Craft activity
-    group: 206
+    group: [Cyber Aid Worldwide, General]
 - model: georga.personproperty
-  pk: 283
+  pk: 383
   fields:
-    uuid: "00000004-0000-0000-0000-000000000283"
+    uuid: 00000004-0000-0000-0000-000000000383
     name: Transport service - own car
-    group: 206
+    group: [Cyber Aid Worldwide, General]
 - model: georga.personproperty
-  pk: 284
+  pk: 384
   fields:
-    uuid: "00000004-0000-0000-0000-000000000284"
+    uuid: 00000004-0000-0000-0000-000000000384
     name: Transport service - own van
-    group: 206
+    group: [Cyber Aid Worldwide, General]
 - model: georga.personproperty
-  pk: 285
+  pk: 385
   fields:
-    uuid: "00000004-0000-0000-0000-000000000285"
+    uuid: 00000004-0000-0000-0000-000000000385
     name: Transport service - provided vehicle
-    group: 206
+    group: [Cyber Aid Worldwide, General]
 
