@@ -5,9 +5,10 @@ from functools import wraps
 from datetime import datetime
 
 from graphql import parse
-from graphql_jwt.testcases import JSONWebTokenTestCase, JSONWebTokenClient
-from graphql_jwt.shortcuts import get_token
+from graphql_jwt.exceptions import JSONWebTokenError
 from graphql_jwt.settings import jwt_settings
+from graphql_jwt.shortcuts import get_token
+from graphql_jwt.testcases import JSONWebTokenTestCase, JSONWebTokenClient
 from graphql_relay.utils import base64
 from graphene.utils.str_converters import to_snake_case, to_camel_case
 from django.db import models
@@ -21,6 +22,7 @@ from ...schemas import schema
 
 # configuration variables
 SUPERADMIN_USER = "admin@georga.test"  # email of superadmin user
+INACTIVE_USER = "inactive@georga.test"  # email of inactive user
 FIXTURES_DIR = join("georga", "fixtures")  # fixtures directory
 DEFAULT_BATCH_SIZE = 0  # number of entries tested, 0 = all
 
@@ -73,6 +75,8 @@ TOKEN_CACHE = {}  # cache for authentication tokens
 class CachedJSONWebTokenClient(JSONWebTokenClient):
     """JSONWebTokenClient with cached tokens, requested only once per run."""
     def authenticate(self, user):
+        if isinstance(user, str):
+            user = Person.objects.get(email=user)
         if user.email not in TOKEN_CACHE:
             TOKEN_CACHE[user.email] = get_token(user)
         self._credentials = {
@@ -351,6 +355,7 @@ class QueryTestCaseMetaclass(SchemaTestCaseMetaclass):
                 # traverse result
                 for field in walk(node, entry):
                     with self.subTest(entry=entry, **field):
+                        # assert api value is equal to the database value
                         self.assertEqual(
                             field['api_value'],
                             field['database_value'])
@@ -421,7 +426,7 @@ class QueryTestCaseMetaclass(SchemaTestCaseMetaclass):
                         if isinstance(value, dict):
                             value = value['id']
                         # datetime fields
-                        if model_field.__class__.__name__ == "DateTimeField":
+                        if isinstance(model_field, models.DateTimeField):
                             value = datetime.fromisoformat(value)
                         api_values.append(value)
                     # assert length of result and queryset are equal
@@ -825,3 +830,22 @@ class ListQueryTestCase(SchemaTestCase, metaclass=QueryTestCaseMetaclass):
                 self.assertEqual(len(edges), 1)
                 # assert identiy of result
                 self.assertEqual(edges[0]['node']['id'], entry.gid)
+
+    @auth(INACTIVE_USER, permitted=True)
+    def test_inactive_authentication_fails(self):
+        """authentication of inactive user throws an error"""
+        # execute operation
+        result = self.client.execute(self.operation)
+        # assert only one error
+        self.assertEqual(len(result.errors), 1)
+        # assert specific error
+        self.assertIsInstance(result.errors[0].original_error, JSONWebTokenError)
+
+
+# mutation --------------------------------------------------------------------
+
+class MutationTestCase(SchemaTestCase, metaclass=SchemaTestCaseMetaclass):
+    """
+    TestCase for mutation operations.
+    """
+    __test__ = False
