@@ -1544,6 +1544,7 @@ person_property_filter_fields = {
     'group': LOOKUPS_ID,
     'group__name': LOOKUPS_STRING,
     'group__codename': LOOKUPS_STRING,
+    'group__organization__name': LOOKUPS_STRING,
 }
 
 
@@ -1616,6 +1617,7 @@ person_property_group_filter_fields = {
     'codename': LOOKUPS_STRING,
     'necessity': LOOKUPS_ENUM,
     'organization': LOOKUPS_CONNECTION,
+    'organization__name': LOOKUPS_STRING,
 }
 
 
