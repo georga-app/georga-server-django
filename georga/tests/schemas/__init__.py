@@ -28,42 +28,42 @@ DEFAULT_BATCH_SIZE = 10  # number of entries tested, 0 = all
 
 # shared query variables (relay node interface, MixinTimestamps)
 VARIABLES = """
-    $id: ID
-    $offset: Int
-    $before: String
-    $after: String
-    $first: Int
-    $last: Int
-    $createdAt: DateTime
-    $createdAt_Gt: DateTime
-    $createdAt_Lte: DateTime
-    $modifiedAt: DateTime
-    $modifiedAt_Gt: DateTime
-    $modifiedAt_Lte: DateTime
+        $id: ID
+        $offset: Int
+        $before: String
+        $after: String
+        $first: Int
+        $last: Int
+        $createdAt: DateTime
+        $createdAt_Gt: DateTime
+        $createdAt_Lte: DateTime
+        $modifiedAt: DateTime
+        $modifiedAt_Gt: DateTime
+        $modifiedAt_Lte: DateTime
 """
 # shared query arguments (relay node interface, MixinTimestamps)
 ARGUMENTS = """
-        id: $id
-        offset: $offset
-        before: $before
-        after: $after
-        first: $first
-        last: $last
-        createdAt: $createdAt
-        createdAt_Gt: $createdAt_Gt
-        createdAt_Lte: $createdAt_Lte
-        modifiedAt: $modifiedAt
-        modifiedAt_Gt: $modifiedAt_Gt
-        modifiedAt_Lte: $modifiedAt_Lte
+            id: $id
+            offset: $offset
+            before: $before
+            after: $after
+            first: $first
+            last: $last
+            createdAt: $createdAt
+            createdAt_Gt: $createdAt_Gt
+            createdAt_Lte: $createdAt_Lte
+            modifiedAt: $modifiedAt
+            modifiedAt_Gt: $modifiedAt_Gt
+            modifiedAt_Lte: $modifiedAt_Lte
 """
 # shared query result fields (relay node interface)
 PAGEINFO = """
-        pageInfo {
-            hasNextPage
-            hasPreviousPage
-            startCursor
-            endCursor
-        }
+            pageInfo {
+                hasNextPage
+                hasPreviousPage
+                startCursor
+                endCursor
+            }
 """
 
 
@@ -271,6 +271,7 @@ class SchemaTestCase(JSONWebTokenTestCase, metaclass=SchemaTestCaseMetaclass):
 
 class QueryTestCaseMetaclass(SchemaTestCaseMetaclass):
     """Adds fields and filter tests for the provided query."""
+
     # TODO:
     # id filter: incorrect padding
     # id filter: not pemitted: no entries
@@ -292,6 +293,34 @@ class QueryTestCaseMetaclass(SchemaTestCaseMetaclass):
             setattr(new, f"test_{filter_arg}_filter", cls.create_filter_test(filter_arg))
         return new
 
+    @staticmethod
+    def walk(node, entry, path=''):
+        """Traverses a query result, yields api/database values to compare."""
+        for key, item in node.items():
+            subpath = f"{path}.{key}"
+            match key:
+                case "__typename":
+                    _type = GRAPHENE_DJANGO_REGISTRY.get_type_for_model(entry._meta.model)
+                    database_value = _type._meta.name
+                case key if key.startswith("__"):
+                    continue
+                case _:
+                    database_value = getattr(entry, to_snake_case(key))
+            if isinstance(item, dict):
+                yield from QueryTestCaseMetaclass.walk(item, database_value, path=subpath)
+            else:
+                # id
+                if key == "id":
+                    database_value = entry.gid
+                # datetime fields
+                if isinstance(database_value, datetime):
+                    database_value = database_value.isoformat()
+                yield {
+                    'api_value': item,
+                    'database_value': database_value,
+                    'path': subpath.removeprefix(".")
+                }
+
     @classmethod
     def create_fields_test(
             cls, user=SUPERADMIN_USER, actions=None, permitted=True,
@@ -302,35 +331,6 @@ class QueryTestCaseMetaclass(SchemaTestCaseMetaclass):
         Traverses the query result and asserts equality of all fields.
         Ignores all introspection vars but __typename.
         """
-
-        @staticmethod
-        def walk(node, entry, path=''):
-            """Traverses a query result, yields api/database values to compare."""
-            for key, item in node.items():
-                subpath = f"{path}.{key}"
-                match key:
-                    case "__typename":
-                        _type = GRAPHENE_DJANGO_REGISTRY.get_type_for_model(entry._meta.model)
-                        database_value = _type._meta.name
-                    case key if key.startswith("__"):
-                        continue
-                    case _:
-                        database_value = getattr(entry, to_snake_case(key))
-                if isinstance(item, dict):
-                    yield from walk(item, database_value, path=subpath)
-                else:
-                    # id
-                    if key == "id":
-                        database_value = entry.gid
-                    # datetime fields
-                    if isinstance(database_value, datetime):
-                        database_value = database_value.isoformat()
-                    yield {
-                        'api_value': item,
-                        'database_value': database_value,
-                        'path': subpath.removeprefix(".")
-                    }
-
         @auth(user, actions, permitted)
         def test(self):
             # skip if not enough entries
@@ -353,7 +353,7 @@ class QueryTestCaseMetaclass(SchemaTestCaseMetaclass):
             for index, entry in enumerate(self.entries[:batch_size]):
                 node = edges[index]['node']
                 # traverse result
-                for field in walk(node, entry):
+                for field in QueryTestCaseMetaclass.walk(node, entry):
                     with self.subTest(entry=entry, **field):
                         # assert api value is equal to the database value
                         self.assertEqual(
@@ -373,7 +373,6 @@ class QueryTestCaseMetaclass(SchemaTestCaseMetaclass):
         Executes a query with the filter set to the values of the database entries
         and expects the result to include (or exclude for gt/lt) the entry.
         """
-
         @auth(user, actions, permitted)
         def test(self):
             # skip if not enough entries
