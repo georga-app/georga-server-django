@@ -256,15 +256,13 @@ class SchemaTestCase(JSONWebTokenTestCase, metaclass=SchemaTestCaseMetaclass):
     def __str__(self):
         # Schemas|Models|...
         module = "Schema"
-        # schema operation type, e.g. Query|Mutation|Subscription
-        type_ = self.operation_type.capitalize()
         # schema operation name, e.g. listPersons|listAces|...
         operation = self.operation_name
         # test method name
         name = self._testMethodName
         # test method docstring
         description = super().shortDescription() or self._testMethodName
-        return f"{module} | {type_} | {operation} | {name} | {description}"
+        return f"{module} | {operation} | {name} | {description}"
 
 
 # query -----------------------------------------------------------------------
