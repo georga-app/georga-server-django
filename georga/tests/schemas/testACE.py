@@ -434,7 +434,7 @@ class DeleteAceTestCase(MutationTestCase):
                     self.assertIsNone(data)
                     # assert no database entry was deleted
                     self.assertEqual(count, ACE.objects.count())
-            # iterate over denied instances
+            # iterate over allowed instances
             for instance in allowed:
                 with self.subTest(user=user, instance=instance, permission="allowed"):
                     with transaction.atomic():
