@@ -474,6 +474,7 @@ class ListQueryTestCase(SchemaTestCase, metaclass=QueryTestCaseMetaclass):
     # - before/after 'arrayconnection:-1': "Negative indexing is not supported"
     # - before/after 'invalidstrings': no entries
     # - first/last > 100: "exceeds the limit of 100 records"
+    # - max limit: result < max limit
 
     @auth(SUPERADMIN_USER, permitted=True)
     def test_first_filter(self):
