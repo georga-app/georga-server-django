@@ -1,30 +1,52 @@
-# Org1 ------------------------------------------------------------------------
-
 - model: georga.device
-  pk: 100
+  pk: 1001
   fields:
-    uuid: 00000014-0000-0000-0000-000000000100
-    device_string: Samsung Galaxy Note 2
+    uuid: 00000014-0000-0000-0000-000000001001
+    person: [helper.001@georga.test]
+    name: Samsung Galaxy Note 2
+    os_type: ANDROID
     os_version: Android 6.0
-    app_version: MAUI 2.0
-    organization: [French Blue Circle]
+    app_type: MAUI
+    app_version: 2.0
+    app_store: GOOGLEPLAY
+    push_token_type: FCM
+    push_token: 00000014-0000-0000-0000-000000001001
 - model: georga.device
-  pk: 101
+  pk: 1002
   fields:
-    uuid: 00000014-0000-0000-0000-000000000101
-    device_string: Samsung Ultrabook 3
+    uuid: 00000014-0000-0000-0000-000000001002
+    person: [helper.001@georga.test]
+    name: Samsung Ultrabook 3
+    os_type: LINUX
     os_version: Debian 11
-    app_version: React 1.0
-    organization: [French Blue Circle]
+    app_type: REACT
+    app_version: 1.0
+    app_store: GOOGLEPLAY
+    push_token_type: FCM
+    push_token: 00000014-0000-0000-0000-000000001002
 - model: georga.device
-  pk: 102
+  pk: 1003
   fields:
-    uuid: 00000014-0000-0000-0000-000000000102
-    device_string: Apple iPhone 3
+    uuid: 00000014-0000-0000-0000-000000001003
+    person: [helper.001@georga.test]
+    name: Apple iPhone 3
+    os_type: IOS
     os_version: iOS 2.5
+    app_type: MAUI
     app_version: 0.5
-    organization: [French Blue Circle]
-
-# Org2 ------------------------------------------------------------------------
-
-# Org3 ------------------------------------------------------------------------
+    app_store: AMAZON
+    push_token_type: APN
+    push_token: 00000014-0000-0000-0000-000000001003
+- model: georga.device
+  pk: 1004
+  fields:
+    uuid: 00000014-0000-0000-0000-000000001004
+    person: [helper.001@georga.test]
+    name: Pinephone
+    os_type: Linux
+    os_version: Kupfer Linux
+    app_type: React
+    app_version: 1.0
+    app_store: FDROID
+    push_token_type: ONESIGNAL
+    push_token: 00000014-0000-0000-0000-000000001004

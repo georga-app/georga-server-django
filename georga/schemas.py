@@ -587,16 +587,18 @@ class DeleteACEMutation(UUIDDjangoModelFormMutation):
 device_ro_fields = [
     'created_at',
     'modified_at',
-    'push_token',
 ]
 device_wo_fields = [
 ]
 device_rw_fields = [
-    'organization',
-    'device_string',
+    'name',
+    'os_type',
     'os_version',
+    'app_type',
     'app_version',
-
+    'app_store',
+    'push_token_type',
+    'push_token',
 ]
 device_filter_fields = {
     'id': LOOKUPS_ID,

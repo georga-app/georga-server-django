@@ -528,26 +528,62 @@ class ACE(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
 
 
 class Device(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
-    organization = models.ForeignKey(
-        to='Organization',
+    person = models.ForeignKey(
+        to='Person',
         on_delete=models.CASCADE,
     )
-    device_string = models.CharField(
+    name = models.CharField(
         max_length=50,
+    )
+    OS_TYPES = [
+        ('ANDROID', _('Android')),
+        ('IOS', _('iOS')),
+        ('LINUX', _('Linux')),
+        ('OTHER', _('Other')),
+    ]
+    os_type = models.CharField(
+        max_length=7,
+        choices=OS_TYPES,
     )
     os_version = models.CharField(
         max_length=35,
     )
+    APP_TYPES = [
+        ('MAUI', _('Maui')),
+        ('REACT', _('React')),
+    ]
+    app_type = models.CharField(
+        max_length=5,
+        choices=APP_TYPES,
+    )
     app_version = models.CharField(
         max_length=15,
     )
-    push_token = models.UUIDField(
-        default=uuid.uuid4,
-        editable=False,
+    APP_STORES = [
+        ('GOOGLEPLAY', _('Google Play')),
+        ('FDROID', _('F-Droid')),
+        ('AMAZON', _('Amazon')),
+    ]
+    app_store = models.CharField(
+        max_length=10,
+        choices=APP_STORES,
+    )
+    PUSH_TOKEN_TYPES = [
+        ('FCM', _('FCM')),
+        ('NTFY', _('NTFY')),
+        ('APN', _('APN')),
+        ('ONESIGNAL', _('OneSignal')),
+    ]
+    push_token_type = models.CharField(
+        max_length=9,
+        choices=PUSH_TOKEN_TYPES,
+    )
+    push_token = models.CharField(  # TODO: verify schema for token type
+        max_length=200,
     )
 
     def __str__(self):
-        return '%s' % self.device_string
+        return '%s' % self.name
 
     class Meta:
         verbose_name = _("client device")
@@ -1554,12 +1590,6 @@ class Person(MixinTimestamps, MixinUUIDs, MixinAuthorization, AbstractUser):
         blank=True,
         verbose_name=_("organizations employed at"),
         related_name='persons_employed',
-    )
-
-    devices = models.ManyToManyField(
-        to='Device',
-        blank=True,
-        verbose_name=_("devices"),
     )
 
     resources_provided = models.ManyToManyField(
