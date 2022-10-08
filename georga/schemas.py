@@ -568,13 +568,6 @@ class CreateACEMutation(UUIDDjangoModelFormMutation):
         permissions = [staff_member_required, object_permits_user('create')]
 
 
-class UpdateACEMutation(UUIDDjangoModelFormMutation):
-    class Meta:
-        form_class = ACEModelForm
-        required_fields = ['id']
-        permissions = [staff_member_required, object_permits_user('update')]
-
-
 class DeleteACEMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = ACEModelForm
@@ -2352,7 +2345,6 @@ class MutationType(ObjectType):
     revoke_token = graphql_jwt.relay.Revoke.Field()
     # ACE
     create_ace = CreateACEMutation.Field()
-    update_ace = UpdateACEMutation.Field()
     delete_ace = DeleteACEMutation.Field()
     # Device
     create_device = CreateDeviceMutation.Field()
