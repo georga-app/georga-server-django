@@ -2144,7 +2144,7 @@ class Task(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     )
 
     def __str__(self):
-        return '%s' % self.title
+        return '%s' % self.name
 
     def natural_key(self):
         return self.operation.natural_key() + (self.name,)
