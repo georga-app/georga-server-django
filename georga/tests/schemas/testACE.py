@@ -170,7 +170,7 @@ class CreateAceTestCase(MutationTestCase):
 
     # TODO:
     # - wrong permission (not in choice)
-    # - wrong instance (wrong padding, wrong model)
+    # - wrong instance (empty string, wrong padding, wrong model)
     # - wrong person (not employed by organization)
 
     # permission --------------------------------------------------------------
@@ -363,7 +363,7 @@ class DeleteAceTestCase(MutationTestCase):
     """
 
     # TODO:
-    # - wrong id (wrong padding, wrong model)
+    # - wrong id (empty string, wrong padding, wrong model)
 
     # permission --------------------------------------------------------------
 
@@ -441,12 +441,13 @@ class DeleteAceTestCase(MutationTestCase):
                         # execute operation
                         result = self.client.execute(
                             self.operation, variables={'id': instance.gid})
-                        # assert no error
-                        self.assertIsNone(result.errors)
-                        # assert database entry was deleted
-                        self.assertEqual(count - 1, ACE.objects.count())
                         # prepare query results
                         data = next(iter(result.data.values()))
+                        # assert no error
+                        self.assertIsNone(result.errors)
+                        self.assertEqual(data['errors'], [])
+                        # assert database entry was deleted
+                        self.assertEqual(count - 1, ACE.objects.count())
                         # assert id is returned
                         self.assertEqual(data['aCE']['id'], instance.gid)
                         # rollback

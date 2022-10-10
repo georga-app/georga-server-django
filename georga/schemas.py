@@ -133,14 +133,10 @@ class GFKModelFormMetaclass(ModelFormMetaclass):
                 for field in fields:
                     formfield = getattr(model, field, False)
                     if isinstance(formfield, GenericForeignKey):
-                        attrs["Meta"].fields.remove(field)
+                        attrs[field] = GlobalIDFormField()
                         gfk_fields.append(field)
         cls = super().__new__(mcs, name, bases, attrs, *args, **kwargs)
         cls._meta.gfk_fields = gfk_fields
-        for gfk_field in gfk_fields:
-            field = GlobalIDFormField()
-            setattr(cls, gfk_field, field)
-            cls.base_fields[gfk_field] = field
         return cls
 
 
@@ -156,6 +152,7 @@ class UUIDModelForm(ModelForm, metaclass=GFKModelFormMetaclass):
 
     Conveniece:
     - Sets fields required if listed in Meta.required_fields.
+    - Sets fields unrequired if not listed in Meta.only_fields.
 
     Bugfixes:
     - Fixes bug of saving fields present in form but not in request data.
@@ -173,9 +170,14 @@ class UUIDModelForm(ModelForm, metaclass=GFKModelFormMetaclass):
         if hasattr(self.Meta, 'required_fields'):
             for name, field in self.fields.items():
                 field.required = name in self.Meta.required_fields
-            for gfk_name in self._meta.gfk_fields:
-                self.base_fields[gfk_name].required = name in self.Meta.required_fields
             delattr(self.Meta, 'required_fields')
+
+        # set fields unrequired if not listed in Meta.only_fields
+        if hasattr(self.Meta, 'only_fields'):
+            for name, field in self.fields.items():
+                if name not in self.Meta.only_fields:
+                    field.required = False
+            delattr(self.Meta, 'only_fields')
 
         # fix bug of saving fields present in form but not in request data
         # see https://github.com/graphql-python/graphene-django/issues/725
@@ -302,7 +304,7 @@ class UUIDDjangoModelFormMutation(DjangoModelFormMutation):
     - Replaces foreign model reference ids with uuids.
 
     Convenience:
-    - Passes Meta.required_fields to form class.
+    - Passes Meta.required_fields and Meta.only_fields to form class.
     - Sets permissions for mutation specified in Meta.permissions.
     - Removes schema id field if Meta.only_fields is given and does not contain it.
     - Removes object return schema field if other schema fields are defined.
@@ -315,9 +317,14 @@ class UUIDDjangoModelFormMutation(DjangoModelFormMutation):
 
     @classmethod
     def __init_subclass_with_meta__(cls, *args, **kwargs):
-        # pass Meta.required_fields to form class
-        if all(k in kwargs for k in ['form_class', 'required_fields']):
-            setattr(kwargs['form_class'].Meta, 'required_fields', kwargs['required_fields'])
+        # pass Meta.required_fields and Meta.only_fields to form class
+        if 'form_class' in kwargs:
+            if 'required_fields' in kwargs:
+                kwargs['form_class'].Meta.required_fields = kwargs['required_fields']
+                cls.required_fields = kwargs['required_fields']
+            if 'only_fields' in kwargs:
+                kwargs['form_class'].Meta.only_fields = kwargs['only_fields']
+                cls.only_fields = kwargs['only_fields']
 
         # set permissions for mutation specified in Meta.permissions
         cls.permission = kwargs.get('permissions', [])
@@ -339,6 +346,16 @@ class UUIDDjangoModelFormMutation(DjangoModelFormMutation):
         id_field = getattr(cls.Input, 'id', False)
         if id_field and 'id' in kwargs.get('required_fields', ['id']):
             id_field._type = NonNull(id_field._type)
+
+    @classmethod
+    def get_form(cls, root, info, **input):
+        # pass Meta.required_fields and Meta.only_fields to form class
+        if hasattr(cls, 'required_fields'):
+            cls._meta.form_class.Meta.required_fields = cls.required_fields
+        if hasattr(cls, 'only_fields'):
+            cls._meta.form_class.Meta.only_fields = cls.only_fields
+        form_kwargs = cls.get_form_kwargs(root, info, **input)
+        return cls._meta.form_class(**form_kwargs)
 
     @classmethod
     def get_form_kwargs(cls, root, info, **input):

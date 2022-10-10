@@ -271,8 +271,7 @@ class QueryTestCaseMetaclass(SchemaTestCaseMetaclass):
     """Adds fields and filter tests for the provided query."""
 
     # TODO:
-    # id filter: incorrect padding
-    # id filter: not pemitted: no entries
+    # - wrong id filter (empty string, wrong padding, wrong model, not permitted)
 
     filters_skipped = ['first', 'last', 'offset', 'before', 'after']
 
