@@ -5,7 +5,7 @@
   fields:
     uuid: 00000005-0000-0000-0000-000000000001
     # gid: UGVyc29uVHlwZTowMDAwMDAwNS0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDE=
-    password: >  # georga
+    password: >-  # georga
       pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
     password_modified: 2022-03-13 16:13:36.048338+00:00
     date_joined: 2022-03-13 16:13:36.048326+00:00
@@ -26,7 +26,7 @@
   fields:
     uuid: 00000005-0000-0000-0000-000000000100
     # gid: "UGVyc29uVHlwZTowMDAwMDAwNS0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDM="
-    password: >  # georga
+    password: >-  # georga
       pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
     password_modified: 2022-03-13 16:13:36.048338+00:00
     date_joined: 2022-03-13 16:13:36.048326+00:00
@@ -57,7 +57,7 @@
   fields:
     uuid: 00000005-0000-0000-0000-000000000120
     # gid: "UGVyc29uVHlwZTowMDAwMDAwNS0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDQ="
-    password: >  # georga
+    password: >-  # georga
       pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
     password_modified: 2022-03-13 16:13:36.048338+00:00
     date_joined: 2022-03-13 16:13:36.048326+00:00
@@ -86,7 +86,7 @@
   fields:
     uuid: 00000005-0000-0000-0000-000000000140
     # gid: "UGVyc29uVHlwZTowMDAwMDAwNS0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDU="
-    password: >  # georga
+    password: >-  # georga
       pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
     password_modified: 2022-03-13 16:13:36.048338+00:00
     date_joined: 2022-03-13 16:13:36.048326+00:00
@@ -117,7 +117,7 @@
   fields:
     uuid: 00000005-0000-0000-0000-000000000200
     # gid: "UGVyc29uVHlwZTowMDAwMDAwNS0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDM="
-    password: >  # georga
+    password: >-  # georga
       pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
     password_modified: 2022-03-13 16:13:36.048338+00:00
     date_joined: 2022-03-13 16:13:36.048326+00:00
@@ -148,7 +148,7 @@
   fields:
     uuid: 00000005-0000-0000-0000-000000000220
     # gid: "UGVyc29uVHlwZTowMDAwMDAwNS0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDQ="
-    password: >  # georga
+    password: >-  # georga
       pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
     password_modified: 2022-03-13 16:13:36.048338+00:00
     date_joined: 2022-03-13 16:13:36.048326+00:00
@@ -177,7 +177,7 @@
   fields:
     uuid: 00000005-0000-0000-0000-000000000240
     # gid: "UGVyc29uVHlwZTowMDAwMDAwNS0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDU="
-    password: >  # georga
+    password: >-  # georga
       pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
     password_modified: 2022-03-13 16:13:36.048338+00:00
     date_joined: 2022-03-13 16:13:36.048326+00:00
@@ -208,7 +208,7 @@
   fields:
     uuid: 00000005-0000-0000-0000-000000000300
     # gid: "UGVyc29uVHlwZTowMDAwMDAwNS0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDM="
-    password: >  # georga
+    password: >-  # georga
       pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
     password_modified: 2022-03-13 16:13:36.048338+00:00
     date_joined: 2022-03-13 16:13:36.048326+00:00
@@ -239,7 +239,7 @@
   fields:
     uuid: 00000005-0000-0000-0000-000000000320
     # gid: "UGVyc29uVHlwZTowMDAwMDAwNS0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDQ="
-    password: >  # georga
+    password: >-  # georga
       pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
     password_modified: 2022-03-13 16:13:36.048338+00:00
     date_joined: 2022-03-13 16:13:36.048326+00:00
@@ -268,7 +268,7 @@
   fields:
     uuid: 00000005-0000-0000-0000-000000000340
     # gid: "UGVyc29uVHlwZTowMDAwMDAwNS0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDU="
-    password: >  # georga
+    password: >-  # georga
       pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
     password_modified: 2022-03-13 16:13:36.048338+00:00
     date_joined: 2022-03-13 16:13:36.048326+00:00
@@ -299,7 +299,7 @@
   fields:
     uuid: 00000005-0000-0000-0000-000000000900
     # gid: "UGVyc29uVHlwZTowMDAwMDAwNS0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDM="
-    password: >  # georga
+    password: >-  # georga
       pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
     password_modified: 2022-03-13 16:13:36.048338+00:00
     date_joined: 2022-03-13 16:13:36.048326+00:00
@@ -342,7 +342,7 @@
   fields:
     uuid: 00000005-0000-0000-0000-000000000920
     # gid: "UGVyc29uVHlwZTowMDAwMDAwNS0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDQ="
-    password: >  # georga
+    password: >-  # georga
       pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
     password_modified: 2022-03-13 16:13:36.048338+00:00
     date_joined: 2022-03-13 16:13:36.048326+00:00
@@ -379,7 +379,7 @@
   fields:
     uuid: 00000005-0000-0000-0000-000000000940
     # gid: "UGVyc29uVHlwZTowMDAwMDAwNS0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDU="
-    password: >  # georga
+    password: >-  # georga
       pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
     password_modified: 2022-03-13 16:13:36.048338+00:00
     date_joined: 2022-03-13 16:13:36.048326+00:00
@@ -417,7 +417,7 @@
   fields:
     uuid: 00000005-0000-0000-0000-000000001000
     # gid: "UGVyc29uVHlwZTowMDAwMDAwNS0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDY="
-    password: >  # georga
+    password: >-  # georga
       pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
     password_modified: 2022-03-13 16:13:36.048338+00:00
     date_joined: 2022-03-13 16:13:36.048326+00:00
@@ -458,7 +458,7 @@
   fields:
     uuid: 00000005-0000-0000-0000-000000001001
     # gid: "UGVyc29uVHlwZTowMDAwMDAwNS0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDI="
-    password: >  # georga
+    password: >-  # georga
       pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
     password_modified: 2022-03-13 16:13:36.048338+00:00
     date_joined: 2022-03-13 16:13:36.048326+00:00
@@ -496,7 +496,7 @@
   fields:
     uuid: 00000005-0000-0000-0000-000000001002
     # gid: "UGVyc29uVHlwZTowMDAwMDAwNS0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDI="
-    password: >  # georga
+    password: >-  # georga
       pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
     password_modified: 2022-03-13 16:13:36.048338+00:00
     date_joined: 2022-03-13 16:13:36.048326+00:00
@@ -534,7 +534,7 @@
   fields:
     uuid: 00000005-0000-0000-0000-000000001003
     # gid: "UGVyc29uVHlwZTowMDAwMDAwNS0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDI="
-    password: >  # georga
+    password: >-  # georga
       pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
     password_modified: 2022-03-13 16:13:36.048338+00:00
     date_joined: 2022-03-13 16:13:36.048326+00:00
@@ -572,7 +572,7 @@
   fields:
     uuid: 00000005-0000-0000-0000-000000001004
     # gid: "UGVyc29uVHlwZTowMDAwMDAwNS0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDI="
-    password: >  # georga
+    password: >-  # georga
       pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
     password_modified: 2022-03-13 16:13:36.048338+00:00
     date_joined: 2022-03-13 16:13:36.048326+00:00
@@ -610,7 +610,7 @@
   fields:
     uuid: 00000005-0000-0000-0000-000000001005
     # gid: "UGVyc29uVHlwZTowMDAwMDAwNS0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDI="
-    password: >  # georga
+    password: >-  # georga
       pbkdf2_sha256$390000$nuCBVk1MH8irBumlPNO0XC$xMPnLuvQ3/5KO19srmb9iceWpjdsV/XCJtr5yIhjTWY=
     password_modified: 2022-03-13 16:13:36.048338+00:00
     date_joined: 2022-03-13 16:13:36.048326+00:00
