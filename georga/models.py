@@ -535,6 +535,7 @@ class Device(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     name = models.CharField(
         max_length=50,
     )
+
     OS_TYPES = [
         ('ANDROID', _('Android')),
         ('IOS', _('iOS')),
@@ -548,6 +549,7 @@ class Device(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     os_version = models.CharField(
         max_length=35,
     )
+
     APP_TYPES = [
         ('MAUI', _('Maui')),
         ('REACT', _('React')),
@@ -568,6 +570,7 @@ class Device(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         max_length=10,
         choices=APP_STORES,
     )
+
     PUSH_TOKEN_TYPES = [
         ('FCM', _('FCM')),
         ('NTFY', _('NTFY')),
@@ -589,6 +592,37 @@ class Device(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         verbose_name = _("client device")
         verbose_name_plural = _("client devices")
         # TODO: translation: Client-Gerät
+
+    # permissions
+    @classmethod
+    def permitted(cls, device, user, action):
+        # unpersisted instances (create)
+        if device and not device.id:
+            match action:
+                case 'create':
+                    # devices of the user can be created by the user
+                    return device.person == user
+                case _:
+                    return False
+        # queryset filtering and persisted instances (read, write, delete, etc)
+        match action:
+            case 'read':
+                return reduce(or_, [
+                    # devices of the user can be read by the user
+                    Q(person=user),
+                ])
+            case 'update':
+                return reduce(or_, [
+                    # devices of the user can be updated by the user
+                    Q(person=user),
+                ])
+            case 'delete':
+                return reduce(or_, [
+                    # devices of the user can be deleted by the user
+                    Q(person=user),
+                ])
+            case _:
+                return None
 
 
 class Equipment(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):

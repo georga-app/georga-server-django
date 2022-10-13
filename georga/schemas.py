@@ -492,7 +492,8 @@ class GFKFilterSet(FilterSet):
 #     'iso_year', 'iso_year__gt', 'iso_year__gte', 'iso_year__lt', 'iso_year__lte',
 #     'year', 'year__gt', 'year__gte', 'year__lt', 'year__lte',
 #     'month', 'month__gt', 'month__gte', 'month__lt', 'month__lte',
-#     'iso_week_day', 'iso_week_day__gt', 'iso_week_day__gte', 'iso_week_day__lt', 'iso_week_day__lte',
+#     'iso_week_day', 'iso_week_day__gt', 'iso_week_day__gte',
+#     'iso_week_day__lt', 'iso_week_day__lte',
 #     'quarter', 'quarter__gt', 'quarter__gte', 'quarter__lt', 'quarter__lte',
 #     'week_day', 'week_day__gt', 'week_day__gte', 'week_day__lt', 'week_day__lte',
 #     'day', 'day__gt', 'day__gte', 'day__lt', 'day__lte',
@@ -630,7 +631,7 @@ class DeviceType(UUIDDjangoObjectType):
         model = Device
         fields = device_ro_fields + device_rw_fields
         filter_fields = device_filter_fields
-        permissions = [login_required]
+        permissions = [login_required, object_permits_user('read')]
 
 
 # forms
@@ -645,21 +646,27 @@ class CreateDeviceMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = DeviceModelForm
         exclude_fields = ['id']
-        permissions = [staff_member_required]
+        permissions = [login_required, object_permits_user('create')]
+
+    @classmethod
+    def get_form(cls, root, info, **input):
+        form = super().get_form(root, info, **input)
+        form.instance.person = info.context.user
+        return form
 
 
 class UpdateDeviceMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = DeviceModelForm
         required_fields = ['id']
-        permissions = [login_required]
+        permissions = [login_required, object_permits_user('update')]
 
 
 class DeleteDeviceMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = DeviceModelForm
         only_fields = ['id']
-        permissions = [staff_member_required]
+        permissions = [login_required, object_permits_user('delete')]
 
     @classmethod
     def perform_mutate(cls, form, info):
