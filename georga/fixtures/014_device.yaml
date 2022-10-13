@@ -43,9 +43,9 @@
     uuid: 00000014-0000-0000-0000-000000001004
     person: [helper.001@georga.test]
     name: Pinephone
-    os_type: Linux
+    os_type: LINUX
     os_version: Kupfer Linux
-    app_type: React
+    app_type: REACT
     app_version: 1.0
     app_store: FDROID
     push_token_type: ONESIGNAL
