@@ -293,24 +293,26 @@ class CreateAceTestCase(MutationTestCase):
                 with self.subTest(user=user, instance=instance, permission="allowed"):
                     # authenticate user
                     self.client.authenticate(user)
+                    # prepare variables
+                    variables = {
+                        'person': instance.organization.persons_employed.first().gid,
+                        'permission': "ADMIN",
+                        'instance': instance.gid,
+                    }
                     # execute operation
-                    result = self.client.execute(
-                        self.operation,
-                        variables={
-                            'person': instance.organization.persons_employed.first().gid,
-                            'permission': "ADMIN",
-                            'instance': instance.gid,
-                        }
-                    )
-                    # assert no error
-                    self.assertIsNone(result.errors)
-                    # assert database entry was created
-                    self.assertEqual(count + 1, ACE.objects.count())
+                    result = self.client.execute(self.operation, variables=variables)
                     # prepare query results
                     data = next(iter(result.data.values()))
                     entry = ACE.objects.last()
-                    # assert id is returned
-                    self.assertEqual(data['aCE']['id'], entry.gid)
+                    # assert no error
+                    self.assertIsNone(result.errors)
+                    self.assertEqual(data['errors'], [])
+                    # assert database entry was created
+                    self.assertEqual(count + 1, ACE.objects.count())
+                    # assert persisted values are correct
+                    self.assertEntryEqual(entry, variables, test='db')
+                    # assert returned values are correct
+                    self.assertEntryEqual(entry, data['aCE'], test='api')
                     # delete entry
                     entry.delete()
                     # logout user

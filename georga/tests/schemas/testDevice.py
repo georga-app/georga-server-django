@@ -1,6 +1,7 @@
 import random
 
 from django.db import transaction
+from django.forms.models import model_to_dict
 from graphql_jwt.exceptions import JSONWebTokenError
 
 from . import ListQueryTestCase, MutationTestCase
@@ -179,33 +180,180 @@ class CreateDeviceTestCase(MutationTestCase):
             with self.subTest(user=user, permission="allowed"):
                 # authenticate user
                 self.client.authenticate(user)
+                # prepare variables
+                variables = {
+                    'name': "Device Name",
+                    'osType': random.choice(Device.OS_TYPES)[0],
+                    'osVersion': "1.0",
+                    'appType': random.choice(Device.APP_TYPES)[0],
+                    'appVersion': "1.0",
+                    'appStore': random.choice(Device.APP_STORES)[0],
+                    'pushTokenType': random.choice(Device.PUSH_TOKEN_TYPES)[0],
+                    'pushToken': "push-token",
+                }
                 # execute operation
-                result = self.client.execute(
-                    self.operation,
-                    variables={
-                        'name': "Device Name",
-                        'osType': random.choice(Device.OS_TYPES)[0],
-                        'osVersion': "1.0",
-                        'appType': random.choice(Device.APP_TYPES)[0],
-                        'appVersion': "1.0",
-                        'appStore': random.choice(Device.APP_STORES)[0],
-                        'pushTokenType': random.choice(Device.PUSH_TOKEN_TYPES)[0],
-                        'pushToken': "push-token",
-                    }
-                )
-                # assert no error
-                self.assertIsNone(result.errors)
-                # assert database entry was created
-                self.assertEqual(count + 1, Device.objects.count())
+                result = self.client.execute(self.operation, variables=variables)
                 # prepare query results
                 data = next(iter(result.data.values()))
                 entry = Device.objects.last()
-                # assert id is returned
-                self.assertEqual(data['device']['id'], entry.gid)
+                # assert no error
+                self.assertIsNone(result.errors)
+                self.assertEqual(data['errors'], [])
+                # assert database entry was created
+                self.assertEqual(count + 1, Device.objects.count())
+                # assert persisted values are correct
+                self.assertEntryEqual(entry, variables, test='db')
+                # assert returned values are correct
+                self.assertEntryEqual(entry, data['device'], test='api')
                 # delete entry
                 entry.delete()
                 # logout user
                 self.client.logout()
+
+
+class UpdateDeviceTestCase(MutationTestCase):
+    operation = """
+    mutation (
+        $id: ID!
+        $name: String
+        $osType: String
+        $osVersion: String
+        $appType: String
+        $appVersion: String
+        $appStore: String
+        $pushTokenType: String
+        $pushToken: String
+    ) {
+        updateDevice (
+            input: {
+                id: $id
+                name: $name
+                osType: $osType
+                osVersion: $osVersion
+                appType: $appType
+                appVersion: $appVersion
+                appStore: $appStore
+                pushTokenType: $pushTokenType
+                pushToken: $pushToken
+            }
+        ) {
+            device {
+                id
+                createdAt
+                modifiedAt
+                name
+                osType
+                osVersion
+                appType
+                appVersion
+                appStore
+                pushTokenType
+                pushToken
+            }
+            errors {
+                field
+                messages
+            }
+        }
+    }
+    """
+
+    # TODO:
+    # - wrong inputs (empty strings, wrong choices)
+
+    # permission --------------------------------------------------------------
+
+    def test_login_required(self):
+        """non authenticated user gets a permission error"""
+        # execute operation
+        result = self.client.execute(
+            self.operation, variables={'id': "<UNCHECKED>"})
+        # assert only one permission error
+        self.assertIsNotNone(result.errors)
+        self.assertEqual(len(result.errors), 1)
+        self.assertIsInstance(result.errors[0].original_error, JSONWebTokenError)
+        self.assertIn("permission", result.errors[0].message)
+        # prepare query results
+        data = next(iter(result.data.values()))
+        # assert no data
+        self.assertIsNone(data)
+
+    def test_object_permits_user(self):
+        """authorized user can update only permitted entries"""
+        # prepare variables
+        usernames = [
+            "helper.001@georga.test",
+            "helper.002@georga.test",
+            "helper.003@georga.test",
+            "helper.004@georga.test",
+            "helper.005@georga.test",
+        ]
+        # iterate over usernames
+        for username in usernames:
+            # authenticate user
+            user = Person.objects.get(username=username)
+            self.client.authenticate(user)
+            # get querysets
+            allowed = Device.filter_permitted(user, 'update')
+            denied = Device.objects.difference(allowed)
+            # iterate over denied instances
+            for instance in denied:
+                with self.subTest(user=user, instance=instance, permission="denied"):
+                    # prepare variables
+                    variables = {
+                        'id': instance.gid,
+                        'name': "Updated Device Name",
+                        'osType': random.choice(Device.OS_TYPES)[0],
+                        'osVersion': "2.0",
+                        'appType': random.choice(Device.APP_TYPES)[0],
+                        'appVersion': "2.0",
+                        'appStore': random.choice(Device.APP_STORES)[0],
+                        'pushTokenType': random.choice(Device.PUSH_TOKEN_TYPES)[0],
+                        'pushToken': "updated-push-token",
+                    }
+                    # execute operation
+                    result = self.client.execute(self.operation, variables=variables)
+                    # assert only one permission error
+                    self.assertIsNotNone(result.errors)
+                    self.assertEqual(len(result.errors), 1)
+                    self.assertIsInstance(result.errors[0].original_error, JSONWebTokenError)
+                    self.assertIn("permission", result.errors[0].message)
+                    # prepare query results
+                    data = next(iter(result.data.values()))
+                    entry = Device.objects.get(pk=instance.pk)
+                    # assert no data
+                    self.assertIsNone(data)
+                    # assert entry has not changed
+                    self.assertDictEqual(model_to_dict(instance), model_to_dict(entry))
+            # iterate over allowed instances
+            for instance in allowed:
+                with self.subTest(user=user, instance=instance, permission="allowed"):
+                    # prepare variables
+                    variables = {
+                        'id': instance.gid,
+                        'name': "Updated Device Name",
+                        'osType': random.choice(Device.OS_TYPES)[0],
+                        'osVersion': "2.0",
+                        'appType': random.choice(Device.APP_TYPES)[0],
+                        'appVersion': "2.0",
+                        'appStore': random.choice(Device.APP_STORES)[0],
+                        'pushTokenType': random.choice(Device.PUSH_TOKEN_TYPES)[0],
+                        'pushToken': "updated-push-token",
+                    }
+                    # execute operation
+                    result = self.client.execute(self.operation, variables=variables)
+                    # prepare query results
+                    data = next(iter(result.data.values()))
+                    entry = Device.objects.get(pk=instance.pk)
+                    # assert no error
+                    self.assertIsNone(result.errors)
+                    self.assertEqual(data['errors'], [])
+                    # assert persisted values are correct
+                    self.assertEntryEqual(entry, variables, test='db')
+                    # assert returned values are correct
+                    self.assertEntryEqual(entry, data['device'], test='api')
+            # logout user
+            self.client.logout()
 
 
 class DeleteDeviceTestCase(MutationTestCase):

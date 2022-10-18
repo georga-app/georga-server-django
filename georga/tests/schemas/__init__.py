@@ -264,6 +264,43 @@ class SchemaTestCase(JSONWebTokenTestCase, metaclass=SchemaTestCaseMetaclass):
         description = super().shortDescription() or self._testMethodName
         return f"{module} | {operation} | {name} | {description}"
 
+    def assertEntryEqual(self, entry, dictionary, test='assertEntryEqual'):
+        """Asserts equality of a dict (e.g. query result) to django model instance fields."""
+        for field in self.walk(dictionary, entry):
+            with self.subTest(subtest=test, **field):
+                self.assertEqual(field['dict_value'], field['database_value'])
+
+    @staticmethod
+    def walk(node, entry, path=''):
+        """Traverses a dict (e.g. query result), yields api/database values to compare."""
+        for key, item in node.items():
+            subpath = f"{path}.{key}"
+            match key:
+                case "__typename":
+                    _type = GRAPHENE_DJANGO_REGISTRY.get_type_for_model(entry._meta.model)
+                    database_value = _type._meta.name
+                case key if key.startswith("__"):
+                    continue
+                case _:
+                    database_value = getattr(entry, to_snake_case(key))
+            if isinstance(item, dict):
+                yield from SchemaTestCase.walk(item, database_value, path=subpath)
+            else:
+                # id
+                if key == "id":
+                    database_value = entry.gid
+                # model fields
+                if isinstance(database_value, models.Model):
+                    database_value = database_value.gid
+                # datetime fields
+                if isinstance(database_value, datetime):
+                    database_value = database_value.isoformat()
+                yield {
+                    'dict_value': item,
+                    'database_value': database_value,
+                    'path': subpath.removeprefix(".")
+                }
+
 
 # query -----------------------------------------------------------------------
 
@@ -289,34 +326,6 @@ class QueryTestCaseMetaclass(SchemaTestCaseMetaclass):
             # add test
             setattr(new, f"test_{filter_arg}_filter", cls.create_filter_test(filter_arg))
         return new
-
-    @staticmethod
-    def walk(node, entry, path=''):
-        """Traverses a query result, yields api/database values to compare."""
-        for key, item in node.items():
-            subpath = f"{path}.{key}"
-            match key:
-                case "__typename":
-                    _type = GRAPHENE_DJANGO_REGISTRY.get_type_for_model(entry._meta.model)
-                    database_value = _type._meta.name
-                case key if key.startswith("__"):
-                    continue
-                case _:
-                    database_value = getattr(entry, to_snake_case(key))
-            if isinstance(item, dict):
-                yield from QueryTestCaseMetaclass.walk(item, database_value, path=subpath)
-            else:
-                # id
-                if key == "id":
-                    database_value = entry.gid
-                # datetime fields
-                if isinstance(database_value, datetime):
-                    database_value = database_value.isoformat()
-                yield {
-                    'api_value': item,
-                    'database_value': database_value,
-                    'path': subpath.removeprefix(".")
-                }
 
     @classmethod
     def create_fields_test(
@@ -349,13 +358,8 @@ class QueryTestCaseMetaclass(SchemaTestCaseMetaclass):
             # iterate over batch
             for index, entry in enumerate(self.entries[:batch_size]):
                 node = edges[index]['node']
-                # traverse result
-                for field in QueryTestCaseMetaclass.walk(node, entry):
-                    with self.subTest(entry=entry, **field):
-                        # assert api value is equal to the database value
-                        self.assertEqual(
-                            field['api_value'],
-                            field['database_value'])
+                # assert returned values are correct
+                self.assertEntryEqual(entry, node)
 
         test.__doc__ = """returned fields have the correct value"""
         return test
