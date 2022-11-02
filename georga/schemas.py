@@ -2377,9 +2377,9 @@ class MutationType(ObjectType):
     update_device = UpdateDeviceMutation.Field()
     delete_device = DeleteDeviceMutation.Field()
     # Equipment
-    create_equipment = CreateEquipmentMutation.Field()
-    update_equipment = UpdateEquipmentMutation.Field()
-    delete_equipment = DeleteEquipmentMutation.Field()
+    # create_equipment = CreateEquipmentMutation.Field()
+    # update_equipment = UpdateEquipmentMutation.Field()
+    # delete_equipment = DeleteEquipmentMutation.Field()
     # Location
     create_location = CreateLocationMutation.Field()
     update_location = UpdateLocationMutation.Field()
@@ -2436,9 +2436,9 @@ class MutationType(ObjectType):
     update_project = UpdateProjectMutation.Field()
     delete_project = DeleteProjectMutation.Field()
     # Resource
-    create_resource = CreateResourceMutation.Field()
-    update_resource = UpdateResourceMutation.Field()
-    delete_resource = DeleteResourceMutation.Field()
+    # create_resource = CreateResourceMutation.Field()
+    # update_resource = UpdateResourceMutation.Field()
+    # delete_resource = DeleteResourceMutation.Field()
     # Role
     create_role = CreateRoleMutation.Field()
     update_role = UpdateRoleMutation.Field()
