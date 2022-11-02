@@ -1,6 +1,6 @@
 channels==3.0.5
 channels-redis==4.0.0
-cryptography==38.0.1
+cryptography==38.0.3
 django-phonenumber-field==7.0.0
 Django==4.1
 django-cors-headers==3.13.0
