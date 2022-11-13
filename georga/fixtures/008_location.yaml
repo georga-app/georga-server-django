@@ -1,22 +1,344 @@
 # Org1 ------------------------------------------------------------------------
 
 - model: georga.location
-  pk: 1
+  pk: 100
   fields:
-    uuid: 00000008-0000-0000-0000-000000000001
-    postal_address_name: EAS
+    uuid: 00000008-0000-0000-0000-000000000100
+    category: [French Blue Circle, refugee housing]
     organization: [French Blue Circle]
+    is_template: true
+    task: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch
+    ]
+    shift: null
+    postal_address_name: Notunterkunft Hofstraße
+    postal_address_street: Hofstraße 123
+    postal_address_zip_code: 12345
+    postal_address_city: Hofstadt
+    postal_address_country: Deutschland
 - model: georga.location
-  pk: 2
+  pk: 101
   fields:
-    uuid: 00000008-0000-0000-0000-000000000002
-    category: [French Blue Circle, snowslide site]
+    uuid: 00000008-0000-0000-0000-000000000101
+    category: [French Blue Circle, refugee housing]
     organization: [French Blue Circle]
-    postal_address_name: Snowslide
-    postal_address_street: Snowslide Lane 12
-    postal_address_zip_code: 52309
-    postal_address_city: Snowcity
-    postal_address_country: Snowcountry
+    is_template: false
+    task: null
+    shift: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2022-08-05 08:00:00.000000+00:00
+    ]
+    postal_address_name: Notunterkunft Hofstraße
+    postal_address_street: Hofstraße 123
+    postal_address_zip_code: 12345
+    postal_address_city: Hofstadt
+    postal_address_country: Deutschland
+- model: georga.location
+  pk: 102
+  fields:
+    uuid: 00000008-0000-0000-0000-000000000102
+    category: [French Blue Circle, refugee housing]
+    organization: [French Blue Circle]
+    is_template: false
+    task: null
+    shift: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2022-08-06 08:00:00.000000+00:00
+    ]
+    postal_address_name: Notunterkunft Hofstraße
+    postal_address_street: Hofstraße 123
+    postal_address_zip_code: 12345
+    postal_address_city: Hofstadt
+    postal_address_country: Deutschland
+- model: georga.location
+  pk: 103
+  fields:
+    uuid: 00000008-0000-0000-0000-000000000103
+    category: [French Blue Circle, refugee housing]
+    organization: [French Blue Circle]
+    is_template: false
+    task: null
+    shift: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2022-08-07 08:00:00.000000+00:00
+    ]
+    postal_address_name: Notunterkunft Hofstraße
+    postal_address_street: Hofstraße 123
+    postal_address_zip_code: 12345
+    postal_address_city: Hofstadt
+    postal_address_country: Deutschland
+- model: georga.location
+  pk: 104
+  fields:
+    uuid: 00000008-0000-0000-0000-000000000104
+    category: [French Blue Circle, refugee housing]
+    organization: [French Blue Circle]
+    is_template: false
+    task: null
+    shift: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2022-08-08 08:00:00.000000+00:00
+    ]
+    postal_address_name: Notunterkunft Hofstraße
+    postal_address_street: Hofstraße 123
+    postal_address_zip_code: 12345
+    postal_address_city: Hofstadt
+    postal_address_country: Deutschland
+- model: georga.location
+  pk: 105
+  fields:
+    uuid: 00000008-0000-0000-0000-000000000105
+    category: [French Blue Circle, refugee housing]
+    organization: [French Blue Circle]
+    is_template: false
+    task: null
+    shift: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2022-08-09 08:00:00.000000+00:00
+    ]
+    postal_address_name: Notunterkunft Hofstraße
+    postal_address_street: Hofstraße 123
+    postal_address_zip_code: 12345
+    postal_address_city: Hofstadt
+    postal_address_country: Deutschland
+- model: georga.location
+  pk: 106
+  fields:
+    uuid: 00000008-0000-0000-0000-000000000106
+    category: [French Blue Circle, refugee housing]
+    organization: [French Blue Circle]
+    is_template: false
+    task: null
+    shift: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2022-08-10 08:00:00.000000+00:00
+    ]
+    postal_address_name: Notunterkunft Hofstraße
+    postal_address_street: Hofstraße 123
+    postal_address_zip_code: 12345
+    postal_address_city: Hofstadt
+    postal_address_country: Deutschland
+- model: georga.location
+  pk: 107
+  fields:
+    uuid: 00000008-0000-0000-0000-000000000107
+    category: [French Blue Circle, refugee housing]
+    organization: [French Blue Circle]
+    is_template: false
+    task: null
+    shift: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2022-08-11 08:00:00.000000+00:00
+    ]
+    postal_address_name: Notunterkunft Hofstraße
+    postal_address_street: Hofstraße 123
+    postal_address_zip_code: 12345
+    postal_address_city: Hofstadt
+    postal_address_country: Deutschland
+- model: georga.location
+  pk: 108
+  fields:
+    uuid: 00000008-0000-0000-0000-000000000108
+    category: [French Blue Circle, refugee housing]
+    organization: [French Blue Circle]
+    is_template: false
+    task: null
+    shift: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2022-08-12 08:00:00.000000+00:00
+    ]
+    postal_address_name: Notunterkunft Hofstraße
+    postal_address_street: Hofstraße 123
+    postal_address_zip_code: 12345
+    postal_address_city: Hofstadt
+    postal_address_country: Deutschland
+- model: georga.location
+  pk: 109
+  fields:
+    uuid: 00000008-0000-0000-0000-000000000109
+    category: [French Blue Circle, refugee housing]
+    organization: [French Blue Circle]
+    is_template: false
+    task: null
+    shift: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2022-08-13 08:00:00.000000+00:00
+    ]
+    postal_address_name: Notunterkunft Hofstraße
+    postal_address_street: Hofstraße 123
+    postal_address_zip_code: 12345
+    postal_address_city: Hofstadt
+    postal_address_country: Deutschland
+- model: georga.location
+  pk: 110
+  fields:
+    uuid: 00000008-0000-0000-0000-000000000110
+    category: [French Blue Circle, refugee housing]
+    organization: [French Blue Circle]
+    is_template: false
+    task: null
+    shift: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2022-08-14 08:00:00.000000+00:00
+    ]
+    postal_address_name: Notunterkunft Hofstraße
+    postal_address_street: Hofstraße 123
+    postal_address_zip_code: 12345
+    postal_address_city: Hofstadt
+    postal_address_country: Deutschland
+- model: georga.location
+  pk: 111
+  fields:
+    uuid: 00000008-0000-0000-0000-000000000111
+    category: [French Blue Circle, refugee housing]
+    organization: [French Blue Circle]
+    is_template: false
+    task: null
+    shift: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2021-07-16 08:00:00.000000+00:00
+    ]
+    postal_address_name: Notunterkunft Hofstraße
+    postal_address_street: Hofstraße 123
+    postal_address_zip_code: 12345
+    postal_address_city: Hofstadt
+    postal_address_country: Deutschland
+- model: georga.location
+  pk: 112
+  fields:
+    uuid: 00000008-0000-0000-0000-000000000112
+    category: [French Blue Circle, refugee housing]
+    organization: [French Blue Circle]
+    is_template: false
+    task: null
+    shift: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2021-07-16 14:00:00.000000+00:00
+    ]
+    postal_address_name: Notunterkunft Hofstraße
+    postal_address_street: Hofstraße 123
+    postal_address_zip_code: 12345
+    postal_address_city: Hofstadt
+    postal_address_country: Deutschland
+- model: georga.location
+  pk: 113
+  fields:
+    uuid: 00000008-0000-0000-0000-000000000113
+    category: [French Blue Circle, refugee housing]
+    organization: [French Blue Circle]
+    is_template: false
+    task: null
+    shift: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2021-07-17 08:00:00.000000+00:00
+    ]
+    postal_address_name: Notunterkunft Hofstraße
+    postal_address_street: Hofstraße 123
+    postal_address_zip_code: 12345
+    postal_address_city: Hofstadt
+    postal_address_country: Deutschland
+- model: georga.location
+  pk: 114
+  fields:
+    uuid: 00000008-0000-0000-0000-000000000114
+    category: [French Blue Circle, refugee housing]
+    organization: [French Blue Circle]
+    is_template: false
+    task: null
+    shift: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2021-07-17 14:00:00.000000+00:00
+    ]
+    postal_address_name: Notunterkunft Hofstraße
+    postal_address_street: Hofstraße 123
+    postal_address_zip_code: 12345
+    postal_address_city: Hofstadt
+    postal_address_country: Deutschland
+- model: georga.location
+  pk: 115
+  fields:
+    uuid: 00000008-0000-0000-0000-000000000115
+    category: [French Blue Circle, refugee housing]
+    organization: [French Blue Circle]
+    is_template: false
+    task: null
+    shift: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2021-07-18 08:00:00.000000+00:00
+    ]
+    postal_address_name: Notunterkunft Hofstraße
+    postal_address_street: Hofstraße 123
+    postal_address_zip_code: 12345
+    postal_address_city: Hofstadt
+    postal_address_country: Deutschland
+- model: georga.location
+  pk: 116
+  fields:
+    uuid: 00000008-0000-0000-0000-000000000116
+    category: [French Blue Circle, refugee housing]
+    organization: [French Blue Circle]
+    is_template: false
+    task: null
+    shift: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2021-07-18 14:00:00.000000+00:00
+    ]
+    postal_address_name: Notunterkunft Hofstraße
+    postal_address_street: Hofstraße 123
+    postal_address_zip_code: 12345
+    postal_address_city: Hofstadt
+    postal_address_country: Deutschland
 
 # Org2 ------------------------------------------------------------------------
 
