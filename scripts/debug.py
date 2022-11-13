@@ -17,10 +17,23 @@ from django.db import reset_queries
 persons = Person.objects.all()
 aces = ACE.objects.all()
 
+helper = Person.objects.get(email="helper.001@georga.test")
+
 org_admin = Person.objects.get(email="organization@georga.test")
 pro_admin = Person.objects.get(email="project@georga.test")
 ope_admin = Person.objects.get(email="operation@georga.test")
-helper = Person.objects.get(email="helper.001@georga.test")
+
+fbc_org_admin = Person.objects.get(email="organization.admin.1@frenchbluecircle.test")
+fbc_pro_admin = Person.objects.get(email="project.admin.1@frenchbluecircle.test")
+fbc_ope_admin = Person.objects.get(email="operation.admin.1@frenchbluecircle.test")
+
+sei_org_admin = Person.objects.get(email="organization.admin.1@seaeyesinternational.test")
+sei_pro_admin = Person.objects.get(email="project.admin.1@seaeyesinternational.test")
+sei_ope_admin = Person.objects.get(email="operation.admin.1@seaeyesinternational.test")
+
+caw_org_admin = Person.objects.get(email="organization.admin.1@cyberaidworldwide.test")
+caw_pro_admin = Person.objects.get(email="project.admin.1@cyberaidworldwide.test")
+caw_ope_admin = Person.objects.get(email="operation.admin.1@cyberaidworldwide.test")
 
 org1 = Organization.objects.get(pk=100)
 org2 = Organization.objects.get(pk=200)
