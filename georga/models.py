@@ -1374,7 +1374,7 @@ class Operation(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     def channel_filters(self, person):
         return MessageFilter.channel_filters(person, self)
 
-    @property
+    @cached_property
     def organization(self):
         """Organisation(): Returns the Organization of the Operation."""
         return self.project.organization
@@ -1455,7 +1455,7 @@ class Organization(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model
         verbose_name_plural = _("organizations")
         # TODO: translation: Organisation
 
-    @property
+    @cached_property
     def organization(self):
         """
         Organisation(): Returns self. Added to ease the api for `ACL.instance`
@@ -2091,6 +2091,11 @@ class Role(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         verbose_name_plural = _("roles")
         # TODO: translate: Einsatzrolle
 
+    @cached_property
+    def organization(self):
+        """Organisation(): Returns the Organization of the Role."""
+        return self.shift.task.operation.project.organization
+
 
 class RoleSpecification(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     role = models.ForeignKey(
@@ -2165,6 +2170,11 @@ class Shift(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
 
     def channel_filters(self, person):
         return MessageFilter.channel_filters(person, self)
+
+    @cached_property
+    def organization(self):
+        """Organisation(): Returns the Organization of the Shift."""
+        return self.task.operation.project.organization
 
     # state transitions
     @transition(state, 'DRAFT', 'PUBLISHED')
@@ -2273,6 +2283,11 @@ class Task(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
 
     def channel_filters(self, person):
         return MessageFilter.channel_filters(person, self)
+
+    @cached_property
+    def organization(self):
+        """Organisation(): Returns the Organization of the Task."""
+        return self.operation.project.organization
 
     # state transitions
     @transition(state, 'DRAFT', 'PUBLISHED')
