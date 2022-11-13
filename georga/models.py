@@ -716,6 +716,16 @@ class Location(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         verbose_name_plural = _("locations")
         # TODO: translate: Ort
 
+    def clean(self):
+        super().clean()
+
+        # template location must have a task
+        if self.is_template and not self.task:
+            raise ValidationError("template location must have a task")
+        # non template location must have a shift
+        if not self.is_template and not self.shift:
+            raise ValidationError("non template location must have a shift")
+
 
 class LocationCategory(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     objects = LocationCategoryManager()
