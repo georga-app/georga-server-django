@@ -726,6 +726,46 @@ class Location(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         if not self.is_template and not self.shift:
             raise ValidationError("non template location must have a shift")
 
+    # permissions
+    @classmethod
+    def permitted(cls, location, user, action):
+        # unpersisted instances (create)
+        if location and not location.id:
+            match action:
+                case 'create':
+                    # location templates can be created by organization staff
+                    if location.is_template:
+                        return location.task.operation in user.admin_operation_ids
+                    # locations can be created by organization staff
+                    return location.shift.task.operation in user.admin_operation_ids
+                case _:
+                    return False
+        # queryset filtering and persisted instances (read, write, delete, etc)
+        match action:
+            case 'read':
+                return reduce(or_, [
+                    # locations can be read by employed and subscribed users
+                    Q(organization__in=user.organizations_employed.all()),
+                    # locations can be read by subscribed users
+                    Q(organization__in=user.organizations_subscribed.all()),
+                ])
+            case 'update':
+                return reduce(or_, [
+                    # location templates can be updated by organization staff
+                    Q(is_template=True, task__operation__in=user.admin_operation_ids),
+                    # locations can be updated by organization staff
+                    Q(is_template=False, shift__task__operation__in=user.admin_operation_ids),
+                ])
+            case 'delete':
+                return reduce(or_, [
+                    # location templates can be deleted by organization staff
+                    Q(is_template=True, task__operation__in=user.admin_operation_ids),
+                    # locations can be deleted by organization staff
+                    Q(is_template=False, shift__task__operation__in=user.admin_operation_ids),
+                ])
+            case _:
+                return None
+
 
 class LocationCategory(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     objects = LocationCategoryManager()
