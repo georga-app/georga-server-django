@@ -866,6 +866,37 @@ class PersonToObject(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Mod
                 f"'{self.relation_object_ct.app_labeled_name}' is not a valid "
                 "content type for PersonToObject.relation_object")
 
+    # permissions
+    @classmethod
+    def permitted(cls, person_to_object, user, action):
+        # unpersisted instances (create)
+        if person_to_object and not person_to_object.id:
+            match action:
+                case 'create':
+                    # only entries for the user can be created by the user
+                    if person_to_object.person != user:
+                        return False
+                    # only entries for user accessible objects can be created by the user
+                    obj = person_to_object.relation_object
+                    if isinstance(obj, (Organization, Project, Operation, Task, Shift, Role)):
+                        organization = obj.organization
+                    elif isinstance(obj, Message):
+                        organization = obj.scope.organization
+                    else:
+                        return False
+                    return any(
+                        organization in user.organizations_subscribed,
+                        organization in user.organizations_employed
+                    )
+                case _:
+                    return False
+        # queryset filtering and persisted instances (read, write, delete, etc)
+        match action:
+            case 'read' | 'update' | 'delete':
+                return Q(person=user)
+            case _:
+                return None
+
 
 class Message(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     '''
