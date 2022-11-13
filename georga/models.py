@@ -744,7 +744,7 @@ class Location(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         match action:
             case 'read':
                 return reduce(or_, [
-                    # locations can be read by employed and subscribed users
+                    # locations can be read by employed users
                     Q(organization__in=user.organizations_employed.all()),
                     # locations can be read by subscribed users
                     Q(organization__in=user.organizations_subscribed.all()),
@@ -786,6 +786,39 @@ class LocationCategory(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.M
         verbose_name_plural = _("location categories")
         # TODO: translate: Einsatzort-Kategorie
         # e.g. operation location
+
+    # permissions
+    @classmethod
+    def permitted(cls, location_category, user, action):
+        # unpersisted instances (create)
+        if location_category and not location_category.id:
+            match action:
+                case 'create':
+                    # location categories can be created by organization admins
+                    return location_category.organization in user.admin_organization_ids
+                case _:
+                    return False
+        # queryset filtering and persisted instances (read, write, delete, etc)
+        match action:
+            case 'read':
+                return reduce(or_, [
+                    # location categories can be read by employed users
+                    Q(organization__in=user.organizations_employed.all()),
+                    # location categories can be read by subscribed users
+                    Q(organization__in=user.organizations_subscribed.all()),
+                ])
+            case 'update':
+                return reduce(or_, [
+                    # location categories can be updated by organization admins
+                    Q(organization__in=user.admin_organization_ids),
+                ])
+            case 'delete':
+                return reduce(or_, [
+                    # location categories can be deleted by organization admins
+                    Q(organization__in=user.admin_organization_ids),
+                ])
+            case _:
+                return None
 
 
 class PersonToObject(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
