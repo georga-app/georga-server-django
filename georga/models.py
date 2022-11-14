@@ -744,10 +744,8 @@ class Location(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         match action:
             case 'read':
                 return reduce(or_, [
-                    # locations can be read by employed users
-                    Q(organization__in=user.organizations_employed.all()),
-                    # locations can be read by subscribed users
-                    Q(organization__in=user.organizations_subscribed.all()),
+                    # locations can be read by employed and subscribed users
+                    Q(organization__in=user.organization_ids),
                 ])
             case 'update':
                 return reduce(or_, [
@@ -802,10 +800,8 @@ class LocationCategory(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.M
         match action:
             case 'read':
                 return reduce(or_, [
-                    # location categories can be read by employed users
-                    Q(organization__in=user.organizations_employed.all()),
-                    # location categories can be read by subscribed users
-                    Q(organization__in=user.organizations_subscribed.all()),
+                    # location categories can be read by employed and subscribed users
+                    Q(organization__in=user.organization_ids),
                 ])
             case 'update':
                 return reduce(or_, [
@@ -884,10 +880,7 @@ class PersonToObject(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Mod
                         organization = obj.scope.organization
                     else:
                         return False
-                    return any(
-                        organization in user.organizations_subscribed,
-                        organization in user.organizations_employed
-                    )
+                    return organization.id in user.organizations_ids
                 case _:
                     return False
         # queryset filtering and persisted instances (read, write, delete, etc)
@@ -1054,6 +1047,34 @@ class Message(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
                 if channel_state == state:
                     return state
         return "NONE"
+
+    # permissions
+    @classmethod
+    def permitted(cls, message, user, action):
+        # unpersisted instances (create)
+        if message and not message.id:
+            match action:
+                case 'create':
+                    return False
+                case _:
+                    return False
+        # queryset filtering and persisted instances (read, write, delete, etc)
+        match action:
+            case 'read':
+                return reduce(or_, [
+                    # messages for all scopes can be read by employed and subscribed users
+                    Q(organization__in=user.organization_ids),
+                    Q(project__organization__in=user.organization_ids),
+                    Q(operation__project__organization__in=user.organization_ids),
+                    Q(task__operation__project__organization__in=user.organization_ids),
+                    Q(shift__task__operation__project__organization__in=user.organization_ids),
+                ])
+            case 'update':
+                return None
+            case 'delete':
+                return None
+            case _:
+                return None
 
     # state transitions
     @transition(state, 'DRAFT', 'PUBLISHED')
@@ -1805,6 +1826,16 @@ class Person(MixinTimestamps, MixinUUIDs, MixinAuthorization, AbstractUser):
             if level != "PROJECT" and isinstance(ace.instance, Operation):
                 level = "OPERATION"
         return level
+
+    @cached_property
+    def organization_ids(self):
+        """
+        list[int]: Cached list of organizations ids, which the user has
+            has subscribed to or is employed at.
+        """
+        return list(self.organizations_employed.union(
+            self.organizations_subscribed.all()
+        ).values_list('id', flat=True))
 
     @cached_property
     def admin_organization_ids(self):
