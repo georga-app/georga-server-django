@@ -1055,6 +1055,22 @@ class Message(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         if message and not message.id:
             match action:
                 case 'create':
+                    scope = message.scope
+                    # messages for organizations can be created by organization admins
+                    if isinstance(scope, Organization) and scope.id in user.admin_organization_ids:
+                        return True
+                    # messages for projects can be created by organization admins
+                    if isinstance(scope, Project) and scope.id in user.admin_project_ids:
+                        return True
+                    # messages for operations can be created by organization admins
+                    if isinstance(scope, Operation) and scope.id in user.admin_operation_ids:
+                        return True
+                    # messages for tasks can be created by organization admins
+                    if isinstance(scope, Task) and scope.operation.id in user.admin_operation_ids:
+                        return True
+                    # messages for shifts can be created by organization admins
+                    if isinstance(scope, Shift) and scope.task.operation.id in user.admin_operation_ids:
+                        return True
                     return False
                 case _:
                     return False
@@ -1069,10 +1085,19 @@ class Message(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
                     Q(task__operation__project__organization__in=user.organization_ids),
                     Q(shift__task__operation__project__organization__in=user.organization_ids),
                 ])
-            case 'update':
-                return None
-            case 'delete':
-                return None
+            case 'update' | 'delete':
+                return reduce(or_, [
+                    # messages for organizations can be updated/deleted by organization admins
+                    Q(organization__in=user.admin_organization_ids),
+                    # messages for projects can be updated/deleted by organization/project admins
+                    Q(project__in=user.admin_project_ids),
+                    # messages for operations can be updated/deleted by organization/project/operation admins
+                    Q(operation__in=user.admin_operation_ids),
+                    # messages for tasks can be updated/deleted by organization/project/operation admins
+                    Q(task__operation__in=user.admin_operation_ids),
+                    # messages for shifts can be updated/deleted by organization/project/operation admins
+                    Q(shift__task__operation__in=user.admin_operation_ids),
+                ])
             case _:
                 return None
 
