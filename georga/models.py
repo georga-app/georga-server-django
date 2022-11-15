@@ -1451,6 +1451,31 @@ class Operation(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     def channel_filters(self, person):
         return MessageFilter.channel_filters(person, self)
 
+    # permissions
+    @classmethod
+    def permitted(cls, operation, user, action):
+        # unpersisted instances (create)
+        if operation and not operation.id:
+            match action:
+                case 'create':
+                    # operations can be created by organization/project admins
+                    return operation.project.id in user.admin_project_ids
+                case _:
+                    return False
+        # queryset filtering and persisted instances (read, write, delete, etc)
+        match action:
+            case 'read':
+                # operations can be read by subscribed/employed users
+                return Q(project__organization__in=user.organization_ids)
+            case 'update':
+                # operations can be updated by organization/project/operation admins
+                return Q(id__in=user.admin_operation_ids)
+            case 'delete':
+                # operations can be deleted by organization/project admins
+                return Q(project__in=user.admin_project_ids)
+            case _:
+                return None
+
     @cached_property
     def organization(self):
         """Organisation(): Returns the Organization of the Operation."""
