@@ -498,7 +498,7 @@ class ACE(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         match action:
             case 'read':
                 return reduce(or_, [
-                    # ACEs for the user can be read by the user
+                    # ACEs for the user can be read by themself
                     Q(person=user),
                     # ACEs for organizations can be read by organization admins
                     Q(organization__in=user.admin_organization_ids),
@@ -600,7 +600,7 @@ class Device(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         if device and not device.id:
             match action:
                 case 'create':
-                    # devices of the user can be created by the user
+                    # devices of the user can be created by themself
                     return device.person == user
                 case _:
                     return False
@@ -608,17 +608,17 @@ class Device(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         match action:
             case 'read':
                 return reduce(or_, [
-                    # devices of the user can be read by the user
+                    # devices of the user can be read by themself
                     Q(person=user),
                 ])
             case 'update':
                 return reduce(or_, [
-                    # devices of the user can be updated by the user
+                    # devices of the user can be updated by themself
                     Q(person=user),
                 ])
             case 'delete':
                 return reduce(or_, [
-                    # devices of the user can be deleted by the user
+                    # devices of the user can be deleted by themself
                     Q(person=user),
                 ])
             case _:
@@ -869,10 +869,10 @@ class PersonToObject(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Mod
         if person_to_object and not person_to_object.id:
             match action:
                 case 'create':
-                    # only entries for the user can be created by the user
+                    # entries for the user can only be created by themself
                     if person_to_object.person != user:
                         return False
-                    # only entries for user accessible objects can be created by the user
+                    # only entries for user accessible objects can be created
                     obj = person_to_object.relation_object
                     if isinstance(obj, (Organization, Project, Operation, Task, Shift, Role)):
                         organization = obj.organization
@@ -1542,6 +1542,27 @@ class Organization(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model
 
     def channel_filters(self, person):
         return MessageFilter.channel_filters(person, self)
+
+    # permissions
+    @classmethod
+    def permitted(cls, organization, user, action):
+        # unpersisted instances (create)
+        if organization and not organization.id:
+            # organizations cannot be creaty by anyone
+            return False
+        # queryset filtering and persisted instances (read, write, delete, etc)
+        match action:
+            case 'read':
+                # organizations can be read by all
+                return True
+            case 'update':
+                # organizations can be updated by organziation admins
+                return Q(id__in=user.admin_organization_ids)
+            case 'delete':
+                # organizations can be deleted by organziation admins
+                return Q(id__in=user.admin_organization_ids)
+            case _:
+                return None
 
     def subscribe(self, person):
         # TODO: track GPDR relevant consent
