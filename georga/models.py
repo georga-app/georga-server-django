@@ -203,7 +203,7 @@ class MixinAuthorization(models.Model):
                 continue
             # return full queryset, if True
             if permitted is True:
-                return queryset
+                return queryset.all()
             # combine Q objects (logical OR)
             q |= permitted
         # return filtered or none queryset
