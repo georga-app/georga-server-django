@@ -644,6 +644,28 @@ class Equipment(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         verbose_name_plural = _("equipment")
         # TODO: translate: Eigenes oder Material der Organisation
 
+    # permissions
+    @classmethod
+    def permitted(cls, equipment, user, action):
+        # unpersisted instances (create)
+        if equipment and not equipment.id:
+            match action:
+                case 'create':
+                    # equipments can be created by organization admins
+                    return equipment.organization.id in user.admin_organization_ids
+                case _:
+                    return False
+        # queryset filtering and persisted instances (read, update, delete, etc)
+        match action:
+            case 'read':
+                # equipments can be read by employed/subscribed users
+                return Q(organization__in=user.organization_ids)
+            case 'update' | 'delete':
+                # equipments can be deleted by organization admins
+                return Q(organization__in=user.admin_organization_ids)
+            case _:
+                return None
+
 
 class Location(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     organization = models.ForeignKey(
@@ -1546,6 +1568,11 @@ class Organization(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model
     def channel_filters(self, person):
         return MessageFilter.channel_filters(person, self)
 
+    def subscribe(self, person):
+        # TODO: track GPDR relevant consent
+        # TODO: trigger mandatory non digital processes (forms to sign, etc)
+        pass
+
     # permissions
     @classmethod
     def permitted(cls, organization, user, action):
@@ -1566,11 +1593,6 @@ class Organization(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model
                 return Q(id__in=user.admin_organization_ids)
             case _:
                 return None
-
-    def subscribe(self, person):
-        # TODO: track GPDR relevant consent
-        # TODO: trigger mandatory non digital processes (forms to sign, etc)
-        pass
 
     # state transitions
     @transition(state, 'DRAFT', 'PUBLISHED')
