@@ -2329,6 +2329,28 @@ class Shift(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     def channel_filters(self, person):
         return MessageFilter.channel_filters(person, self)
 
+    # permissions
+    @classmethod
+    def permitted(cls, shift, user, action):
+        # unpersisted instances (create)
+        if shift and not shift.id:
+            match action:
+                case 'create':
+                    # shifts can be created by organization/project/operation admins
+                    return shift.task.operation.id in user.admin_operation_ids
+                case _:
+                    return False
+        # queryset filtering and persisted instances (read, write, delete, etc)
+        match action:
+            case 'read':
+                # shifts can be read by subscribed/employed users
+                return Q(task__operation__project__organization__in=user.organization_ids)
+            case 'update' | 'delete':
+                # shifts can be updated/deleted by organization/project/operation admins
+                return Q(task__operation__in=user.admin_operation_ids)
+            case _:
+                return None
+
     @cached_property
     def organization(self):
         """Organisation(): Returns the Organization of the Shift."""
