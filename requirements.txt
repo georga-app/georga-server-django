@@ -1,4 +1,4 @@
-channels==3.0.5
+channels==4.0.0
 channels-redis==4.0.0
 cryptography==38.0.3
 django-phonenumber-field==7.0.0
