@@ -956,24 +956,6 @@ class UpdateMessageMutation(UUIDDjangoModelFormMutation):
         permissions = [staff_member_required, object_permits_user('update')]
 
 
-# class UpdateMessageBatchMutationPayload(ObjectType):
-#     messages = List(UpdateMessageMutation)
-#
-#
-# class UpdateMessageBatchMutation(Mutation):
-#     class Input:
-#         messages = List(UpdateMessageMutation.Input)
-#
-#     Output = UpdateMessageBatchMutationPayload
-#
-#     def mutate(root, info, messages):
-#         results = []
-#         for message in messages:
-#             mutation = UpdateMessageMutation(message)
-#             results.append(mutation.mutate_and_get_payload(root, info, **message))
-#         return UpdateMessageBatchMutationPayload(messages=results)
-
-
 class DeleteMessageMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = MessageModelForm
