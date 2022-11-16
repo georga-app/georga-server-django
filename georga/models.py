@@ -2070,6 +2070,28 @@ class PersonPropertyGroup(MixinTimestamps, MixinUUIDs, MixinAuthorization, model
         verbose_name_plural = _("groups of person properties")
         # TODO: translate: PersonPropertyGroup
 
+    # permissions
+    @classmethod
+    def permitted(cls, person_property_group, user, action):
+        # unpersisted instances (create)
+        if person_property_group and not person_property_group.id:
+            match action:
+                case 'create':
+                    # person property groups can be created by organization admins
+                    return person_property_group.organization.id in user.admin_organization_ids
+                case _:
+                    return False
+        # queryset filtering and persisted instances (read, update, delete, etc)
+        match action:
+            case 'read':
+                # person property groups can be read by employed/subscribed users
+                return Q(organization__in=user.organization_ids)
+            case 'update' | 'delete':
+                # person property groups can be deleted by organization admins
+                return Q(organization__in=user.admin_organization_ids)
+            case _:
+                return None
+
 
 class Project(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     objects = ProjectManager()
