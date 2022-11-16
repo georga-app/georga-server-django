@@ -2355,6 +2355,23 @@ class Role(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         verbose_name_plural = _("roles")
         # TODO: translate: Einsatzrolle
 
+    @cached_property
+    def organization(self):
+        """Organisation(): Returns the Organization of the Role."""
+        return self.project.organization
+
+    @cached_property
+    def project(self):
+        """Project(): Returns the Project of the Role."""
+        return self.operation.project
+
+    @cached_property
+    def operation(self):
+        """Operation(): Returns the Operation of the Role."""
+        if self.is_template:
+            return self.task.operation
+        return self.shift.task.operation
+
     # permissions
     @classmethod
     def permitted(cls, role, user, action):
@@ -2386,23 +2403,6 @@ class Role(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
                 ])
             case _:
                 return None
-
-    @cached_property
-    def organization(self):
-        """Organisation(): Returns the Organization of the Role."""
-        return self.project.organization
-
-    @cached_property
-    def project(self):
-        """Project(): Returns the Project of the Role."""
-        return self.operation.project
-
-    @cached_property
-    def operation(self):
-        """Operation(): Returns the Operation of the Role."""
-        if self.is_template:
-            return self.task.operation
-        return self.shift.task.operation
 
 
 class RoleSpecification(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
@@ -2515,6 +2515,11 @@ class Shift(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     def channel_filters(self, person):
         return MessageFilter.channel_filters(person, self)
 
+    @cached_property
+    def organization(self):
+        """Organisation(): Returns the Organization of the Shift."""
+        return self.task.operation.project.organization
+
     # permissions
     @classmethod
     def permitted(cls, shift, user, action):
@@ -2536,11 +2541,6 @@ class Shift(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
                 return Q(task__operation__in=user.admin_operation_ids)
             case _:
                 return None
-
-    @cached_property
-    def organization(self):
-        """Organisation(): Returns the Organization of the Shift."""
-        return self.task.operation.project.organization
 
     # state transitions
     @transition(state, 'DRAFT', 'PUBLISHED')
@@ -2650,6 +2650,11 @@ class Task(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     def channel_filters(self, person):
         return MessageFilter.channel_filters(person, self)
 
+    @cached_property
+    def organization(self):
+        """Organisation(): Returns the Organization of the Task."""
+        return self.operation.project.organization
+
     # permissions
     @classmethod
     def permitted(cls, task, user, action):
@@ -2671,11 +2676,6 @@ class Task(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
                 return Q(operation__in=user.admin_operation_ids)
             case _:
                 return None
-
-    @cached_property
-    def organization(self):
-        """Organisation(): Returns the Organization of the Task."""
-        return self.operation.project.organization
 
     # state transitions
     @transition(state, 'DRAFT', 'PUBLISHED')
@@ -2721,3 +2721,25 @@ class TaskField(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         verbose_name = _("task field")
         verbose_name_plural = _("task fields")
         # TODO: translate: Aufgabentyp
+
+    # permissions
+    @classmethod
+    def permitted(cls, task_field, user, action):
+        # unpersisted instances (create)
+        if task_field and not task_field.id:
+            match action:
+                case 'create':
+                    # task fields can be created by organization admins
+                    return task_field.organization.id in user.admin_organization_ids
+                case _:
+                    return False
+        # queryset filtering and persisted instances (read, update, delete, etc)
+        match action:
+            case 'read':
+                # task fields can be read by subscribed/employed users
+                return Q(organization__in=user.organization_ids)
+            case 'update' | 'delete':
+                # task fields can be updated/deleted by organization admins
+                return Q(organization__in=user.admin_organization_ids)
+            case _:
+                return None
