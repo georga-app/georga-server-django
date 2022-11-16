@@ -293,7 +293,7 @@
 
 # Org mixed staff -------------------------------------------------------------
 
-# orgnanization admins
+# organization admins
 - model: georga.person
   pk: 900
   fields:

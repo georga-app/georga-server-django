@@ -1652,6 +1652,53 @@ class Participant(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model)
         verbose_name = _("participant")
         verbose_name_plural = _("participants")
 
+    # permissions
+    @classmethod
+    def permitted(cls, participant, user, action):
+        # unpersisted instances (create)
+        if participant and not participant.id:
+            match action:
+                case 'create':
+                    # participants can be created by themself for user accessible roles
+                    if participant.person == user and participant.role.organization.id in user.organization_ids:
+                        return True
+                    # participants can be created by organization/project/operation admins
+                    return participant.role.operation.id in user.admin_operation_ids
+                case _:
+                    return False
+        # queryset filtering and persisted instances (read, write, delete, etc)
+        match action:
+            case 'read':
+                return reduce(or_, [
+                    # participants can be read by themself
+                    Q(person=user),
+                    # participants can be read by organization/project/operation admins
+                    Q(role__is_template=True,
+                      role__task__operation__in=user.admin_operation_ids),
+                    Q(role__is_template=False,
+                      role__shift__task__operation__in=user.admin_operation_ids),
+                ])
+            case 'update':
+                return reduce(or_, [
+                    # participants can be updated by themself
+                    Q(person=user),
+                    # participants can be updated by organization/project/operation admins
+                    Q(role__is_template=True,
+                      role__task__operation__in=user.admin_operation_ids),
+                    Q(role__is_template=False,
+                      role__shift__task__operation__in=user.admin_operation_ids),
+                ])
+            case 'delete':
+                return reduce(or_, [
+                    # participants can be deleted by organization/project/operation admins
+                    Q(role__is_template=True,
+                      role__task__operation__in=user.admin_operation_ids),
+                    Q(role__is_template=False,
+                      role__shift__task__operation__in=user.admin_operation_ids),
+                ])
+            case _:
+                return None
+
     # acceptance transitions
     @transition(acceptance, '+', 'ACCEPTED')
     def accept(self):
