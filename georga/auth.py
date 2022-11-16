@@ -129,7 +129,7 @@ def object_permits_user(*actions, exc=exceptions.PermissionDenied):
 
             class UpdateSomeModelMutation(DjangoModelFormMutation):
                 @classmethod
-                @object_permits_user('write')
+                @object_permits_user('update')
                 def get_form_kwargs(cls, root, info, **input)
                     return super().get_form_kwargs(root, info, **input)
 
@@ -150,7 +150,7 @@ def object_permits_user(*actions, exc=exceptions.PermissionDenied):
 
             class UpdateSomeModelMutation(UUIDDjangoModelFormMutation):
                 class Meta:
-                    permissions = [object_permits_user('write')]
+                    permissions = [object_permits_user('update')]
     """
     # allow only tuple of strings
     assert isinstance(actions, tuple), f"Error: actions {actions} is not a tuple."
@@ -174,7 +174,7 @@ def object_permits_user(*actions, exc=exceptions.PermissionDenied):
             # get return value from func
             obj = func(*args, **kwargs)
 
-            # access Mutation (with instance: read, write, delete, etc)
+            # access Mutation (with instance: read, update, delete, etc)
             if info.parent_type.name == 'MutationType':
                 # func: DjangoModelFormMutation.get_form_kwargs()
                 # obj: dict with form kwargs

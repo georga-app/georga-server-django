@@ -701,7 +701,7 @@ class EquipmentType(UUIDDjangoObjectType):
         model = Equipment
         fields = equipment_ro_fields + equipment_rw_fields
         filter_fields = equipment_filter_fields
-        permissions = [login_required]
+        permissions = [login_required, object_permits_user('read')]
 
 
 # forms
@@ -716,21 +716,21 @@ class CreateEquipmentMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = EquipmentModelForm
         exclude_fields = ['id']
-        permissions = [staff_member_required]
+        permissions = [staff_member_required, object_permits_user('create')]
 
 
 class UpdateEquipmentMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = EquipmentModelForm
         required_fields = ['id']
-        permissions = [login_required]
+        permissions = [staff_member_required, object_permits_user('update')]
 
 
 class DeleteEquipmentMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = EquipmentModelForm
         only_fields = ['id']
-        permissions = [staff_member_required]
+        permissions = [staff_member_required, object_permits_user('delete')]
 
     @classmethod
     def perform_mutate(cls, form, info):
@@ -772,7 +772,7 @@ class LocationType(UUIDDjangoObjectType):
         model = Location
         fields = location_ro_fields + location_rw_fields
         filter_fields = location_filter_fields
-        permissions = [login_required]
+        permissions = [login_required, object_permits_user('read')]
 
 
 # forms
@@ -787,21 +787,21 @@ class CreateLocationMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = LocationModelForm
         exclude_fields = ['id']
-        permissions = [staff_member_required]
+        permissions = [staff_member_required, object_permits_user('create')]
 
 
 class UpdateLocationMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = LocationModelForm
         required_fields = ['id']
-        permissions = [login_required]
+        permissions = [staff_member_required, object_permits_user('update')]
 
 
 class DeleteLocationMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = LocationModelForm
         only_fields = ['id']
-        permissions = [staff_member_required]
+        permissions = [staff_member_required, object_permits_user('delete')]
 
     @classmethod
     def perform_mutate(cls, form, info):
@@ -836,7 +836,7 @@ class LocationCategoryType(UUIDDjangoObjectType):
         model = LocationCategory
         fields = location_category_ro_fields + location_category_rw_fields
         filter_fields = location_category_filter_fields
-        permissions = [login_required]
+        permissions = [login_required, object_permits_user('read')]
 
 
 # forms
@@ -851,21 +851,21 @@ class CreateLocationCategoryMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = LocationCategoryModelForm
         exclude_fields = ['id']
-        permissions = [staff_member_required]
+        permissions = [staff_member_required, object_permits_user('create')]
 
 
 class UpdateLocationCategoryMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = LocationCategoryModelForm
         required_fields = ['id']
-        permissions = [login_required]
+        permissions = [staff_member_required, object_permits_user('update')]
 
 
 class DeleteLocationCategoryMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = LocationCategoryModelForm
         only_fields = ['id']
-        permissions = [staff_member_required]
+        permissions = [staff_member_required, object_permits_user('delete')]
 
     @classmethod
     def perform_mutate(cls, form, info):
@@ -1101,7 +1101,7 @@ class OperationType(UUIDDjangoObjectType):
         model = Operation
         fields = operation_ro_fields + operation_rw_fields
         filter_fields = operation_filter_fields
-        permissions = [login_required]
+        permissions = [login_required, object_permits_user('read')]
 
     def resolve_channel_filters(parent, info):
         return parent.channel_filters(info.context.user)
@@ -1119,21 +1119,21 @@ class CreateOperationMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = OperationModelForm
         exclude_fields = ['id']
-        permissions = [staff_member_required]
+        permissions = [staff_member_required, object_permits_user('create')]
 
 
 class UpdateOperationMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = OperationModelForm
         required_fields = ['id']
-        permissions = [login_required]
+        permissions = [staff_member_required, object_permits_user('update')]
 
 
 class DeleteOperationMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = OperationModelForm
         only_fields = ['id']
-        permissions = [staff_member_required]
+        permissions = [staff_member_required, object_permits_user('delete')]
 
     @classmethod
     def perform_mutate(cls, form, info):
@@ -1174,7 +1174,7 @@ class OrganizationType(UUIDDjangoObjectType):
         model = Organization
         fields = organization_ro_fields + organization_rw_fields
         filter_fields = organization_filter_fields
-        permissions = [login_required]
+        permissions = [object_permits_user('read')]
 
     def resolve_channel_filters(parent, info):
         return parent.channel_filters(info.context.user)
@@ -1192,21 +1192,21 @@ class CreateOrganizationMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = OrganizationModelForm
         exclude_fields = ['id']
-        permissions = [staff_member_required]
+        permissions = [staff_member_required, object_permits_user('create')]
 
 
 class UpdateOrganizationMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = OrganizationModelForm
         required_fields = ['id']
-        permissions = [login_required]
+        permissions = [staff_member_required, object_permits_user('update')]
 
 
 class DeleteOrganizationMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = OrganizationModelForm
         only_fields = ['id']
-        permissions = [staff_member_required]
+        permissions = [staff_member_required, object_permits_user('delete')]
 
     @classmethod
     def perform_mutate(cls, form, info):
@@ -1241,7 +1241,7 @@ class ParticipantType(UUIDDjangoObjectType):
         model = Participant
         fields = participant_ro_fields + participant_rw_fields
         filter_fields = participant_filter_fields
-        permissions = [login_required]
+        permissions = [login_required, object_permits_user('read')]
 
 
 # forms
@@ -1256,21 +1256,21 @@ class CreateParticipantMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = ParticipantModelForm
         exclude_fields = ['id']
-        permissions = [staff_member_required]
+        permissions = [login_required, object_permits_user('create')]
 
 
 class UpdateParticipantMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = ParticipantModelForm
         required_fields = ['id']
-        permissions = [login_required]
+        permissions = [login_required, object_permits_user('update')]
 
 
 class DeleteParticipantMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = ParticipantModelForm
         only_fields = ['id']
-        permissions = [staff_member_required]
+        permissions = [login_required, object_permits_user('delete')]
 
     @classmethod
     def perform_mutate(cls, form, info):
@@ -1383,21 +1383,21 @@ class CreatePersonMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = PersonModelForm
         exclude_fields = ['id']
-        permissions = [staff_member_required]
+        permissions = [staff_member_required, object_permits_user('create')]
 
 
 class UpdatePersonMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = PersonModelForm
         required_fields = ['id']
-        permissions = [login_required, object_permits_user('write')]
+        permissions = [staff_member_required, object_permits_user('update')]
 
 
 class DeletePersonMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = PersonModelForm
         only_fields = ['id']
-        permissions = [staff_member_required]
+        permissions = [staff_member_required, object_permits_user('delete')]
 
     @classmethod
     def perform_mutate(cls, form, info):
@@ -1525,7 +1525,7 @@ class UpdatePersonProfileMutation(UUIDDjangoModelFormMutation):
         form_class = PersonModelForm
         exclude_fields = ['id', 'password']
         required_fields = []
-        permissions = [login_required, object_permits_user("write")]
+        permissions = [login_required, object_permits_user("update")]
 
     @classmethod
     def get_form_kwargs(cls, root, info, **input):
@@ -1540,7 +1540,7 @@ class ChangePersonPasswordMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = PersonModelForm
         only_fields = ['id', 'password']
-        permissions = [login_required]
+        permissions = [login_required, object_permits_user("update")]
 
 
 # PersonProperty --------------------------------------------------------------
@@ -1573,7 +1573,7 @@ class PersonPropertyType(UUIDDjangoObjectType):
         model = PersonProperty
         fields = person_property_ro_fields + person_property_rw_fields
         filter_fields = person_property_filter_fields
-        permissions = []
+        permissions = [login_required, object_permits_user('read')]
 
 
 # forms
@@ -1588,21 +1588,21 @@ class CreatePersonPropertyMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = PersonPropertyModelForm
         exclude_fields = ['id']
-        permissions = [staff_member_required]
+        permissions = [staff_member_required, object_permits_user('create')]
 
 
 class UpdatePersonPropertyMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = PersonPropertyModelForm
         required_fields = ['id']
-        permissions = [login_required]
+        permissions = [staff_member_required, object_permits_user('update')]
 
 
 class DeletePersonPropertyMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = PersonPropertyModelForm
         only_fields = ['id']
-        permissions = [staff_member_required]
+        permissions = [staff_member_required, object_permits_user('delete')]
 
     @classmethod
     def perform_mutate(cls, form, info):
@@ -1646,7 +1646,7 @@ class PersonPropertyGroupType(UUIDDjangoObjectType):
         model = PersonPropertyGroup
         fields = person_property_group_ro_fields + person_property_group_rw_fields
         filter_fields = person_property_group_filter_fields
-        permissions = []
+        permissions = [login_required, object_permits_user('read')]
 
 
 # forms
@@ -1661,21 +1661,21 @@ class CreatePersonPropertyGroupMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = PersonPropertyGroupModelForm
         exclude_fields = ['id']
-        permissions = [staff_member_required]
+        permissions = [staff_member_required, object_permits_user('create')]
 
 
 class UpdatePersonPropertyGroupMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = PersonPropertyGroupModelForm
         required_fields = ['id']
-        permissions = [login_required]
+        permissions = [staff_member_required, object_permits_user('update')]
 
 
 class DeletePersonPropertyGroupMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = PersonPropertyGroupModelForm
         only_fields = ['id']
-        permissions = [staff_member_required]
+        permissions = [staff_member_required, object_permits_user('delete')]
 
     @classmethod
     def perform_mutate(cls, form, info):
@@ -1713,7 +1713,7 @@ class PersonToObjectType(UUIDDjangoObjectType):
         model = PersonToObject
         fields = person_to_object_ro_fields + person_to_object_rw_fields
         filter_fields = person_to_object_filter_fields
-        permissions = [login_required]
+        permissions = [login_required, object_permits_user('read')]
 
 
 # filters
@@ -1738,21 +1738,21 @@ class CreatePersonToObjectMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = PersonToObjectModelForm
         exclude_fields = ['id']
-        permissions = [staff_member_required]
+        permissions = [login_required, object_permits_user('create')]
 
 
 class UpdatePersonToObjectMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = PersonToObjectModelForm
         required_fields = ['id']
-        permissions = [login_required]
+        permissions = [login_required, object_permits_user('update')]
 
 
 class DeletePersonToObjectMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = PersonToObjectModelForm
         only_fields = ['id']
-        permissions = [staff_member_required]
+        permissions = [login_required, object_permits_user('delete')]
 
     @classmethod
     def perform_mutate(cls, form, info):
@@ -1795,7 +1795,7 @@ class ProjectType(UUIDDjangoObjectType):
         model = Project
         fields = project_ro_fields + project_rw_fields
         filter_fields = project_filter_fields
-        permissions = [login_required]
+        permissions = [login_required, object_permits_user('read')]
 
     def resolve_channel_filters(parent, info):
         return parent.channel_filters(info.context.user)
@@ -1813,21 +1813,21 @@ class CreateProjectMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = ProjectModelForm
         exclude_fields = ['id']
-        permissions = [staff_member_required]
+        permissions = [staff_member_required, object_permits_user('create')]
 
 
 class UpdateProjectMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = ProjectModelForm
         required_fields = ['id']
-        permissions = [login_required]
+        permissions = [staff_member_required, object_permits_user('update')]
 
 
 class DeleteProjectMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = ProjectModelForm
         only_fields = ['id']
-        permissions = [staff_member_required]
+        permissions = [staff_member_required, object_permits_user('delete')]
 
     @classmethod
     def perform_mutate(cls, form, info):
@@ -1865,7 +1865,7 @@ class ResourceType(UUIDDjangoObjectType):
         model = Resource
         fields = resource_ro_fields + resource_rw_fields
         filter_fields = resource_filter_fields
-        permissions = [login_required]
+        permissions = [login_required, object_permits_user('read')]
 
 
 # forms
@@ -1880,21 +1880,21 @@ class CreateResourceMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = ResourceModelForm
         exclude_fields = ['id']
-        permissions = [staff_member_required]
+        permissions = [login_required, object_permits_user('create')]
 
 
 class UpdateResourceMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = ResourceModelForm
         required_fields = ['id']
-        permissions = [login_required]
+        permissions = [login_required, object_permits_user('update')]
 
 
 class DeleteResourceMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = ResourceModelForm
         only_fields = ['id']
-        permissions = [staff_member_required]
+        permissions = [login_required, object_permits_user('delete')]
 
     @classmethod
     def perform_mutate(cls, form, info):
@@ -1934,7 +1934,7 @@ class RoleType(UUIDDjangoObjectType):
         model = Role
         fields = role_ro_fields + role_rw_fields
         filter_fields = role_filter_fields
-        permissions = [login_required]
+        permissions = [login_required, object_permits_user('read')]
 
 
 # forms
@@ -1949,21 +1949,21 @@ class CreateRoleMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = RoleModelForm
         exclude_fields = ['id']
-        permissions = [staff_member_required]
+        permissions = [staff_member_required, object_permits_user('create')]
 
 
 class UpdateRoleMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = RoleModelForm
         required_fields = ['id']
-        permissions = [login_required]
+        permissions = [staff_member_required, object_permits_user('update')]
 
 
 class DeleteRoleMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = RoleModelForm
         only_fields = ['id']
-        permissions = [staff_member_required]
+        permissions = [staff_member_required, object_permits_user('delete')]
 
     @classmethod
     def perform_mutate(cls, form, info):
@@ -1999,7 +1999,7 @@ class RoleSpecificationType(UUIDDjangoObjectType):
         model = RoleSpecification
         fields = role_specification_ro_fields + role_specification_rw_fields
         filter_fields = role_specification_filter_fields
-        permissions = [login_required]
+        permissions = [login_required, object_permits_user('read')]
 
 
 # forms
@@ -2014,21 +2014,21 @@ class CreateRoleSpecificationMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = RoleSpecificationModelForm
         exclude_fields = ['id']
-        permissions = [staff_member_required]
+        permissions = [staff_member_required, object_permits_user('create')]
 
 
 class UpdateRoleSpecificationMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = RoleSpecificationModelForm
         required_fields = ['id']
-        permissions = [login_required]
+        permissions = [staff_member_required, object_permits_user('update')]
 
 
 class DeleteRoleSpecificationMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = RoleSpecificationModelForm
         only_fields = ['id']
-        permissions = [staff_member_required]
+        permissions = [staff_member_required, object_permits_user('delete')]
 
     @classmethod
     def perform_mutate(cls, form, info):
@@ -2071,7 +2071,7 @@ class ShiftType(UUIDDjangoObjectType):
         model = Shift
         fields = shift_ro_fields + shift_rw_fields
         filter_fields = shift_filter_fields
-        permissions = [login_required]
+        permissions = [login_required, object_permits_user('read')]
 
     def resolve_channel_filters(parent, info):
         return parent.channel_filters(info.context.user)
@@ -2089,21 +2089,21 @@ class CreateShiftMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = ShiftModelForm
         exclude_fields = ['id']
-        permissions = [staff_member_required]
+        permissions = [staff_member_required, object_permits_user('create')]
 
 
 class UpdateShiftMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = ShiftModelForm
         required_fields = ['id']
-        permissions = [login_required]
+        permissions = [staff_member_required, object_permits_user('update')]
 
 
 class DeleteShiftMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = ShiftModelForm
         only_fields = ['id']
-        permissions = [staff_member_required]
+        permissions = [staff_member_required, object_permits_user('delete')]
 
     @classmethod
     def perform_mutate(cls, form, info):
@@ -2148,7 +2148,7 @@ class TaskType(UUIDDjangoObjectType):
         model = Task
         fields = task_ro_fields + task_rw_fields
         filter_fields = task_filter_fields
-        permissions = [login_required]
+        permissions = [login_required, object_permits_user('read')]
 
     def resolve_channel_filters(parent, info):
         return parent.channel_filters(info.context.user)
@@ -2166,21 +2166,21 @@ class CreateTaskMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = TaskModelForm
         exclude_fields = ['id']
-        permissions = [staff_member_required]
+        permissions = [staff_member_required, object_permits_user('create')]
 
 
 class UpdateTaskMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = TaskModelForm
         required_fields = ['id']
-        permissions = [login_required]
+        permissions = [staff_member_required, object_permits_user('update')]
 
 
 class DeleteTaskMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = TaskModelForm
         only_fields = ['id']
-        permissions = [staff_member_required]
+        permissions = [staff_member_required, object_permits_user('delete')]
 
     @classmethod
     def perform_mutate(cls, form, info):
@@ -2216,7 +2216,7 @@ class TaskFieldType(UUIDDjangoObjectType):
         model = TaskField
         fields = task_field_ro_fields + task_field_rw_fields
         filter_fields = task_field_filter_fields
-        permissions = [login_required]
+        permissions = [login_required, object_permits_user('read')]
 
 
 # forms
@@ -2231,21 +2231,21 @@ class CreateTaskFieldMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = TaskFieldModelForm
         exclude_fields = ['id']
-        permissions = [staff_member_required]
+        permissions = [staff_member_required, object_permits_user('create')]
 
 
 class UpdateTaskFieldMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = TaskFieldModelForm
         required_fields = ['id']
-        permissions = [login_required]
+        permissions = [staff_member_required, object_permits_user('update')]
 
 
 class DeleteTaskFieldMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = TaskFieldModelForm
         only_fields = ['id']
-        permissions = [staff_member_required]
+        permissions = [staff_member_required, object_permits_user('delete')]
 
     @classmethod
     def perform_mutate(cls, form, info):
