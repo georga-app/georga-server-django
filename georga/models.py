@@ -1451,6 +1451,11 @@ class Operation(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     def channel_filters(self, person):
         return MessageFilter.channel_filters(person, self)
 
+    @cached_property
+    def organization(self):
+        """Organisation(): Returns the Organization of the Operation."""
+        return self.project.organization
+
     # permissions
     @classmethod
     def permitted(cls, operation, user, action):
@@ -1475,11 +1480,6 @@ class Operation(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
                 return Q(project__in=user.admin_project_ids)
             case _:
                 return None
-
-    @cached_property
-    def organization(self):
-        """Organisation(): Returns the Organization of the Operation."""
-        return self.project.organization
 
     # state transitions
     @transition(state, 'DRAFT', 'PUBLISHED')
@@ -2278,6 +2278,28 @@ class Resource(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         verbose_name = _("resource")
         verbose_name_plural = _("resources")
         # TODO: translation: Ressource
+
+    # permissions
+    @classmethod
+    def permitted(cls, resource, user, action):
+        # unpersisted instances (create)
+        if resource and not resource.id:
+            match action:
+                case 'create':
+                    # resources can be created by organization/project/operation admins
+                    return resource.shift.task.operation.id in user.admin_operation_ids
+                case _:
+                    return False
+        # queryset filtering and persisted instances (read, update, delete, etc)
+        match action:
+            case 'read':
+                # resources can be read by employed/subscribed users
+                return Q(shift__task__operation__project__organization__in=user.organization_ids)
+            case 'update' | 'delete':
+                # resources can be deleted by organization/project/operation admins
+                return Q(shift__task__operation__in=user.admin_operation_ids)
+            case _:
+                return None
 
 
 class Role(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
