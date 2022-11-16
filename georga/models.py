@@ -2119,6 +2119,31 @@ class Project(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     def channel_filters(self, person):
         return MessageFilter.channel_filters(person, self)
 
+    # permissions
+    @classmethod
+    def permitted(cls, project, user, action):
+        # unpersisted instances (create)
+        if project and not project.id:
+            match action:
+                case 'create':
+                    # projects can be created by organization admins
+                    return project.organization.id in user.admin_organization_ids
+                case _:
+                    return False
+        # queryset filtering and persisted instances (read, write, delete, etc)
+        match action:
+            case 'read':
+                # projects can be read by subscribed/employed users
+                return Q(organization__in=user.organization_ids)
+            case 'update':
+                # projects can be updated by organization/project admins
+                return Q(id__in=user.admin_project_ids)
+            case 'delete':
+                # projects can be deleted by organization admins
+                return Q(organization__in=user.admin_organization_ids)
+            case _:
+                return None
+
     # state transitions
     @transition(state, 'DRAFT', 'PUBLISHED')
     def publish(self):
