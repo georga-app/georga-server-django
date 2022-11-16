@@ -2011,6 +2011,28 @@ class PersonProperty(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Mod
         verbose_name_plural = _("person properties")
         # TODO: translate: PersonProperty
 
+    # permissions
+    @classmethod
+    def permitted(cls, person_property, user, action):
+        # unpersisted instances (create)
+        if person_property and not person_property.id:
+            match action:
+                case 'create':
+                    # person properties can be created by organization admins
+                    return person_property.group.organization.id in user.admin_organization_ids
+                case _:
+                    return False
+        # queryset filtering and persisted instances (read, update, delete, etc)
+        match action:
+            case 'read':
+                # person properties can be read by employed/subscribed users
+                return Q(group__organization__in=user.organization_ids)
+            case 'update' | 'delete':
+                # person properties can be deleted by organization admins
+                return Q(group__organization__in=user.admin_organization_ids)
+            case _:
+                return None
+
 
 class PersonPropertyGroup(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     objects = PersonPropertyGroupManager()
