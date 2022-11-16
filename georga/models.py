@@ -99,19 +99,19 @@ class MixinAuthorization(models.Model):
                         if user.is_staff:
                             return True
                         return False
-                    # none or persisted instance (read, write, delete, etc)
-                    if action in ['read', 'write']:
+                    # none or persisted instance (read, update, delete, etc)
+                    if action in ['read', 'update']:
                         return Q(pk=user.pk)
                     return None
 
         Check permission::
 
-            if person.permits(context.user, 'write'):
+            if person.permits(context.user, 'update'):
                 person.save()
 
         Check multiple permission (logical OR)::
 
-            if person.permits(context.user, ('read', 'write')):
+            if person.permits(context.user, ('read', 'update')):
                 person.save()
 
         Filter queryset for single permission::
@@ -120,7 +120,7 @@ class MixinAuthorization(models.Model):
 
         Filter queryset for multiple permission (logical OR)::
 
-            qs = Person.filter_permitted(context.user, ('read', 'write'))
+            qs = Person.filter_permitted(context.user, ('read', 'update'))
 
         Filter a certain queryset::
 
@@ -182,7 +182,7 @@ class MixinAuthorization(models.Model):
 
             Filter queryset for multiple permission (logical OR)::
 
-                qs = Person.filter_permitted(context.user, ('read', 'write'))
+                qs = Person.filter_permitted(context.user, ('read', 'update'))
 
             Filter a certain queryset::
 
@@ -261,8 +261,8 @@ class MixinAuthorization(models.Model):
                             if user.is_staff:
                                 return True
                             return False
-                        # none or persisted instance (read, write, delete, etc)
-                        if action in ['read', 'write']:
+                        # none or persisted instance (read, update, delete, etc)
+                        if action in ['read', 'update']:
                             return Q(pk=user.pk)
                         return None
         """
@@ -271,7 +271,7 @@ class MixinAuthorization(models.Model):
             match action:
                 case _:
                     return False
-        # queryset filtering and persisted instances (read, write, delete, etc)
+        # queryset filtering and persisted instances (read, update, delete, etc)
         match action:
             case _:
                 return None
@@ -299,12 +299,12 @@ class MixinAuthorization(models.Model):
         Examples:
             Check permission::
 
-                if person.permits(context.user, 'write'):
+                if person.permits(context.user, 'update'):
                     person.save()
 
             Check multiple permissions (logical OR)::
 
-                if person.permits(context.user, ('read', 'write')):
+                if person.permits(context.user, ('read', 'update')):
                     person.save()
         """
         # unpersisted instances (create)
@@ -316,7 +316,7 @@ class MixinAuthorization(models.Model):
             for action in actions:
                 permit |= bool(self.permitted(self, user, action))
             return permit
-        # queryset filtering and persisted instances (read, write, delete, etc)
+        # queryset filtering and persisted instances (read, update, delete, etc)
         qs = self.filter_permitted(user, actions, instance=self)
         return qs.filter(pk=self.pk).exists()
 
@@ -494,7 +494,7 @@ class ACE(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
                         return ace.instance.project.id in user.admin_project_ids
                 case _:
                     return False
-        # queryset filtering and persisted instances (read, write, delete, etc)
+        # queryset filtering and persisted instances (read, update, delete, etc)
         match action:
             case 'read':
                 return reduce(or_, [
@@ -604,23 +604,11 @@ class Device(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
                     return device.person == user
                 case _:
                     return False
-        # queryset filtering and persisted instances (read, write, delete, etc)
+        # queryset filtering and persisted instances (read, update, delete, etc)
         match action:
-            case 'read':
-                return reduce(or_, [
-                    # devices of the user can be read by themself
-                    Q(person=user),
-                ])
-            case 'update':
-                return reduce(or_, [
-                    # devices of the user can be updated by themself
-                    Q(person=user),
-                ])
-            case 'delete':
-                return reduce(or_, [
-                    # devices of the user can be deleted by themself
-                    Q(person=user),
-                ])
+            case 'read' | 'update' | 'delete':
+                # devices of the user can be read/updated/deleted by themself
+                return Q(person=user)
             case _:
                 return None
 
@@ -740,13 +728,11 @@ class Location(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
                     return location.shift.task.operation in user.admin_operation_ids
                 case _:
                     return False
-        # queryset filtering and persisted instances (read, write, delete, etc)
+        # queryset filtering and persisted instances (read, update, delete, etc)
         match action:
             case 'read':
-                return reduce(or_, [
-                    # locations can be read by employed and subscribed users
-                    Q(organization__in=user.organization_ids),
-                ])
+                # locations can be read by employed and subscribed users
+                return Q(organization__in=user.organization_ids)
             case 'update':
                 return reduce(or_, [
                     # location templates can be updated by organization staff
@@ -796,23 +782,17 @@ class LocationCategory(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.M
                     return location_category.organization in user.admin_organization_ids
                 case _:
                     return False
-        # queryset filtering and persisted instances (read, write, delete, etc)
+        # queryset filtering and persisted instances (read, update, delete, etc)
         match action:
             case 'read':
-                return reduce(or_, [
-                    # location categories can be read by employed and subscribed users
-                    Q(organization__in=user.organization_ids),
-                ])
+                # location categories can be read by employed and subscribed users
+                return Q(organization__in=user.organization_ids)
             case 'update':
-                return reduce(or_, [
-                    # location categories can be updated by organization admins
-                    Q(organization__in=user.admin_organization_ids),
-                ])
+                # location categories can be updated by organization admins
+                return Q(organization__in=user.admin_organization_ids)
             case 'delete':
-                return reduce(or_, [
-                    # location categories can be deleted by organization admins
-                    Q(organization__in=user.admin_organization_ids),
-                ])
+                # location categories can be deleted by organization admins
+                return Q(organization__in=user.admin_organization_ids)
             case _:
                 return None
 
@@ -883,7 +863,7 @@ class PersonToObject(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Mod
                     return organization.id in user.organizations_ids
                 case _:
                     return False
-        # queryset filtering and persisted instances (read, write, delete, etc)
+        # queryset filtering and persisted instances (read, update, delete, etc)
         match action:
             case 'read' | 'update' | 'delete':
                 return Q(person=user)
@@ -1074,7 +1054,7 @@ class Message(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
                     return False
                 case _:
                     return False
-        # queryset filtering and persisted instances (read, write, delete, etc)
+        # queryset filtering and persisted instances (read, update, delete, etc)
         match action:
             case 'read':
                 return reduce(or_, [
@@ -1369,13 +1349,11 @@ class MessageFilter(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Mode
                     return message_filter.person.id == user.id
                 case _:
                     return False
-        # queryset filtering and persisted instances (read, write, delete, etc)
+        # queryset filtering and persisted instances (read, update, delete, etc)
         match action:
             case 'read' | 'update' | 'delete':
-                return reduce(or_, [
-                    # MessageFilters for the user can be read/updated/deleted by themself
-                    Q(person=user),
-                ])
+                # MessageFilters for the user can be read/updated/deleted by themself
+                return Q(person=user)
             case _:
                 return None
 
@@ -1462,7 +1440,7 @@ class Operation(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
                     return operation.project.id in user.admin_project_ids
                 case _:
                     return False
-        # queryset filtering and persisted instances (read, write, delete, etc)
+        # queryset filtering and persisted instances (read, update, delete, etc)
         match action:
             case 'read':
                 # operations can be read by subscribed/employed users
@@ -1575,7 +1553,7 @@ class Organization(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model
         if organization and not organization.id:
             # organizations cannot be creaty by anyone
             return False
-        # queryset filtering and persisted instances (read, write, delete, etc)
+        # queryset filtering and persisted instances (read, update, delete, etc)
         match action:
             case 'read':
                 # organizations can be read by all
@@ -1666,23 +1644,13 @@ class Participant(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model)
                     return participant.role.operation.id in user.admin_operation_ids
                 case _:
                     return False
-        # queryset filtering and persisted instances (read, write, delete, etc)
+        # queryset filtering and persisted instances (read, update, delete, etc)
         match action:
-            case 'read':
+            case 'read' | 'update':
                 return reduce(or_, [
-                    # participants can be read by themself
+                    # participants can be read/updated by themself
                     Q(person=user),
-                    # participants can be read by organization/project/operation admins
-                    Q(role__is_template=True,
-                      role__task__operation__in=user.admin_operation_ids),
-                    Q(role__is_template=False,
-                      role__shift__task__operation__in=user.admin_operation_ids),
-                ])
-            case 'update':
-                return reduce(or_, [
-                    # participants can be updated by themself
-                    Q(person=user),
-                    # participants can be updated by organization/project/operation admins
+                    # participants can be read/updated by organization/project/operation admins
                     Q(role__is_template=True,
                       role__task__operation__in=user.admin_operation_ids),
                     Q(role__is_template=False,
@@ -2005,13 +1973,12 @@ class Person(MixinTimestamps, MixinUUIDs, MixinAuthorization, AbstractUser):
     def permitted(cls, person, user, action):
         # unpersisted instances (create)
         if person and not person.id:
-            match action:
-                case _:
-                    return False
-        # queryset filtering and persisted instances (read, write, delete, etc)
+            # persons cannot be created by anyone (bypassed by registration)
+            return False
+        # queryset filtering and persisted instances (read, update, delete, etc)
         match action:
-            case 'read' | 'write':
-                # users can read and edit themself
+            case 'read' | 'update' | 'delete':
+                # persons can be read/updated/deleted by themself
                 return Q(pk=user.pk)
             case _:
                 return None
@@ -2181,7 +2148,7 @@ class Project(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
                     return project.organization.id in user.admin_organization_ids
                 case _:
                     return False
-        # queryset filtering and persisted instances (read, write, delete, etc)
+        # queryset filtering and persisted instances (read, update, delete, etc)
         match action:
             case 'read':
                 # projects can be read by subscribed/employed users
@@ -2311,7 +2278,7 @@ class Role(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
                     return role.operation.id in user.admin_operation_ids
                 case _:
                     return False
-        # queryset filtering and persisted instances (read, write, delete, etc)
+        # queryset filtering and persisted instances (read, update, delete, etc)
         match action:
             case 'read':
                 # roles can be read by subscribed/employed users
@@ -2382,7 +2349,7 @@ class RoleSpecification(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.
                     return role_specification.role.operation.id in user.admin_operation_ids
                 case _:
                     return False
-        # queryset filtering and persisted instances (read, write, delete, etc)
+        # queryset filtering and persisted instances (read, update, delete, etc)
         match action:
             case 'read':
                 # role specifications can be read by subscribed/employed users
@@ -2471,7 +2438,7 @@ class Shift(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
                     return shift.task.operation.id in user.admin_operation_ids
                 case _:
                     return False
-        # queryset filtering and persisted instances (read, write, delete, etc)
+        # queryset filtering and persisted instances (read, update, delete, etc)
         match action:
             case 'read':
                 # shifts can be read by subscribed/employed users
@@ -2606,7 +2573,7 @@ class Task(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
                     return task.operation.id in user.admin_operation_ids
                 case _:
                     return False
-        # queryset filtering and persisted instances (read, write, delete, etc)
+        # queryset filtering and persisted instances (read, update, delete, etc)
         match action:
             case 'read':
                 # tasks can be read by subscribed/employed users
