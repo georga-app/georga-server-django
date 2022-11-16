@@ -2261,12 +2261,7 @@ class Role(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
             match action:
                 case 'create':
                     # roles can be created by organization/project/operation admins
-                    operation_id = None
-                    if role.is_template:
-                        operation_id = role.task.operation.id
-                    else:
-                        operation_id = role.shift.task.operation.id
-                    return operation_id in user.admin_operation_ids
+                    return role.operation.id in user.admin_operation_ids
                 case _:
                     return False
         # queryset filtering and persisted instances (read, write, delete, etc)
@@ -2274,14 +2269,18 @@ class Role(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
             case 'read':
                 # roles can be read by subscribed/employed users
                 return reduce(or_, [
-                    Q(task__operation__project__organization__in=user.organization_ids),
-                    Q(shift__task__operation__project__organization__in=user.organization_ids),
+                    Q(is_template=True,
+                      task__operation__project__organization__in=user.organization_ids),
+                    Q(is_template=False,
+                      shift__task__operation__project__organization__in=user.organization_ids),
                 ])
             case 'update' | 'delete':
                 # roles can be updated/deleted by organization/project/operation admins
                 return reduce(or_, [
-                    Q(task__operation__in=user.admin_operation_ids),
-                    Q(shift__task__operation__in=user.admin_operation_ids),
+                    Q(is_template=True,
+                      task__operation__in=user.admin_operation_ids),
+                    Q(is_template=False,
+                      shift__task__operation__in=user.admin_operation_ids),
                 ])
             case _:
                 return None
@@ -2289,7 +2288,19 @@ class Role(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     @cached_property
     def organization(self):
         """Organisation(): Returns the Organization of the Role."""
-        return self.shift.task.operation.project.organization
+        return self.project.organization
+
+    @cached_property
+    def project(self):
+        """Project(): Returns the Project of the Role."""
+        return self.operation.project
+
+    @cached_property
+    def operation(self):
+        """Operation(): Returns the Operation of the Role."""
+        if self.is_template:
+            return self.task.operation
+        return self.shift.task.operation
 
 
 class RoleSpecification(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
@@ -2308,6 +2319,42 @@ class RoleSpecification(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.
         verbose_name=_("necessity"),
         # TODO: translate: "Erforderlichkeit"
     )
+
+    class Meta:
+        verbose_name = _("role specificatioin")
+        verbose_name_plural = _("role specifications")
+
+    # permissions
+    @classmethod
+    def permitted(cls, role_specification, user, action):
+        # unpersisted instances (create)
+        if role_specification and not role_specification.id:
+            match action:
+                case 'create':
+                    # role specifications can be created by organization/project/operation admins
+                    return role_specification.role.operation.id in user.admin_operation_ids
+                case _:
+                    return False
+        # queryset filtering and persisted instances (read, write, delete, etc)
+        match action:
+            case 'read':
+                # role specifications can be read by subscribed/employed users
+                return reduce(or_, [
+                    Q(role__is_template=True,
+                      role__task__operation__project__organization__in=user.organization_ids),
+                    Q(role__is_template=False,
+                      role__shift__task__operation__project__organization__in=user.organization_ids),
+                ])
+            case 'update' | 'delete':
+                # role specifications can be updated/deleted by organization/project/operation admins
+                return reduce(or_, [
+                    Q(role__is_template=True,
+                      role__task__operation__in=user.admin_operation_ids),
+                    Q(role__is_template=False,
+                      role__shift__task__operation__in=user.admin_operation_ids),
+                ])
+            case _:
+                return None
 
 
 class Shift(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
