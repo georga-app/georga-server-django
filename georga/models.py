@@ -1648,6 +1648,10 @@ class Participant(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model)
         null=True,
     )
 
+    class Meta:
+        verbose_name = _("participant")
+        verbose_name_plural = _("participants")
+
     # acceptance transitions
     @transition(acceptance, '+', 'ACCEPTED')
     def accept(self):
@@ -2248,6 +2252,39 @@ class Role(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         verbose_name = _("role")
         verbose_name_plural = _("roles")
         # TODO: translate: Einsatzrolle
+
+    # permissions
+    @classmethod
+    def permitted(cls, role, user, action):
+        # unpersisted instances (create)
+        if role and not role.id:
+            match action:
+                case 'create':
+                    # roles can be created by organization/project/operation admins
+                    operation_id = None
+                    if role.is_template:
+                        operation_id = role.task.operation.id
+                    else:
+                        operation_id = role.shift.task.operation.id
+                    return operation_id in user.admin_operation_ids
+                case _:
+                    return False
+        # queryset filtering and persisted instances (read, write, delete, etc)
+        match action:
+            case 'read':
+                # roles can be read by subscribed/employed users
+                return reduce(or_, [
+                    Q(task__operation__project__organization__in=user.organization_ids),
+                    Q(shift__task__operation__project__organization__in=user.organization_ids),
+                ])
+            case 'update' | 'delete':
+                # roles can be updated/deleted by organization/project/operation admins
+                return reduce(or_, [
+                    Q(task__operation__in=user.admin_operation_ids),
+                    Q(shift__task__operation__in=user.admin_operation_ids),
+                ])
+            case _:
+                return None
 
     @cached_property
     def organization(self):
