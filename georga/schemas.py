@@ -2451,7 +2451,7 @@ class MutationType(ObjectType):
     create_shift = CreateShiftMutation.Field()
     update_shift = UpdateShiftMutation.Field()
     delete_shift = DeleteShiftMutation.Field()
-    # Tasks
+    # Task
     create_task = CreateTaskMutation.Field()
     update_task = UpdateTaskMutation.Field()
     delete_task = DeleteTaskMutation.Field()
