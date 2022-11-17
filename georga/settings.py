@@ -43,6 +43,10 @@ CORS_ALLOWED_ORIGINS = os.getenv(
     'DJANGO_CORS_ALLOWED_ORIGINS', 'http://georga.test:3000').split(' ')
 
 INSTALLED_APPS = [
+    # Channels
+    'daphne',
+
+    # App
     'georga',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -94,7 +98,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'georga.wsgi.application'
-ASGI_APPLICATION = 'graphql_ws.django.routing.application'
+ASGI_APPLICATION = 'georga.asgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
