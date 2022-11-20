@@ -2109,6 +2109,7 @@ task_rw_fields = [
     'resources_desirable',
     'name',
     'description',
+    'operation',
     'start_time',
     'end_time',
 ]
