@@ -1450,7 +1450,7 @@ class LoginPersonMutation(graphql_jwt.relay.JSONWebTokenMutation):
     @classmethod
     def resolve(cls, root, info, **kwargs):
         user = info.context.user
-        return cls(id=user.gid, adminLevel=user.adminLevel)
+        return cls(id=user.gid, adminLevel=user.admin_level)
 
 
 class RequestPersonPasswordResetMutation(UUIDDjangoModelFormMutation):
