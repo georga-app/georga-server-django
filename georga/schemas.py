@@ -1896,7 +1896,7 @@ role_ro_fields = [
 role_wo_fields = [
 ]
 role_rw_fields = [
-    'title',
+    'name',
     'description',
     'is_template',
     'shift',

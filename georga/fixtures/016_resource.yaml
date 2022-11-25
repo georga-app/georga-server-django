@@ -4,8 +4,9 @@
   pk: 100
   fields:
     uuid: 00000016-0000-0000-0000-000000000100
-    description: Schlammschüppe
-    personal_hint: Spende
+    name: Schlammschaufel
+    description: vollverzinkt, aus Manganstahl
+    personal_hint: als Spende, im Gartenhaus ganz links in der Ecke
     shift: [
       French Blue Circle,
       Care Service,
@@ -17,8 +18,9 @@
   pk: 101
   fields:
     uuid: 00000016-0000-0000-0000-000000000101
-    description: Stiefel
-    personal_hint: brauch ich danach zurück
+    name: Stiefel
+    description: Größe 44
+    personal_hint: im Keller, frisch desinfiziert
     shift: [
       French Blue Circle,
       Care Service,
@@ -30,8 +32,9 @@
   pk: 102
   fields:
     uuid: 00000016-0000-0000-0000-000000000102
-    description: Tauchpumpe
-    personal_hint: kann verliehen werden im August
+    name: Tauchpumpe
+    description: 7.500 l/h Fördermenge
+    personal_hint: nur bis August, auf dem Dachboden gelagert
     shift: [
       French Blue Circle,
       Care Service,

@@ -372,7 +372,7 @@ class ProjectManager(models.Manager):
 
 class RoleManager(models.Manager):
     def get_by_natural_key(self, organization_name, project_name, operation_name,
-                           task_name, shift_start_time, role_title):
+                           task_name, shift_start_time, role_name):
         if shift_start_time:
             return self.get(
                 shift__task__operation__project__organization__name=organization_name,
@@ -380,13 +380,13 @@ class RoleManager(models.Manager):
                 shift__task__operation__name=operation_name,
                 shift__task__name=task_name,
                 shift__start_time=shift_start_time,
-                title=role_title)
+                name=role_name)
         return self.get(
             shift__task__operation__project__organization__name=organization_name,
             shift__task__operation__project__name=project_name,
             shift__task__operation__name=operation_name,
             task__name=task_name,
-            title=role_title)
+            name=role_name)
 
 
 class ShiftManager(models.Manager):
@@ -2251,7 +2251,7 @@ class Resource(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         to='Shift',
         on_delete=models.CASCADE,
     )
-    title = models.CharField(
+    name = models.CharField(
         max_length=50,
         default='',
     )
@@ -2309,7 +2309,7 @@ class Role(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         to='Shift',
         on_delete=models.CASCADE,
     )
-    title = models.CharField(
+    name = models.CharField(
         max_length=50,
         default='',
     )
@@ -2347,8 +2347,8 @@ class Role(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
 
     def natural_key(self):
         if self.is_template:
-            return self.task.natural_key() + (None, self.title)
-        return self.shift.natural_key() + (self.title,)
+            return self.task.natural_key() + (None, self.name)
+        return self.shift.natural_key() + (self.name,)
 
     class Meta:
         verbose_name = _("role")

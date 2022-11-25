@@ -4,7 +4,7 @@
   pk: 100
   fields:
     uuid: 00000012-0000-0000-0000-000000000100
-    title: Emergency physician
+    name: Emergency physician
     quantity: 10
     shift: [
       French Blue Circle,
@@ -17,7 +17,7 @@
   pk: 101
   fields:
     uuid: 00000012-0000-0000-0000-000000000101
-    title: Rescue worker
+    name: Rescue worker
     quantity: 4
     shift: [
       French Blue Circle,
@@ -30,7 +30,7 @@
   pk: 102
   fields:
     uuid: 00000012-0000-0000-0000-000000000102
-    title: Radio operator
+    name: Radio operator
     quantity: 10
     shift: [
       French Blue Circle,
@@ -43,7 +43,7 @@
   pk: 103
   fields:
     uuid: 00000012-0000-0000-0000-000000000103
-    title: Staff administration
+    name: Staff administration
     quantity: 10
     shift: [
       French Blue Circle,
@@ -56,7 +56,7 @@
   pk: 104
   fields:
     uuid: 00000012-0000-0000-0000-000000000104
-    title: Group leader
+    name: Group leader
     quantity: 10
     shift: [
       French Blue Circle,
@@ -69,7 +69,7 @@
   pk: 105
   fields:
     uuid: 00000012-0000-0000-0000-000000000105
-    title: Helpers without special qualification
+    name: Helpers without special qualification
     quantity: 10
     shift: [
       French Blue Circle,
@@ -82,7 +82,7 @@
   pk: 106
   fields:
     uuid: 00000012-0000-0000-0000-000000000106
-    title: Group leader
+    name: Group leader
     quantity: 10
     shift: [
       French Blue Circle,
@@ -95,7 +95,7 @@
   pk: 107
   fields:
     uuid: 00000012-0000-0000-0000-000000000107
-    title: Helpers without special qualification
+    name: Helpers without special qualification
     quantity: 10
     shift: [
       French Blue Circle,
@@ -108,7 +108,7 @@
   pk: 108
   fields:
     uuid: 00000012-0000-0000-0000-000000000108
-    title: Group leader
+    name: Group leader
     quantity: 10
     shift: [
       French Blue Circle,
@@ -121,7 +121,7 @@
   pk: 109
   fields:
     uuid: 00000012-0000-0000-0000-000000000109
-    title: Helpers without special qualification
+    name: Helpers without special qualification
     quantity: 10
     shift: [
       French Blue Circle,
@@ -134,7 +134,7 @@
   pk: 110
   fields:
     uuid: 00000012-0000-0000-0000-000000000110
-    title: Group leader
+    name: Group leader
     quantity: 1
     shift: [
       French Blue Circle,
@@ -147,7 +147,7 @@
   pk: 111
   fields:
     uuid: 00000012-0000-0000-0000-000000000111
-    title: Helpers without special qualification
+    name: Helpers without special qualification
     quantity: 10
     shift: [
       French Blue Circle,
