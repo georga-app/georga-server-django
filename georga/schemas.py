@@ -1898,7 +1898,10 @@ role_wo_fields = [
 role_rw_fields = [
     'name',
     'description',
+    'is_active',
     'is_template',
+    'needs_admin_acceptance',
+    'quantity',
     'shift',
 ]
 role_filter_fields = {
