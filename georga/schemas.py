@@ -510,16 +510,6 @@ LOOKUPS_CONNECTION = ['exact']
 LOOKUPS_DATETIME = ['exact', 'gt', 'lte']
 
 
-# Authorization ===============================================================
-
-class ObtainJSONWebToken(graphql_jwt.relay.JSONWebTokenMutation):
-    id = ID()
-
-    @classmethod
-    def resolve(cls, root, info, **kwargs):
-        return cls(id=info.context.user.gid)
-
-
 # Non-Model ===================================================================
 
 class ChannelFiltersType(ObjectType):
@@ -1453,6 +1443,16 @@ class ActivatePersonMutation(UUIDDjangoModelFormMutation):
         return cls(email=person.email, errors=[])
 
 
+class LoginPersonMutation(graphql_jwt.relay.JSONWebTokenMutation):
+    id = ID()
+    adminLevel = PersonType.admin_level.type
+
+    @classmethod
+    def resolve(cls, root, info, **kwargs):
+        user = info.context.user
+        return cls(id=user.gid, adminLevel=user.admin_level)
+
+
 class RequestPersonPasswordResetMutation(UUIDDjangoModelFormMutation):
     id = ID()
 
@@ -2351,7 +2351,7 @@ class QueryType(ObjectType):
 
 class MutationType(ObjectType):
     # Authorization
-    token_auth = ObtainJSONWebToken.Field()
+    token_auth = LoginPersonMutation.Field()
     verify_token = graphql_jwt.relay.Verify.Field()
     refresh_token = graphql_jwt.relay.Refresh.Field()
     revoke_token = graphql_jwt.relay.Revoke.Field()
