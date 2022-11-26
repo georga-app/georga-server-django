@@ -1199,6 +1199,8 @@ participant_wo_fields = [
 participant_rw_fields = [
     'person',
     'role',
+    'acceptance',
+    'admin_acceptance'
 ]
 participant_filter_fields = {
     'id': LOOKUPS_ID,
