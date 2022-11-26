@@ -668,15 +668,11 @@ class Equipment(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
 
 
 class Location(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
-    organization = models.ForeignKey(
-        to='Organization',
-        on_delete=models.CASCADE,
-    )
     category = models.ForeignKey(
         to='LocationCategory',
         on_delete=models.CASCADE,
-        null=True,
-        blank=True,
+        null=False,
+        blank=False,
     )
 
     is_template = models.BooleanField(
@@ -720,6 +716,10 @@ class Location(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         null=True,
         blank=True,
     )
+
+    @cached_property
+    def organization(self):
+        return self.category.organization
 
     class Meta:
         verbose_name = _("location")

@@ -5,7 +5,6 @@
   fields:
     uuid: 00000008-0000-0000-0000-000000000100
     category: [French Blue Circle, refugee housing]
-    organization: [French Blue Circle]
     is_template: true
     task: [
       French Blue Circle,
@@ -24,7 +23,6 @@
   fields:
     uuid: 00000008-0000-0000-0000-000000000101
     category: [French Blue Circle, refugee housing]
-    organization: [French Blue Circle]
     is_template: false
     task: null
     shift: [
@@ -44,7 +42,6 @@
   fields:
     uuid: 00000008-0000-0000-0000-000000000102
     category: [French Blue Circle, refugee housing]
-    organization: [French Blue Circle]
     is_template: false
     task: null
     shift: [
@@ -64,7 +61,6 @@
   fields:
     uuid: 00000008-0000-0000-0000-000000000103
     category: [French Blue Circle, refugee housing]
-    organization: [French Blue Circle]
     is_template: false
     task: null
     shift: [
@@ -84,7 +80,6 @@
   fields:
     uuid: 00000008-0000-0000-0000-000000000104
     category: [French Blue Circle, refugee housing]
-    organization: [French Blue Circle]
     is_template: false
     task: null
     shift: [
@@ -104,7 +99,6 @@
   fields:
     uuid: 00000008-0000-0000-0000-000000000105
     category: [French Blue Circle, refugee housing]
-    organization: [French Blue Circle]
     is_template: false
     task: null
     shift: [
@@ -124,7 +118,6 @@
   fields:
     uuid: 00000008-0000-0000-0000-000000000106
     category: [French Blue Circle, refugee housing]
-    organization: [French Blue Circle]
     is_template: false
     task: null
     shift: [
@@ -144,7 +137,6 @@
   fields:
     uuid: 00000008-0000-0000-0000-000000000107
     category: [French Blue Circle, refugee housing]
-    organization: [French Blue Circle]
     is_template: false
     task: null
     shift: [
@@ -164,7 +156,6 @@
   fields:
     uuid: 00000008-0000-0000-0000-000000000108
     category: [French Blue Circle, refugee housing]
-    organization: [French Blue Circle]
     is_template: false
     task: null
     shift: [
@@ -184,7 +175,6 @@
   fields:
     uuid: 00000008-0000-0000-0000-000000000109
     category: [French Blue Circle, refugee housing]
-    organization: [French Blue Circle]
     is_template: false
     task: null
     shift: [
@@ -204,7 +194,6 @@
   fields:
     uuid: 00000008-0000-0000-0000-000000000110
     category: [French Blue Circle, refugee housing]
-    organization: [French Blue Circle]
     is_template: false
     task: null
     shift: [
@@ -224,7 +213,6 @@
   fields:
     uuid: 00000008-0000-0000-0000-000000000111
     category: [French Blue Circle, refugee housing]
-    organization: [French Blue Circle]
     is_template: false
     task: null
     shift: [
@@ -244,7 +232,6 @@
   fields:
     uuid: 00000008-0000-0000-0000-000000000112
     category: [French Blue Circle, refugee housing]
-    organization: [French Blue Circle]
     is_template: false
     task: null
     shift: [
@@ -264,7 +251,6 @@
   fields:
     uuid: 00000008-0000-0000-0000-000000000113
     category: [French Blue Circle, refugee housing]
-    organization: [French Blue Circle]
     is_template: false
     task: null
     shift: [
@@ -284,7 +270,6 @@
   fields:
     uuid: 00000008-0000-0000-0000-000000000114
     category: [French Blue Circle, refugee housing]
-    organization: [French Blue Circle]
     is_template: false
     task: null
     shift: [
@@ -304,7 +289,6 @@
   fields:
     uuid: 00000008-0000-0000-0000-000000000115
     category: [French Blue Circle, refugee housing]
-    organization: [French Blue Circle]
     is_template: false
     task: null
     shift: [
@@ -324,7 +308,6 @@
   fields:
     uuid: 00000008-0000-0000-0000-000000000116
     category: [French Blue Circle, refugee housing]
-    organization: [French Blue Circle]
     is_template: false
     task: null
     shift: [

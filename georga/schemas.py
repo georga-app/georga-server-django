@@ -738,7 +738,6 @@ location_ro_fields = [
 ]
 location_wo_fields = []
 location_rw_fields = [
-    'organization',
     'category',
     'postal_address_name',
     'postal_address_street',
