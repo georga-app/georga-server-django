@@ -1,4 +1,4 @@
-from operator import or_
+from operator import or_, and_
 from datetime import datetime
 from functools import cached_property, reduce
 import uuid
@@ -8,7 +8,7 @@ from django.contrib.auth.models import AbstractUser, UserManager
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
-from django.db.models import Q, When, Case
+from django.db.models import Q, When, Case, Count
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from django.utils import timezone
@@ -371,6 +371,24 @@ class ProjectManager(models.Manager):
 
 
 class RoleManager(models.Manager):
+    def get_queryset(self):
+        participants_accepted = Count('participant', filter=reduce(and_, [
+            Q(participant__acceptance='ACCEPTED'),
+            Q(participant__admin_acceptance__in=['NONE', 'ACCEPTED']),
+        ]))
+        participants_declined = Count('participant', filter=reduce(or_, [
+            Q(participant__acceptance='DECLINED'),
+            Q(participant__admin_acceptance='DECLINED'),
+        ]))
+        participants_pending = Count('participant', filter=reduce(or_, [
+            Q(participant__acceptance='PENDING', participant__admin_acceptance__in=['PENDING', 'ACCEPTED']),
+            Q(participant__acceptance__in=['PENDING', 'ACCEPTED'], participant__admin_acceptance='PENDING'),
+        ]))
+        return super().get_queryset() \
+            .annotate(participants_accepted=participants_accepted) \
+            .annotate(participants_declined=participants_declined) \
+            .annotate(participants_pending=participants_pending)
+
     def get_by_natural_key(self, organization_name, project_name, operation_name,
                            task_name, shift_start_time, role_name):
         if shift_start_time:

@@ -1915,6 +1915,9 @@ role_filter_fields = {
 # types
 class RoleType(UUIDDjangoObjectType):
     person_attributes = UUIDDjangoFilterConnectionField('georga.schemas.PersonToObjectType')
+    participants_accepted = String()
+    participants_declined = String()
+    participants_pending = String()
 
     class Meta:
         model = Role
