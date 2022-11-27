@@ -14,6 +14,7 @@
     ]
     person: [helper.001@georga.test]
     acceptance: ACCEPTED
+    admin_acceptance: DECLINED
 - model: georga.participant
   pk: 101
   fields:
@@ -28,6 +29,7 @@
     ]
     person: [helper.002@georga.test]
     acceptance: ACCEPTED
+    admin_acceptance: ACCEPTED
 - model: georga.participant
   pk: 102
   fields:
@@ -42,6 +44,7 @@
     ]
     person: [helper.003@georga.test]
     acceptance: ACCEPTED
+    admin_acceptance: ACCEPTED
 - model: georga.participant
   pk: 103
   fields:
@@ -55,7 +58,8 @@
       Emergency physician
     ]
     person: [helper.004@georga.test]
-    acceptance: DECLINED
+    acceptance: PENDING
+    admin_acceptance: ACCEPTED
 - model: georga.participant
   pk: 104
   fields:
@@ -70,6 +74,7 @@
     ]
     person: [helper.005@georga.test]
     acceptance: DECLINED
+    admin_acceptance: ACCEPTED
 
 - model: georga.participant
   pk: 110
@@ -85,6 +90,7 @@
     ]
     person: [helper.001@georga.test]
     acceptance: PENDING
+    admin_acceptance: ACCEPTED
 - model: georga.participant
   pk: 111
   fields:
@@ -99,6 +105,7 @@
     ]
     person: [helper.002@georga.test]
     acceptance: PENDING
+    admin_acceptance: ACCEPTED
 - model: georga.participant
   pk: 112
   fields:
@@ -113,6 +120,7 @@
     ]
     person: [helper.003@georga.test]
     acceptance: DECLINED
+    admin_acceptance: ACCEPTED
 - model: georga.participant
   pk: 113
   fields:
@@ -127,6 +135,7 @@
     ]
     person: [helper.004@georga.test]
     acceptance: ACCEPTED
+    admin_acceptance: PENDING
 - model: georga.participant
   pk: 114
   fields:
@@ -141,6 +150,7 @@
     ]
     person: [helper.005@georga.test]
     acceptance: ACCEPTED
+    admin_acceptance: ACCEPTED
 
 - model: georga.participant
   pk: 120
@@ -156,6 +166,7 @@
     ]
     person: [helper.001@georga.test]
     acceptance: DECLINED
+    admin_acceptance: ACCEPTED
 - model: georga.participant
   pk: 121
   fields:
@@ -170,6 +181,7 @@
     ]
     person: [helper.002@georga.test]
     acceptance: DECLINED
+    admin_acceptance: ACCEPTED
 - model: georga.participant
   pk: 123
   fields:
@@ -184,6 +196,7 @@
     ]
     person: [helper.003@georga.test]
     acceptance: PENDING
+    admin_acceptance: ACCEPTED
 - model: georga.participant
   pk: 124
   fields:
@@ -212,6 +225,7 @@
     ]
     person: [helper.005@georga.test]
     acceptance: ACCEPTED
+    admin_acceptance: PENDING
 
 # Org2 ------------------------------------------------------------------------
 
