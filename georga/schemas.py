@@ -1199,7 +1199,8 @@ participant_rw_fields = [
     'person',
     'role',
     'acceptance',
-    'admin_acceptance'
+    'admin_acceptance',
+    'admin_acceptance_user',
 ]
 participant_filter_fields = {
     'id': LOOKUPS_ID,
@@ -1215,6 +1216,10 @@ class ParticipantType(UUIDDjangoObjectType):
         fields = participant_ro_fields + participant_rw_fields
         filter_fields = participant_filter_fields
         permissions = [login_required, object_permits_user('read')]
+
+    @object_permits_user('admin_read')
+    def resolve_admin_acceptance_user(self, info):
+        return self.admin_acceptance_user
 
 
 # forms

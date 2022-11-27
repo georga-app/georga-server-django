@@ -1731,6 +1731,14 @@ class Participant(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model)
                     Q(role__is_template=False,
                       role__shift__task__operation__in=user.admin_operation_ids),
                 ])
+            case 'admin_read':
+                return reduce(or_, [
+                    # participants can be admin_read by organization/project/operation admins
+                    Q(role__is_template=True,
+                      role__task__operation__in=user.admin_operation_ids),
+                    Q(role__is_template=False,
+                      role__shift__task__operation__in=user.admin_operation_ids),
+                ])
             case _:
                 return None
 
