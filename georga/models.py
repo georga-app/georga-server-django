@@ -387,7 +387,8 @@ class RoleManager(models.Manager):
         return super().get_queryset() \
             .annotate(participants_accepted=participants_accepted) \
             .annotate(participants_declined=participants_declined) \
-            .annotate(participants_pending=participants_pending)
+            .annotate(participants_pending=participants_pending) \
+            .order_by('pk')
 
     def get_by_natural_key(self, organization_name, project_name, operation_name,
                            task_name, shift_start_time, role_name):
