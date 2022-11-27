@@ -281,10 +281,17 @@ class SchemaTestCase(JSONWebTokenTestCase, metaclass=SchemaTestCaseMetaclass):
                     database_value = _type._meta.name
                 case key if key.startswith("__"):
                     continue
+                case "edges":
+                    item = [edge["node"] for edge in item]
+                    database_value = entry.all()
                 case _:
                     database_value = getattr(entry, to_snake_case(key))
             if isinstance(item, dict):
                 yield from SchemaTestCase.walk(item, database_value, path=subpath)
+            elif isinstance(item, list):
+                for index, _ in enumerate(item):
+                    yield from SchemaTestCase.walk(
+                        item[index], database_value[index], path=f"{subpath}.{index}")
             else:
                 # id
                 if key == "id":

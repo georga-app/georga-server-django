@@ -25,7 +25,21 @@ class ListRolesTestCase(ListQueryTestCase):
             isActive
             isTemplate
             needsAdminAcceptance
+            participantSet {
+              edges {
+                node {
+                  id
+                }
+              }
+            }
             id
+            personAttributes {
+              edges {
+                node {
+                  id
+                }
+              }
+            }
           }
         }
       }

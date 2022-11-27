@@ -20,7 +20,7 @@ django.utils.encoding.force_text = force_str
 
 # Testing flag
 # TODO: convert to env var
-TESTING = 'test' in sys.argv
+TESTING = sys.argv[1:2] == ['test']
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent

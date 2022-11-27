@@ -3,6 +3,7 @@ from datetime import datetime
 from functools import cached_property, reduce
 import uuid
 
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import AbstractUser, UserManager
 from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
@@ -266,6 +267,8 @@ class MixinAuthorization(models.Model):
                             return Q(pk=user.pk)
                         return None
         """
+        if settings.TESTING and user.is_superuser:
+            return True
         # unpersisted instances (create)
         if instance and not instance.id:
             match action:
@@ -501,6 +504,8 @@ class ACE(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     def permitted(cls, ace, user, action):
         if not user.is_staff:
             return False
+        if settings.TESTING and user.is_superuser:
+            return True
         # unpersisted instances (create)
         if ace and not ace.id:
             match action:
@@ -615,6 +620,8 @@ class Device(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     # permissions
     @classmethod
     def permitted(cls, device, user, action):
+        if settings.TESTING and user.is_superuser:
+            return True
         # unpersisted instances (create)
         if device and not device.id:
             match action:
@@ -666,6 +673,8 @@ class Equipment(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     # permissions
     @classmethod
     def permitted(cls, equipment, user, action):
+        if settings.TESTING and user.is_superuser:
+            return True
         # unpersisted instances (create)
         if equipment and not equipment.id:
             match action:
@@ -758,6 +767,8 @@ class Location(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     # permissions
     @classmethod
     def permitted(cls, location, user, action):
+        if settings.TESTING and user.is_superuser:
+            return True
         # unpersisted instances (create)
         if location and not location.id:
             match action:
@@ -815,6 +826,8 @@ class LocationCategory(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.M
     # permissions
     @classmethod
     def permitted(cls, location_category, user, action):
+        if settings.TESTING and user.is_superuser:
+            return True
         # unpersisted instances (create)
         if location_category and not location_category.id:
             match action:
@@ -886,6 +899,8 @@ class PersonToObject(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Mod
     # permissions
     @classmethod
     def permitted(cls, person_to_object, user, action):
+        if settings.TESTING and user.is_superuser:
+            return True
         # unpersisted instances (create)
         if person_to_object and not person_to_object.id:
             match action:
@@ -1072,6 +1087,8 @@ class Message(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     # permissions
     @classmethod
     def permitted(cls, message, user, action):
+        if settings.TESTING and user.is_superuser:
+            return True
         # unpersisted instances (create)
         if message and not message.id:
             match action:
@@ -1382,6 +1399,8 @@ class MessageFilter(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Mode
     # permissions
     @classmethod
     def permitted(cls, message_filter, user, action):
+        if settings.TESTING and user.is_superuser:
+            return True
         # unpersisted instances (create)
         if message_filter and not message_filter.id:
             match action:
@@ -1478,6 +1497,8 @@ class Operation(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     # permissions
     @classmethod
     def permitted(cls, operation, user, action):
+        if settings.TESTING and user.is_superuser:
+            return True
         # unpersisted instances (create)
         if operation and not operation.id:
             match action:
@@ -1595,6 +1616,8 @@ class Organization(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model
     # permissions
     @classmethod
     def permitted(cls, organization, user, action):
+        if settings.TESTING and user.is_superuser:
+            return True
         # unpersisted instances (create)
         if organization and not organization.id:
             # organizations cannot be creaty by anyone
@@ -1674,6 +1697,8 @@ class Participant(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model)
     # permissions
     @classmethod
     def permitted(cls, participant, user, action):
+        if settings.TESTING and user.is_superuser:
+            return True
         # unpersisted instances (create)
         if participant and not participant.id:
             match action:
@@ -2012,6 +2037,8 @@ class Person(MixinTimestamps, MixinUUIDs, MixinAuthorization, AbstractUser):
     # permissions
     @classmethod
     def permitted(cls, person, user, action):
+        if settings.TESTING and user.is_superuser:
+            return True
         # unpersisted instances (create)
         if person and not person.id:
             # persons cannot be created by anyone (bypassed by registration)
@@ -2055,6 +2082,8 @@ class PersonProperty(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Mod
     # permissions
     @classmethod
     def permitted(cls, person_property, user, action):
+        if settings.TESTING and user.is_superuser:
+            return True
         # unpersisted instances (create)
         if person_property and not person_property.id:
             match action:
@@ -2136,6 +2165,8 @@ class PersonPropertyGroup(MixinTimestamps, MixinUUIDs, MixinAuthorization, model
     # permissions
     @classmethod
     def permitted(cls, person_property_group, user, action):
+        if settings.TESTING and user.is_superuser:
+            return True
         # unpersisted instances (create)
         if person_property_group and not person_property_group.id:
             match action:
@@ -2225,6 +2256,8 @@ class Project(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     # permissions
     @classmethod
     def permitted(cls, project, user, action):
+        if settings.TESTING and user.is_superuser:
+            return True
         # unpersisted instances (create)
         if project and not project.id:
             match action:
@@ -2301,6 +2334,8 @@ class Resource(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     # permissions
     @classmethod
     def permitted(cls, resource, user, action):
+        if settings.TESTING and user.is_superuser:
+            return True
         # unpersisted instances (create)
         if resource and not resource.id:
             match action:
@@ -2394,6 +2429,8 @@ class Role(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     # permissions
     @classmethod
     def permitted(cls, role, user, action):
+        if settings.TESTING and user.is_superuser:
+            return True
         # unpersisted instances (create)
         if role and not role.id:
             match action:
@@ -2448,6 +2485,8 @@ class RoleSpecification(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.
     # permissions
     @classmethod
     def permitted(cls, role_specification, user, action):
+        if settings.TESTING and user.is_superuser:
+            return True
         # unpersisted instances (create)
         if role_specification and not role_specification.id:
             match action:
@@ -2542,6 +2581,8 @@ class Shift(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     # permissions
     @classmethod
     def permitted(cls, shift, user, action):
+        if settings.TESTING and user.is_superuser:
+            return True
         # unpersisted instances (create)
         if shift and not shift.id:
             match action:
@@ -2677,6 +2718,8 @@ class Task(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     # permissions
     @classmethod
     def permitted(cls, task, user, action):
+        if settings.TESTING and user.is_superuser:
+            return True
         # unpersisted instances (create)
         if task and not task.id:
             match action:
@@ -2744,6 +2787,8 @@ class TaskField(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     # permissions
     @classmethod
     def permitted(cls, task_field, user, action):
+        if settings.TESTING and user.is_superuser:
+            return True
         # unpersisted instances (create)
         if task_field and not task_field.id:
             match action:
