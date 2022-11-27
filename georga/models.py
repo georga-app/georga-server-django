@@ -1693,6 +1693,7 @@ class Participant(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model)
     class Meta:
         verbose_name = _("participant")
         verbose_name_plural = _("participants")
+        unique_together = ('person', 'role',)
 
     # permissions
     @classmethod
