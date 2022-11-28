@@ -199,20 +199,20 @@ def object_permits_user(*actions, exc=exceptions.PermissionDenied):
                     logger.error(e)
                     return obj.none()
 
-            # access ObjectTypes
-            elif isinstance(obj, Model):
-                # func: DjangoObjectType.get_node()
-                # obj: Model instance
-                # args: cls, info, id
-                if obj.permits(info.context.user, actions):
-                    return obj
-
             # access Scalars (ask parent object)
             elif isinstance(next(iter(args), None), Model):
                 # func: DjangoObjectType.resolve_<field>()
                 # obj: graphene Field
                 # args: parent, info
                 if args[0].permits(info.context.user, actions):
+                    return obj
+
+            # access ObjectTypes
+            elif isinstance(obj, Model):
+                # func: DjangoObjectType.get_node()
+                # obj: Model instance
+                # args: cls, info, id
+                if obj.permits(info.context.user, actions):
                     return obj
 
             # raise exception otherwise

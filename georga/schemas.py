@@ -36,7 +36,7 @@ from graphene_django.filter import (
 )
 from graphene_django.forms import GlobalIDMultipleChoiceField, GlobalIDFormField
 from graphene_django.forms.mutation import DjangoModelFormMutation
-from graphql_jwt.exceptions import JSONWebTokenError
+from graphql_jwt.exceptions import JSONWebTokenError, PermissionDenied
 from graphql_jwt.decorators import login_required, staff_member_required
 from graphql_relay import from_global_id
 
@@ -355,7 +355,9 @@ class UUIDDjangoModelFormMutation(DjangoModelFormMutation):
         if hasattr(cls, 'only_fields'):
             cls._meta.form_class.Meta.only_fields = cls.only_fields
         form_kwargs = cls.get_form_kwargs(root, info, **input)
-        return cls._meta.form_class(**form_kwargs)
+        form = cls._meta.form_class(**form_kwargs)
+        form._meta.user = info.context.user
+        return form
 
     @classmethod
     def get_form_kwargs(cls, root, info, **input):
@@ -1227,6 +1229,31 @@ class ParticipantModelForm(UUIDModelForm):
     class Meta:
         model = Participant
         fields = participant_wo_fields + participant_rw_fields
+
+    def save(self, commit=True):
+        participant = super().save(commit=False)
+        user = self._meta.user
+        admin_acceptance_submitted = self.data.get('admin_acceptance', False)
+        if not (admin_acceptance_submitted or participant.role.needs_admin_acceptance):
+            participant.admin_acceptance = 'NONE'
+
+        non_default_fields = ['ACCEPTED', 'DECLINED']
+        if participant.role.needs_admin_acceptance:
+            non_default_fields.append('NONE')
+        else:
+            non_default_fields.append('PENDING')
+
+        if participant.admin_acceptance in non_default_fields:
+            if not participant.permits(user, 'admin_create'):
+                raise PermissionDenied
+
+            if admin_acceptance_submitted:
+                participant.admin_acceptance_user = user
+
+        if commit:
+            participant.save()
+            self.save_m2m()
+        return participant
 
 
 # mutations

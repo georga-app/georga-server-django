@@ -1672,7 +1672,6 @@ class Participant(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model)
     acceptance = FSMField(
         max_length=8,
         choices=ACCEPTANCE_STATES,
-        default='PENDING',
     )
     ADMIN_ACCEPTANCE_STATES = ACCEPTANCE_STATES + [
         ('NONE', _('None')),
@@ -1680,7 +1679,8 @@ class Participant(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model)
     admin_acceptance = FSMField(
         max_length=8,
         choices=ADMIN_ACCEPTANCE_STATES,
-        default='NONE',
+        default='PENDING',
+        blank=True,
     )
     admin_acceptance_user = models.ForeignKey(
         to='Person',
@@ -1708,6 +1708,9 @@ class Participant(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model)
                     if participant.person == user and participant.role.organization.id in user.organization_ids:
                         return True
                     # participants can be created by organization/project/operation admins
+                    return participant.role.operation.id in user.admin_operation_ids
+                case 'admin_create':
+                    # participants can be admin_created by organization/project/operation admins
                     return participant.role.operation.id in user.admin_operation_ids
                 case _:
                     return False
