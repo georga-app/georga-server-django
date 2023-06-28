@@ -1,11 +1,10 @@
 import logging
 from datetime import datetime
-import asyncio
 
 import graphql_jwt
 from asgiref.sync import async_to_sync
-from channels.db import database_sync_to_async
 from channels.layers import get_channel_layer
+from channels_graphql_ws import Subscription
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
@@ -19,7 +18,7 @@ from django.forms.models import ModelFormMetaclass, model_to_dict
 from django_filters import FilterSet, UUIDFilter
 from graphene import (
     Schema, Mutation, ObjectType, Field, Union, List,
-    ID, UUID, DateTime, String, Int, NonNull
+    ID, UUID, String, Int, NonNull
 )
 from graphene.relay import Node
 from graphene.types.dynamic import Dynamic
@@ -2305,9 +2304,38 @@ class PersonToObjectRelationObjectUnion(Union):
 
 # Subscriptions ===============================================================
 
-class TestSubscription(ObjectType):
-    message = String(required=True)
-    time = DateTime(required=True)
+class TestSubscription(Subscription):
+    # Simple GraphQL subscription.
+    # Leave only latest 64 messages in the server queue.
+    notification_queue_limit = 64
+
+    # Subscription payload.
+    message = String()
+    time = String()
+
+    class Arguments:
+        # That is how subscription arguments are defined.
+        arg1 = String(required=False)
+        arg2 = String(required=False)
+
+    @staticmethod
+    def subscribe(root, info, arg1="", arg2=""):
+        # Called when user subscribes.
+        # Return the list of subscription group names.
+        return ["TestSubscriptionEvents"]
+
+    @staticmethod
+    def publish(payload, info, arg1="", arg2=""):
+        # Called to notify the client.
+        # Here `payload` contains the `payload` from the `broadcast()`
+        # invocation (see below). You can return `MySubscription.SKIP`
+        # if you wish to suppress the notification to a particular
+        # client. For example, this allows to avoid notifications for
+        # the tasks made by this particular client.
+        return TestSubscription(
+            message=f"{payload}",
+            time=datetime.now().strftime("%d.%m.%Y %H:%M:%S")
+        )
 
 
 class TestSubscriptionEventMutation(Mutation):
@@ -2319,8 +2347,7 @@ class TestSubscriptionEventMutation(Mutation):
     @classmethod
     def mutate(cls, root, info, message):
         print(f"New message broadcasted: {message}")
-        # TestSubscription.broadcast(group="TestSubscriptionEvents", payload=message)
-        async_to_sync(channel_layer.group_send)("new_message", {"data": message})
+        TestSubscription.broadcast(group="TestSubscriptionEvents", payload=message)
         return TestSubscriptionEventMutation(response="OK")
 
 
@@ -2487,40 +2514,7 @@ class MutationType(ObjectType):
 
 
 class SubscriptionType(ObjectType):
-    count_seconds = Int(up_to=Int())
-    test_subscription = Field(TestSubscription)
-    message_created = Field(MessageType)
-
-    async def resolve_count_seconds(self, info, up_to=5):
-        print(up_to)
-        i = 1
-        while i <= up_to:
-            yield str(i)
-            await asyncio.sleep(1)
-            i += 1
-
-    async def resolve_test_subscription(self, info):
-        channel_name = await channel_layer.new_channel()
-        await channel_layer.group_add("new_message", channel_name)
-        try:
-            while True:
-                message = await channel_layer.receive(channel_name)
-                yield TestSubscription(message=message["data"], time=datetime.now())
-        finally:
-            await channel_layer.group_discard("new_message", channel_name)
-
-    async def resolve_message_created(self, info):
-        channel_name = await channel_layer.new_channel()
-        await channel_layer.group_add("message_created", channel_name)
-        try:
-            while True:
-                data = await channel_layer.receive(channel_name)
-                message = await database_sync_to_async(
-                    lambda: Message.objects.prefetch_related("scope").get(pk=data["pk"])
-                )()
-                yield message
-        finally:
-            await channel_layer.group_discard("message_created", channel_name)
+    test_subscription = TestSubscription.Field()
 
 
 schema = Schema(

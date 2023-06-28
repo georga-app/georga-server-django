@@ -61,7 +61,6 @@ INSTALLED_APPS = [
     'phonenumber_field',
 
     # GraphQL
-    'graphql_ws.django',
     'graphene_django',
     'django_filters',
     'channels',
