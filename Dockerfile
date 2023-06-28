@@ -1,4 +1,4 @@
-FROM python:bullseye
+FROM python:bookworm
 
 WORKDIR /code
 COPY requirements.txt /requirements.txt
