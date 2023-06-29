@@ -180,10 +180,10 @@ class SchemaTestCaseMetaclass(type):
             operation_ast = definition.selection_set.selections[0]
             operation_name = operation_ast.name.value
             operation_args = [item.name.value for item in operation_ast.arguments]
-            root = schema.get_type(f"{operation_type.capitalize()}Type")
+            root = schema.graphql_schema.get_type(f"{operation_type.value.capitalize()}Type")
             field = root.fields[operation_name]
             graphene_type_name = field.type.name.removesuffix('Connection')
-            graphene_type = schema.get_type(graphene_type_name).graphene_type
+            graphene_type = schema.graphql_schema.get_type(graphene_type_name).graphene_type
             permission = getattr(graphene_type._meta.class_type, 'permission', [])
             model = graphene_type._meta.model
             # assign variables

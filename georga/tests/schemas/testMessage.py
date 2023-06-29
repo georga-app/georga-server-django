@@ -6,7 +6,7 @@ class ListMessagesTestCase(ListQueryTestCase):
     operation = """
     query (
         [VARIABLES]
-        $state: String
+        $state: GeorgaMessageStateChoices
         $scope: ID
         $scope_In: [ID]
     ){
