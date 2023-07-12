@@ -2338,17 +2338,21 @@ class TestSubscription(Subscription):
         )
 
 
+class TestSubscriptionEventMutationPayload(ObjectType):
+    response = String()
+
+
 class TestSubscriptionEventMutation(Mutation):
     class Arguments:
         message = String(required=True)
 
-    response = String()
+    Output = TestSubscriptionEventMutationPayload
 
     @classmethod
     def mutate(cls, root, info, message):
         print(f"New message broadcasted: {message}")
         TestSubscription.broadcast(group="TestSubscriptionEvents", payload=message)
-        return TestSubscriptionEventMutation(response="OK")
+        return TestSubscriptionEventMutationPayload(response="OK")
 
 
 # Schema ======================================================================
