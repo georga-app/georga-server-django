@@ -7,7 +7,7 @@ django-cors-headers==4.1.0
 django-filter==23.2
 django-fsm==2.8.1
 django-graphql-jwt==0.3.4
-graphene-django==3.1.2
+graphene-django==3.1.5
 django-channels-graphql-ws==v1.0.0rc6
 phonenumbers==8.13.15
 psycopg2==2.9.6
