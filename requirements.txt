@@ -1,6 +1,6 @@
 channels[daphne]==4.0.0
 channels-redis==4.1.0
-cryptography==41.0.1
+cryptography==41.0.4
 django-phonenumber-field==7.1.0
 Django==4.2.2
 django-cors-headers==4.1.0
