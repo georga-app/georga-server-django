@@ -1560,6 +1560,11 @@ class Organization(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model
         null=True,
         blank=True,
     )
+    description = models.CharField(
+        max_length=1000,
+        null=True,
+        blank=True,
+    )
 
     ace = GenericRelation(
         ACE,

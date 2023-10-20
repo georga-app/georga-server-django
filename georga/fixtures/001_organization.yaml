@@ -5,6 +5,7 @@
   fields:
     uuid: 00000001-0000-0000-0000-000000000100
     name: French Blue Circle
+    description: French Blue Circle Description
     state: PUBLISHED
     icon: "\
       iVBORw0KGgoAAAANSUhEUgAAAFkAAABZCAYAAABVC4ivAAABhWlDQ1BJQ0MgcHJvZmlsZQAAKJF9kT1I\
@@ -52,6 +53,7 @@
   fields:
     uuid: 00000001-0000-0000-0000-000000000200
     name: Sea Eyes International
+    description: Sea Eyes International Description
     state: PUBLISHED
     icon: "\
       iVBORw0KGgoAAAANSUhEUgAAAFoAAABZCAYAAAC+PDOsAAABhWlDQ1BJQ0MgcHJvZmlsZQAAKJF9kT1I\
@@ -395,6 +397,7 @@
   fields:
     uuid: 00000001-0000-0000-0000-000000000300
     name: Cyber Aid Worldwide
+    description: Cyber Aid Worldwide Description
     state: PUBLISHED
     icon: "\
       iVBORw0KGgoAAAANSUhEUgAAAGkAAABpCAYAAAA5gg06AAABhWlDQ1BJQ0MgcHJvZmlsZQAAKJF9kT1I\

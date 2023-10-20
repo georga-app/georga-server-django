@@ -505,7 +505,7 @@ class GFKFilterSet(FilterSet):
 # ]
 LOOKUPS_ID = ['exact']
 LOOKUPS_INT = ['exact']
-LOOKUPS_STRING = ['exact']
+LOOKUPS_STRING = ['exact', 'icontains']
 LOOKUPS_ENUM = ['exact']
 LOOKUPS_CONNECTION = ['exact']
 LOOKUPS_DATETIME = ['exact', 'gt', 'lte']
@@ -1126,9 +1126,11 @@ organization_wo_fields = [
 organization_rw_fields = [
     'name',
     'icon',
+    'description',
 ]
 organization_filter_fields = {
     'id': LOOKUPS_ID,
+    'name': LOOKUPS_STRING,
     'created_at': LOOKUPS_DATETIME,
     'modified_at': LOOKUPS_DATETIME,
 }
