@@ -1706,7 +1706,7 @@ class Participant(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model)
 
     def __str__(self):
         return f'{self.person} as {self.role}'
-    
+
     class Meta:
         verbose_name = _("participant")
         verbose_name_plural = _("participants")
@@ -2596,7 +2596,7 @@ class Shift(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
 
     def __str__(self):
         return f'{self.task} at {self.start_time}'
-    
+
     class Meta:
         verbose_name = _("shift")
         verbose_name_plural = _("shifts")
