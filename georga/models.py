@@ -749,6 +749,9 @@ class Location(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     def organization(self):
         return self.category.organization
 
+    def __str__(self):
+        return self.postal_address_name
+
     class Meta:
         verbose_name = _("location")
         verbose_name_plural = _("locations")
@@ -816,6 +819,9 @@ class LocationCategory(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.M
 
     def natural_key(self):
         return self.organization.natural_key() + (self.name,)
+
+    def __str__(self):
+        return self.name
 
     class Meta:
         verbose_name = _("location category")
@@ -1055,6 +1061,9 @@ class Message(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         null=True,
         blank=True,
     )
+
+    def __str__(self):
+        return self.title
 
     class Meta:
         indexes = [
@@ -2341,7 +2350,7 @@ class Resource(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     )
 
     def __str__(self):
-        return '%s' % self.description
+        return self.name
 
     class Meta:
         verbose_name = _("resource")
@@ -2414,7 +2423,7 @@ class Role(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     )
 
     def __str__(self):
-        return '%s' % self.description
+        return self.name
 
     def natural_key(self):
         if self.is_template:
