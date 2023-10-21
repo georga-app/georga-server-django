@@ -102,13 +102,14 @@ def auth(user, actions=None, permitted=None):
     Returns:
         The decorated function.
     """
-    _permitted = permitted
     _actions = actions
     if permitted in [True, False]:
         def _permitted(*args, **kwargs):
             return permitted
         if not _actions:
             _actions = r"¯\_(ツ)_/¯"
+    else:
+        _permitted = permitted
     permission_override = callable(_permitted)
 
     def decorator(func):

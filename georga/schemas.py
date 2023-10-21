@@ -226,7 +226,10 @@ class UUIDDjangoObjectType(DjangoObjectType):
         cls.permission = kwargs.get('permissions', [])
         for permission in cls.permission:
             cls.get_node = permission(cls.get_node)
+            _func = cls.get_queryset.__func__
             cls.get_queryset = permission(cls.get_queryset)
+            # check on __func__ introduced in graphene-django 3.1.5
+            cls.get_queryset.__func__ = _func
 
         super().__init_subclass_with_meta__(*args, **kwargs)
 

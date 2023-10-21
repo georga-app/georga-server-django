@@ -8,7 +8,7 @@ from django.forms import ModelForm
 
 import jwt
 from graphql_jwt import exceptions
-from graphql_jwt.compat import GraphQLResolveInfo
+from graphene import ResolveInfo
 from graphql_jwt.middleware import allow_any
 
 from . import settings
@@ -44,7 +44,7 @@ def info(f):
     """
     def decorator(func):
         def wrapper(*args, **kwargs):
-            info = next(arg for arg in args if isinstance(arg, GraphQLResolveInfo))
+            info = next(arg for arg in args if isinstance(arg, ResolveInfo))
             return func(info, *args, **kwargs)
         return wrapper
     return decorator
