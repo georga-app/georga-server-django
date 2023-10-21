@@ -38,6 +38,23 @@ Further current testusers are (use password `georga` for all accounts):
     - `operation.admin.1@seaeyesinternational.test`
     - `operation.admin.1@cyberaidworldwide.test`
 
+## Upgrade
+
+1. Unpin versions in `requirements.txt`
+2. Upgrade pip packages
+
+    docker compose run --rm --service-ports server bash
+    > pip install --upgrade -r requirements.txt
+
+3. Test/Fix startup
+
+    > ./scripts/startup.sh
+
+4. Run/Fix tests
+
+    > ./manage.py test
+
+5. Pin new versions in `requirements.txt`
 
 ## Contribute
 
