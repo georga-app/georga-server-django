@@ -749,6 +749,9 @@ class Location(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     def organization(self):
         return self.category.organization
 
+    def __str__(self):
+        return self.postal_address_name
+
     class Meta:
         verbose_name = _("location")
         verbose_name_plural = _("locations")
@@ -816,6 +819,9 @@ class LocationCategory(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.M
 
     def natural_key(self):
         return self.organization.natural_key() + (self.name,)
+
+    def __str__(self):
+        return self.name
 
     class Meta:
         verbose_name = _("location category")
@@ -1055,6 +1061,9 @@ class Message(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         null=True,
         blank=True,
     )
+
+    def __str__(self):
+        return self.title
 
     class Meta:
         indexes = [
@@ -1695,6 +1704,9 @@ class Participant(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model)
         null=True,
     )
 
+    def __str__(self):
+        return f'{self.person} as {self.role}'
+    
     class Meta:
         verbose_name = _("participant")
         verbose_name_plural = _("participants")
@@ -2341,7 +2353,7 @@ class Resource(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     )
 
     def __str__(self):
-        return '%s' % self.description
+        return self.name
 
     class Meta:
         verbose_name = _("resource")
@@ -2414,7 +2426,7 @@ class Role(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     )
 
     def __str__(self):
-        return '%s' % self.description
+        return f"{self.name} of {self.shift}"
 
     def natural_key(self):
         if self.is_template:
@@ -2582,6 +2594,9 @@ class Shift(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     def natural_key(self):
         return self.task.natural_key() + (self.start_time,)
 
+    def __str__(self):
+        return f'{self.task} at {self.start_time}'
+    
     class Meta:
         verbose_name = _("shift")
         verbose_name_plural = _("shifts")
