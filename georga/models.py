@@ -1704,6 +1704,9 @@ class Participant(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model)
         null=True,
     )
 
+    def __str__(self):
+        return f'{self.person} as {self.role}'
+    
     class Meta:
         verbose_name = _("participant")
         verbose_name_plural = _("participants")
@@ -2423,7 +2426,7 @@ class Role(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     )
 
     def __str__(self):
-        return self.name
+        return f"{self.name} of {self.shift}"
 
     def natural_key(self):
         if self.is_template:
@@ -2591,6 +2594,9 @@ class Shift(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     def natural_key(self):
         return self.task.natural_key() + (self.start_time,)
 
+    def __str__(self):
+        return f'{self.task} at {self.start_time}'
+    
     class Meta:
         verbose_name = _("shift")
         verbose_name_plural = _("shifts")
