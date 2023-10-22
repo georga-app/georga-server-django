@@ -1,3 +1,6 @@
+# For copyright and license terms, see COPYRIGHT.md (top level of repository)
+# Repository: https://github.com/georga-app/georga-server-django
+
 from operator import or_, and_
 from datetime import datetime
 from functools import cached_property, reduce
@@ -1706,7 +1709,7 @@ class Participant(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model)
 
     def __str__(self):
         return f'{self.person} as {self.role}'
-    
+
     class Meta:
         verbose_name = _("participant")
         verbose_name_plural = _("participants")
@@ -2596,7 +2599,7 @@ class Shift(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
 
     def __str__(self):
         return f'{self.task} at {self.start_time}'
-    
+
     class Meta:
         verbose_name = _("shift")
         verbose_name_plural = _("shifts")
