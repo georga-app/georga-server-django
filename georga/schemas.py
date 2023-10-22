@@ -1237,22 +1237,17 @@ class ParticipantModelForm(UUIDModelForm):
     def save(self, commit=True):
         participant = super().save(commit=False)
         user = self._meta.user
-        admin_acceptance_submitted = self.data.get('admin_acceptance', False)
-        if not (admin_acceptance_submitted or participant.role.needs_admin_acceptance):
-            participant.admin_acceptance = 'NONE'
 
-        non_default_fields = ['ACCEPTED', 'DECLINED']
-        if participant.role.needs_admin_acceptance:
-            non_default_fields.append('NONE')
-        else:
-            non_default_fields.append('PENDING')
-
-        if participant.admin_acceptance in non_default_fields:
-            if not participant.permits(user, 'admin_create'):
+        if 'admin_acceptance' in self.changed_data:
+            non_default_fields = ['ACCEPTED', 'DECLINED']
+            if participant.role.needs_admin_acceptance:
+                non_default_fields.append('NONE')
+            else:
+                non_default_fields.append('PENDING')
+            needs_permission = participant.admin_acceptance in non_default_fields
+            if needs_permission and not participant.permits(user, ('admin_create', 'admin_update')):
                 raise PermissionDenied
-
-            if admin_acceptance_submitted:
-                participant.admin_acceptance_user = user
+            participant.admin_acceptance_user = user
 
         if commit:
             participant.save()
