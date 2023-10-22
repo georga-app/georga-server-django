@@ -1,3 +1,6 @@
+# For copyright and license terms, see COPYRIGHT.md (top level of repository)
+# Repository: https://github.com/georga-app/georga-server-django
+#
 # flake8: noqa
 # script for manual testing
 # ./manage.py shell

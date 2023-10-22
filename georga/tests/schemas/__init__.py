@@ -1,3 +1,6 @@
+# For copyright and license terms, see COPYRIGHT.md (top level of repository)
+# Repository: https://github.com/georga-app/georga-server-django
+
 from os import listdir
 from os.path import isfile, join
 from unittest import SkipTest
