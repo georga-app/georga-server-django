@@ -60,7 +60,7 @@ if __name__ == '__main__':
     main()
 
     # run linter after tests
-    if (sys.argv[1] == 'test'):
+    if (len(sys.argv) > 1 and sys.argv[1] == 'test'):
         print("\nRunning linter ... ")
         result = subprocess.run(('flake8', '.'))
         if not result.returncode:
