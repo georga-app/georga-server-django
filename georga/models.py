@@ -1010,6 +1010,7 @@ class Message(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         max_length=9,
         choices=STATES,
         default='DRAFT',
+        protected=True
     )
 
     # delivery
@@ -1024,6 +1025,7 @@ class Message(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         max_length=9,
         choices=DELIVERY_STATES,
         default='NONE',
+        protected=True
     )
     email_delivery_start = models.DateTimeField(
         null=True,
@@ -1042,6 +1044,7 @@ class Message(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         max_length=9,
         choices=DELIVERY_STATES,
         default='NONE',
+        protected=True
     )
     push_delivery_start = models.DateTimeField(
         null=True,
@@ -1055,6 +1058,7 @@ class Message(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         max_length=9,
         choices=DELIVERY_STATES,
         default='NONE',
+        protected=True
     )
     push_delivery_start = models.DateTimeField(
         null=True,
@@ -1447,6 +1451,7 @@ class Operation(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         max_length=9,
         choices=STATES,
         default='DRAFT',
+        protected=True
     )
     name = models.CharField(
         max_length=100,
@@ -1564,6 +1569,7 @@ class Organization(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model
         max_length=9,
         choices=STATES,
         default='DRAFT',
+        protected=True
     )
     name = models.CharField(
         max_length=50,
@@ -1689,6 +1695,7 @@ class Participant(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model)
     acceptance = FSMField(
         max_length=8,
         choices=ACCEPTANCE_STATES,
+        protected=True
     )
     ADMIN_ACCEPTANCE_STATES = ACCEPTANCE_STATES + [
         ('NONE', _('None')),
@@ -1698,6 +1705,7 @@ class Participant(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model)
         choices=ADMIN_ACCEPTANCE_STATES,
         default='PENDING',
         blank=True,
+        protected=True
     )
     admin_acceptance_user = models.ForeignKey(
         to='Person',
@@ -2244,6 +2252,7 @@ class Project(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         max_length=9,
         choices=STATES,
         default='DRAFT',
+        protected=True
     )
     name = models.CharField(
         max_length=50,
@@ -2574,6 +2583,7 @@ class Shift(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         max_length=9,
         choices=STATES,
         default='DRAFT',
+        protected=True
     )
     task = models.ForeignKey(
         to='Task',
@@ -2694,6 +2704,7 @@ class Task(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         max_length=9,
         choices=STATES,
         default='DRAFT',
+        protected=True
     )
     name = models.CharField(
         max_length=100,
