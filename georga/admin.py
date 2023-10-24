@@ -30,27 +30,36 @@ from .models import (
 
 class UUIDModelAdmin(admin.ModelAdmin):
     def get_readonly_fields(self, *args, **kwargs):
-        return ('gid',) + super().get_readonly_fields(*args, **kwargs)
+        return ('gid', 'uuid') + super().get_readonly_fields(*args, **kwargs)
     list_display = ['__str__', 'gid']
 
 
-admin.site.register(ACE, UUIDModelAdmin)
-admin.site.register(Device, UUIDModelAdmin)
-admin.site.register(Equipment, UUIDModelAdmin)
-admin.site.register(Location, UUIDModelAdmin)
-admin.site.register(LocationCategory, UUIDModelAdmin)
-admin.site.register(Message, UUIDModelAdmin)
-admin.site.register(Operation, UUIDModelAdmin)
-admin.site.register(Organization, UUIDModelAdmin)
-admin.site.register(Participant, UUIDModelAdmin)
-admin.site.register(Person, UUIDModelAdmin)
-admin.site.register(PersonProperty, UUIDModelAdmin)
-admin.site.register(PersonPropertyGroup, UUIDModelAdmin)
-admin.site.register(PersonToObject, UUIDModelAdmin)
-admin.site.register(Project, UUIDModelAdmin)
-admin.site.register(Resource, UUIDModelAdmin)
-admin.site.register(Role, UUIDModelAdmin)
-admin.site.register(RoleSpecification, UUIDModelAdmin)
-admin.site.register(Shift, UUIDModelAdmin)
-admin.site.register(Task, UUIDModelAdmin)
-admin.site.register(TaskField, UUIDModelAdmin)
+class TimestampsModelAdmin(admin.ModelAdmin):
+    def get_readonly_fields(self, *args, **kwargs):
+        return ('created_at', 'modified_at') + super().get_readonly_fields(*args, **kwargs)
+
+
+class GeorgaModelAdmin(UUIDModelAdmin, TimestampsModelAdmin):
+    pass
+
+
+admin.site.register(ACE, GeorgaModelAdmin)
+admin.site.register(Device, GeorgaModelAdmin)
+admin.site.register(Equipment, GeorgaModelAdmin)
+admin.site.register(Location, GeorgaModelAdmin)
+admin.site.register(LocationCategory, GeorgaModelAdmin)
+admin.site.register(Message, GeorgaModelAdmin)
+admin.site.register(Operation, GeorgaModelAdmin)
+admin.site.register(Organization, GeorgaModelAdmin)
+admin.site.register(Participant, GeorgaModelAdmin)
+admin.site.register(Person, GeorgaModelAdmin)
+admin.site.register(PersonProperty, GeorgaModelAdmin)
+admin.site.register(PersonPropertyGroup, GeorgaModelAdmin)
+admin.site.register(PersonToObject, GeorgaModelAdmin)
+admin.site.register(Project, GeorgaModelAdmin)
+admin.site.register(Resource, GeorgaModelAdmin)
+admin.site.register(Role, GeorgaModelAdmin)
+admin.site.register(RoleSpecification, GeorgaModelAdmin)
+admin.site.register(Shift, GeorgaModelAdmin)
+admin.site.register(Task, GeorgaModelAdmin)
+admin.site.register(TaskField, GeorgaModelAdmin)
