@@ -28,18 +28,18 @@ from .models import (
 )
 
 
-class UUIDModelAdmin():
+class UUIDModelAdmin(admin.ModelAdmin):
     def get_readonly_fields(self, *args, **kwargs):
         return ('gid', 'uuid') + super().get_readonly_fields(*args, **kwargs)
     list_display = ['__str__', 'gid']
 
 
-class TimestampsModelAdmin():
+class TimestampsModelAdmin(admin.ModelAdmin):
     def get_readonly_fields(self, *args, **kwargs):
         return ('created_at', 'modified_at') + super().get_readonly_fields(*args, **kwargs)
 
 
-class GeorgaModelAdmin(admin.ModelAdmin, UUIDModelAdmin, TimestampsModelAdmin):
+class GeorgaModelAdmin(UUIDModelAdmin, TimestampsModelAdmin):
     pass
 
 
