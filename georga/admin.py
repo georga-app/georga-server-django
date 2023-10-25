@@ -2,6 +2,7 @@
 # Repository: https://github.com/georga-app/georga-server-django
 
 from django.contrib import admin
+from django_fsm import FSMField
 
 # Register your models here.
 from .models import (
@@ -39,7 +40,16 @@ class TimestampsModelAdmin(admin.ModelAdmin):
         return ('created_at', 'modified_at') + super().get_readonly_fields(*args, **kwargs)
 
 
-class GeorgaModelAdmin(UUIDModelAdmin, TimestampsModelAdmin):
+class FSMModelAdmin(admin.ModelAdmin):
+    def get_readonly_fields(self, *args, **kwargs):
+        read_only = []
+        for field in self.model._meta.get_fields():
+            if isinstance(field, FSMField):
+                read_only.append(field.name)
+        return tuple(read_only) + super().get_readonly_fields(*args, **kwargs)
+
+
+class GeorgaModelAdmin(UUIDModelAdmin, TimestampsModelAdmin, FSMModelAdmin):
     pass
 
 
