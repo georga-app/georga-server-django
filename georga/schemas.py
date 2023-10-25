@@ -1995,6 +1995,72 @@ class DeleteRoleMutation(UUIDDjangoModelFormMutation):
         return cls(role=role, errors=[])
 
 
+class AcceptRoleMutation(UUIDDjangoModelFormMutation):
+    participant = Field(ParticipantType)
+
+    class Meta:
+        form_class = RoleModelForm
+        only_fields = ['id']
+        required_fields = ['id']
+        permissions = [login_required]
+
+    @classmethod
+    def perform_mutate(cls, form, info):
+        person = info.context.user
+        role = form.instance
+        participant = Participant.objects.filter(person=person, role=role).first()
+        # create
+        if not participant:
+            participant = Participant(
+                person=person,
+                role=role,
+            )
+            if not participant.permits(person, 'create'):
+                raise PermissionDenied
+        # update
+        else:
+            if not participant.permits(person, 'update'):
+                raise PermissionDenied
+        # accept
+        if participant.acceptance != "ACCEPTED":
+            participant.accept()
+        participant.save()
+        return cls(participant=participant, errors=[])
+
+
+class DeclineRoleMutation(UUIDDjangoModelFormMutation):
+    participant = Field(ParticipantType)
+
+    class Meta:
+        form_class = RoleModelForm
+        only_fields = ['id']
+        required_fields = ['id']
+        permissions = [login_required]
+
+    @classmethod
+    def perform_mutate(cls, form, info):
+        person = info.context.user
+        role = form.instance
+        participant = Participant.objects.filter(person=person, role=role).first()
+        # create
+        if not participant:
+            participant = Participant(
+                person=person,
+                role=role,
+            )
+            if not participant.permits(person, 'create'):
+                raise PermissionDenied
+        # update
+        else:
+            if not participant.permits(person, 'update'):
+                raise PermissionDenied
+        # accept
+        if participant.acceptance != "DECLINED":
+            participant.decline()
+        participant.save()
+        return cls(participant=participant, errors=[])
+
+
 # RoleSpecification -----------------------------------------------------------
 
 # fields
@@ -2499,6 +2565,8 @@ class MutationType(ObjectType):
     create_role = CreateRoleMutation.Field()
     update_role = UpdateRoleMutation.Field()
     delete_role = DeleteRoleMutation.Field()
+    accept_role = AcceptRoleMutation.Field()
+    decline_role = DeclineRoleMutation.Field()
     # RoleSpecification
     create_role_specification = CreateRoleSpecificationMutation.Field()
     update_role_specification = UpdateRoleSpecificationMutation.Field()
