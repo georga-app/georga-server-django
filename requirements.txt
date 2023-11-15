@@ -6,7 +6,7 @@ channels-redis==4.1.0
 cryptography==41.0.4
 django-phonenumber-field==7.2.0
 Django==4.2.6
-django-cors-headers==4.3.0
+django-cors-headers==4.3.1
 django-filter==23.3
 django-fsm==2.8.1
 django-graphql-jwt==0.4.0
