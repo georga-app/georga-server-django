@@ -25,5 +25,5 @@ pdbpp==0.10.3
 
 # remove aoihttp again, when stable, see
 # https://stackoverflow.com/a/77318890
-aiohttp==3.9.0b0
+aiohttp==3.9.1
 
