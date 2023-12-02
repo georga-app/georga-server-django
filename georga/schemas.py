@@ -1051,6 +1051,7 @@ class DeleteMessageFilterMutation(UUIDDjangoModelFormMutation):
 operation_ro_fields = [
     'created_at',
     'modified_at',
+    'state',
 ]
 operation_wo_fields = [
 ]
@@ -1126,6 +1127,7 @@ class DeleteOperationMutation(UUIDDjangoModelFormMutation):
 organization_ro_fields = [
     'created_at',
     'modified_at',
+    'state',
 ]
 organization_wo_fields = [
 ]
@@ -1785,6 +1787,7 @@ project_ro_fields = [
     'created_at',
     'modified_at',
     'channel_filters',
+    'state',
 ]
 project_wo_fields = [
 ]
@@ -2132,6 +2135,7 @@ class DeleteRoleSpecificationMutation(UUIDDjangoModelFormMutation):
 shift_ro_fields = [
     'created_at',
     'modified_at',
+    'state',
 ]
 shift_wo_fields = [
 ]
@@ -2140,7 +2144,6 @@ shift_rw_fields = [
     'start_time',
     'end_time',
     'enrollment_deadline',
-    'state',
 ]
 shift_filter_fields = {
     'id': LOOKUPS_ID,
@@ -2207,6 +2210,7 @@ class DeleteShiftMutation(UUIDDjangoModelFormMutation):
 task_ro_fields = [
     'created_at',
     'modified_at',
+    'state',
 ]
 task_wo_fields = [
 ]
