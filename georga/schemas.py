@@ -1249,6 +1249,11 @@ participant_filter_fields = {
     'id': LOOKUPS_ID,
     'created_at': LOOKUPS_DATETIME,
     'modified_at': LOOKUPS_DATETIME,
+    'role__shift': LOOKUPS_ID,
+    'role__shift__task': LOOKUPS_ID,
+    'role__shift__task__operation': LOOKUPS_ID,
+    'role__shift__task__operation__project': LOOKUPS_ID,
+    'role__shift__task__operation__project__organization': LOOKUPS_ID,
 }
 
 
@@ -2182,6 +2187,10 @@ shift_filter_fields = {
     'id': LOOKUPS_ID,
     'created_at': LOOKUPS_DATETIME,
     'modified_at': LOOKUPS_DATETIME,
+    'task': LOOKUPS_ID,
+    'task__operation': LOOKUPS_ID,
+    'task__operation__project': LOOKUPS_ID,
+    'task__operation__project__organization': LOOKUPS_ID,
 }
 
 
