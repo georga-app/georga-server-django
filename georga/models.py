@@ -1082,7 +1082,7 @@ class Message(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        if os.environ["DJANGO_DEMO"] != "0" and self.push_delivery == "NONE":
+        if os.environ.get("DJANGO_DEMO") == "1" and self.push_delivery == "NONE":
             self.schedule_push()
             self.send_push()
 
