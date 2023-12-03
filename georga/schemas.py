@@ -13,6 +13,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.core.exceptions import ValidationError
 from django.db.models import ManyToManyField, ManyToManyRel, ManyToOneRel
+from django.db.models.fields.related import ForeignKey
 from django.forms import (
     ModelForm, ModelChoiceField, ModelMultipleChoiceField,
     IntegerField, CharField, ChoiceField
@@ -261,6 +262,18 @@ class UUIDDjangoFilterConnectionField(DjangoFilterConnectionField):
     Bugfixes:
     - Fixes a bug that converts model id fields to graphene.Float schema fields.
     """
+    # _lookups = [
+    #     'exact', 'iexact', 'contains', 'icontains', 'in', 'gt', 'gte', 'lt', 'lte',
+    #     'startswith', 'istartswith', 'endswith', 'iendswith', 'range', 'date',
+    #     'year', 'iso_year', 'month', 'day', 'week', 'week_day', 'iso_week_day', 'quarter',
+    #     'time', 'hour', 'minute', 'second', 'isnull', 'regex', 'iregex',
+    # ]
+    # @staticmethod
+    # def add_uuid_to_lookup(field, lookup):
+    #     if field:
+    #         return f"{lookup}__uuid"
+    #     return lookup
+
     @property
     def filtering_args(self):
         # fix a bug that converts model id fields to graphene.Float schema fields
@@ -274,7 +287,7 @@ class UUIDDjangoFilterConnectionField(DjangoFilterConnectionField):
 
     @classmethod
     def resolve_queryset(
-            cls, connection, iterable, info, args, filtering_args, filterset_class
+        cls, connection, iterable, info, args, filtering_args, filterset_class
     ):
         # move queryset id arg to uuid arg
         if 'id' in args:
@@ -287,13 +300,24 @@ class UUIDDjangoFilterConnectionField(DjangoFilterConnectionField):
         for name, _filter in filterset_class.base_filters.items():
             if isinstance(_filter.field, (GlobalIDMultipleChoiceField, GlobalIDFormField)):
                 field_name = _filter.field_name
+                lookups = field_name.split("__")
                 if '__uuid' not in field_name:
-                    if "__" in field_name:
-                        field_name, lookup = field_name.split("__", 1)
-                        parts = [field_name, "uuid", lookup]
+                    if len(lookups) == 1:
+                        _filter.field_name = f"{field_name}__uuid"
                     else:
-                        parts = [field_name, "uuid"]
-                    _filter.field_name = "__".join(parts)
+                        parts = []
+                        current_field = filterset_class.Meta.model._meta.get_field(lookups[0])
+                        for i in range(0, len(lookups)):
+                            part = lookups[i]
+                            next_part = i != len(lookups) - 1 and lookups[i+1]
+                            if not isinstance(current_field, ForeignKey):
+                                parts.append(part)
+                                continue
+                            if not next_part:
+                                parts.append(f"{part}__uuid")
+                                continue
+                            parts.append(part)
+                        _filter.field_name = "__".join(parts)
 
         return super().resolve_queryset(
             connection, iterable, info, args, filtering_args, filterset_class
@@ -1065,6 +1089,10 @@ operation_filter_fields = {
     'id': LOOKUPS_ID,
     'created_at': LOOKUPS_DATETIME,
     'modified_at': LOOKUPS_DATETIME,
+    'project': LOOKUPS_ID,
+    'project__organization': LOOKUPS_ID,
+    # 'project__organization__id': LOOKUPS_ID,
+    # 'organization': LOOKUPS_ID,
 }
 
 
@@ -1075,6 +1103,7 @@ class OperationType(UUIDDjangoObjectType):
     message_filters = UUIDDjangoFilterConnectionField('georga.schemas.MessageFilterType')
     person_attributes = UUIDDjangoFilterConnectionField('georga.schemas.PersonToObjectType')
     channel_filters = Field(ChannelFiltersType)
+    # organization = Field('georga.schemas.OrganizationType')
 
     class Meta:
         model = Operation
@@ -1084,6 +1113,9 @@ class OperationType(UUIDDjangoObjectType):
 
     def resolve_channel_filters(parent, info):
         return parent.channel_filters(info.context.user)
+
+    # def resolve_organization(parent, info):
+    #     return parent.organization
 
 
 # forms
@@ -1800,6 +1832,7 @@ project_filter_fields = {
     'id': LOOKUPS_ID,
     'created_at': LOOKUPS_DATETIME,
     'modified_at': LOOKUPS_DATETIME,
+    'organization': LOOKUPS_ID,
 }
 
 
@@ -2228,6 +2261,9 @@ task_filter_fields = {
     'id': LOOKUPS_ID,
     'created_at': LOOKUPS_DATETIME,
     'modified_at': LOOKUPS_DATETIME,
+    'operation': LOOKUPS_ID,
+    'operation__project': LOOKUPS_ID,
+    'operation__project__organization': LOOKUPS_ID,
 }
 
 
