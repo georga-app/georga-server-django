@@ -7,7 +7,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 configuration = onesignal.Configuration(
-    app_key=os.environ["DJANGO_DEMO_PUSH_API_KEY"],
+    app_key=os.environ.get("DJANGO_DEMO_PUSH_API_KEY", ""),
 )
 
 
@@ -15,15 +15,15 @@ def send_push_message(heading, content, recipient=False):
     if os.environ["DJANGO_DEMO"] == "0":
         return True
     if not recipient:
-        recipient = os.environ["DJANGO_DEMO_PUSH_ALIAS_ID"]
+        recipient = os.environ.get("DJANGO_DEMO_PUSH_ALIAS_ID", "")
 
     with onesignal.ApiClient(configuration) as api_client:
         api_instance = default_api.DefaultApi(api_client)
         notification = Notification()
-        notification.app_id = os.environ["DJANGO_DEMO_PUSH_APP_ID"]
+        notification.app_id = os.environ.get("DJANGO_DEMO_PUSH_APP_ID", "")
         notification.priority = 10
         notification.include_aliases = {
-            'onesignal_id': [os.environ["DJANGO_DEMO_PUSH_ALIAS_ID"]]
+            'onesignal_id': [os.environ.get("DJANGO_DEMO_PUSH_ALIAS_ID", "")]
         }
         notification.target_channel = "push"
         notification.headings = {
