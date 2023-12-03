@@ -112,3 +112,12 @@ def profile_cached_property():
     print(org_admin.admin_organizations)
 
 
+# push -------------------------------------------------------------------
+
+def test_push_message():
+    message = Message()
+    message.title = "Urgent help needed"
+    message.contents = "We need help!"
+    message.category = "URGENT"
+    message.scope = tas1
+    message.save()

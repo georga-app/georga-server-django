@@ -1,6 +1,7 @@
 # For copyright and license terms, see COPYRIGHT.md (top level of repository)
 # Repository: https://github.com/georga-app/georga-server-django
 
+import os
 from operator import or_, and_
 from datetime import datetime
 from functools import cached_property, reduce
@@ -20,6 +21,8 @@ from django.utils.translation import gettext as _
 from django_fsm import FSMField, transition, RETURN_VALUE
 from phonenumber_field.modelfields import PhoneNumberField
 from graphql_relay import to_global_id
+
+from .push import send_push_message
 
 
 # fields ----------------------------------------------------------------------
@@ -1077,6 +1080,12 @@ class Message(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
             models.Index(fields=["scope_ct", "scope_id"]),
         ]
 
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if os.environ["DJANGO_DEMO"] != "0" and self.push_delivery == "NONE":
+            self.schedule_push()
+            self.send_push()
+
     def clean(self):
         super().clean()
         # restrict foreign models of scope
@@ -1217,8 +1226,9 @@ class Message(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
 
     @transition(push_delivery, 'SCHEDULED', 'SENT', on_error='FAILED')
     def send_push(self):
-        # TODO: transition
-        pass
+        if send_push_message(self.title, self.contents):
+            return 'SUCCESS'
+        return 'FAILED'
 
     @transition(push_delivery, 'SENT', RETURN_VALUE('SENT', 'SUCCEEDED', 'FAILED'))
     def check_push(self):
