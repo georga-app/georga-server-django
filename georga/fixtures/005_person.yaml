@@ -471,7 +471,7 @@
     is_active: true
     username: helper.001@georga.test
     email: helper.001@georga.test
-    first_name: Helper
+    first_name: Helper001
     last_name: User
     properties: [
       [French Blue Circle, Language, English],
@@ -509,7 +509,7 @@
     is_active: true
     username: helper.002@georga.test
     email: helper.002@georga.test
-    first_name: Helper
+    first_name: Helper002
     last_name: User
     properties: [
       [French Blue Circle, Language, English],
@@ -547,7 +547,7 @@
     is_active: true
     username: helper.003@georga.test
     email: helper.003@georga.test
-    first_name: Helper
+    first_name: Helper003
     last_name: User
     properties: [
       [French Blue Circle, Language, English],
@@ -585,7 +585,7 @@
     is_active: true
     username: helper.004@georga.test
     email: helper.004@georga.test
-    first_name: Helper
+    first_name: Helper004
     last_name: User
     properties: [
       [French Blue Circle, Language, English],
@@ -623,7 +623,7 @@
     is_active: true
     username: helper.005@georga.test
     email: helper.005@georga.test
-    first_name: Helper
+    first_name: Helper005
     last_name: User
     properties: [
       [French Blue Circle, Language, English],
