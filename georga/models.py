@@ -1470,6 +1470,7 @@ class Operation(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         max_length=1000,
         null=True,
         blank=True,
+        default='',
     )
     is_active = models.BooleanField(
         null=True,
@@ -1592,6 +1593,7 @@ class Organization(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model
         max_length=1000,
         null=True,
         blank=True,
+        default='',
     )
 
     ace = GenericRelation(
@@ -2271,6 +2273,7 @@ class Project(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         max_length=1000,
         null=True,
         blank=True,
+        default='',
     )
 
     ace = GenericRelation(
@@ -2368,6 +2371,9 @@ class Resource(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     )
     description = models.CharField(
         max_length=50,
+        null=True,
+        blank=True,
+        default='',
     )
     personal_hint = models.CharField(
         max_length=50,
@@ -2430,6 +2436,7 @@ class Role(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         max_length=50,
         null=True,
         blank=True,
+        default='',
     )
     quantity = models.PositiveIntegerField()
     is_active = models.BooleanField(
@@ -2723,6 +2730,7 @@ class Task(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         max_length=1000,
         null=True,
         blank=True,
+        default='',
     )
     start_time = models.DateTimeField()
     end_time = models.DateTimeField(
@@ -2835,6 +2843,7 @@ class TaskField(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         max_length=500,
         null=True,
         blank=True,
+        default='',
     )
 
     def __str__(self):

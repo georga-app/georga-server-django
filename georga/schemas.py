@@ -1890,7 +1890,7 @@ class DeleteProjectMutation(UUIDDjangoModelFormMutation):
     @classmethod
     def perform_mutate(cls, form, info):
         project = form.instance
-        project.delete()
+        project.delete(hard=True)
         return cls(project=project, errors=[])
 
 
@@ -2174,6 +2174,7 @@ shift_ro_fields = [
     'created_at',
     'modified_at',
     'state',
+    'role_set',
 ]
 shift_wo_fields = [
 ]
@@ -2253,6 +2254,7 @@ task_ro_fields = [
     'created_at',
     'modified_at',
     'state',
+    'role_set',
 ]
 task_wo_fields = [
 ]
@@ -2295,9 +2297,20 @@ class TaskType(UUIDDjangoObjectType):
 
 # forms
 class TaskModelForm(UUIDModelForm):
+    # role_set = ModelMultipleChoiceField(queryset=Role.objects.all())
+
     class Meta:
         model = Task
         fields = task_wo_fields + task_rw_fields
+
+    # def save(self, commit=True):
+    #     task = super().save(commit=False)
+    #     for role in task.role_set.all():
+    #         print(role)
+    #     if commit:
+    #         task.save()
+    #         self.save_m2m()
+    #     return task
 
 
 # mutations
@@ -2324,7 +2337,7 @@ class DeleteTaskMutation(UUIDDjangoModelFormMutation):
     @classmethod
     def perform_mutate(cls, form, info):
         task = form.instance
-        task.delete()
+        task.delete(hard=True)
         return cls(task=task, errors=[])
 
 
