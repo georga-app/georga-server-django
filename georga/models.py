@@ -367,7 +367,7 @@ class OrganizationManager(FilteredManager):
         return self.get(name=organization_name)
 
 
-class PersonManager(FilteredManager):
+class PersonManager(UserManager, FilteredManager):
     def get_by_natural_key(self, email):
         return self.get(email=email)
 
