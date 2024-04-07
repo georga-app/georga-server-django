@@ -31,7 +31,7 @@
   pk: 103
   fields:
     uuid: 00000002-0000-0000-0000-000000000103
-    state: DELETED
+    state: PUBLISHED
     name: Elbe River Flood Hamburg 2002
     description: >
       General disaster countermeasures, dike reinforcement, draining basements, clean up rubble.
@@ -62,6 +62,15 @@
     name: Corona Impfzentrum Musterdorf 2020-11
     description: >
       Supporting measures to organize vaccinations.
+    organization: [French Blue Circle]
+- model: georga.project
+  pk: 199
+  fields:
+    uuid: 00000002-0000-0000-0000-000000000199
+    state: DELETED
+    deleted: True
+    name: Deleted Project
+    description:
     organization: [French Blue Circle]
 
 # Org2 ------------------------------------------------------------------------

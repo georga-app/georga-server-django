@@ -52,7 +52,7 @@
   pk: 103
   fields:
     uuid: 00000010-0000-0000-0000-000000000103
-    state: DELETED
+    state: PUBLISHED
     name: Registrierung
     description: >
       Registrierung jeglicher Besucher und Bewohner
@@ -216,6 +216,20 @@
     uuid: 00000010-0000-0000-0000-000000000115
     state: PUBLISHED
     name: Zuteilung Impfräume
+    operation: [
+      French Blue Circle,
+      Corona Impfzentrum Musterdorf 2020-11,
+      Zuteilung Impfräume
+    ]
+    start_time: 2022-08-05 08:00:36.048326+00:00
+    field: [French Blue Circle, Organisationsthemen bei Betreuungseinsätzen]
+- model: georga.task
+  pk: 199
+  fields:
+    uuid: 00000010-0000-0000-0000-000000000199
+    state: DELETED
+    deleted: True
+    name: Deleted Task
     operation: [
       French Blue Circle,
       Corona Impfzentrum Musterdorf 2020-11,

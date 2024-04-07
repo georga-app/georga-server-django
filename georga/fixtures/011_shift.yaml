@@ -79,7 +79,7 @@
     uuid: 00000011-0000-0000-0000-000000000105
     start_time: 2022-08-10 08:00:00.000000+00:00
     end_time: 2022-08-10 18:00:00.000000+00:00
-    state: DELETED
+    state: PUBLISHED
     enrollment_deadline: 2022-08-04 18:00:00.000000+00:00
     task: [
       French Blue Circle,
@@ -220,6 +220,21 @@
     start_time: 2021-07-18 14:00:00.000000+00:00
     end_time: 2021-07-18 18:00:00.000000+00:00
     state: PUBLISHED
+    enrollment_deadline: 2022-08-04 18:00:00.000000+00:00
+    task: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch
+    ]
+- model: georga.shift
+  pk: 199
+  fields:
+    uuid: 00000011-0000-0000-0000-000000000199
+    start_time: 2021-07-18 18:00:00.000000+00:00
+    end_time: 2021-07-18 22:00:00.000000+00:00
+    state: DELETED
+    deleted: True
     enrollment_deadline: 2022-08-04 18:00:00.000000+00:00
     task: [
       French Blue Circle,

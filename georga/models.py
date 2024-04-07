@@ -332,14 +332,29 @@ class MixinAuthorization(models.Model):
 
 # manager ---------------------------------------------------------------------
 
-class LocationCategoryManager(models.Manager):
+INCLUDE_DELETED = False
+
+
+class FilteredManager(models.Manager):
+    """
+    Manager with basic filters.
+    """
+    def get_queryset(self):
+        q = super().get_queryset()
+        # soft deletion
+        if not INCLUDE_DELETED:
+            q = q.filter(deleted=False)
+        return q
+
+
+class LocationCategoryManager(FilteredManager):
     def get_by_natural_key(self, organization_name, location_category_name):
         return self.get(
             organization__name=organization_name,
             name=location_category_name)
 
 
-class OperationManager(models.Manager):
+class OperationManager(FilteredManager):
     def get_by_natural_key(self, organization_name, project_name, operation_name):
         return self.get(
             project__organization__name=organization_name,
@@ -347,17 +362,17 @@ class OperationManager(models.Manager):
             name=operation_name)
 
 
-class OrganizationManager(models.Manager):
+class OrganizationManager(FilteredManager):
     def get_by_natural_key(self, organization_name):
         return self.get(name=organization_name)
 
 
-class PersonManager(UserManager):
+class PersonManager(FilteredManager):
     def get_by_natural_key(self, email):
         return self.get(email=email)
 
 
-class PersonPropertyManager(models.Manager):
+class PersonPropertyManager(FilteredManager):
     def get_by_natural_key(self, organization_name, group_name, property_name):
         return self.get(
             group__organization__name=organization_name,
@@ -365,18 +380,23 @@ class PersonPropertyManager(models.Manager):
             name=property_name)
 
 
-class PersonPropertyGroupManager(models.Manager):
+class PersonPropertyGroupManager(FilteredManager):
     def get_by_natural_key(self, organization_name, group_name):
         return self.get(
             organization__name=organization_name,
             name=group_name)
 
 
-class ProjectManager(models.Manager):
+class ProjectManager(FilteredManager):
     def get_by_natural_key(self, organization_name, project_name):
         return self.get(
             organization__name=organization_name,
             name=project_name)
+
+
+class ResourceManager(FilteredManager):
+    def get_by_natural_key(self, organization_name):
+        return self.get(name=organization_name)
 
 
 class RoleManager(models.Manager):
@@ -417,7 +437,7 @@ class RoleManager(models.Manager):
             name=role_name)
 
 
-class ShiftManager(models.Manager):
+class ShiftManager(FilteredManager):
     def get_by_natural_key(self, organization_name, project_name, operation_name,
                            task_name, shift_start_time):
         return self.get(
@@ -428,7 +448,7 @@ class ShiftManager(models.Manager):
             start_time=shift_start_time)
 
 
-class TaskManager(models.Manager):
+class TaskManager(FilteredManager):
     def get_by_natural_key(self, organization_name, project_name, operation_name,
                            task_name):
         return self.get(
@@ -438,7 +458,7 @@ class TaskManager(models.Manager):
             name=task_name)
 
 
-class TaskFieldManager(models.Manager):
+class TaskFieldManager(FilteredManager):
     def get_by_natural_key(self, organization_name, task_field_name):
         return self.get(
             organization__name=organization_name,
@@ -558,6 +578,9 @@ class ACE(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
 
 
 class Device(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
+    objects = FilteredManager()
+    deleted = models.BooleanField(default=False)
+
     person = models.ForeignKey(
         to='Person',
         on_delete=models.CASCADE,
@@ -646,6 +669,9 @@ class Device(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
 
 
 class Equipment(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
+    objects = FilteredManager()
+    deleted = models.BooleanField(default=False)
+
     organization = models.ForeignKey(
         to='Organization',
         on_delete=models.CASCADE,
@@ -702,6 +728,9 @@ class Equipment(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
 
 
 class Location(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
+    objects = FilteredManager()
+    deleted = models.BooleanField(default=False)
+
     category = models.ForeignKey(
         to='LocationCategory',
         on_delete=models.CASCADE,
@@ -814,6 +843,7 @@ class Location(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
 
 class LocationCategory(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     objects = LocationCategoryManager()
+    deleted = models.BooleanField(default=False)
 
     organization = models.ForeignKey(
         to='Organization',
@@ -955,6 +985,9 @@ class Message(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     - Alert: Triggered by the system by cronjobs based on analysis.
     - Activity: On change of objects, which are relevant to the persons
     '''
+    objects = FilteredManager()
+    deleted = models.BooleanField(default=False)
+
     # *_cts list: list of valid models
     # checked in ForeignKey.limit_choices_to, Model.clean() and GQLFilterSet
     scope_cts = ['organization', 'project', 'operation', 'task', 'shift']
@@ -1181,9 +1214,11 @@ class Message(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
 
     @transition(state, '*', 'DELETED')
     def delete(self, *args, hard=False, **kwargs):
-        # TODO: transition
         if hard:
             super().delete(*args, **kwargs)
+        else:
+            self.deleted = True
+            self.save()
 
     # email_delivery transitions
     @transition(email_delivery, 'NONE', 'SCHEDULED')
@@ -1446,6 +1481,7 @@ class MessageFilter(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Mode
 
 class Operation(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     objects = OperationManager()
+    deleted = models.BooleanField(default=False)
 
     project = models.ForeignKey(
         to='Project',
@@ -1562,13 +1598,16 @@ class Operation(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
 
     @transition(state, '*', 'DELETED')
     def delete(self, *args, hard=False, **kwargs):
-        # TODO: transition
         if hard:
             super().delete(*args, **kwargs)
+        else:
+            self.deleted = True
+            self.save()
 
 
 class Organization(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     objects = OrganizationManager()
+    deleted = models.BooleanField(default=False)
 
     STATES = [
         ('DRAFT', _('Draft')),
@@ -1684,9 +1723,11 @@ class Organization(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model
 
     @transition(state, '*', 'DELETED')
     def delete(self, *args, hard=False, **kwargs):
-        # TODO: transition
         if hard:
             super().delete(*args, **kwargs)
+        else:
+            self.deleted = True
+            self.save()
 
 
 class Participant(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
@@ -1826,6 +1867,7 @@ class Participant(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model)
 
 class Person(MixinTimestamps, MixinUUIDs, MixinAuthorization, AbstractUser):
     objects = PersonManager()
+    deleted = models.BooleanField(default=False)
 
     email = models.EmailField(
         'email address',
@@ -2114,6 +2156,7 @@ class Person(MixinTimestamps, MixinUUIDs, MixinAuthorization, AbstractUser):
 
 class PersonProperty(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     objects = PersonPropertyManager()
+    deleted = models.BooleanField(default=False)
 
     group = models.ForeignKey(
         to='PersonPropertyGroup',
@@ -2166,6 +2209,7 @@ class PersonProperty(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Mod
 
 class PersonPropertyGroup(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     objects = PersonPropertyGroupManager()
+    deleted = models.BooleanField(default=False)
 
     organization = models.ForeignKey(
         to='Organization',
@@ -2249,6 +2293,7 @@ class PersonPropertyGroup(MixinTimestamps, MixinUUIDs, MixinAuthorization, model
 
 class Project(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     objects = ProjectManager()
+    deleted = models.BooleanField(default=False)
 
     organization = models.ForeignKey(
         to='Organization',
@@ -2355,12 +2400,17 @@ class Project(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
 
     @transition(state, '*', 'DELETED')
     def delete(self, *args, hard=False, **kwargs):
-        # TODO: transition
         if hard:
             super().delete(*args, **kwargs)
+        else:
+            self.deleted = True
+            self.save()
 
 
 class Resource(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
+    objects = ResourceManager()
+    deleted = models.BooleanField(default=False)
+
     shift = models.ForeignKey(
         to='Shift',
         on_delete=models.CASCADE,
@@ -2585,6 +2635,7 @@ class RoleSpecification(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.
 
 class Shift(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     objects = ShiftManager()
+    deleted = models.BooleanField(default=False)
 
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
@@ -2695,13 +2746,16 @@ class Shift(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
 
     @transition(state, '*', 'DELETED')
     def delete(self, *args, hard=False, **kwargs):
-        # TODO: transition
         if hard:
             super().delete(*args, **kwargs)
+        else:
+            self.deleted = True
+            self.save()
 
 
 class Task(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     objects = TaskManager()
+    deleted = models.BooleanField(default=False)
 
     operation = models.ForeignKey(
         to='Operation',
@@ -2824,13 +2878,16 @@ class Task(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
 
     @transition(state, '*', 'DELETED')
     def delete(self, *args, hard=False, **kwargs):
-        # TODO: transition
         if hard:
             super().delete(*args, **kwargs)
+        else:
+            self.deleted = True
+            self.save()
 
 
 class TaskField(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     objects = TaskFieldManager()
+    deleted = models.BooleanField(default=False)
 
     organization = models.ForeignKey(
         to='Organization',

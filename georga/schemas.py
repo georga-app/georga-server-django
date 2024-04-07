@@ -1890,7 +1890,7 @@ class DeleteProjectMutation(UUIDDjangoModelFormMutation):
     @classmethod
     def perform_mutate(cls, form, info):
         project = form.instance
-        project.delete(hard=True)
+        project.delete()
         return cls(project=project, errors=[])
 
 
@@ -2337,7 +2337,7 @@ class DeleteTaskMutation(UUIDDjangoModelFormMutation):
     @classmethod
     def perform_mutate(cls, form, info):
         task = form.instance
-        task.delete(hard=True)
+        task.delete()
         return cls(task=task, errors=[])
 
 

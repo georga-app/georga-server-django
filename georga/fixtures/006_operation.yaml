@@ -23,7 +23,7 @@
   pk: 102
   fields:
     uuid: 00000006-0000-0000-0000-000000000102
-    state: DELETED
+    state: PUBLISHED
     name: Sanitätsdienst Fußball Lokalderby 06.08.2022
     is_active: true
     project: [French Blue Circle, Sanitary Service]
@@ -90,6 +90,15 @@
     state: PUBLISHED
     name: Zuteilung Impfräume
     is_active: false
+    project: [French Blue Circle, Corona Impfzentrum Musterdorf 2020-11]
+- model: georga.operation
+  pk: 199
+  fields:
+    uuid: 00000006-0000-0000-0000-000000000199
+    state: DELETED
+    deleted: True
+    name: Deleted Operation
+    is_active: true
     project: [French Blue Circle, Corona Impfzentrum Musterdorf 2020-11]
 
 # Org2 ------------------------------------------------------------------------
