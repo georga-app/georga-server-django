@@ -1,19 +1,19 @@
 # For copyright and license terms, see COPYRIGHT.md (top level of repository)
 # Repository: https://github.com/georga-app/georga-server-django
 
-channels[daphne]==4.0.0
+channels[daphne]==4.1.0
 channels-redis==4.2.0
-cryptography==41.0.7
+cryptography==42.0.5
 django-phonenumber-field==7.3.0
 Django==4.2.11
 django-cors-headers==4.3.1
-django-filter==24.1
+django-filter==24.2
 django-fsm==2.8.1
 django-graphql-jwt==0.4.0
 graphene-django==3.2.0
 django-channels-graphql-ws==v1.0.0rc6
 onesignal-python-api==2.0.2
-phonenumbers==8.13.32
+phonenumbers==8.13.34
 psycopg2==2.9.9
 python-dotenv==1.0.1
 PyYAML==6.0.1
