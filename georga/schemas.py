@@ -16,7 +16,7 @@ from django.db.models import ManyToManyField, ManyToManyRel, ManyToOneRel
 from django.db.models.fields.related import ForeignKey
 from django.forms import (
     ModelForm, ModelChoiceField, ModelMultipleChoiceField,
-    IntegerField, CharField, ChoiceField
+    IntegerField, CharField, ChoiceField, BooleanField
 )
 from django.forms.models import ModelFormMetaclass, model_to_dict
 from django_filters import FilterSet, UUIDFilter
@@ -536,7 +536,7 @@ class GFKFilterSet(FilterSet):
 LOOKUPS_ID = ['exact']
 LOOKUPS_INT = ['exact']
 LOOKUPS_STRING = ['exact', 'icontains']
-LOOKUPS_ENUM = ['exact']
+LOOKUPS_ENUM = ['exact', 'in']
 LOOKUPS_CONNECTION = ['exact']
 LOOKUPS_DATETIME = ['exact', 'gt', 'lte']
 
@@ -1093,6 +1093,7 @@ operation_filter_fields = {
     'project__organization': LOOKUPS_ID,
     # 'project__organization__id': LOOKUPS_ID,
     # 'organization': LOOKUPS_ID,
+    'state': LOOKUPS_ENUM,
 }
 
 
@@ -1171,6 +1172,7 @@ organization_rw_fields = [
 organization_filter_fields = {
     'id': LOOKUPS_ID,
     'name': LOOKUPS_STRING,
+    'state': LOOKUPS_ENUM,
     'created_at': LOOKUPS_DATETIME,
     'modified_at': LOOKUPS_DATETIME,
 }
@@ -1226,6 +1228,35 @@ class DeleteOrganizationMutation(UUIDDjangoModelFormMutation):
     def perform_mutate(cls, form, info):
         organization = form.instance
         organization.delete()
+        organization.save()
+        return cls(organization=organization, errors=[])
+
+
+class PublishOrganizationMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = OrganizationModelForm
+        only_fields = ['id']
+        permissions = [staff_member_required, object_permits_user('publish')]
+
+    @classmethod
+    def perform_mutate(cls, form, info):
+        organization = form.instance
+        organization.publish()
+        organization.save()
+        return cls(organization=organization, errors=[])
+
+
+class ArchiveOrganizationMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = OrganizationModelForm
+        only_fields = ['id']
+        permissions = [staff_member_required, object_permits_user('archive')]
+
+    @classmethod
+    def perform_mutate(cls, form, info):
+        organization = form.instance
+        organization.archive()
+        organization.save()
         return cls(organization=organization, errors=[])
 
 
@@ -1838,6 +1869,7 @@ project_filter_fields = {
     'created_at': LOOKUPS_DATETIME,
     'modified_at': LOOKUPS_DATETIME,
     'organization': LOOKUPS_ID,
+    'state': LOOKUPS_ENUM,
 }
 
 
@@ -1866,12 +1898,25 @@ class ProjectModelForm(UUIDModelForm):
         fields = project_wo_fields + project_rw_fields
 
 
+class CreateProjectModelForm(ProjectModelForm):
+    publish = BooleanField(required=False)
+
+
 # mutations
 class CreateProjectMutation(UUIDDjangoModelFormMutation):
     class Meta:
-        form_class = ProjectModelForm
+        form_class = CreateProjectModelForm
         exclude_fields = ['id']
         permissions = [staff_member_required, object_permits_user('create')]
+
+    @classmethod
+    def perform_mutate(cls, form, info):
+        project = form.instance
+        project.save()
+        if form.data.get('publish'):
+            project.publish()
+            project.save()
+        return cls(project=project, errors=[])
 
 
 class UpdateProjectMutation(UUIDDjangoModelFormMutation):
@@ -1891,6 +1936,35 @@ class DeleteProjectMutation(UUIDDjangoModelFormMutation):
     def perform_mutate(cls, form, info):
         project = form.instance
         project.delete()
+        project.save()
+        return cls(project=project, errors=[])
+
+
+class PublishProjectMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = ProjectModelForm
+        only_fields = ['id']
+        permissions = [staff_member_required, object_permits_user('publish')]
+
+    @classmethod
+    def perform_mutate(cls, form, info):
+        project = form.instance
+        project.publish()
+        project.save()
+        return cls(project=project, errors=[])
+
+
+class ArchiveProjectMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = ProjectModelForm
+        only_fields = ['id']
+        permissions = [staff_member_required, object_permits_user('archive')]
+
+    @classmethod
+    def perform_mutate(cls, form, info):
+        project = form.instance
+        project.archive()
+        project.save()
         return cls(project=project, errors=[])
 
 
@@ -2192,6 +2266,7 @@ shift_filter_fields = {
     'task__operation': LOOKUPS_ID,
     'task__operation__project': LOOKUPS_ID,
     'task__operation__project__organization': LOOKUPS_ID,
+    'state': LOOKUPS_ENUM,
 }
 
 
@@ -2275,6 +2350,7 @@ task_filter_fields = {
     'operation': LOOKUPS_ID,
     'operation__project': LOOKUPS_ID,
     'operation__project__organization': LOOKUPS_ID,
+    'state': LOOKUPS_ENUM,
 }
 
 
@@ -2588,6 +2664,8 @@ class MutationType(ObjectType):
     create_organization = CreateOrganizationMutation.Field()
     update_organization = UpdateOrganizationMutation.Field()
     delete_organization = DeleteOrganizationMutation.Field()
+    publish_organization = PublishOrganizationMutation.Field()
+    archive_organization = ArchiveOrganizationMutation.Field()
     # Participant
     create_participant = CreateParticipantMutation.Field()
     update_participant = UpdateParticipantMutation.Field()
@@ -2619,6 +2697,8 @@ class MutationType(ObjectType):
     create_project = CreateProjectMutation.Field()
     update_project = UpdateProjectMutation.Field()
     delete_project = DeleteProjectMutation.Field()
+    publish_project = PublishProjectMutation.Field()
+    archive_project = ArchiveProjectMutation.Field()
     # Resource
     # create_resource = CreateResourceMutation.Field()
     # update_resource = UpdateResourceMutation.Field()

@@ -2,6 +2,7 @@
 # Repository: https://github.com/georga-app/georga-server-django
 
 import os
+import sys
 from operator import or_, and_
 from datetime import datetime
 from functools import cached_property, reduce
@@ -341,6 +342,9 @@ class FilteredManager(models.Manager):
     """
     def get_queryset(self):
         q = super().get_queryset()
+        # loaddata
+        if sys.argv[0].endswith("manage.py") and sys.argv[1] in ["loaddata", "test"]:
+            return q
         # soft deletion
         if not INCLUDE_DELETED:
             q = q.filter(deleted=False)
@@ -1699,10 +1703,20 @@ class Organization(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model
         # queryset filtering and persisted instances (read, update, delete, etc)
         match action:
             case 'read':
-                # organizations can be read by all
-                return True
+                return reduce(or_, [
+                    # published and archived organizations can be read by all
+                    Q(state__in=["PUBLISHED", "ARCHIVED"]),
+                    # other organizations can be read by organization admins
+                    Q(id__in=user.admin_organization_ids),
+                ])
             case 'update':
                 # organizations can be updated by organziation admins
+                return Q(id__in=user.admin_organization_ids)
+            case 'publish':
+                # organizations can be deleted by organziation admins
+                return Q(id__in=user.admin_organization_ids)
+            case 'archive':
+                # organizations can be deleted by organziation admins
                 return Q(id__in=user.admin_organization_ids)
             case 'delete':
                 # organizations can be deleted by organziation admins
@@ -1713,12 +1727,12 @@ class Organization(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model
     # state transitions
     @transition(state, 'DRAFT', 'PUBLISHED')
     def publish(self):
-        # TODO: transition
+        # TODO: cascade
         pass
 
     @transition(state, 'PUBLISHED', 'ARCHIVED')
     def archive(self):
-        # TODO: transition
+        # TODO: cascade
         pass
 
     @transition(state, '*', 'DELETED')
@@ -2381,6 +2395,12 @@ class Project(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
             case 'update':
                 # projects can be updated by organization/project admins
                 return Q(id__in=user.admin_project_ids)
+            case 'publish':
+                # projects can be published by organization admins
+                return Q(organization__in=user.admin_organization_ids)
+            case 'archive':
+                # projects can be archived by organization admins
+                return Q(organization__in=user.admin_organization_ids)
             case 'delete':
                 # projects can be deleted by organization admins
                 return Q(organization__in=user.admin_organization_ids)
@@ -2390,12 +2410,12 @@ class Project(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     # state transitions
     @transition(state, 'DRAFT', 'PUBLISHED')
     def publish(self):
-        # TODO: transition
+        # TODO: cascades
         pass
 
     @transition(state, 'PUBLISHED', 'ARCHIVED')
     def archive(self):
-        # TODO: transition
+        # TODO: cascades
         pass
 
     @transition(state, '*', 'DELETED')
