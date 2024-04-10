@@ -6,6 +6,7 @@ from os.path import isfile, join
 from unittest import SkipTest
 from functools import wraps
 from datetime import datetime
+from math import ceil
 
 from graphql import parse
 from graphql_jwt.exceptions import JSONWebTokenError
@@ -657,7 +658,7 @@ class ListQueryTestCase(SchemaTestCase, metaclass=QueryTestCaseMetaclass):
         # configure variables
         batch_size = min(count, DEFAULT_BATCH_SIZE) or count
         page_size = max(1, int(count / batch_size))
-        pages = int(count / page_size)
+        pages = ceil(count / page_size)
         # iterate over pages
         after = ""
         for page in range(1, pages+1):
@@ -684,7 +685,8 @@ class ListQueryTestCase(SchemaTestCase, metaclass=QueryTestCaseMetaclass):
                 # assert first item is the expected one
                 self.assertEqual(edges[0]['node']['id'], self.entries[offset].gid)
                 # assert last item is the expected one
-                self.assertEqual(edges[-1]['node']['id'], self.entries[offset+page_size-1].gid)
+                self.assertEqual(edges[-1]['node']['id'],
+                                 self.entries[min(offset+page_size-1, count-1)].gid)
                 # assert no previous page, https://github.com/graphql-python/graphene/issues/395
                 self.assertFalse(pageinfo['hasPreviousPage'])
                 # assert next page, if not the last one
@@ -709,13 +711,14 @@ class ListQueryTestCase(SchemaTestCase, metaclass=QueryTestCaseMetaclass):
         # configure variables
         batch_size = min(count, DEFAULT_BATCH_SIZE) or count
         page_size = max(1, int(count / batch_size))
-        pages = int(count / page_size)
+        pages = ceil(count / page_size)
         # iterate over pages
         before = ""
         for page in range(1, pages+1):
             page_items = pages * page_size
             offset = count - page_items + (pages - page) * page_size
-            with self.subTest(pages=pages, page=page, page_size=page_size, before=before):
+            with self.subTest(pages=pages, page=page,
+                              count=count, page_size=page_size, before=before):
                 # execute operation
                 result = self.client.execute(
                     self.operation,
@@ -735,7 +738,7 @@ class ListQueryTestCase(SchemaTestCase, metaclass=QueryTestCaseMetaclass):
                 page_end_cursor = pageinfo['endCursor']
                 edge_end_cursor = edges[-1]['cursor']
                 # assert first item is the expected one
-                self.assertEqual(edges[0]['node']['id'], self.entries[offset].gid)
+                self.assertEqual(edges[0]['node']['id'], self.entries[max(offset, 0)].gid)
                 # assert last item is the expected one
                 self.assertEqual(edges[-1]['node']['id'], self.entries[offset+page_size-1].gid)
                 # assert previous page, if not the last one
