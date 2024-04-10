@@ -332,11 +332,17 @@
       [Cyber Aid Worldwide],
       [Sea Eyes International],
       [French Blue Circle],
+      [Drafted Organization],
+      [Archived Organization],
+      [Deleted Organization],
     ]
     organizations_employed: [
       [Cyber Aid Worldwide],
       [Sea Eyes International],
       [French Blue Circle],
+      [Drafted Organization],
+      [Archived Organization],
+      [Deleted Organization],
     ]
 
 # project admins
@@ -369,11 +375,17 @@
       [French Blue Circle],
       [Sea Eyes International],
       [Cyber Aid Worldwide],
+      [Drafted Organization],
+      [Archived Organization],
+      [Deleted Organization],
     ]
     organizations_employed: [
       [French Blue Circle],
       [Sea Eyes International],
       [Cyber Aid Worldwide],
+      [Drafted Organization],
+      [Archived Organization],
+      [Deleted Organization],
     ]
 
 # operation admins
@@ -406,11 +418,17 @@
       [French Blue Circle],
       [Cyber Aid Worldwide],
       [Sea Eyes International],
+      [Drafted Organization],
+      [Archived Organization],
+      [Deleted Organization],
     ]
     organizations_employed: [
       [French Blue Circle],
       [Cyber Aid Worldwide],
       [Sea Eyes International],
+      [Drafted Organization],
+      [Archived Organization],
+      [Deleted Organization],
     ]
 
 # inactive helper -------------------------------------------------------------

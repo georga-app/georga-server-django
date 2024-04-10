@@ -831,3 +831,28 @@
       FYAh8jFk7biNmEoti1LVqdQLEb4eQD3nTRHLRYvX61FT5gAQzsfiLX4tl4zizf5i1cmhlUg/fJi9BEdL\
       NF12CU5b5jsnjVGPQA1kMuqYnMpvZQhNiswvShJp7FFnGHucHs7p7Fi/hNeASXhdKlDLVfsluD0aBXnT\
       4s2m2jbA8AEOoWOYyfgL5leZqZ9oW1AAAAAASUVORK5CYII="
+
+# States ----------------------------------------------------------------------
+
+- model: georga.organization
+  pk: 900
+  fields:
+    uuid: 00000001-0000-0000-0000-000000000900
+    name: Drafted Organization
+    description: State DRAFT
+    state: DRAFT
+- model: georga.organization
+  pk: 901
+  fields:
+    uuid: 00000001-0000-0000-0000-000000000901
+    name: Archived Organization
+    description: State ARCHIVED
+    state: ARCHIVED
+- model: georga.organization
+  pk: 902
+  fields:
+    uuid: 00000001-0000-0000-0000-000000000902
+    name: Deleted Organization
+    description: State DELETED
+    state: DELETED
+    deleted: true

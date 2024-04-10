@@ -7,7 +7,7 @@
   pk: 100
   fields:
     uuid: 00000006-0000-0000-0000-000000000100
-    state: DRAFT
+    state: PUBLISHED
     name: Betreuungsdienst Notunterkunft Hofstraße 2022
     is_active: true
     project: [French Blue Circle, Care Service]
@@ -91,15 +91,6 @@
     name: Zuteilung Impfräume
     is_active: false
     project: [French Blue Circle, Corona Impfzentrum Musterdorf 2020-11]
-- model: georga.operation
-  pk: 199
-  fields:
-    uuid: 00000006-0000-0000-0000-000000000199
-    state: DELETED
-    deleted: True
-    name: Deleted Operation
-    is_active: true
-    project: [French Blue Circle, Corona Impfzentrum Musterdorf 2020-11]
 
 # Org2 ------------------------------------------------------------------------
 
@@ -134,3 +125,34 @@
       This is a representative deployment for the usual cyber defence agent.
     is_active: false
     project: [Cyber Aid Worldwide, Urgency Deployment of Cyber Defence Measures]
+
+# States ----------------------------------------------------------------------
+
+- model: georga.operation
+  pk: 900
+  fields:
+    uuid: 00000006-0000-0000-0000-000000000900
+    state: DRAFT
+    name: Drafted Operation
+    description: State DRAFT
+    is_active: true
+    project: [Drafted Organization, Drafted Project]
+- model: georga.operation
+  pk: 901
+  fields:
+    uuid: 00000006-0000-0000-0000-000000000901
+    state: ARCHIVED
+    name: Archived Operation
+    description: State ARCHIVED
+    is_active: true
+    project: [Archived Organization, Archived Project]
+- model: georga.operation
+  pk: 902
+  fields:
+    uuid: 00000006-0000-0000-0000-000000000902
+    state: DELETED
+    deleted: True
+    name: Deleted Operation
+    description: State DELETED
+    is_active: true
+    project: [Deleted Organization, Deleted Project]

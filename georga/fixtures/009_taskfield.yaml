@@ -98,3 +98,24 @@
     description: >
       Tätigkeiten bei Verdacht eines Cyber Cyber Cyberangriffs
     organization: [Cyber Aid Worldwide]
+
+# States ----------------------------------------------------------------------
+
+- model: georga.taskfield
+  pk: 900
+  fields:
+    uuid: 00000009-0000-0000-0000-000000000900
+    name: Task Field for Drafted Organization
+    organization: [Drafted Organization]
+- model: georga.taskfield
+  pk: 901
+  fields:
+    uuid: 00000009-0000-0000-0000-000000000901
+    name: Task Field for Archived Organization
+    organization: [Archived Organization]
+- model: georga.taskfield
+  pk: 902
+  fields:
+    uuid: 00000009-0000-0000-0000-000000000902
+    name: Task Field for Deleted Organization
+    organization: [Deleted Organization]

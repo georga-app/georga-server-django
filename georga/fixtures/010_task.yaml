@@ -22,7 +22,7 @@
   pk: 101
   fields:
     uuid: 00000010-0000-0000-0000-000000000101
-    state: DRAFT
+    state: PUBLISHED
     name: Registrierung
     description: >
       Registrierung jeglicher Besucher und Bewohner
@@ -37,7 +37,7 @@
   pk: 102
   fields:
     uuid: 00000010-0000-0000-0000-000000000102
-    state: ARCHIVED
+    state: PUBLISHED
     name: Dolmetscher Ukrainisch
     description: >
       Übersetzung zwischen Notunterkunft-Bewohnern und Betreuern
@@ -223,20 +223,6 @@
     ]
     start_time: 2022-08-05 08:00:36.048326+00:00
     field: [French Blue Circle, Organisationsthemen bei Betreuungseinsätzen]
-- model: georga.task
-  pk: 199
-  fields:
-    uuid: 00000010-0000-0000-0000-000000000199
-    state: DELETED
-    deleted: True
-    name: Deleted Task
-    operation: [
-      French Blue Circle,
-      Corona Impfzentrum Musterdorf 2020-11,
-      Zuteilung Impfräume
-    ]
-    start_time: 2022-08-05 08:00:36.048326+00:00
-    field: [French Blue Circle, Organisationsthemen bei Betreuungseinsätzen]
 
 # Org2 ------------------------------------------------------------------------
 
@@ -387,3 +373,34 @@
     ]
     start_time: 2022-08-05 08:00:36.048326+00:00
     field: [Cyber Aid Worldwide, Bedrohungs- und Statusanalyse]
+
+# States ----------------------------------------------------------------------
+
+- model: georga.task
+  pk: 900
+  fields:
+    uuid: 00000010-0000-0000-0000-000000000900
+    state: DRAFT
+    name: Drafted Task
+    operation: [Drafted Organization, Drafted Project, Drafted Operation]
+    start_time: 2022-08-05 08:00:36.048326+00:00
+    field: [Drafted Organization, Task Field for Drafted Organization]
+- model: georga.task
+  pk: 901
+  fields:
+    uuid: 00000010-0000-0000-0000-000000000901
+    state: ARCHIVED
+    name: Archived Task
+    operation: [Archived Organization, Archived Project, Archived Operation]
+    start_time: 2022-08-05 08:00:36.048326+00:00
+    field: [Archived Organization, Task Field for Archived Organization]
+- model: georga.task
+  pk: 902
+  fields:
+    uuid: 00000010-0000-0000-0000-000000000902
+    state: DELETED
+    deleted: True
+    name: Deleted Task
+    operation: [Deleted Organization, Deleted Project, Deleted Operation]
+    start_time: 2022-08-05 08:00:36.048326+00:00
+    field: [Deleted Organization, Task Field for Deleted Organization]

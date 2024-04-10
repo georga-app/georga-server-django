@@ -168,3 +168,83 @@
     instance_id: 300
     permission: ADMIN
     person: [operation@georga.test]
+
+# States ----------------------------------------------------------------------
+
+# organization admins
+- model: georga.ace
+  pk: 900
+  fields:
+    uuid: 00000100-0000-0000-0000-000000000900
+    instance_ct: [georga, organization]
+    instance_id: 900
+    permission: ADMIN
+    person: [organization@georga.test]
+- model: georga.ace
+  pk: 901
+  fields:
+    uuid: 00000100-0000-0000-0000-000000000901
+    instance_ct: [georga, organization]
+    instance_id: 901
+    permission: ADMIN
+    person: [organization@georga.test]
+- model: georga.ace
+  pk: 902
+  fields:
+    uuid: 00000100-0000-0000-0000-000000000902
+    instance_ct: [georga, organization]
+    instance_id: 902
+    permission: ADMIN
+    person: [organization@georga.test]
+
+# project admins
+- model: georga.ace
+  pk: 920
+  fields:
+    uuid: 00000100-0000-0000-0000-000000000920
+    instance_ct: [georga, project]
+    instance_id: 900
+    permission: ADMIN
+    person: [project@georga.test]
+- model: georga.ace
+  pk: 921
+  fields:
+    uuid: 00000100-0000-0000-0000-000000000921
+    instance_ct: [georga, project]
+    instance_id: 901
+    permission: ADMIN
+    person: [project@georga.test]
+- model: georga.ace
+  pk: 922
+  fields:
+    uuid: 00000100-0000-0000-0000-000000000922
+    instance_ct: [georga, project]
+    instance_id: 902
+    permission: ADMIN
+    person: [project@georga.test]
+
+# operation admins
+- model: georga.ace
+  pk: 940
+  fields:
+    uuid: 00000100-0000-0000-0000-000000000940
+    instance_ct: [georga, operation]
+    instance_id: 900
+    permission: ADMIN
+    person: [operation@georga.test]
+- model: georga.ace
+  pk: 941
+  fields:
+    uuid: 00000100-0000-0000-0000-000000000941
+    instance_ct: [georga, operation]
+    instance_id: 901
+    permission: ADMIN
+    person: [operation@georga.test]
+- model: georga.ace
+  pk: 942
+  fields:
+    uuid: 00000100-0000-0000-0000-000000000942
+    instance_ct: [georga, operation]
+    instance_id: 902
+    permission: ADMIN
+    person: [operation@georga.test]

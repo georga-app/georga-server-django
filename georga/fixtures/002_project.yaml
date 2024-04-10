@@ -15,7 +15,7 @@
   pk: 101
   fields:
     uuid: 00000002-0000-0000-0000-000000000101
-    state: DRAFT
+    state: PUBLISHED
     name: Sanitary Service
     description: Clean houses and property and make everything shine again.
     organization: [French Blue Circle]
@@ -23,7 +23,7 @@
   pk: 102
   fields:
     uuid: 00000002-0000-0000-0000-000000000102
-    state: ARCHIVED
+    state: PUBLISHED
     name: Refugee Aid Ukraine Crisis 2022
     description: Help with authorities, translation service, shelter.
     organization: [French Blue Circle]
@@ -63,15 +63,6 @@
     description: >
       Supporting measures to organize vaccinations.
     organization: [French Blue Circle]
-- model: georga.project
-  pk: 199
-  fields:
-    uuid: 00000002-0000-0000-0000-000000000199
-    state: DELETED
-    deleted: True
-    name: Deleted Project
-    description:
-    organization: [French Blue Circle]
 
 # Org2 ------------------------------------------------------------------------
 
@@ -96,3 +87,31 @@
     organization: [Cyber Aid Worldwide]
     description: >
       Updating infrastructure, replacing vulnerable devices, setup firewalls, pentests.
+
+# States ----------------------------------------------------------------------
+
+- model: georga.project
+  pk: 900
+  fields:
+    uuid: 00000002-0000-0000-0000-000000000900
+    state: DRAFT
+    name: Drafted Project
+    description: State DRAFT
+    organization: [Drafted Organization]
+- model: georga.project
+  pk: 901
+  fields:
+    uuid: 00000002-0000-0000-0000-000000000901
+    state: ARCHIVED
+    name: Archived Project
+    description: State ARCHIVED
+    organization: [Archived Organization]
+- model: georga.project
+  pk: 902
+  fields:
+    uuid: 00000002-0000-0000-0000-000000000902
+    state: DELETED
+    deleted: True
+    name: Deleted Project
+    description: State DELETED
+    organization: [Deleted Organization]
