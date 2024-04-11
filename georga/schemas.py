@@ -1126,12 +1126,25 @@ class OperationModelForm(UUIDModelForm):
         fields = operation_wo_fields + operation_rw_fields
 
 
+class CreateOperationModelForm(OperationModelForm):
+    publish = BooleanField(required=False)
+
+
 # mutations
 class CreateOperationMutation(UUIDDjangoModelFormMutation):
     class Meta:
-        form_class = OperationModelForm
+        form_class = CreateOperationModelForm
         exclude_fields = ['id']
         permissions = [staff_member_required, object_permits_user('create')]
+
+    @classmethod
+    def perform_mutate(cls, form, info):
+        operation = form.instance
+        operation.save()
+        if form.data.get('publish'):
+            operation.publish()
+            operation.save()
+        return cls(operation=operation, errors=[])
 
 
 class UpdateOperationMutation(UUIDDjangoModelFormMutation):
@@ -1151,6 +1164,35 @@ class DeleteOperationMutation(UUIDDjangoModelFormMutation):
     def perform_mutate(cls, form, info):
         operation = form.instance
         operation.delete()
+        operation.save()
+        return cls(operation=operation, errors=[])
+
+
+class PublishOperationMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = OperationModelForm
+        only_fields = ['id']
+        permissions = [staff_member_required, object_permits_user('publish')]
+
+    @classmethod
+    def perform_mutate(cls, form, info):
+        operation = form.instance
+        operation.publish()
+        operation.save()
+        return cls(operation=operation, errors=[])
+
+
+class ArchiveOperationMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = OperationModelForm
+        only_fields = ['id']
+        permissions = [staff_member_required, object_permits_user('archive')]
+
+    @classmethod
+    def perform_mutate(cls, form, info):
+        operation = form.instance
+        operation.archive()
+        operation.save()
         return cls(operation=operation, errors=[])
 
 
@@ -2660,6 +2702,8 @@ class MutationType(ObjectType):
     create_operation = CreateOperationMutation.Field()
     update_operation = UpdateOperationMutation.Field()
     delete_operation = DeleteOperationMutation.Field()
+    publish_operation = PublishOperationMutation.Field()
+    archive_operation = ArchiveOperationMutation.Field()
     # Organization
     create_organization = CreateOrganizationMutation.Field()
     update_organization = UpdateOrganizationMutation.Field()

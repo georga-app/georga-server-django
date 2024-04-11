@@ -1583,6 +1583,12 @@ class Operation(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
             case 'update':
                 # operations can be updated by organization/project/operation admins
                 return Q(id__in=user.admin_operation_ids)
+            case 'publish':
+                # operations can be published by organization/project admins
+                return Q(project__in=user.admin_project_ids)
+            case 'archive':
+                # operations can be archived by organization/project admins
+                return Q(project__in=user.admin_project_ids)
             case 'delete':
                 # operations can be deleted by organization/project admins
                 return Q(project__in=user.admin_project_ids)
