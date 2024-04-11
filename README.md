@@ -70,6 +70,19 @@ Run django tests:
     ./manage.py test --verbosity 2 --failfast --timing --keepdb --parallel auto
     ./manage.py test --verbosity 2 --keepdb --pdb
 
+## UML Diagram
+
+    docker compose run --rm --service-ports server bash
+    > apt-get update && apt-get install -y graphviz graphviz-dev
+    > pip install django-extensions pygraphviz
+    > vi settings.py
+        INSTALLED_APPS = [
+            [...]
+            'django_exptensions',
+        ]
+    > ./manage.py graph_models -a \
+        -X Mixin*,Abstract*,Group,Permission,ContentType,Session,LogEntry,Site \
+        -o georga-uml.png
 
 ## Use
 
