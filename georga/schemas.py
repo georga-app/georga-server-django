@@ -1091,8 +1091,6 @@ operation_filter_fields = {
     'modified_at': LOOKUPS_DATETIME,
     'project': LOOKUPS_ID,
     'project__organization': LOOKUPS_ID,
-    # 'project__organization__id': LOOKUPS_ID,
-    # 'organization': LOOKUPS_ID,
     'state': LOOKUPS_ENUM,
 }
 
@@ -1104,7 +1102,6 @@ class OperationType(UUIDDjangoObjectType):
     message_filters = UUIDDjangoFilterConnectionField('georga.schemas.MessageFilterType')
     person_attributes = UUIDDjangoFilterConnectionField('georga.schemas.PersonToObjectType')
     channel_filters = Field(ChannelFiltersType)
-    # organization = Field('georga.schemas.OrganizationType')
 
     class Meta:
         model = Operation
@@ -1114,9 +1111,6 @@ class OperationType(UUIDDjangoObjectType):
 
     def resolve_channel_filters(parent, info):
         return parent.channel_filters(info.context.user)
-
-    # def resolve_organization(parent, info):
-    #     return parent.organization
 
 
 # forms
@@ -2431,12 +2425,25 @@ class TaskModelForm(UUIDModelForm):
     #     return task
 
 
+class CreateTaskModelForm(TaskModelForm):
+    publish = BooleanField(required=False)
+
+
 # mutations
 class CreateTaskMutation(UUIDDjangoModelFormMutation):
     class Meta:
-        form_class = TaskModelForm
+        form_class = CreateTaskModelForm
         exclude_fields = ['id']
         permissions = [staff_member_required, object_permits_user('create')]
+
+    @classmethod
+    def perform_mutate(cls, form, info):
+        task = form.instance
+        task.save()
+        if form.data.get('publish'):
+            task.publish()
+            task.save()
+        return cls(task=task, errors=[])
 
 
 class UpdateTaskMutation(UUIDDjangoModelFormMutation):
@@ -2456,6 +2463,35 @@ class DeleteTaskMutation(UUIDDjangoModelFormMutation):
     def perform_mutate(cls, form, info):
         task = form.instance
         task.delete()
+        task.save()
+        return cls(task=task, errors=[])
+
+
+class PublishTaskMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = TaskModelForm
+        only_fields = ['id']
+        permissions = [staff_member_required, object_permits_user('publish')]
+
+    @classmethod
+    def perform_mutate(cls, form, info):
+        task = form.instance
+        task.publish()
+        task.save()
+        return cls(task=task, errors=[])
+
+
+class ArchiveTaskMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = TaskModelForm
+        only_fields = ['id']
+        permissions = [staff_member_required, object_permits_user('archive')]
+
+    @classmethod
+    def perform_mutate(cls, form, info):
+        task = form.instance
+        task.archive()
+        task.save()
         return cls(task=task, errors=[])
 
 
@@ -2765,6 +2801,8 @@ class MutationType(ObjectType):
     create_task = CreateTaskMutation.Field()
     update_task = UpdateTaskMutation.Field()
     delete_task = DeleteTaskMutation.Field()
+    publish_task = PublishTaskMutation.Field()
+    archive_task = ArchiveTaskMutation.Field()
     # TaskField
     create_task_field = CreateTaskFieldMutation.Field()
     update_task_field = UpdateTaskFieldMutation.Field()

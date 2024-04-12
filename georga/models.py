@@ -1578,8 +1578,15 @@ class Operation(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         # queryset filtering and persisted instances (read, update, delete, etc)
         match action:
             case 'read':
-                # operations can be read by subscribed/employed users
-                return Q(project__organization__in=user.organization_ids)
+                return reduce(or_, [
+                    # published and archived projects can be read by subscribed/employed users
+                    Q(
+                        state__in=["PUBLISHED", "ARCHIVED"],
+                        project__organization__in=user.organization_ids
+                    ),
+                    # other projects can be read by organization/project/operation admins
+                    Q(id__in=user.admin_operation_ids)
+                ])
             case 'update':
                 # operations can be updated by organization/project/operation admins
                 return Q(id__in=user.admin_operation_ids)
@@ -2396,8 +2403,15 @@ class Project(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         # queryset filtering and persisted instances (read, update, delete, etc)
         match action:
             case 'read':
-                # projects can be read by subscribed/employed users
-                return Q(organization__in=user.organization_ids)
+                return reduce(or_, [
+                    # published and archived projects can be read by subscribed/employed users
+                    Q(
+                        state__in=["PUBLISHED", "ARCHIVED"],
+                        organization__in=user.organization_ids
+                    ),
+                    # other projects can be read by organization/project admins
+                    Q(id__in=user.admin_project_ids)
+                ])
             case 'update':
                 # projects can be updated by organization/project admins
                 return Q(id__in=user.admin_project_ids)
@@ -2884,9 +2898,26 @@ class Task(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         match action:
             case 'read':
                 # tasks can be read by subscribed/employed users
-                return Q(operation__project__organization__in=user.organization_ids)
-            case 'update' | 'delete':
-                # tasks can be updated/deleted by organization/project/operation admins
+                return reduce(or_, [
+                    # published and archived tasks can be read by subscribed/employed users
+                    Q(
+                        state__in=["PUBLISHED", "ARCHIVED"],
+                        operation__project__organization__in=user.organization_ids
+                    ),
+                    # other tasks can be read by organization/project/operation admins
+                    Q(operation__in=user.admin_operation_ids)
+                ])
+            case 'update':
+                # tasks can be updated by organization/project/operation admins
+                return Q(operation__in=user.admin_operation_ids)
+            case 'publish':
+                # tasks can be published by organization/project/operation admins
+                return Q(operation__in=user.admin_operation_ids)
+            case 'archive':
+                # tasks can be archived by organization/project/operation admins
+                return Q(operation__in=user.admin_operation_ids)
+            case 'delete':
+                # tasks can be deleted by organization/project/operation admins
                 return Q(operation__in=user.admin_operation_ids)
             case _:
                 return None
@@ -2894,12 +2925,12 @@ class Task(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     # state transitions
     @transition(state, 'DRAFT', 'PUBLISHED')
     def publish(self):
-        # TODO: transition
+        # TODO: cascades
         pass
 
     @transition(state, 'PUBLISHED', 'ARCHIVED')
     def archive(self):
-        # TODO: transition
+        # TODO: cascades
         pass
 
     @transition(state, '*', 'DELETED')
