@@ -3,17 +3,18 @@
 
 # Org1 ------------------------------------------------------------------------
 
+# Tasks
 - model: georga.rolespecification
   pk: 100
   fields:
     uuid: 00000013-0000-0000-0000-000000000100
-    necessity: RECOMMENDED
+    necessity: MANDATORY
     role: [
       French Blue Circle,
       Care Service,
       Betreuungsdienst Notunterkunft Hofstraße 2022,
       Dolmetscher Ukrainisch,
-      2022-08-05 08:00:00.000000+00:00,
+      false,
       Emergency physician
     ]
     person_properties: [
@@ -24,69 +25,67 @@
   pk: 101
   fields:
     uuid: 00000013-0000-0000-0000-000000000101
-    necessity: UNRECOMMENDED
-    role: [
-      French Blue Circle,
-      Care Service,
-      Betreuungsdienst Notunterkunft Hofstraße 2022,
-      Dolmetscher Ukrainisch,
-      2022-08-05 08:00:00.000000+00:00,
-      Emergency physician
-    ]
-    person_properties: [
-      [French Blue Circle, Medical, Nurse (exam)],
-    ]
-- model: georga.rolespecification
-  pk: 102
-  fields:
-    uuid: 00000013-0000-0000-0000-000000000102
-    necessity: MANDATORY
-    role: [
-      French Blue Circle,
-      Care Service,
-      Betreuungsdienst Notunterkunft Hofstraße 2022,
-      Dolmetscher Ukrainisch,
-      2022-08-05 08:00:00.000000+00:00,
-      Rescue worker
-    ]
-    person_properties: [
-      [French Blue Circle, General, Shopping],
-      [French Blue Circle, General, Household],
-      [French Blue Circle, General, Craft activity],
-      [French Blue Circle, General, Transport service - own car],
-      [French Blue Circle, General, Shopping],
-      [French Blue Circle, Adult, "Yes"],
-    ]
-- model: georga.rolespecification
-  pk: 103
-  fields:
-    uuid: 00000013-0000-0000-0000-000000000103
     necessity: RECOMMENDED
     role: [
       French Blue Circle,
       Care Service,
       Betreuungsdienst Notunterkunft Hofstraße 2022,
       Dolmetscher Ukrainisch,
-      2022-08-06 08:00:00.000000+00:00,
-      Radio operator
+      false,
+      Emergency physician
     ]
     person_properties: [
-      [French Blue Circle, Technical, Information technology],
-      [French Blue Circle, Technical, Communication technology],
-      [French Blue Circle, Technical, Small amateur radio licence (German)],
+      [French Blue Circle, Language, English],
+      [French Blue Circle, License, German drivers license class B],
     ]
 - model: georga.rolespecification
-  pk: 104
+  pk: 102
   fields:
-    uuid: 00000013-0000-0000-0000-000000000104
+    uuid: 00000013-0000-0000-0000-000000000102
+    necessity: UNRECOMMENDED
+    role: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      false,
+      Emergency physician
+    ]
+    person_properties: [
+      [French Blue Circle, Medical, Nurse (exam)],
+    ]
+- model: georga.rolespecification
+  pk: 103
+  fields:
+    uuid: 00000013-0000-0000-0000-000000000103
     necessity: IMPOSSIBLE
     role: [
       French Blue Circle,
       Care Service,
       Betreuungsdienst Notunterkunft Hofstraße 2022,
       Dolmetscher Ukrainisch,
-      2022-08-07 08:00:00.000000+00:00,
-      Staff administration
+      false,
+      Emergency physician
+    ]
+    person_properties: [
+      [French Blue Circle, Adult, "No"],
+    ]
+
+- model: georga.rolespecification
+  pk: 104
+  fields:
+    uuid: 00000013-0000-0000-0000-000000000104
+    necessity: MANDATORY
+    role: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      false,
+      Rescue worker
+    ]
+    person_properties: [
+      [French Blue Circle, Adult, "Yes"],
     ]
 - model: georga.rolespecification
   pk: 105
@@ -98,22 +97,201 @@
       Care Service,
       Betreuungsdienst Notunterkunft Hofstraße 2022,
       Dolmetscher Ukrainisch,
-      2022-08-08 08:00:00.000000+00:00,
-      Group leader
+      false,
+      Rescue worker
     ]
+    person_properties: [
+      [French Blue Circle, General, Shopping],
+      [French Blue Circle, General, Household],
+      [French Blue Circle, General, Craft activity],
+      [French Blue Circle, General, Transport service - own car],
+      [French Blue Circle, General, Shopping],
+    ]
+
+# Shifts
 - model: georga.rolespecification
   pk: 106
   fields:
     uuid: 00000013-0000-0000-0000-000000000106
+    necessity: MANDATORY
+    role: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2025-08-06 08:00:00.000000+00:00,
+      Emergency physician
+    ]
+    person_properties: [
+      [French Blue Circle, Medical, Emergency medical services],
+      [French Blue Circle, Medical, Physician],
+    ]
+- model: georga.rolespecification
+  pk: 107
+  fields:
+    uuid: 00000013-0000-0000-0000-000000000107
     necessity: RECOMMENDED
     role: [
       French Blue Circle,
       Care Service,
       Betreuungsdienst Notunterkunft Hofstraße 2022,
       Dolmetscher Ukrainisch,
-      2022-08-08 08:00:00.000000+00:00,
-      Helpers without special qualification
+      2025-08-06 08:00:00.000000+00:00,
+      Emergency physician
     ]
+    person_properties: [
+      [French Blue Circle, Language, English],
+      [French Blue Circle, License, German drivers license class B],
+    ]
+- model: georga.rolespecification
+  pk: 108
+  fields:
+    uuid: 00000013-0000-0000-0000-000000000108
+    necessity: UNRECOMMENDED
+    role: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2025-08-06 08:00:00.000000+00:00,
+      Emergency physician
+    ]
+    person_properties: [
+      [French Blue Circle, Medical, Nurse (exam)],
+    ]
+
+- model: georga.rolespecification
+  pk: 109
+  fields:
+    uuid: 00000013-0000-0000-0000-000000000109
+    necessity: MANDATORY
+    role: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2025-08-06 08:00:00.000000+00:00,
+      Rescue worker
+    ]
+    person_properties: [
+      [French Blue Circle, General, Shopping],
+      [French Blue Circle, General, Household],
+      [French Blue Circle, General, Craft activity],
+      [French Blue Circle, General, Transport service - own car],
+      [French Blue Circle, General, Shopping],
+    ]
+
+# - model: georga.rolespecification
+#   pk: 100
+#   fields:
+#     uuid: 00000013-0000-0000-0000-000000000100
+#     necessity: RECOMMENDED
+#     role: [
+#       French Blue Circle,
+#       Care Service,
+#       Betreuungsdienst Notunterkunft Hofstraße 2022,
+#       Dolmetscher Ukrainisch,
+#       2022-08-05 08:00:00.000000+00:00,
+#       Emergency physician
+#     ]
+#     person_properties: [
+#       [French Blue Circle, Medical, Emergency medical services],
+#       [French Blue Circle, Medical, Physician],
+#     ]
+# - model: georga.rolespecification
+#   pk: 101
+#   fields:
+#     uuid: 00000013-0000-0000-0000-000000000101
+#     necessity: UNRECOMMENDED
+#     role: [
+#       French Blue Circle,
+#       Care Service,
+#       Betreuungsdienst Notunterkunft Hofstraße 2022,
+#       Dolmetscher Ukrainisch,
+#       2022-08-05 08:00:00.000000+00:00,
+#       Emergency physician
+#     ]
+#     person_properties: [
+#       [French Blue Circle, Medical, Nurse (exam)],
+#     ]
+# - model: georga.rolespecification
+#   pk: 102
+#   fields:
+#     uuid: 00000013-0000-0000-0000-000000000102
+#     necessity: MANDATORY
+#     role: [
+#       French Blue Circle,
+#       Care Service,
+#       Betreuungsdienst Notunterkunft Hofstraße 2022,
+#       Dolmetscher Ukrainisch,
+#       2022-08-05 08:00:00.000000+00:00,
+#       Rescue worker
+#     ]
+#     person_properties: [
+#       [French Blue Circle, General, Shopping],
+#       [French Blue Circle, General, Household],
+#       [French Blue Circle, General, Craft activity],
+#       [French Blue Circle, General, Transport service - own car],
+#       [French Blue Circle, General, Shopping],
+#       [French Blue Circle, Adult, "Yes"],
+#     ]
+# - model: georga.rolespecification
+#   pk: 103
+#   fields:
+#     uuid: 00000013-0000-0000-0000-000000000103
+#     necessity: RECOMMENDED
+#     role: [
+#       French Blue Circle,
+#       Care Service,
+#       Betreuungsdienst Notunterkunft Hofstraße 2022,
+#       Dolmetscher Ukrainisch,
+#       2022-08-06 08:00:00.000000+00:00,
+#       Radio operator
+#     ]
+#     person_properties: [
+#       [French Blue Circle, Technical, Information technology],
+#       [French Blue Circle, Technical, Communication technology],
+#       [French Blue Circle, Technical, Small amateur radio licence (German)],
+#     ]
+# - model: georga.rolespecification
+#   pk: 104
+#   fields:
+#     uuid: 00000013-0000-0000-0000-000000000104
+#     necessity: IMPOSSIBLE
+#     role: [
+#       French Blue Circle,
+#       Care Service,
+#       Betreuungsdienst Notunterkunft Hofstraße 2022,
+#       Dolmetscher Ukrainisch,
+#       2022-08-07 08:00:00.000000+00:00,
+#       Staff administration
+#     ]
+# - model: georga.rolespecification
+#   pk: 105
+#   fields:
+#     uuid: 00000013-0000-0000-0000-000000000105
+#     necessity: RECOMMENDED
+#     role: [
+#       French Blue Circle,
+#       Care Service,
+#       Betreuungsdienst Notunterkunft Hofstraße 2022,
+#       Dolmetscher Ukrainisch,
+#       2022-08-08 08:00:00.000000+00:00,
+#       Group leader
+#     ]
+# - model: georga.rolespecification
+#   pk: 106
+#   fields:
+#     uuid: 00000013-0000-0000-0000-000000000106
+#     necessity: RECOMMENDED
+#     role: [
+#       French Blue Circle,
+#       Care Service,
+#       Betreuungsdienst Notunterkunft Hofstraße 2022,
+#       Dolmetscher Ukrainisch,
+#       2022-08-08 08:00:00.000000+00:00,
+#       Helpers without special qualification
+#     ]
 
 # Org2 ------------------------------------------------------------------------
 

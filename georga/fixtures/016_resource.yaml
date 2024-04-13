@@ -15,7 +15,7 @@
       Care Service,
       Betreuungsdienst Notunterkunft Hofstraße 2022,
       Dolmetscher Ukrainisch,
-      2022-08-05 08:00:00.000000+00:00
+      2025-08-05 08:00:00.000000+00:00
     ]
 - model: georga.resource
   pk: 101
@@ -29,7 +29,7 @@
       Care Service,
       Betreuungsdienst Notunterkunft Hofstraße 2022,
       Dolmetscher Ukrainisch,
-      2022-08-05 08:00:00.000000+00:00
+      2025-08-05 08:00:00.000000+00:00
     ]
 - model: georga.resource
   pk: 102
@@ -43,7 +43,7 @@
       Care Service,
       Betreuungsdienst Notunterkunft Hofstraße 2022,
       Dolmetscher Ukrainisch,
-      2022-08-05 08:00:00.000000+00:00
+      2025-08-05 08:00:00.000000+00:00
     ]
 
 # Org2 ------------------------------------------------------------------------

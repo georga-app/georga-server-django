@@ -7,12 +7,19 @@
   pk: 100
   fields:
     uuid: 00000017-0000-0000-0000-000000000100
+    shift: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2025-08-05 08:00:00.000000+00:00
+    ]
     role: [
       French Blue Circle,
       Care Service,
       Betreuungsdienst Notunterkunft Hofstraße 2022,
       Dolmetscher Ukrainisch,
-      2022-08-05 08:00:00.000000+00:00,
+      false,
       Emergency physician
     ]
     person: [helper.001@georga.test]
@@ -22,12 +29,19 @@
   pk: 101
   fields:
     uuid: 00000017-0000-0000-0000-000000000101
+    shift: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2025-08-05 08:00:00.000000+00:00
+    ]
     role: [
       French Blue Circle,
       Care Service,
       Betreuungsdienst Notunterkunft Hofstraße 2022,
       Dolmetscher Ukrainisch,
-      2022-08-05 08:00:00.000000+00:00,
+      false,
       Emergency physician
     ]
     person: [helper.002@georga.test]
@@ -37,12 +51,19 @@
   pk: 102
   fields:
     uuid: 00000017-0000-0000-0000-000000000102
+    shift: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2025-08-05 08:00:00.000000+00:00
+    ]
     role: [
       French Blue Circle,
       Care Service,
       Betreuungsdienst Notunterkunft Hofstraße 2022,
       Dolmetscher Ukrainisch,
-      2022-08-05 08:00:00.000000+00:00,
+      false,
       Emergency physician
     ]
     person: [helper.003@georga.test]
@@ -52,12 +73,19 @@
   pk: 103
   fields:
     uuid: 00000017-0000-0000-0000-000000000103
+    shift: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2025-08-05 08:00:00.000000+00:00
+    ]
     role: [
       French Blue Circle,
       Care Service,
       Betreuungsdienst Notunterkunft Hofstraße 2022,
       Dolmetscher Ukrainisch,
-      2022-08-05 08:00:00.000000+00:00,
+      false,
       Emergency physician
     ]
     person: [helper.004@georga.test]
@@ -67,12 +95,19 @@
   pk: 104
   fields:
     uuid: 00000017-0000-0000-0000-000000000104
+    shift: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2025-08-05 08:00:00.000000+00:00
+    ]
     role: [
       French Blue Circle,
       Care Service,
       Betreuungsdienst Notunterkunft Hofstraße 2022,
       Dolmetscher Ukrainisch,
-      2022-08-05 08:00:00.000000+00:00,
+      false,
       Emergency physician
     ]
     person: [helper.005@georga.test]
@@ -83,152 +118,410 @@
   pk: 110
   fields:
     uuid: 00000017-0000-0000-0000-000000000110
+    shift: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2025-08-05 08:00:00.000000+00:00
+    ]
     role: [
       French Blue Circle,
       Care Service,
       Betreuungsdienst Notunterkunft Hofstraße 2022,
       Dolmetscher Ukrainisch,
-      2022-08-05 08:00:00.000000+00:00,
+      false,
       Rescue worker
     ]
-    person: [helper.001@georga.test]
+    person: [helper.006@georga.test]
     acceptance: PENDING
     admin_acceptance: ACCEPTED
 - model: georga.participant
   pk: 111
   fields:
     uuid: 00000017-0000-0000-0000-000000000111
+    shift: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2025-08-05 08:00:00.000000+00:00
+    ]
     role: [
       French Blue Circle,
       Care Service,
       Betreuungsdienst Notunterkunft Hofstraße 2022,
       Dolmetscher Ukrainisch,
-      2022-08-05 08:00:00.000000+00:00,
+      false,
       Rescue worker
     ]
-    person: [helper.002@georga.test]
+    person: [helper.007@georga.test]
     acceptance: PENDING
     admin_acceptance: ACCEPTED
 - model: georga.participant
   pk: 112
   fields:
     uuid: 00000017-0000-0000-0000-000000000112
+    shift: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2025-08-05 08:00:00.000000+00:00
+    ]
     role: [
       French Blue Circle,
       Care Service,
       Betreuungsdienst Notunterkunft Hofstraße 2022,
       Dolmetscher Ukrainisch,
-      2022-08-05 08:00:00.000000+00:00,
+      false,
       Rescue worker
     ]
-    person: [helper.003@georga.test]
+    person: [helper.008@georga.test]
     acceptance: DECLINED
     admin_acceptance: ACCEPTED
 - model: georga.participant
   pk: 113
   fields:
     uuid: 00000017-0000-0000-0000-000000000113
+    shift: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2025-08-05 08:00:00.000000+00:00
+    ]
     role: [
       French Blue Circle,
       Care Service,
       Betreuungsdienst Notunterkunft Hofstraße 2022,
       Dolmetscher Ukrainisch,
-      2022-08-05 08:00:00.000000+00:00,
+      false,
       Rescue worker
     ]
-    person: [helper.004@georga.test]
+    person: [helper.009@georga.test]
     acceptance: ACCEPTED
     admin_acceptance: PENDING
 - model: georga.participant
   pk: 114
   fields:
     uuid: 00000017-0000-0000-0000-000000000114
+    shift: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2025-08-05 08:00:00.000000+00:00
+    ]
     role: [
       French Blue Circle,
       Care Service,
       Betreuungsdienst Notunterkunft Hofstraße 2022,
       Dolmetscher Ukrainisch,
-      2022-08-05 08:00:00.000000+00:00,
+      false,
       Rescue worker
     ]
-    person: [helper.005@georga.test]
+    person: [helper.010@georga.test]
     acceptance: ACCEPTED
     admin_acceptance: ACCEPTED
+
 
 - model: georga.participant
   pk: 120
   fields:
     uuid: 00000017-0000-0000-0000-000000000120
+    shift: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2025-08-06 08:00:00.000000+00:00
+    ]
     role: [
       French Blue Circle,
       Care Service,
       Betreuungsdienst Notunterkunft Hofstraße 2022,
       Dolmetscher Ukrainisch,
-      2022-08-06 08:00:00.000000+00:00,
-      Radio operator
+      2025-08-06 08:00:00.000000+00:00,
+      Emergency physician
     ]
     person: [helper.001@georga.test]
-    acceptance: DECLINED
-    admin_acceptance: ACCEPTED
+    acceptance: ACCEPTED
+    admin_acceptance: DECLINED
 - model: georga.participant
   pk: 121
   fields:
     uuid: 00000017-0000-0000-0000-000000000121
+    shift: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2025-08-06 08:00:00.000000+00:00
+    ]
     role: [
       French Blue Circle,
       Care Service,
       Betreuungsdienst Notunterkunft Hofstraße 2022,
       Dolmetscher Ukrainisch,
-      2022-08-06 08:00:00.000000+00:00,
-      Radio operator
+      2025-08-06 08:00:00.000000+00:00,
+      Emergency physician
     ]
     person: [helper.002@georga.test]
-    acceptance: DECLINED
+    acceptance: ACCEPTED
+    admin_acceptance: ACCEPTED
+- model: georga.participant
+  pk: 122
+  fields:
+    uuid: 00000017-0000-0000-0000-000000000122
+    shift: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2025-08-06 08:00:00.000000+00:00
+    ]
+    role: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2025-08-06 08:00:00.000000+00:00,
+      Emergency physician
+    ]
+    person: [helper.003@georga.test]
+    acceptance: ACCEPTED
     admin_acceptance: ACCEPTED
 - model: georga.participant
   pk: 123
   fields:
     uuid: 00000017-0000-0000-0000-000000000123
+    shift: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2025-08-06 08:00:00.000000+00:00
+    ]
     role: [
       French Blue Circle,
       Care Service,
       Betreuungsdienst Notunterkunft Hofstraße 2022,
       Dolmetscher Ukrainisch,
-      2022-08-06 08:00:00.000000+00:00,
-      Radio operator
+      2025-08-06 08:00:00.000000+00:00,
+      Emergency physician
     ]
-    person: [helper.003@georga.test]
+    person: [helper.004@georga.test]
     acceptance: PENDING
     admin_acceptance: ACCEPTED
 - model: georga.participant
   pk: 124
   fields:
     uuid: 00000017-0000-0000-0000-000000000124
-    role: [
+    shift: [
       French Blue Circle,
       Care Service,
       Betreuungsdienst Notunterkunft Hofstraße 2022,
       Dolmetscher Ukrainisch,
-      2022-08-06 08:00:00.000000+00:00,
-      Radio operator
+      2025-08-06 08:00:00.000000+00:00
     ]
-    person: [helper.004@georga.test]
-    acceptance: PENDING
-- model: georga.participant
-  pk: 125
-  fields:
-    uuid: 00000017-0000-0000-0000-000000000125
     role: [
       French Blue Circle,
       Care Service,
       Betreuungsdienst Notunterkunft Hofstraße 2022,
       Dolmetscher Ukrainisch,
-      2022-08-06 08:00:00.000000+00:00,
-      Radio operator
+      2025-08-06 08:00:00.000000+00:00,
+      Emergency physician
     ]
     person: [helper.005@georga.test]
+    acceptance: DECLINED
+    admin_acceptance: ACCEPTED
+
+- model: georga.participant
+  pk: 130
+  fields:
+    uuid: 00000017-0000-0000-0000-000000000130
+    shift: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2025-08-06 08:00:00.000000+00:00
+    ]
+    role: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2025-08-06 08:00:00.000000+00:00,
+      Rescue worker
+    ]
+    person: [helper.006@georga.test]
+    acceptance: PENDING
+    admin_acceptance: ACCEPTED
+- model: georga.participant
+  pk: 131
+  fields:
+    uuid: 00000017-0000-0000-0000-000000000131
+    shift: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2025-08-06 08:00:00.000000+00:00
+    ]
+    role: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2025-08-06 08:00:00.000000+00:00,
+      Rescue worker
+    ]
+    person: [helper.007@georga.test]
+    acceptance: PENDING
+    admin_acceptance: ACCEPTED
+- model: georga.participant
+  pk: 132
+  fields:
+    uuid: 00000017-0000-0000-0000-000000000132
+    shift: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2025-08-06 08:00:00.000000+00:00
+    ]
+    role: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2025-08-06 08:00:00.000000+00:00,
+      Rescue worker
+    ]
+    person: [helper.008@georga.test]
+    acceptance: DECLINED
+    admin_acceptance: ACCEPTED
+- model: georga.participant
+  pk: 133
+  fields:
+    uuid: 00000017-0000-0000-0000-000000000133
+    shift: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2025-08-06 08:00:00.000000+00:00
+    ]
+    role: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2025-08-06 08:00:00.000000+00:00,
+      Rescue worker
+    ]
+    person: [helper.009@georga.test]
     acceptance: ACCEPTED
     admin_acceptance: PENDING
+- model: georga.participant
+  pk: 134
+  fields:
+    uuid: 00000017-0000-0000-0000-000000000134
+    shift: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2025-08-06 08:00:00.000000+00:00
+    ]
+    role: [
+      French Blue Circle,
+      Care Service,
+      Betreuungsdienst Notunterkunft Hofstraße 2022,
+      Dolmetscher Ukrainisch,
+      2025-08-06 08:00:00.000000+00:00,
+      Rescue worker
+    ]
+    person: [helper.010@georga.test]
+    acceptance: ACCEPTED
+    admin_acceptance: ACCEPTED
+
+# - model: georga.participant
+#   pk: 120
+#   fields:
+#     uuid: 00000017-0000-0000-0000-000000000120
+#     role: [
+#       French Blue Circle,
+#       Care Service,
+#       Betreuungsdienst Notunterkunft Hofstraße 2022,
+#       Dolmetscher Ukrainisch,
+#       2022-08-06 08:00:00.000000+00:00,
+#       Radio operator
+#     ]
+#     person: [helper.001@georga.test]
+#     acceptance: DECLINED
+#     admin_acceptance: ACCEPTED
+# - model: georga.participant
+#   pk: 121
+#   fields:
+#     uuid: 00000017-0000-0000-0000-000000000121
+#     role: [
+#       French Blue Circle,
+#       Care Service,
+#       Betreuungsdienst Notunterkunft Hofstraße 2022,
+#       Dolmetscher Ukrainisch,
+#       2022-08-06 08:00:00.000000+00:00,
+#       Radio operator
+#     ]
+#     person: [helper.002@georga.test]
+#     acceptance: DECLINED
+#     admin_acceptance: ACCEPTED
+# - model: georga.participant
+#   pk: 123
+#   fields:
+#     uuid: 00000017-0000-0000-0000-000000000123
+#     role: [
+#       French Blue Circle,
+#       Care Service,
+#       Betreuungsdienst Notunterkunft Hofstraße 2022,
+#       Dolmetscher Ukrainisch,
+#       2022-08-06 08:00:00.000000+00:00,
+#       Radio operator
+#     ]
+#     person: [helper.003@georga.test]
+#     acceptance: PENDING
+#     admin_acceptance: ACCEPTED
+# - model: georga.participant
+#   pk: 124
+#   fields:
+#     uuid: 00000017-0000-0000-0000-000000000124
+#     role: [
+#       French Blue Circle,
+#       Care Service,
+#       Betreuungsdienst Notunterkunft Hofstraße 2022,
+#       Dolmetscher Ukrainisch,
+#       2022-08-06 08:00:00.000000+00:00,
+#       Radio operator
+#     ]
+#     person: [helper.004@georga.test]
+#     acceptance: PENDING
+# - model: georga.participant
+#   pk: 125
+#   fields:
+#     uuid: 00000017-0000-0000-0000-000000000125
+#     role: [
+#       French Blue Circle,
+#       Care Service,
+#       Betreuungsdienst Notunterkunft Hofstraße 2022,
+#       Dolmetscher Ukrainisch,
+#       2022-08-06 08:00:00.000000+00:00,
+#       Radio operator
+#     ]
+#     person: [helper.005@georga.test]
+#     acceptance: ACCEPTED
+#     admin_acceptance: PENDING
 
 # Org2 ------------------------------------------------------------------------
 

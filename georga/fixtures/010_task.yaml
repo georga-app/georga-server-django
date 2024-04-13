@@ -16,7 +16,7 @@
       Care Service,
       Betreuungsdienst Notunterkunft Hofstraße 2022
     ]
-    start_time: 2022-08-05 08:00:36.048326+00:00
+    start_time: 2022-08-05 08:00:00.000000+00:00
     field: [French Blue Circle, Dolmetscher]
 - model: georga.task
   pk: 101
@@ -31,7 +31,7 @@
       Care Service,
       Betreuungsdienst Notunterkunft Hofstraße 2022
     ]
-    start_time: 2022-08-05 08:00:36.048326+00:00
+    start_time: 2022-08-06 08:00:00.000000+00:00
     field: [French Blue Circle, Organisationsthemen bei Betreuungseinsätzen]
 - model: georga.task
   pk: 102
@@ -46,7 +46,7 @@
       Care Service,
       Betreuungsdienst Notunterkunft Lindenstraße 2022
     ]
-    start_time: 2022-08-06 08:00:36.048326+00:00
+    start_time: 2022-08-06 08:00:00.000000+00:00
     field: [French Blue Circle, Dolmetscher]
 - model: georga.task
   pk: 103
@@ -61,7 +61,7 @@
       Care Service,
       Betreuungsdienst Notunterkunft Lindenstraße 2022
     ]
-    start_time: 2022-08-06 08:00:36.048326+00:00
+    start_time: 2022-08-07 08:00:00.000000+00:00
     field: [French Blue Circle, Organisationsthemen bei Betreuungseinsätzen]
 - model: georga.task
   pk: 104
@@ -74,7 +74,7 @@
       Sanitary Service,
       Sanitätsdienst Fußball Lokalderby 06.08.2022
     ]
-    start_time: 2022-08-07 08:00:36.048326+00:00
+    start_time: 2022-08-08 08:00:00.000000+00:00
     field: [French Blue Circle, Sanitätsdienste]
 - model: georga.task
   pk: 105
@@ -87,7 +87,7 @@
       Sanitary Service,
       Sanitätsdienst Fußball Lokalderby 06.08.2022
     ]
-    start_time: 2022-08-07 08:00:36.048326+00:00
+    start_time: 2022-08-07 08:00:00.000000+00:00
     field: [French Blue Circle, Sanitätsdienste]
 - model: georga.task
   pk: 106
@@ -100,7 +100,7 @@
       Sanitary Service,
       Sanitätsdienst Mozartkonzert Wien 07.08.2022
     ]
-    start_time: 2022-08-08 08:00:36.048326+00:00
+    start_time: 2022-08-09 08:00:00.000000+00:00
     field: [French Blue Circle, Sanitätsdienste]
 - model: georga.task
   pk: 107
@@ -113,7 +113,7 @@
       Sanitary Service,
       Sanitätsdienst Mozartkonzert Wien 07.08.2022
     ]
-    start_time: 2022-08-08 08:00:36.048326+00:00
+    start_time: 2022-08-10 08:00:00.000000+00:00
     field: [French Blue Circle, Sanitätsdienste]
 - model: georga.task
   pk: 108
@@ -130,7 +130,7 @@
       Refugee Aid Ukraine Crisis 2022,
       Hilfe für Behördengänge für Geflüchtete 2022-04
     ]
-    start_time: 2021-02-02 08:00:36.048326+00:00
+    start_time: 2021-02-02 08:00:00.000000+00:00
     field: [French Blue Circle, Betreuung]
 - model: georga.task
   pk: 109
@@ -143,7 +143,7 @@
       Refugee Aid Ukraine Crisis 2022,
       Hilfe für Behördengänge für Geflüchtete 2022-04
     ]
-    start_time: 2021-02-05 08:00:36.048326+00:00
+    start_time: 2021-02-05 08:00:00.000000+00:00
     field: [French Blue Circle, Betreuung]
 - model: georga.task
   pk: 110
@@ -156,7 +156,7 @@
       Elbe River Flood Hamburg 2002,
       Sandsäcke füllen
     ]
-    start_time: 2002-08-05 08:00:36.048326+00:00
+    start_time: 2022-08-05 08:00:00.000000+00:00
     field: [French Blue Circle, Hochwasserprävention]
 - model: georga.task
   pk: 111
@@ -169,7 +169,7 @@
       Elbe River Flood Hamburg 2002,
       Schlammräumung
     ]
-    start_time: 2002-08-18 20:00:36.048326+00:00
+    start_time: 2002-08-18 20:00:00.000000+00:00
     field: [French Blue Circle, Hilfsarbeiten nach Hochwasser]
 - model: georga.task
   pk: 112
@@ -182,7 +182,7 @@
       Flood Catastrophy Hamburg 1962,
       Schlammräumung
     ]
-    start_time: 1962-02-17 15:30:36.048326+00:00
+    start_time: 1962-02-17 15:30:00.000000+00:00
     field: [French Blue Circle, Hilfsarbeiten nach Hochwasser]
 - model: georga.task
   pk: 113
@@ -195,7 +195,7 @@
       Ahrtal Hochwasser 2021,
       Schlammräumung
     ]
-    start_time: 2021-07-16 08:00:36.048326+00:00
+    start_time: 2021-07-16 08:00:00.000000+00:00
     field: [French Blue Circle, Hilfsarbeiten nach Hochwasser]
 - model: georga.task
   pk: 114
@@ -208,7 +208,7 @@
       Corona Impfzentrum Musterdorf 2020-11,
       Registrierung
     ]
-    start_time: 2022-08-05 08:00:36.048326+00:00
+    start_time: 2022-08-05 08:00:00.000000+00:00
     field: [French Blue Circle, Organisationsthemen bei Betreuungseinsätzen]
 - model: georga.task
   pk: 115
@@ -221,7 +221,7 @@
       Corona Impfzentrum Musterdorf 2020-11,
       Zuteilung Impfräume
     ]
-    start_time: 2022-08-05 08:00:36.048326+00:00
+    start_time: 2022-08-05 08:00:00.000000+00:00
     field: [French Blue Circle, Organisationsthemen bei Betreuungseinsätzen]
 
 # Org2 ------------------------------------------------------------------------
@@ -237,7 +237,7 @@
       Prepare vessel for sailing,
       Schiff zur Abfahrt rüsten April 2023
     ]
-    start_time: 2022-08-05 08:00:36.048326+00:00
+    start_time: 2022-08-05 08:00:00.000000+00:00
     field: [Sea Eyes International, Leichte Beladungstätigkeiten]
 - model: georga.task
   pk: 201
@@ -250,7 +250,7 @@
       Prepare vessel for sailing,
       Schiff zur Abfahrt rüsten April 2023
     ]
-    start_time: 2022-08-05 08:00:36.048326+00:00
+    start_time: 2022-08-05 08:00:00.000000+00:00
     field: [Sea Eyes International, Leichte Beladungstätigkeiten]
 - model: georga.task
   pk: 202
@@ -263,7 +263,7 @@
       Prepare vessel for sailing,
       Schiff zur Abfahrt rüsten April 2023
     ]
-    start_time: 2022-08-05 08:00:36.048326+00:00
+    start_time: 2022-08-05 08:00:00.000000+00:00
     field: [Sea Eyes International, Beladung - Hebetätigkeiten]
 
 # Org3 ------------------------------------------------------------------------
@@ -279,7 +279,7 @@
       Urgency Deployment of Cyber Defence Measures,
       Cyber Cyber Cyberabwehr Bundestag 2023-01
     ]
-    start_time: 2022-08-05 08:00:36.048326+00:00
+    start_time: 2022-08-05 08:00:00.000000+00:00
     field: [Cyber Aid Worldwide, Bedrohungs- und Statusanalyse]
     name: Bedrohungs- und Statusanalyse
 - model: georga.task
@@ -293,7 +293,7 @@
       Urgency Deployment of Cyber Defence Measures,
       Cyber Cyber Cyberabwehr Bundestag 2023-01
     ]
-    start_time: 2022-08-05 08:00:36.048326+00:00
+    start_time: 2022-08-05 08:00:00.000000+00:00
     field: [Cyber Aid Worldwide, Bedrohungs- und Statusanalyse]
 - model: georga.task
   pk: 302
@@ -306,7 +306,7 @@
       Urgency Deployment of Cyber Defence Measures,
       Cyber Cyber Cyberabwehr Bundestag 2023-01
     ]
-    start_time: 2022-08-05 08:00:36.048326+00:00
+    start_time: 2022-08-05 08:00:00.000000+00:00
     field: [Cyber Aid Worldwide, Bedrohungs- und Statusanalyse]
 - model: georga.task
   pk: 303
@@ -319,7 +319,7 @@
       Urgency Deployment of Cyber Defence Measures,
       Cyber Cyber Cyberabwehr Bundestag 2023-01
     ]
-    start_time: 2022-08-05 08:00:36.048326+00:00
+    start_time: 2022-08-05 08:00:00.000000+00:00
     field: [Cyber Aid Worldwide, Bedrohungs- und Statusanalyse]
 - model: georga.task
   pk: 304
@@ -332,7 +332,7 @@
       Urgency Deployment of Cyber Defence Measures,
       Cyber Cyber Cyber Defence KHs Luisenstift September 2022
     ]
-    start_time: 2022-08-05 08:00:36.048326+00:00
+    start_time: 2022-08-05 08:00:00.000000+00:00
     field: [Cyber Aid Worldwide, Bedrohungs- und Statusanalyse]
 - model: georga.task
   pk: 305
@@ -345,7 +345,7 @@
       Urgency Deployment of Cyber Defence Measures,
       Cyber Cyber Cyber Defence KHs Luisenstift September 2022
     ]
-    start_time: 2022-08-05 08:00:36.048326+00:00
+    start_time: 2022-08-05 08:00:00.000000+00:00
     field: [Cyber Aid Worldwide, Bedrohungs- und Statusanalyse]
 - model: georga.task
   pk: 306
@@ -358,7 +358,7 @@
       Urgency Deployment of Cyber Defence Measures,
       Cyber Cyber Cyber Defence KHs Luisenstift September 2022
     ]
-    start_time: 2022-08-05 08:00:36.048326+00:00
+    start_time: 2022-08-05 08:00:00.000000+00:00
     field: [Cyber Aid Worldwide, Bedrohungs- und Statusanalyse]
 - model: georga.task
   pk: 307
@@ -371,7 +371,7 @@
       Urgency Deployment of Cyber Defence Measures,
       Cyber Cyber Cyber Defence KHs Luisenstift September 2022
     ]
-    start_time: 2022-08-05 08:00:36.048326+00:00
+    start_time: 2022-08-05 08:00:00.000000+00:00
     field: [Cyber Aid Worldwide, Bedrohungs- und Statusanalyse]
 
 # States ----------------------------------------------------------------------
@@ -383,7 +383,7 @@
     state: DRAFT
     name: Drafted Task
     operation: [Drafted Organization, Drafted Project, Drafted Operation]
-    start_time: 2022-08-05 08:00:36.048326+00:00
+    start_time: 2022-08-05 08:00:00.000000+00:00
     field: [Drafted Organization, Task Field for Drafted Organization]
 - model: georga.task
   pk: 901
@@ -392,7 +392,7 @@
     state: ARCHIVED
     name: Archived Task
     operation: [Archived Organization, Archived Project, Archived Operation]
-    start_time: 2022-08-05 08:00:36.048326+00:00
+    start_time: 2022-08-05 08:00:00.000000+00:00
     field: [Archived Organization, Task Field for Archived Organization]
 - model: georga.task
   pk: 902
@@ -402,5 +402,5 @@
     deleted: True
     name: Deleted Task
     operation: [Deleted Organization, Deleted Project, Deleted Operation]
-    start_time: 2022-08-05 08:00:36.048326+00:00
+    start_time: 2022-08-05 08:00:00.000000+00:00
     field: [Deleted Organization, Task Field for Deleted Organization]

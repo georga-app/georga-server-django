@@ -3,18 +3,19 @@
 
 # Org1 ------------------------------------------------------------------------
 
+# Tasks
 - model: georga.role
   pk: 100
   fields:
     uuid: 00000012-0000-0000-0000-000000000100
     name: Emergency physician
     quantity: 10
-    shift: [
+    is_template: true
+    task: [
       French Blue Circle,
       Care Service,
       Betreuungsdienst Notunterkunft Hofstraße 2022,
-      Dolmetscher Ukrainisch,
-      2022-08-05 08:00:00.000000+00:00
+      Dolmetscher Ukrainisch
     ]
 - model: georga.role
   pk: 101
@@ -22,143 +23,172 @@
     uuid: 00000012-0000-0000-0000-000000000101
     name: Rescue worker
     quantity: 4
-    shift: [
+    is_template: true
+    task: [
       French Blue Circle,
       Care Service,
       Betreuungsdienst Notunterkunft Hofstraße 2022,
-      Dolmetscher Ukrainisch,
-      2022-08-05 08:00:00.000000+00:00
+      Dolmetscher Ukrainisch
     ]
+
+# Shifts
 - model: georga.role
   pk: 102
   fields:
     uuid: 00000012-0000-0000-0000-000000000102
-    name: Radio operator
-    quantity: 10
+    name: Emergency physician
+    quantity: 5
     shift: [
       French Blue Circle,
       Care Service,
       Betreuungsdienst Notunterkunft Hofstraße 2022,
       Dolmetscher Ukrainisch,
-      2022-08-06 08:00:00.000000+00:00
+      2025-08-06 08:00:00.000000+00:00
     ]
 - model: georga.role
   pk: 103
   fields:
     uuid: 00000012-0000-0000-0000-000000000103
-    name: Staff administration
-    quantity: 10
+    name: Rescue worker
+    quantity: 5
     shift: [
       French Blue Circle,
       Care Service,
       Betreuungsdienst Notunterkunft Hofstraße 2022,
       Dolmetscher Ukrainisch,
-      2022-08-07 08:00:00.000000+00:00
+      2025-08-06 08:00:00.000000+00:00
     ]
-- model: georga.role
-  pk: 104
-  fields:
-    uuid: 00000012-0000-0000-0000-000000000104
-    name: Group leader
-    quantity: 10
-    shift: [
-      French Blue Circle,
-      Care Service,
-      Betreuungsdienst Notunterkunft Hofstraße 2022,
-      Dolmetscher Ukrainisch,
-      2022-08-08 08:00:00.000000+00:00
-    ]
-- model: georga.role
-  pk: 105
-  fields:
-    uuid: 00000012-0000-0000-0000-000000000105
-    name: Helpers without special qualification
-    quantity: 10
-    shift: [
-      French Blue Circle,
-      Care Service,
-      Betreuungsdienst Notunterkunft Hofstraße 2022,
-      Dolmetscher Ukrainisch,
-      2022-08-08 08:00:00.000000+00:00
-    ]
-- model: georga.role
-  pk: 106
-  fields:
-    uuid: 00000012-0000-0000-0000-000000000106
-    name: Group leader
-    quantity: 10
-    shift: [
-      French Blue Circle,
-      Care Service,
-      Betreuungsdienst Notunterkunft Hofstraße 2022,
-      Dolmetscher Ukrainisch,
-      2022-08-12 08:00:00.000000+00:00
-    ]
-- model: georga.role
-  pk: 107
-  fields:
-    uuid: 00000012-0000-0000-0000-000000000107
-    name: Helpers without special qualification
-    quantity: 10
-    shift: [
-      French Blue Circle,
-      Care Service,
-      Betreuungsdienst Notunterkunft Hofstraße 2022,
-      Dolmetscher Ukrainisch,
-      2022-08-12 08:00:00.000000+00:00
-    ]
-- model: georga.role
-  pk: 108
-  fields:
-    uuid: 00000012-0000-0000-0000-000000000108
-    name: Group leader
-    quantity: 10
-    shift: [
-      French Blue Circle,
-      Care Service,
-      Betreuungsdienst Notunterkunft Hofstraße 2022,
-      Dolmetscher Ukrainisch,
-      2022-08-13 08:00:00.000000+00:00
-    ]
-- model: georga.role
-  pk: 109
-  fields:
-    uuid: 00000012-0000-0000-0000-000000000109
-    name: Helpers without special qualification
-    quantity: 10
-    shift: [
-      French Blue Circle,
-      Care Service,
-      Betreuungsdienst Notunterkunft Hofstraße 2022,
-      Dolmetscher Ukrainisch,
-      2022-08-13 08:00:00.000000+00:00
-    ]
-- model: georga.role
-  pk: 110
-  fields:
-    uuid: 00000012-0000-0000-0000-000000000110
-    name: Group leader
-    quantity: 1
-    shift: [
-      French Blue Circle,
-      Care Service,
-      Betreuungsdienst Notunterkunft Hofstraße 2022,
-      Dolmetscher Ukrainisch,
-      2022-08-14 08:00:00.000000+00:00
-    ]
-- model: georga.role
-  pk: 111
-  fields:
-    uuid: 00000012-0000-0000-0000-000000000111
-    name: Helpers without special qualification
-    quantity: 10
-    shift: [
-      French Blue Circle,
-      Care Service,
-      Betreuungsdienst Notunterkunft Hofstraße 2022,
-      Dolmetscher Ukrainisch,
-      2022-08-14 08:00:00.000000+00:00
-    ]
+
+# - model: georga.role
+#   pk: 102
+#   fields:
+#     uuid: 00000012-0000-0000-0000-000000000102
+#     name: Radio operator
+#     quantity: 10
+#     shift: [
+#       French Blue Circle,
+#       Care Service,
+#       Betreuungsdienst Notunterkunft Hofstraße 2022,
+#       Dolmetscher Ukrainisch,
+#       2022-08-06 08:00:00.000000+00:00
+#     ]
+# - model: georga.role
+#   pk: 103
+#   fields:
+#     uuid: 00000012-0000-0000-0000-000000000103
+#     name: Staff administration
+#     quantity: 10
+#     shift: [
+#       French Blue Circle,
+#       Care Service,
+#       Betreuungsdienst Notunterkunft Hofstraße 2022,
+#       Dolmetscher Ukrainisch,
+#       2022-08-07 08:00:00.000000+00:00
+#     ]
+# - model: georga.role
+#   pk: 104
+#   fields:
+#     uuid: 00000012-0000-0000-0000-000000000104
+#     name: Group leader
+#     quantity: 10
+#     shift: [
+#       French Blue Circle,
+#       Care Service,
+#       Betreuungsdienst Notunterkunft Hofstraße 2022,
+#       Dolmetscher Ukrainisch,
+#       2022-08-08 08:00:00.000000+00:00
+#     ]
+# - model: georga.role
+#   pk: 105
+#   fields:
+#     uuid: 00000012-0000-0000-0000-000000000105
+#     name: Helpers without special qualification
+#     quantity: 10
+#     shift: [
+#       French Blue Circle,
+#       Care Service,
+#       Betreuungsdienst Notunterkunft Hofstraße 2022,
+#       Dolmetscher Ukrainisch,
+#       2022-08-08 08:00:00.000000+00:00
+#     ]
+# - model: georga.role
+#   pk: 106
+#   fields:
+#     uuid: 00000012-0000-0000-0000-000000000106
+#     name: Group leader
+#     quantity: 10
+#     shift: [
+#       French Blue Circle,
+#       Care Service,
+#       Betreuungsdienst Notunterkunft Hofstraße 2022,
+#       Dolmetscher Ukrainisch,
+#       2022-08-12 08:00:00.000000+00:00
+#     ]
+# - model: georga.role
+#   pk: 107
+#   fields:
+#     uuid: 00000012-0000-0000-0000-000000000107
+#     name: Helpers without special qualification
+#     quantity: 10
+#     shift: [
+#       French Blue Circle,
+#       Care Service,
+#       Betreuungsdienst Notunterkunft Hofstraße 2022,
+#       Dolmetscher Ukrainisch,
+#       2022-08-12 08:00:00.000000+00:00
+#     ]
+# - model: georga.role
+#   pk: 108
+#   fields:
+#     uuid: 00000012-0000-0000-0000-000000000108
+#     name: Group leader
+#     quantity: 10
+#     shift: [
+#       French Blue Circle,
+#       Care Service,
+#       Betreuungsdienst Notunterkunft Hofstraße 2022,
+#       Dolmetscher Ukrainisch,
+#       2022-08-13 08:00:00.000000+00:00
+#     ]
+# - model: georga.role
+#   pk: 109
+#   fields:
+#     uuid: 00000012-0000-0000-0000-000000000109
+#     name: Helpers without special qualification
+#     quantity: 10
+#     shift: [
+#       French Blue Circle,
+#       Care Service,
+#       Betreuungsdienst Notunterkunft Hofstraße 2022,
+#       Dolmetscher Ukrainisch,
+#       2022-08-13 08:00:00.000000+00:00
+#     ]
+# - model: georga.role
+#   pk: 110
+#   fields:
+#     uuid: 00000012-0000-0000-0000-000000000110
+#     name: Group leader
+#     quantity: 1
+#     shift: [
+#       French Blue Circle,
+#       Care Service,
+#       Betreuungsdienst Notunterkunft Hofstraße 2022,
+#       Dolmetscher Ukrainisch,
+#       2022-08-14 08:00:00.000000+00:00
+#     ]
+# - model: georga.role
+#   pk: 111
+#   fields:
+#     uuid: 00000012-0000-0000-0000-000000000111
+#     name: Helpers without special qualification
+#     quantity: 10
+#     shift: [
+#       French Blue Circle,
+#       Care Service,
+#       Betreuungsdienst Notunterkunft Hofstraße 2022,
+#       Dolmetscher Ukrainisch,
+#       2022-08-14 08:00:00.000000+00:00
+#     ]
 
 # Org2 ------------------------------------------------------------------------
 
