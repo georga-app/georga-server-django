@@ -2520,6 +2520,8 @@ class Role(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
 
     shift = models.ForeignKey(
         to='Shift',
+        blank=True,
+        null=True,
         on_delete=models.CASCADE,
     )
     name = models.CharField(
