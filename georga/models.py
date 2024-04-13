@@ -434,9 +434,9 @@ class RoleManager(models.Manager):
                 shift__start_time=shift_start_time,
                 name=role_name)
         return self.get(
-            shift__task__operation__project__organization__name=organization_name,
-            shift__task__operation__project__name=project_name,
-            shift__task__operation__name=operation_name,
+            task__operation__project__organization__name=organization_name,
+            task__operation__project__name=project_name,
+            task__operation__name=operation_name,
             task__name=task_name,
             name=role_name)
 
@@ -1760,6 +1760,10 @@ class Organization(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model
 class Participant(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     role = models.ForeignKey(
         to='Role',
+        on_delete=models.CASCADE,
+    )
+    shift = models.ForeignKey(
+        to='Shift',
         on_delete=models.CASCADE,
     )
     person = models.ForeignKey(

@@ -1307,6 +1307,7 @@ participant_wo_fields = [
 ]
 participant_rw_fields = [
     'person',
+    'shift',
     'role',
     'acceptance',
     'admin_acceptance',
@@ -1316,11 +1317,12 @@ participant_filter_fields = {
     'id': LOOKUPS_ID,
     'created_at': LOOKUPS_DATETIME,
     'modified_at': LOOKUPS_DATETIME,
-    'role__shift': LOOKUPS_ID,
-    'role__shift__task': LOOKUPS_ID,
-    'role__shift__task__operation': LOOKUPS_ID,
-    'role__shift__task__operation__project': LOOKUPS_ID,
-    'role__shift__task__operation__project__organization': LOOKUPS_ID,
+    'role': LOOKUPS_ID,
+    'shift': LOOKUPS_ID,
+    'shift__task': LOOKUPS_ID,
+    'shift__task__operation': LOOKUPS_ID,
+    'shift__task__operation__project': LOOKUPS_ID,
+    'shift__task__operation__project__organization': LOOKUPS_ID,
 }
 
 
