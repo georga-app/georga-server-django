@@ -78,7 +78,7 @@ Run django tests:
     > vi settings.py
         INSTALLED_APPS = [
             [...]
-            'django_exptensions',
+            'django_extensions',
         ]
     > ./manage.py graph_models -a \
         -X Mixin*,Abstract*,Group,Permission,ContentType,Session,LogEntry,Site \

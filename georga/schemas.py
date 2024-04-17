@@ -2079,7 +2079,8 @@ class DeleteResourceMutation(UUIDDjangoModelFormMutation):
 role_ro_fields = [
     'created_at',
     'modified_at',
-    'participant_set'
+    'participant_set',
+    'rolespecification_set',
 ]
 role_wo_fields = [
 ]
@@ -2091,6 +2092,7 @@ role_rw_fields = [
     'needs_admin_acceptance',
     'quantity',
     'shift',
+    'task',
 ]
 role_filter_fields = {
     'id': LOOKUPS_ID,
