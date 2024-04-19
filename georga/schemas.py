@@ -1689,6 +1689,7 @@ person_property_filter_fields = {
     'group__name': LOOKUPS_STRING,
     # 'group__codename': LOOKUPS_STRING,
     'group__organization__name': LOOKUPS_STRING,
+    'group__organization': LOOKUPS_ID,
 }
 
 
@@ -2107,6 +2108,10 @@ class RoleType(UUIDDjangoObjectType):
     participants_accepted = Int()
     participants_declined = Int()
     participants_pending = Int()
+    mandatory = List('georga.schemas.PersonPropertyType')
+    recommended = List('georga.schemas.PersonPropertyType')
+    unrecommended = List('georga.schemas.PersonPropertyType')
+    impossible = List('georga.schemas.PersonPropertyType')
 
     class Meta:
         model = Role
@@ -2114,18 +2119,93 @@ class RoleType(UUIDDjangoObjectType):
         filter_fields = role_filter_fields
         permissions = [login_required, object_permits_user('read')]
 
+    def resolve_mandatory(self, info):
+        specification = self.rolespecification_set.filter(necessity="MANDATORY")
+        if not specification:
+            return []
+        return specification[0].person_properties.all()
+
+    def resolve_recommended(self, info):
+        specification = self.rolespecification_set.filter(necessity="RECOMMENDED")
+        if not specification:
+            return []
+        return specification[0].person_properties.all()
+
+    def resolve_unrecommended(self, info):
+        specification = self.rolespecification_set.filter(necessity="UNRECOMMENDED")
+        if not specification:
+            return []
+        return specification[0].person_properties.all()
+
+    def resolve_impossible(self, info):
+        specification = self.rolespecification_set.filter(necessity="IMPOSSIBLE")
+        if not specification:
+            return []
+        return specification[0].person_properties.all()
+
 
 # forms
 class RoleModelForm(UUIDModelForm):
+    mandatory = ModelMultipleChoiceField(queryset=PersonProperty.objects.all(), required=False)
+    recommended = ModelMultipleChoiceField(queryset=PersonProperty.objects.all(), required=False)
+    unrecommended = ModelMultipleChoiceField(queryset=PersonProperty.objects.all(), required=False)
+    impossible = ModelMultipleChoiceField(queryset=PersonProperty.objects.all(), required=False)
+
     class Meta:
         model = Role
         fields = role_wo_fields + role_rw_fields
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        role = kwargs.get('instance', False)
+        if role:
+            qs = PersonProperty.objects.filter(group__organization=self.instance.organization)
+            for field in ["mandatory", "recommended", "unrecommended", "impossible"]:
+                self.fields[field].queryset = qs
+
+    def save(self, commit=True):
+        role = super().save(commit=False)
+        # create
+        print(role.id)
+        if not role.id:
+            role.save()
+        # specifications
+        for necessity in ["mandatory", "recommended", "unrecommended", "impossible"]:
+            if necessity not in self.data:
+                continue
+            properties = PersonProperty.objects.filter(uuid__in=self.data[necessity])
+            specification = role.rolespecification_set.filter(necessity=necessity.upper()).first()
+            if not specification:
+                specification = RoleSpecification(role=role, necessity=necessity.upper())
+                specification.save()
+            specification.person_properties.set(properties)
+        # save
+        if commit:
+            role.save()
+            self.save_m2m()
+        return role
+
+
+class CreateRoleModelForm(RoleModelForm):
+    def __init__(self, *args, **kwargs):
+        data = kwargs.get('data', False)
+        if data:
+            # enforce either shift or task relation
+            has_shift = 'shift' in data
+            has_task = 'task' in data
+            if (not has_shift or has_task) and (has_shift or not has_task):
+                raise ValidationError("Roles need to be assigned to either a task or a shift.")
+            # auto set is_template according to shift or task relation
+            data['is_template'] = True
+            if 'shift' in data:
+                data['is_template'] = False
+        super().__init__(*args, **kwargs)
 
 
 # mutations
 class CreateRoleMutation(UUIDDjangoModelFormMutation):
     class Meta:
-        form_class = RoleModelForm
+        form_class = CreateRoleModelForm
         exclude_fields = ['id']
         permissions = [staff_member_required, object_permits_user('create')]
 
@@ -2134,6 +2214,7 @@ class UpdateRoleMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = RoleModelForm
         required_fields = ['id']
+        exclude_fields = ['task', 'shift']
         permissions = [staff_member_required, object_permits_user('update')]
 
 
@@ -2517,6 +2598,7 @@ task_field_filter_fields = {
     'id': LOOKUPS_ID,
     'created_at': LOOKUPS_DATETIME,
     'modified_at': LOOKUPS_DATETIME,
+    'organization': LOOKUPS_ID,
 }
 
 
