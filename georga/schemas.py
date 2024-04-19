@@ -1687,7 +1687,7 @@ person_property_filter_fields = {
     'modified_at': LOOKUPS_DATETIME,
     'group': LOOKUPS_ID,
     'group__name': LOOKUPS_STRING,
-    'group__codename': LOOKUPS_STRING,
+    # 'group__codename': LOOKUPS_STRING,
     'group__organization__name': LOOKUPS_STRING,
 }
 
