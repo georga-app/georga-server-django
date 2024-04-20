@@ -37,7 +37,7 @@
     uuid: 00000011-0000-0000-0000-000000000102
     start_time: 2025-08-07 08:00:00.000000+00:00
     end_time: 2025-08-07 18:00:00.000000+00:00
-    state: PUBLISHED
+    state: FINISHED
     enrollment_deadline: 2025-08-06 18:00:00.000000+00:00
     task: [
       French Blue Circle,
@@ -51,7 +51,7 @@
     uuid: 00000011-0000-0000-0000-000000000103
     start_time: 2025-08-08 08:00:00.000000+00:00
     end_time: 2025-08-08 18:00:00.000000+00:00
-    state: PUBLISHED
+    state: CANCELLED
     enrollment_deadline: 2025-08-07 18:00:00.000000+00:00
     task: [
       French Blue Circle,
@@ -245,3 +245,48 @@
 # Org2 ------------------------------------------------------------------------
 
 # Org3 ------------------------------------------------------------------------
+
+# States ----------------------------------------------------------------------
+
+- model: georga.shift
+  pk: 900
+  fields:
+    uuid: 00000011-0000-0000-0000-000000000900
+    start_time: 2025-08-17 18:00:00.000000+00:00
+    end_time: 2025-08-17 22:00:00.000000+00:00
+    state: DRAFT
+    enrollment_deadline: 2025-08-16 18:00:00.000000+00:00
+    task: [
+      Drafted Organization,
+      Drafted Project,
+      Drafted Operation,
+      Drafted Task
+    ]
+- model: georga.shift
+  pk: 901
+  fields:
+    uuid: 00000011-0000-0000-0000-000000000901
+    start_time: 2025-08-17 18:00:00.000000+00:00
+    end_time: 2025-08-17 22:00:00.000000+00:00
+    state: ARCHIVED
+    enrollment_deadline: 2025-08-16 18:00:00.000000+00:00
+    task: [
+      Archived Organization,
+      Archived Project,
+      Archived Operation,
+      Archived Task
+    ]
+- model: georga.shift
+  pk: 902
+  fields:
+    uuid: 00000011-0000-0000-0000-000000000902
+    start_time: 2025-08-17 18:00:00.000000+00:00
+    end_time: 2025-08-17 22:00:00.000000+00:00
+    state: DELETED
+    enrollment_deadline: 2025-08-16 18:00:00.000000+00:00
+    task: [
+      Deleted Organization,
+      Deleted Project,
+      Deleted Operation,
+      Deleted Task
+    ]
