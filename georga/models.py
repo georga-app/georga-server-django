@@ -2246,12 +2246,6 @@ class PersonPropertyGroup(MixinTimestamps, MixinUUIDs, MixinAuthorization, model
         to='Organization',
         on_delete=models.CASCADE,
     )
-    codename = models.CharField(
-        max_length=30,
-        default='',
-        verbose_name=_("person propery group"),
-    )
-
     name = models.CharField(
         max_length=50,
         null=True,

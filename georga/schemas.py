@@ -1687,7 +1687,6 @@ person_property_filter_fields = {
     'modified_at': LOOKUPS_DATETIME,
     'group': LOOKUPS_ID,
     'group__name': LOOKUPS_STRING,
-    # 'group__codename': LOOKUPS_STRING,
     'group__organization__name': LOOKUPS_STRING,
     'group__organization': LOOKUPS_ID,
 }
@@ -1750,7 +1749,6 @@ person_property_group_wo_fields = [
 person_property_group_rw_fields = [
     'name',
     'organization',
-    'codename',
     'selection_type',
     'necessity',
 ]
@@ -1759,7 +1757,6 @@ person_property_group_filter_fields = {
     'created_at': LOOKUPS_DATETIME,
     'modified_at': LOOKUPS_DATETIME,
     'name': LOOKUPS_STRING,
-    'codename': LOOKUPS_STRING,
     'necessity': LOOKUPS_ENUM,
     'organization': LOOKUPS_CONNECTION,
     'organization__name': LOOKUPS_STRING,
