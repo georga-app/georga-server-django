@@ -1134,7 +1134,8 @@ class CreateOperationMutation(UUIDDjangoModelFormMutation):
     @classmethod
     def perform_mutate(cls, form, info):
         operation = form.instance
-        operation.save()
+        if not operation.id:
+            operation.save()
         if form.data.get('publish'):
             operation.publish()
             operation.save()
@@ -1948,7 +1949,8 @@ class CreateProjectMutation(UUIDDjangoModelFormMutation):
     @classmethod
     def perform_mutate(cls, form, info):
         project = form.instance
-        project.save()
+        if not project.id:
+            project.save()
         if form.data.get('publish'):
             project.publish()
             project.save()
@@ -2412,12 +2414,26 @@ class ShiftModelForm(UUIDModelForm):
         fields = shift_wo_fields + shift_rw_fields
 
 
+class CreateShiftModelForm(ShiftModelForm):
+    publish = BooleanField(required=False)
+
+
 # mutations
 class CreateShiftMutation(UUIDDjangoModelFormMutation):
     class Meta:
-        form_class = ShiftModelForm
+        form_class = CreateShiftModelForm
         exclude_fields = ['id']
         permissions = [staff_member_required, object_permits_user('create')]
+
+    @classmethod
+    def perform_mutate(cls, form, info):
+        shift = form.instance
+        if not shift.id:
+            shift.save()
+        if form.data.get('publish'):
+            shift.publish()
+            shift.save()
+        return cls(shift=shift, errors=[])
 
 
 class UpdateShiftMutation(UUIDDjangoModelFormMutation):
@@ -2437,6 +2453,34 @@ class DeleteShiftMutation(UUIDDjangoModelFormMutation):
     def perform_mutate(cls, form, info):
         shift = form.instance
         shift.delete()
+        return cls(shift=shift, errors=[])
+
+
+class PublishShiftMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = ShiftModelForm
+        only_fields = ['id']
+        permissions = [staff_member_required, object_permits_user('publish')]
+
+    @classmethod
+    def perform_mutate(cls, form, info):
+        shift = form.instance
+        shift.publish()
+        shift.save()
+        return cls(shift=shift, errors=[])
+
+
+class ArchiveShiftMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = ShiftModelForm
+        only_fields = ['id']
+        permissions = [staff_member_required, object_permits_user('archive')]
+
+    @classmethod
+    def perform_mutate(cls, form, info):
+        shift = form.instance
+        shift.archive()
+        shift.save()
         return cls(shift=shift, errors=[])
 
 
@@ -2491,20 +2535,9 @@ class TaskType(UUIDDjangoObjectType):
 
 # forms
 class TaskModelForm(UUIDModelForm):
-    # role_set = ModelMultipleChoiceField(queryset=Role.objects.all())
-
     class Meta:
         model = Task
         fields = task_wo_fields + task_rw_fields
-
-    # def save(self, commit=True):
-    #     task = super().save(commit=False)
-    #     for role in task.role_set.all():
-    #         print(role)
-    #     if commit:
-    #         task.save()
-    #         self.save_m2m()
-    #     return task
 
 
 class CreateTaskModelForm(TaskModelForm):
@@ -2521,7 +2554,8 @@ class CreateTaskMutation(UUIDDjangoModelFormMutation):
     @classmethod
     def perform_mutate(cls, form, info):
         task = form.instance
-        task.save()
+        if not task.id:
+            task.save()
         if form.data.get('publish'):
             task.publish()
             task.save()
@@ -2880,6 +2914,8 @@ class MutationType(ObjectType):
     create_shift = CreateShiftMutation.Field()
     update_shift = UpdateShiftMutation.Field()
     delete_shift = DeleteShiftMutation.Field()
+    publish_shift = PublishShiftMutation.Field()
+    archive_shift = ArchiveShiftMutation.Field()
     # Task
     create_task = CreateTaskMutation.Field()
     update_task = UpdateTaskMutation.Field()

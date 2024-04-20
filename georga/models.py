@@ -2757,8 +2757,17 @@ class Shift(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
             case 'read':
                 # shifts can be read by subscribed/employed users
                 return Q(task__operation__project__organization__in=user.organization_ids)
-            case 'update' | 'delete':
-                # shifts can be updated/deleted by organization/project/operation admins
+            case 'update':
+                # shifts can be updated by organization/project/operation admins
+                return Q(task__operation__in=user.admin_operation_ids)
+            case 'publish':
+                # shifts can be deleted by organization/project/operation admins
+                return Q(task__operation__in=user.admin_operation_ids)
+            case 'archive':
+                # shifts can be deleted by organization/project/operation admins
+                return Q(task__operation__in=user.admin_operation_ids)
+            case 'delete':
+                # shifts can be deleted by organization/project/operation admins
                 return Q(task__operation__in=user.admin_operation_ids)
             case _:
                 return None
