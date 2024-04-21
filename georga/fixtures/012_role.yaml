@@ -11,6 +11,7 @@
     name: Emergency physician
     quantity: 10
     is_template: true
+    needs_admin_acceptance: false
     task: [
       French Blue Circle,
       Care Service,
@@ -24,6 +25,7 @@
     name: Rescue worker
     quantity: 4
     is_template: true
+    needs_admin_acceptance: true
     task: [
       French Blue Circle,
       Care Service,
@@ -38,6 +40,8 @@
     uuid: 00000012-0000-0000-0000-000000000102
     name: Emergency physician
     quantity: 5
+    is_template: false
+    needs_admin_acceptance: true
     shift: [
       French Blue Circle,
       Care Service,
@@ -51,6 +55,8 @@
     uuid: 00000012-0000-0000-0000-000000000103
     name: Rescue worker
     quantity: 5
+    is_template: false
+    needs_admin_acceptance: false
     shift: [
       French Blue Circle,
       Care Service,
