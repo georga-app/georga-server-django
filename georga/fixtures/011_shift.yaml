@@ -51,7 +51,7 @@
     uuid: 00000011-0000-0000-0000-000000000103
     start_time: 2025-08-08 08:00:00.000000+00:00
     end_time: 2025-08-08 18:00:00.000000+00:00
-    state: CANCELLED
+    state: CANCELED
     enrollment_deadline: 2025-08-07 18:00:00.000000+00:00
     task: [
       French Blue Circle,
