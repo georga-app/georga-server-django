@@ -1405,6 +1405,8 @@ class AcceptParticipantMutation(UUIDDjangoModelFormMutation):
     def perform_mutate(cls, form, info):
         participant = form.instance
         participant.accept()
+        if not participant.role.needs_admin_acceptance:
+            participant.admin_accept()
         participant.save()
         return cls(participant=participant, errors=[])
 
@@ -1419,6 +1421,8 @@ class DeclineParticipantMutation(UUIDDjangoModelFormMutation):
     def perform_mutate(cls, form, info):
         participant = form.instance
         participant.decline()
+        if not participant.role.needs_admin_acceptance:
+            participant.admin_accept()
         participant.save()
         return cls(participant=participant, errors=[])
 
