@@ -1303,6 +1303,9 @@ class ArchiveOrganizationMutation(UUIDDjangoModelFormMutation):
 participant_ro_fields = [
     'created_at',
     'modified_at',
+    'acceptance',
+    'admin_acceptance',
+    'admin_acceptance_user',
 ]
 participant_wo_fields = [
 ]
@@ -1310,9 +1313,6 @@ participant_rw_fields = [
     'person',
     'shift',
     'role',
-    'acceptance',
-    'admin_acceptance',
-    'admin_acceptance_user',
 ]
 participant_filter_fields = {
     'id': LOOKUPS_ID,
@@ -1346,25 +1346,25 @@ class ParticipantModelForm(UUIDModelForm):
         model = Participant
         fields = participant_wo_fields + participant_rw_fields
 
-    def save(self, commit=True):
-        participant = super().save(commit=False)
-        user = self._meta.user
+    # def save(self, commit=True):
+    #     participant = super().save(commit=False)
+    #     user = self._meta.user
 
-        if 'admin_acceptance' in self.changed_data:
-            non_default_fields = ['ACCEPTED', 'DECLINED']
-            if participant.role.needs_admin_acceptance:
-                non_default_fields.append('NONE')
-            else:
-                non_default_fields.append('PENDING')
-            needs_permission = participant.admin_acceptance in non_default_fields
-            if needs_permission and not participant.permits(user, ('admin_create', 'admin_update')):
-                raise PermissionDenied
-            participant.admin_acceptance_user = user
+    #     if 'admin_acceptance' in self.changed_data:
+    #         non_default_fields = ['ACCEPTED', 'DECLINED']
+    #         if participant.role.needs_admin_acceptance:
+    #             non_default_fields.append('NONE')
+    #         else:
+    #             non_default_fields.append('PENDING')
+    #         needs_permission = participant.admin_acceptance in non_default_fields
+    #         if needs_permission and not participant.permits(user, ('admin_create', 'admin_update')):
+    #             raise PermissionDenied
+    #         participant.admin_acceptance_user = user
 
-        if commit:
-            participant.save()
-            self.save_m2m()
-        return participant
+    #     if commit:
+    #         participant.save()
+    #         self.save_m2m()
+    #     return participant
 
 
 # mutations
@@ -1392,6 +1392,66 @@ class DeleteParticipantMutation(UUIDDjangoModelFormMutation):
     def perform_mutate(cls, form, info):
         participant = form.instance
         participant.delete()
+        return cls(participant=participant, errors=[])
+
+
+class AcceptParticipantMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = ParticipantModelForm
+        only_fields = ['id']
+        permissions = [login_required, object_permits_user('accept')]
+
+    @classmethod
+    def perform_mutate(cls, form, info):
+        participant = form.instance
+        participant.accept()
+        participant.save()
+        return cls(participant=participant, errors=[])
+
+
+class DeclineParticipantMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = ParticipantModelForm
+        only_fields = ['id']
+        permissions = [login_required, object_permits_user('decline')]
+
+    @classmethod
+    def perform_mutate(cls, form, info):
+        participant = form.instance
+        participant.decline()
+        participant.save()
+        return cls(participant=participant, errors=[])
+
+
+class AdminAcceptParticipantMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = ParticipantModelForm
+        only_fields = ['id']
+        permissions = [login_required, object_permits_user('admin_accept')]
+
+    @classmethod
+    def perform_mutate(cls, form, info):
+        user = info.context.user
+        participant = form.instance
+        participant.admin_accept()
+        participant.admin_acceptance_user = user
+        participant.save()
+        return cls(participant=participant, errors=[])
+
+
+class AdminDeclineParticipantMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = ParticipantModelForm
+        only_fields = ['id']
+        permissions = [login_required, object_permits_user('admin_decline')]
+
+    @classmethod
+    def perform_mutate(cls, form, info):
+        user = info.context.user
+        participant = form.instance
+        participant.admin_decline()
+        participant.admin_acceptance_user = user
+        participant.save()
         return cls(participant=participant, errors=[])
 
 
@@ -2867,6 +2927,10 @@ class MutationType(ObjectType):
     create_participant = CreateParticipantMutation.Field()
     update_participant = UpdateParticipantMutation.Field()
     delete_participant = DeleteParticipantMutation.Field()
+    accept_participant = AcceptParticipantMutation.Field()
+    decline_participant = DeclineParticipantMutation.Field()
+    admin_accept_participant = AdminAcceptParticipantMutation.Field()
+    admin_decline_participant = AdminDeclineParticipantMutation.Field()
     # Person
     create_person = CreatePersonMutation.Field()
     update_person = UpdatePersonMutation.Field()

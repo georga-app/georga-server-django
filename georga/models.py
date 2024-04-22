@@ -1846,17 +1846,13 @@ class Participant(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model)
                     Q(role__is_template=False,
                       role__shift__task__operation__in=user.admin_operation_ids),
                 ])
-            case 'admin_read':
+            case 'accept' | 'decline':
+                # participants can accept/decline themself
+                return Q(person=user),
+            case 'admin_read' | 'admin_update' | 'admin_accept' | 'admin_decline':
                 return reduce(or_, [
-                    # participants can be admin_read by organization/project/operation admins
-                    Q(role__is_template=True,
-                      role__task__operation__in=user.admin_operation_ids),
-                    Q(role__is_template=False,
-                      role__shift__task__operation__in=user.admin_operation_ids),
-                ])
-            case 'admin_update':
-                return reduce(or_, [
-                    # participants can be admin_updated by organization/project/operation admins
+                    # participants can be admin_updated/admin_read/admin_accepted/admin_declined
+                    # by organization/project/operation admins
                     Q(role__is_template=True,
                       role__task__operation__in=user.admin_operation_ids),
                     Q(role__is_template=False,
@@ -1878,6 +1874,22 @@ class Participant(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model)
 
     @transition(acceptance, '+', 'PENDING')
     def reinquire(self):
+        # TODO: transition
+        pass
+
+    # admin acceptance transitions
+    @transition(admin_acceptance, '+', 'ACCEPTED')
+    def admin_accept(self):
+        # TODO: transition
+        pass
+
+    @transition(admin_acceptance, '+', 'DECLINED')
+    def admin_decline(self):
+        # TODO: transition
+        pass
+
+    @transition(admin_acceptance, '+', 'PENDING')
+    def admin_reinquire(self):
         # TODO: transition
         pass
 
