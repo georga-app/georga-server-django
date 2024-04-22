@@ -25,6 +25,7 @@
     person: [helper.001@georga.test]
     acceptance: ACCEPTED
     admin_acceptance: DECLINED
+    admin_acceptance_user: [organization.admin.1@frenchbluecircle.test]
 - model: georga.participant
   pk: 101
   fields:
