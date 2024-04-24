@@ -1487,6 +1487,7 @@ person_rw_fields = [
     'mobile_phone',
     'only_job_related_topics',
     'organizations_subscribed',
+    'organizations_employed',
 ]
 person_filter_fields = {
     'id': LOOKUPS_ID,
