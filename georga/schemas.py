@@ -1654,11 +1654,17 @@ class ActivatePersonMutation(UUIDDjangoModelFormMutation):
 class LoginPersonMutation(graphql_jwt.relay.JSONWebTokenMutation):
     id = ID()
     adminLevel = PersonType.admin_level.type
+    defaultOrganization = String()
 
     @classmethod
     def resolve(cls, root, info, **kwargs):
         user = info.context.user
-        return cls(id=user.gid, adminLevel=user.admin_level)
+        organization = user.organizations_subscribed.first()
+        return cls(
+            id=user.gid,
+            adminLevel=user.admin_level,
+            defaultOrganization=organization and organization.gid or ""
+        )
 
 
 class RequestPersonPasswordResetMutation(UUIDDjangoModelFormMutation):
