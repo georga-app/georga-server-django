@@ -3015,3 +3015,10 @@ class TaskField(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
                 return Q(organization__in=user.admin_organization_ids)
             case _:
                 return None
+
+    def delete(self, *args, hard=False, **kwargs):
+        if hard:
+            super().delete(*args, **kwargs)
+        else:
+            self.deleted = True
+            self.save()

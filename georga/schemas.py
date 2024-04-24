@@ -2732,6 +2732,7 @@ class UpdateTaskFieldMutation(UUIDDjangoModelFormMutation):
     class Meta:
         form_class = TaskFieldModelForm
         required_fields = ['id']
+        exclude_fields = ['organization']
         permissions = [staff_member_required, object_permits_user('update')]
 
 
@@ -2745,7 +2746,7 @@ class DeleteTaskFieldMutation(UUIDDjangoModelFormMutation):
     def perform_mutate(cls, form, info):
         task_field = form.instance
         task_field.delete()
-        return cls(task_field=task_field, errors=[])
+        return cls(taskField=task_field, errors=[])
 
 
 # Unions ======================================================================
