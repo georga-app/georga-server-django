@@ -257,6 +257,7 @@ class UUIDDjangoFilterConnectionField(DjangoFilterConnectionField):
 
     UUIDs:
     - Moves queryset id arg to uuid arg.
+    - Converts id to list for multiple choice fields.
     - Inserts uuid to filter field predicate string for forgein models.
 
     Bugfixes:
@@ -296,8 +297,11 @@ class UUIDDjangoFilterConnectionField(DjangoFilterConnectionField):
             _, args['uuid'] = from_global_id(args['id'])
             del (args['id'])
 
-        # insert uuid to filter field predicate string for forgein models
         for name, _filter in filterset_class.base_filters.items():
+            # convert id to list for multiple choice fields
+            if isinstance(_filter.field, GlobalIDMultipleChoiceField) and name in args:
+                args[name] = [args[name]]
+            # insert uuid to filter field predicate string for forgein models
             if isinstance(_filter.field, (GlobalIDMultipleChoiceField, GlobalIDFormField)):
                 field_name = _filter.field_name
                 lookups = field_name.split("__")
