@@ -2191,8 +2191,12 @@ class Person(MixinTimestamps, MixinUUIDs, MixinAuthorization, AbstractUser):
         # queryset filtering and persisted instances (read, update, delete, etc)
         match action:
             case 'read' | 'update' | 'delete':
-                # persons can be read/updated/deleted by themself
-                return Q(pk=user.pk)
+                return reduce(or_, [
+                    # staff can be read/updated/deleted by organization admins
+                    Q(organizations_subscribed__id__in=user.admin_organization_ids),
+                    # persons can be read/updated/deleted by themself
+                    Q(pk=user.pk),
+                ])
             case _:
                 return None
 
