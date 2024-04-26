@@ -2207,8 +2207,6 @@ class PersonProperty(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Mod
     )
     name = models.CharField(
         max_length=50,
-        null=True,
-        blank=True,
     )
 
     def __str__(self):

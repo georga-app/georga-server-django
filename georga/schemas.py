@@ -1805,7 +1805,7 @@ class DeletePersonPropertyMutation(UUIDDjangoModelFormMutation):
     def perform_mutate(cls, form, info):
         person_property = form.instance
         person_property.delete()
-        return cls(person_property=person_property, errors=[])
+        return cls(personProperty=person_property, errors=[])
 
 
 # PersonPropertyGroup ---------------------------------------------------------
@@ -1876,7 +1876,7 @@ class DeletePersonPropertyGroupMutation(UUIDDjangoModelFormMutation):
     def perform_mutate(cls, form, info):
         person_property_group = form.instance
         person_property_group.delete()
-        return cls(person_property_group=person_property_group, errors=[])
+        return cls(personPropertyGroup=person_property_group, errors=[])
 
 
 # PersonToObject --------------------------------------------------------------
