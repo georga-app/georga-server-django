@@ -1512,6 +1512,8 @@ person_filter_fields = {
     'private_phone': LOOKUPS_STRING,
     'mobile_phone': LOOKUPS_STRING,
     'only_job_related_topics': LOOKUPS_ENUM,
+    'organizations_subscribed': LOOKUPS_ID,
+    'organizations_employed': LOOKUPS_ID,
 }
 
 
