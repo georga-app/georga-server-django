@@ -1541,6 +1541,16 @@ class PersonType(UUIDDjangoObjectType):
         permissions = [login_required, object_permits_user('read')]
 
 
+# filters
+class PersonFilterSet(FilterSet):
+    organizationsEmployed__not = GlobalIDFilter(
+        field_name="organizations_employed", lookup_expr="exact", exclude=True)
+
+    class Meta:
+        model = Person
+        fields = person_filter_fields
+
+
 # forms
 class PersonModelForm(UUIDModelForm):
     class Meta:
