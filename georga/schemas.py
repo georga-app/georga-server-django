@@ -588,10 +588,21 @@ class ACEType(UUIDDjangoObjectType):
 class ACEFilterSet(GFKFilterSet):
     instance = GlobalIDFilter(method='filterExact')
     instance__in = GlobalIDMultipleChoiceFilter(method='filterIn')
+    organization = GlobalIDFilter(method="filterByOrganization", lookup_expr="exact")
 
     class Meta:
         model = ACE
         fields = ace_filter_fields
+
+    def filterByOrganization(self, queryset, name, value):
+        if not value:
+            return queryset
+        _, uuid = from_global_id(value)
+        return queryset.filter(
+            Q(organization__uuid=uuid)
+            | Q(project__organization__uuid=uuid)
+            | Q(operation__project__organization__uuid=uuid)
+        )
 
 
 # forms
