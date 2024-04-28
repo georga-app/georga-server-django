@@ -1787,6 +1787,11 @@ class EmployPersonMutation(UUIDDjangoModelFormMutation):
             person.organizations_employed.add(organization.id)
         else:
             person.organizations_employed.remove(organization.id)
+            person.ace_set.filter(
+                Q(organization=organization)
+                | Q(project__organization=organization)
+                | Q(operation__project__organization=organization)
+            ).delete()
         return cls(person=person, errors=[])
 
 
