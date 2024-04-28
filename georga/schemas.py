@@ -1584,6 +1584,11 @@ class PersonTokenModelForm(PersonModelForm):
     ])
 
 
+class PersonEmployModelForm(PersonModelForm):
+    organization = ModelChoiceField(queryset=Organization.objects)
+    employed = BooleanField(required=False)
+
+
 # mutations
 class CreatePersonMutation(UUIDDjangoModelFormMutation):
     class Meta:
@@ -1763,6 +1768,26 @@ class ChangePersonPasswordMutation(UUIDDjangoModelFormMutation):
         form_class = PersonModelForm
         only_fields = ['id', 'password']
         permissions = [login_required, object_permits_user("update")]
+
+
+class EmployPersonMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = PersonEmployModelForm
+        only_fields = ['id', 'organization', 'employed']
+        permissions = [staff_member_required, object_permits_user('employ')]
+
+    @classmethod
+    def perform_mutate(cls, form, info):
+        person = form.instance
+        organization = Organization.objects.get(uuid=form.data.get('organization'))
+        employed = form.data.get('employed')
+        if organization.id not in info.context.user.admin_organization_ids:
+            raise PermissionDenied()
+        if employed:
+            person.organizations_employed.add(organization.id)
+        else:
+            person.organizations_employed.remove(organization.id)
+        return cls(person=person, errors=[])
 
 
 # PersonProperty --------------------------------------------------------------
@@ -2990,6 +3015,7 @@ class MutationType(ObjectType):
     reset_person_password = ResetPersonPasswordMutation.Field()
     change_person_password = ChangePersonPasswordMutation.Field()
     update_person_profile = UpdatePersonProfileMutation.Field()
+    employ_person = EmployPersonMutation.Field()
     # PersonProperty
     create_person_property = CreatePersonPropertyMutation.Field()
     update_person_property = UpdatePersonPropertyMutation.Field()

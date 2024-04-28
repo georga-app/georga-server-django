@@ -2199,6 +2199,9 @@ class Person(MixinTimestamps, MixinUUIDs, MixinAuthorization, AbstractUser):
                     # persons can be read by themself
                     Q(pk=user.pk),
                 ])
+            case 'employ':
+                # subscribers can be employed by organization admin
+                return Q(organizations_subscribed__id__in=user.admin_organization_ids)
             case 'update' | 'delete':
                 # persons can be updated/deleted by themself
                 return Q(pk=user.pk)
