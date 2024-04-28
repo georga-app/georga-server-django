@@ -12,7 +12,7 @@ from django.contrib.auth.password_validation import validate_password
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.core.exceptions import ValidationError
-from django.db.models import ManyToManyField, ManyToManyRel, ManyToOneRel
+from django.db.models import Q, ManyToManyField, ManyToManyRel, ManyToOneRel
 from django.db.models.fields.related import ForeignKey
 from django.forms import (
     ModelForm, ModelChoiceField, ModelMultipleChoiceField,
@@ -110,9 +110,7 @@ def convert_field_to_list_or_connection(field, registry=None):
         )
         if _type._meta.connection:
             if _type._meta.filter_fields or _type._meta.filterset_class:
-                # resolve connection to UUIDDjangoFilterConnectionField
-                return UUIDDjangoFilterConnectionField(
-                    _type, required=True, description=description)
+                return connection(_type, required=True, description=description)
             return DjangoConnectionField(_type, required=True, description=description)
         return DjangoListField(_type, required=True, description=description)
 
@@ -2837,59 +2835,70 @@ class TestSubscriptionEventMutation(Mutation):
 
 # Schema ======================================================================
 
-Connection = UUIDDjangoFilterConnectionField
+# Connection = UUIDDjangoFilterConnectionField
+
+custom_filterclass_sets = {
+    "ACEType": ACEFilterSet,
+    "MessageType": MessageFilterSet,
+    "MessageFilterType": MessageFilterFilterSet,
+    "PersonType": PersonFilterSet,
+    "PersonToObjectType": PersonToObjectFilterSet,
+}
+
+
+def connection(*args, **kwargs):
+    filterset_class = custom_filterclass_sets.get(args[0]._meta.name)
+    if filterset_class:
+        kwargs['filterset_class'] = filterset_class
+    return UUIDDjangoFilterConnectionField(*args, **kwargs)
 
 
 class QueryType(ObjectType):
     # Relay
     node = Node.Field()
     # ACE
-    list_aces = Connection(
-        ACEType, filterset_class=ACEFilterSet)
+    list_aces = connection(ACEType)
     # Device
-    list_devices = Connection(DeviceType)
+    list_devices = connection(DeviceType)
     # Equipment
-    list_equipment = Connection(EquipmentType)
+    list_equipment = connection(EquipmentType)
     # Location
-    list_locations = Connection(LocationType)
+    list_locations = connection(LocationType)
     # LocationCategory
-    list_location_categories = Connection(LocationCategoryType)
+    list_location_categories = connection(LocationCategoryType)
     # Message
-    list_messages = Connection(
-        MessageType, filterset_class=MessageFilterSet)
+    list_messages = connection(MessageType)
     # MessageFilter
-    list_message_filters = Connection(
-        MessageFilterType, filterset_class=MessageFilterFilterSet)
+    list_message_filters = connection(MessageFilterType)
     # Operation
-    list_operations = Connection(OperationType)
+    list_operations = connection(OperationType)
     # Organization
-    list_organizations = Connection(OrganizationType)
+    list_organizations = connection(OrganizationType)
     # Participant
-    list_participants = Connection(ParticipantType)
+    list_participants = connection(ParticipantType)
     # Person
-    list_persons = Connection(PersonType)
+    list_persons = connection(PersonType)
     get_person_profile = Field(PersonType)
     # PersonProperty
-    list_person_properties = Connection(PersonPropertyType)
+    list_person_properties = connection(PersonPropertyType)
     # PersonPropertyGroup
-    list_person_property_groups = Connection(PersonPropertyGroupType)
+    list_person_property_groups = connection(PersonPropertyGroupType)
     # PersonToObject
-    list_person_to_objects = Connection(
-        PersonToObjectType, filterset_class=PersonToObjectFilterSet)
+    list_person_to_objects = connection(PersonToObjectType)
     # Project
-    list_projects = Connection(ProjectType)
+    list_projects = connection(ProjectType)
     # Resource
-    list_resources = Connection(ResourceType)
+    list_resources = connection(ResourceType)
     # Role
-    list_roles = Connection(RoleType)
+    list_roles = connection(RoleType)
     # RoleSpecification
-    list_role_specifications = Connection(RoleSpecificationType)
+    list_role_specifications = connection(RoleSpecificationType)
     # Shift
-    list_shifts = Connection(ShiftType)
+    list_shifts = connection(ShiftType)
     # Task
-    list_tasks = Connection(TaskType)
+    list_tasks = connection(TaskType)
     # TaskField
-    list_task_fields = Connection(TaskFieldType)
+    list_task_fields = connection(TaskFieldType)
 
     @object_permits_user('read')
     def resolve_get_person_profile(parent, info):
