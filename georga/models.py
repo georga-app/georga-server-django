@@ -1137,10 +1137,10 @@ class Message(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
     @property
     def delivery(self):
         """
-        str (ERROR|SCHEDULED|SENT|SUCCESS|NONE): Returns the least
+        str (FAILED|SCHEDULED|SENT|SUCCEEDED|NONE): Returns the least
             optimal delivery state of all channels in the given order.
         """
-        for state in ["ERROR", "SCHEDULED", "SENT", "SUCCESS"]:
+        for state in ["FAILED", "SCHEDULED", "SENT", "SUCCEEDED"]:
             for channel_state in [self.email_delivery, self.push_delivery, self.sms_delivery]:
                 if channel_state == state:
                     return state
