@@ -1,6 +1,7 @@
 # For copyright and license terms, see COPYRIGHT.md (top level of repository)
 # Repository: https://github.com/georga-app/georga-server-django
 
+import json
 import logging
 from datetime import datetime
 
@@ -11,6 +12,7 @@ from channels_graphql_ws import Subscription
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db.models import Q, ManyToManyField, ManyToManyRel, ManyToOneRel
 from django.db.models.fields.related import ForeignKey
@@ -79,10 +81,49 @@ def not_jwt_error(record):
     return not isinstance(err_obj, JSONWebTokenError)
 
 
+logger = logging.getLogger(__name__)
+logger.setLevel(settings.DEBUG and logging.DEBUG or logging.CRITICAL)
+handler = logging.StreamHandler()
+handler.setLevel(settings.DEBUG and logging.DEBUG or logging.CRITICAL)
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+logger.addHandler(handler)
+
 # see https://github.com/graphql-python/graphene-django/issues/413
 logging.getLogger('graphql.execution.executor').addFilter(not_jwt_error)
 # see https://github.com/graphql-python/graphene-django/issues/735
 logging.getLogger("graphql.execution.utils").setLevel(logging.CRITICAL)
+
+
+class DebugRequestMiddleware():
+    def resolve(self, next, root, info, **args):
+        try:
+            return next(root, info, **args)
+        except Exception as e:
+            logger.error("Error occurred in GraphQL execution:", exc_info=True)
+            raise e
+
+
+class DebugResponseMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        request_data = json.loads(request.body)
+        response = self.get_response(request)
+        response_data = json.loads(response.content)
+        logger.debug(
+            "\n\n--- Request " + 68 * "-" + "\n\n"
+            "User: %s \nOperation: %s \nVariables: %s \n%s\n"
+            "--- Response " + 67 * "-" + "\n\n"
+            "%s\n",
+            request.user,
+            request_data['operationName'],
+            request_data['variables'],
+            request_data['query'],
+            json.dumps(response_data, indent=2, ensure_ascii=False)
+        )
+        return response
 
 
 # Subclasses ==================================================================

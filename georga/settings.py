@@ -37,6 +37,7 @@ SECRET_KEY = os.getenv(
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DJANGO_DEBUG', 'False') == 'True'
+DEBUG_RESPONSE = DEBUG and os.getenv('DJANGO_DEBUG_RESPONSE', 'False') == 'True'
 
 ALLOWED_HOSTS = os.getenv(
     'DJANGO_ALLOWED_HOSTS', 'localhost 127.0.0.1 10.0.2.2 georga.test').split(' ')
@@ -78,6 +79,10 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+if DEBUG_RESPONSE:
+    MIDDLEWARE += [
+        'georga.schemas.DebugResponseMiddleware',
+    ]
 
 ROOT_URLCONF = 'georga.urls'
 
@@ -184,6 +189,11 @@ GRAPHENE = {
         "graphql_jwt.middleware.JSONWebTokenMiddleware",
     ],
 }
+if DEBUG:
+    GRAPHENE["MIDDLEWARE"] += [
+        'georga.schemas.DebugRequestMiddleware',
+    ]
+
 # Email settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = os.getenv('DJANGO_EMAIL_HOST', '')
