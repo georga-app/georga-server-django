@@ -1185,17 +1185,17 @@ class Message(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
                     Q(task__operation__project__organization__in=user.organization_ids),
                     Q(shift__task__operation__project__organization__in=user.organization_ids),
                 ])
-            case 'update' | 'delete':
+            case 'update' | 'delete' | 'publish' | 'archive' | 'send':
                 return reduce(or_, [
-                    # messages for organizations can be updated/deleted by organization admins
+                    # messages for organizations can be changes by organization admins
                     Q(organization__in=user.admin_organization_ids),
-                    # messages for projects can be updated/deleted by organization/project admins
+                    # messages for projects can be changed by organization/project admins
                     Q(project__in=user.admin_project_ids),
-                    # messages for operations can be updated/deleted by organization/project/operation admins
+                    # messages for operations can be changed by all admins
                     Q(operation__in=user.admin_operation_ids),
-                    # messages for tasks can be updated/deleted by organization/project/operation admins
+                    # messages for tasks can be changed by all admins
                     Q(task__operation__in=user.admin_operation_ids),
-                    # messages for shifts can be updated/deleted by organization/project/operation admins
+                    # messages for shifts can be changed by all admins
                     Q(shift__task__operation__in=user.admin_operation_ids),
                 ])
             case _:
@@ -1223,6 +1223,12 @@ class Message(MixinTimestamps, MixinUUIDs, MixinAuthorization, models.Model):
         else:
             self.deleted = True
             self.save()
+
+    # delivery transitions
+    def send(self):
+        self.send_email()
+        self.send_push()
+        self.send_sms()
 
     # email_delivery transitions
     @transition(email_delivery, 'NONE', 'SCHEDULED')

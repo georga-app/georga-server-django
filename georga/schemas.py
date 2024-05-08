@@ -994,12 +994,26 @@ class MessageType(UUIDDjangoObjectType):
 
 # filters
 class MessageFilterSet(GFKFilterSet):
+    organization = GlobalIDFilter(method="filterByOrganization", lookup_expr="exact")
     scope = GlobalIDFilter(method='filterExact')
     scope__in = GlobalIDMultipleChoiceFilter(method='filterIn')
 
     class Meta:
         model = Message
         fields = message_filter_fields
+
+    def filterByOrganization(self, queryset, name, value):
+        print(value)
+        if not value:
+            return queryset
+        _, uuid = from_global_id(value)
+        return queryset.filter(
+            Q(organization__uuid=uuid)
+            | Q(project__organization__uuid=uuid)
+            | Q(operation__project__organization__uuid=uuid)
+            | Q(task__operation__project__organization__uuid=uuid)
+            | Q(shift__task__operation__project__organization__uuid=uuid)
+        )
 
 
 # forms
@@ -1009,16 +1023,25 @@ class MessageModelForm(UUIDModelForm):
         fields = message_wo_fields + message_rw_fields
 
 
+class CreateMessageModelForm(MessageModelForm):
+    publish = BooleanField(required=False)
+
+
 # mutations
 class CreateMessageMutation(UUIDDjangoModelFormMutation):
     class Meta:
-        form_class = MessageModelForm
+        form_class = CreateMessageModelForm
         exclude_fields = ['id']
         permissions = [staff_member_required, object_permits_user('create')]
 
     @classmethod
     def perform_mutate(cls, form, info):
-        message = form.save()
+        message = form.instance
+        if not message.id:
+            message.save()
+        if form.data.get('publish'):
+            message.publish()
+            message.save()
         async_to_sync(channel_layer.group_send)("message_created", {"pk": message.id})
         return cls(message=message, errors=[])
 
@@ -1040,6 +1063,49 @@ class DeleteMessageMutation(UUIDDjangoModelFormMutation):
     def perform_mutate(cls, form, info):
         message = form.instance
         message.delete()
+        message.save()
+        return cls(message=message, errors=[])
+
+
+class PublishMessageMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = MessageModelForm
+        only_fields = ['id']
+        permissions = [staff_member_required, object_permits_user('publish')]
+
+    @classmethod
+    def perform_mutate(cls, form, info):
+        message = form.instance
+        message.publish()
+        message.save()
+        return cls(message=message, errors=[])
+
+
+class ArchiveMessageMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = MessageModelForm
+        only_fields = ['id']
+        permissions = [staff_member_required, object_permits_user('archive')]
+
+    @classmethod
+    def perform_mutate(cls, form, info):
+        message = form.instance
+        message.archive()
+        message.save()
+        return cls(message=message, errors=[])
+
+
+class SendMessageMutation(UUIDDjangoModelFormMutation):
+    class Meta:
+        form_class = MessageModelForm
+        only_fields = ['id']
+        permissions = [staff_member_required, object_permits_user('send')]
+
+    @classmethod
+    def perform_mutate(cls, form, info):
+        message = form.instance
+        message.send()
+        message.save()
         return cls(message=message, errors=[])
 
 
@@ -3026,6 +3092,9 @@ class MutationType(ObjectType):
     create_message = CreateMessageMutation.Field()
     update_message = UpdateMessageMutation.Field()
     delete_message = DeleteMessageMutation.Field()
+    publish_message = PublishMessageMutation.Field()
+    archive_message = ArchiveMessageMutation.Field()
+    send_message = SendMessageMutation.Field()
     # MessageFilter
     create_message_filter = CreateMessageFilterMutation.Field()
     update_message_filter = UpdateMessageFilterMutation.Field()
