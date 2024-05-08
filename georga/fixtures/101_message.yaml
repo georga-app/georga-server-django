@@ -3,38 +3,113 @@
 
 # Org1 ------------------------------------------------------------------------
 
+# states
 - model: georga.message
   pk: 100
   fields:
     uuid: 00000101-0000-0000-0000-000000000100
-    title: Dolmetschertätigkeit in der Unterkunft Hofstraße
+    title: FBC Draft
     contents: >
-      <h1>Tätigkeit:</h1>
-      <p>
-        In der Notunkterkunft wird Hilfe für die Kommunikation zwischen Bewohnern und
-        Betreuuern benötigt. Bitte <b>nur mit 2G-Nachweis</b>
-      </p>
-      <h1>Mitbringen:</h1>
-      <ul><li>Außentaugliche Kleidung für Tätigkeiten im Hof</ul>
-    priority: IMPORTANT
+      Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+      tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At
+      vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
+      no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
+      consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
+      dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo
+      duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
+      Lorem ipsum dolor sit amet.
     category: NEWS
+    priority: NORMAL
     state: DRAFT
     email_delivery: NONE
     push_delivery: NONE
     sms_delivery: NONE
-    scope_ct: [georga, shift]
+    scope_ct: [georga, organization]
     scope_id: 100
 - model: georga.message
   pk: 101
   fields:
     uuid: 00000101-0000-0000-0000-000000000101
-    title: Großbrand im Stahlwerk
+    title: FBC Published
     contents: >
-      Die Bevölkerung in der näheren Umgebung von 2km Umkreis wird wegen der
-      Rauchentwicklung gebeten, Türen und Fenster geschlossen zu halten und sich
-      nicht im Freien aufzuhalten.
-    priority: URGENT
+      Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+      tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At
+      vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
+      no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
+      consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
+      dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo
+      duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
+      Lorem ipsum dolor sit amet.
     category: NEWS
+    priority: NORMAL
+    state: PUBLISHED
+    email_delivery: SCHEDULED
+    push_delivery: SCHEDULED
+    sms_delivery: SCHEDULED
+    scope_ct: [georga, organization]
+    scope_id: 100
+- model: georga.message
+  pk: 102
+  fields:
+    uuid: 00000101-0000-0000-0000-000000000102
+    title: FBC Archived
+    contents: >
+      Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+      tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At
+      vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
+      no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
+      consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
+      dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo
+      duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
+      Lorem ipsum dolor sit amet.
+    category: NEWS
+    priority: NORMAL
+    state: ARCHIVED
+    email_delivery: SUCCEEDED
+    push_delivery: SUCCEEDED
+    sms_delivery: SUCCEEDED
+    scope_ct: [georga, organization]
+    scope_id: 100
+- model: georga.message
+  pk: 103
+  fields:
+    uuid: 00000101-0000-0000-0000-000000000103
+    title: FBC Deleted
+    contents: >
+      Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+      tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At
+      vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
+      no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
+      consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
+      dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo
+      duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
+      Lorem ipsum dolor sit amet.
+    category: NEWS
+    priority: NORMAL
+    state: DELETED
+    email_delivery: SUCCEEDED
+    push_delivery: SUCCEEDED
+    sms_delivery: SUCCEEDED
+    scope_ct: [georga, organization]
+    scope_id: 100
+
+# Categories / Priority
+- model: georga.message
+  pk: 110
+  fields:
+    uuid: 00000101-0000-0000-0000-000000000110
+    title: FBC Activity Low
+    contents: >
+      Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+      tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At
+      vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
+      no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
+      consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
+      dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo
+      duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
+      Lorem ipsum dolor sit amet.
+    category: ACTIVITY
+    priority: LOW
     state: PUBLISHED
     email_delivery: SUCCEEDED
     push_delivery: SUCCEEDED
@@ -42,29 +117,10 @@
     scope_ct: [georga, organization]
     scope_id: 100
 - model: georga.message
-  pk: 102
+  pk: 111
   fields:
-    uuid: 00000101-0000-0000-0000-000000000102
-    title: Spendenbereitschaft überwältigend
-    contents: >
-      <p>Für die Notunterkünfte für Geflüchtet ist die Spendenbereitschaft in der
-      Bevölkerung weiterhin überwältigend. Aktuell wird darum gebeten, dass vorerst
-      keine neuen Küchenutensilien gespendet werden, da diese nun erst einmal sortiert
-      und zugeteilt werden müssen und diese höchst wahrscheinlich für alle Unterkünfte
-      ausreichen.</p>
-    priority: IMPORTANT
-    category: ALERT
-    state: PUBLISHED
-    email_delivery: SENT
-    push_delivery: SENT
-    sms_delivery: SENT
-    scope_ct: [georga, project]
-    scope_id: 100
-- model: georga.message
-  pk: 103
-  fields:
-    uuid: 00000101-0000-0000-0000-000000000103
-    title: Bli Bla Blubb
+    uuid: 00000101-0000-0000-0000-000000000111
+    title: FBC Activity Normal
     contents: >
       Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
       tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At
@@ -74,19 +130,399 @@
       dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo
       duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
       Lorem ipsum dolor sit amet.
-    priority: LOW
     category: ACTIVITY
+    priority: NORMAL
+    state: PUBLISHED
+    email_delivery: SUCCEEDED
+    push_delivery: SUCCEEDED
+    sms_delivery: SUCCEEDED
+    scope_ct: [georga, organization]
+    scope_id: 100
+- model: georga.message
+  pk: 112
+  fields:
+    uuid: 00000101-0000-0000-0000-000000000112
+    title: FBC Activity Important
+    contents: >
+      Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+      tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At
+      vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
+      no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
+      consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
+      dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo
+      duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
+      Lorem ipsum dolor sit amet.
+    category: ACTIVITY
+    priority: IMPORTANT
+    state: PUBLISHED
+    email_delivery: SUCCEEDED
+    push_delivery: SUCCEEDED
+    sms_delivery: SUCCEEDED
+    scope_ct: [georga, organization]
+    scope_id: 100
+- model: georga.message
+  pk: 113
+  fields:
+    uuid: 00000101-0000-0000-0000-000000000113
+    title: FBC Activity Urgent
+    contents: >
+      Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+      tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At
+      vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
+      no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
+      consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
+      dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo
+      duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
+      Lorem ipsum dolor sit amet.
+    category: ACTIVITY
+    priority: URGENT
+    state: PUBLISHED
+    email_delivery: SUCCEEDED
+    push_delivery: SUCCEEDED
+    sms_delivery: SUCCEEDED
+    scope_ct: [georga, organization]
+    scope_id: 100
+
+- model: georga.message
+  pk: 120
+  fields:
+    uuid: 00000101-0000-0000-0000-000000000120
+    title: FBC News Low
+    contents: >
+      Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+      tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At
+      vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
+      no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
+      consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
+      dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo
+      duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
+      Lorem ipsum dolor sit amet.
+    category: NEWS
+    priority: LOW
+    state: PUBLISHED
+    email_delivery: SUCCEEDED
+    push_delivery: SUCCEEDED
+    sms_delivery: SUCCEEDED
+    scope_ct: [georga, organization]
+    scope_id: 100
+- model: georga.message
+  pk: 121
+  fields:
+    uuid: 00000101-0000-0000-0000-000000000121
+    title: FBC News Normal
+    contents: >
+      Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+      tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At
+      vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
+      no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
+      consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
+      dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo
+      duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
+      Lorem ipsum dolor sit amet.
+    category: NEWS
+    priority: NORMAL
+    state: PUBLISHED
+    email_delivery: SUCCEEDED
+    push_delivery: SUCCEEDED
+    sms_delivery: SUCCEEDED
+    scope_ct: [georga, organization]
+    scope_id: 100
+- model: georga.message
+  pk: 122
+  fields:
+    uuid: 00000101-0000-0000-0000-000000000122
+    title: FBC News Important
+    contents: >
+      Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+      tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At
+      vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
+      no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
+      consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
+      dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo
+      duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
+      Lorem ipsum dolor sit amet.
+    category: NEWS
+    priority: IMPORTANT
+    state: PUBLISHED
+    email_delivery: SUCCEEDED
+    push_delivery: SUCCEEDED
+    sms_delivery: SUCCEEDED
+    scope_ct: [georga, organization]
+    scope_id: 100
+- model: georga.message
+  pk: 123
+  fields:
+    uuid: 00000101-0000-0000-0000-000000000123
+    title: FBC News Urgent
+    contents: >
+      Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+      tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At
+      vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
+      no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
+      consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
+      dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo
+      duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
+      Lorem ipsum dolor sit amet.
+    category: NEWS
+    priority: URGENT
+    state: PUBLISHED
+    email_delivery: SUCCEEDED
+    push_delivery: SUCCEEDED
+    sms_delivery: SUCCEEDED
+    scope_ct: [georga, organization]
+    scope_id: 100
+
+- model: georga.message
+  pk: 130
+  fields:
+    uuid: 00000101-0000-0000-0000-000000000130
+    title: FBC Alert Low
+    contents: >
+      Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+      tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At
+      vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
+      no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
+      consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
+      dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo
+      duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
+      Lorem ipsum dolor sit amet.
+    category: ALERT
+    priority: LOW
+    state: PUBLISHED
+    email_delivery: SUCCEEDED
+    push_delivery: SUCCEEDED
+    sms_delivery: SUCCEEDED
+    scope_ct: [georga, organization]
+    scope_id: 100
+- model: georga.message
+  pk: 131
+  fields:
+    uuid: 00000101-0000-0000-0000-000000000131
+    title: FBC Alert Normal
+    contents: >
+      Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+      tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At
+      vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
+      no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
+      consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
+      dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo
+      duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
+      Lorem ipsum dolor sit amet.
+    category: ALERT
+    priority: NORMAL
+    state: PUBLISHED
+    email_delivery: SUCCEEDED
+    push_delivery: SUCCEEDED
+    sms_delivery: SUCCEEDED
+    scope_ct: [georga, organization]
+    scope_id: 100
+- model: georga.message
+  pk: 132
+  fields:
+    uuid: 00000101-0000-0000-0000-000000000132
+    title: FBC Alert Important
+    contents: >
+      Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+      tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At
+      vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
+      no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
+      consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
+      dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo
+      duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
+      Lorem ipsum dolor sit amet.
+    category: ALERT
+    priority: IMPORTANT
+    state: PUBLISHED
+    email_delivery: SUCCEEDED
+    push_delivery: SUCCEEDED
+    sms_delivery: SUCCEEDED
+    scope_ct: [georga, organization]
+    scope_id: 100
+- model: georga.message
+  pk: 133
+  fields:
+    uuid: 00000101-0000-0000-0000-000000000133
+    title: FBC Alert Urgent
+    contents: >
+      Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+      tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At
+      vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
+      no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
+      consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
+      dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo
+      duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
+      Lorem ipsum dolor sit amet.
+    category: ALERT
+    priority: URGENT
+    state: PUBLISHED
+    email_delivery: SUCCEEDED
+    push_delivery: SUCCEEDED
+    sms_delivery: SUCCEEDED
+    scope_ct: [georga, organization]
+    scope_id: 100
+
+# scope
+- model: georga.message
+  pk: 140
+  fields:
+    uuid: 00000101-0000-0000-0000-000000000140
+    title: FBC Organization
+    contents: >
+      Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+      tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At
+      vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
+      no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
+      consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
+      dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo
+      duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
+      Lorem ipsum dolor sit amet.
+    category: NEWS
+    priority: NORMAL
+    state: PUBLISHED
+    email_delivery: SUCCEEDED
+    push_delivery: SUCCEEDED
+    sms_delivery: SUCCEEDED
+    scope_ct: [georga, organization]
+    scope_id: 100
+- model: georga.message
+  pk: 141
+  fields:
+    uuid: 00000101-0000-0000-0000-000000000141
+    title: FBC Operation
+    contents: >
+      Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+      tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At
+      vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
+      no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
+      consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
+      dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo
+      duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
+      Lorem ipsum dolor sit amet.
+    category: NEWS
+    priority: NORMAL
+    state: PUBLISHED
+    email_delivery: SUCCEEDED
+    push_delivery: SUCCEEDED
+    sms_delivery: SUCCEEDED
+    scope_ct: [georga, operation]
+    scope_id: 100
+- model: georga.message
+  pk: 142
+  fields:
+    uuid: 00000101-0000-0000-0000-000000000142
+    title: FBC Project
+    contents: >
+      Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+      tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At
+      vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
+      no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
+      consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
+      dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo
+      duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
+      Lorem ipsum dolor sit amet.
+    category: NEWS
+    priority: NORMAL
+    state: PUBLISHED
+    email_delivery: SUCCEEDED
+    push_delivery: SUCCEEDED
+    sms_delivery: SUCCEEDED
+    scope_ct: [georga, project]
+    scope_id: 100
+- model: georga.message
+  pk: 143
+  fields:
+    uuid: 00000101-0000-0000-0000-000000000143
+    title: FBC Task
+    contents: >
+      Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+      tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At
+      vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
+      no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
+      consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
+      dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo
+      duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
+      Lorem ipsum dolor sit amet.
+    category: NEWS
+    priority: NORMAL
+    state: PUBLISHED
+    email_delivery: SUCCEEDED
+    push_delivery: SUCCEEDED
+    sms_delivery: SUCCEEDED
+    scope_ct: [georga, task]
+    scope_id: 100
+- model: georga.message
+  pk: 144
+  fields:
+    uuid: 00000101-0000-0000-0000-000000000144
+    title: FBC Shift
+    contents: >
+      Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+      tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At
+      vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
+      no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
+      consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
+      dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo
+      duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
+      Lorem ipsum dolor sit amet.
+    category: NEWS
+    priority: NORMAL
+    state: PUBLISHED
+    email_delivery: SUCCEEDED
+    push_delivery: SUCCEEDED
+    sms_delivery: SUCCEEDED
+    scope_ct: [georga, shift]
+    scope_id: 100
+
+# delivery
+- model: georga.message
+  pk: 150
+  fields:
+    uuid: 00000101-0000-0000-0000-000000000150
+    title: FBC All None
+    contents: >
+      Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+      tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At
+      vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
+      no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
+      consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
+      dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo
+      duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
+      Lorem ipsum dolor sit amet.
+    category: NEWS
+    priority: NORMAL
+    state: DRAFT
+    email_delivery: NONE
+    push_delivery: NONE
+    sms_delivery: NONE
+    scope_ct: [georga, organization]
+    scope_id: 100
+- model: georga.message
+  pk: 151
+  fields:
+    uuid: 00000101-0000-0000-0000-000000000151
+    title: FBC All Scheduled
+    contents: >
+      Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+      tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At
+      vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
+      no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
+      consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
+      dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo
+      duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
+      Lorem ipsum dolor sit amet.
+    category: NEWS
+    priority: NORMAL
     state: PUBLISHED
     email_delivery: SCHEDULED
     push_delivery: SCHEDULED
     sms_delivery: SCHEDULED
-    scope_ct: [georga, task]
+    scope_ct: [georga, organization]
     scope_id: 100
 - model: georga.message
-  pk: 104
+  pk: 152
   fields:
-    uuid: 00000101-0000-0000-0000-000000000104
-    title: Räuber Hotzenplotz
+    uuid: 00000101-0000-0000-0000-000000000152
+    title: FBC All Sent
     contents: >
       Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
       tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At
@@ -96,19 +532,264 @@
       dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo
       duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
       Lorem ipsum dolor sit amet.
+    category: NEWS
     priority: NORMAL
-    category: ACTIVITY
-    state: DRAFT
+    state: PUBLISHED
+    email_delivery: SENT
+    push_delivery: SENT
+    sms_delivery: SENT
+    scope_ct: [georga, organization]
+    scope_id: 100
+- model: georga.message
+  pk: 153
+  fields:
+    uuid: 00000101-0000-0000-0000-000000000153
+    title: FBC All Succeeded
+    contents: >
+      Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+      tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At
+      vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
+      no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
+      consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
+      dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo
+      duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
+      Lorem ipsum dolor sit amet.
+    category: NEWS
+    priority: NORMAL
+    state: PUBLISHED
+    email_delivery: SUCCEEDED
+    push_delivery: SUCCEEDED
+    sms_delivery: SUCCEEDED
+    scope_ct: [georga, organization]
+    scope_id: 100
+- model: georga.message
+  pk: 154
+  fields:
+    uuid: 00000101-0000-0000-0000-000000000154
+    title: FBC All Failed
+    contents: >
+      Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+      tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At
+      vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
+      no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
+      consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
+      dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo
+      duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
+      Lorem ipsum dolor sit amet.
+    category: NEWS
+    priority: NORMAL
+    state: PUBLISHED
     email_delivery: FAILED
     push_delivery: FAILED
     sms_delivery: FAILED
-    scope_ct: [georga, operation]
+    scope_ct: [georga, organization]
+    scope_id: 100
+
+- model: georga.message
+  pk: 160
+  fields:
+    uuid: 00000101-0000-0000-0000-000000000160
+    title: FBC Mixed Scheduled/Sent/Succeeded
+    contents: >
+      Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+      tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At
+      vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
+      no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
+      consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
+      dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo
+      duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
+      Lorem ipsum dolor sit amet.
+    category: NEWS
+    priority: NORMAL
+    state: PUBLISHED
+    email_delivery: SCHEDULED
+    push_delivery: SENT
+    sms_delivery: SUCCEEDED
+    scope_ct: [georga, organization]
     scope_id: 100
 - model: georga.message
-  pk: 105
+  pk: 161
+  fields:
+    uuid: 00000101-0000-0000-0000-000000000161
+    title: FBC Mixed Succeeded/Scheduled/Sent
+    contents: >
+      Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+      tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At
+      vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
+      no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
+      consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
+      dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo
+      duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
+      Lorem ipsum dolor sit amet.
+    category: NEWS
+    priority: NORMAL
+    state: PUBLISHED
+    email_delivery: SUCCEEDED
+    push_delivery: SENT
+    sms_delivery: SCHEDULED
+    scope_ct: [georga, organization]
+    scope_id: 100
+- model: georga.message
+  pk: 162
+  fields:
+    uuid: 00000101-0000-0000-0000-000000000162
+    title: FBC Mixed Sent/Succeeded/Scheduled
+    contents: >
+      Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+      tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At
+      vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
+      no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
+      consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
+      dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo
+      duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
+      Lorem ipsum dolor sit amet.
+    category: NEWS
+    priority: NORMAL
+    state: PUBLISHED
+    email_delivery: SENT
+    push_delivery: SUCCEEDED
+    sms_delivery: SCHEDULED
+    scope_ct: [georga, organization]
+    scope_id: 100
+- model: georga.message
+  pk: 163
+  fields:
+    uuid: 00000101-0000-0000-0000-000000000163
+    title: FBC Mixed Sent/Succeeded/Failed
+    contents: >
+      Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+      tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At
+      vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
+      no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
+      consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
+      dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo
+      duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
+      Lorem ipsum dolor sit amet.
+    category: NEWS
+    priority: NORMAL
+    state: PUBLISHED
+    email_delivery: SENT
+    push_delivery: SUCCEEDED
+    sms_delivery: FAILED
+    scope_ct: [georga, organization]
+    scope_id: 100
+- model: georga.message
+  pk: 164
+  fields:
+    uuid: 00000101-0000-0000-0000-000000000164
+    title: FBC Mixed Failed/Scheduled/Sent
+    contents: >
+      Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+      tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At
+      vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
+      no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
+      consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
+      dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo
+      duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
+      Lorem ipsum dolor sit amet.
+    category: NEWS
+    priority: NORMAL
+    state: PUBLISHED
+    email_delivery: FAILED
+    push_delivery: SCHEDULED
+    sms_delivery: SENT
+    scope_ct: [georga, organization]
+    scope_id: 100
+- model: georga.message
+  pk: 165
+  fields:
+    uuid: 00000101-0000-0000-0000-000000000165
+    title: FBC Mixed Scheduled/Scheduled/Sent
+    contents: >
+      Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+      tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At
+      vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
+      no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
+      consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
+      dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo
+      duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
+      Lorem ipsum dolor sit amet.
+    category: NEWS
+    priority: NORMAL
+    state: PUBLISHED
+    email_delivery: SCHEDULED
+    push_delivery: SCHEDULED
+    sms_delivery: SENT
+    scope_ct: [georga, organization]
+    scope_id: 100
+- model: georga.message
+  pk: 166
+  fields:
+    uuid: 00000101-0000-0000-0000-000000000166
+    title: FBC Mixed Sent/Sent/Succeeded
+    contents: >
+      Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+      tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At
+      vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
+      no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
+      consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
+      dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo
+      duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
+      Lorem ipsum dolor sit amet.
+    category: NEWS
+    priority: NORMAL
+    state: PUBLISHED
+    email_delivery: SENT
+    push_delivery: SENT
+    sms_delivery: SUCCEEDED
+    scope_ct: [georga, organization]
+    scope_id: 100
+
+# content
+- model: georga.message
+  pk: 170
+  fields:
+    uuid: 00000101-0000-0000-0000-000000000170
+    title: FBC Normal Content
+    contents: >
+      Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
+      tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At
+      vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
+      no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet,
+      consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
+      dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo
+      duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
+      Lorem ipsum dolor sit amet.
+    category: NEWS
+    priority: NORMAL
+    state: PUBLISHED
+    email_delivery: SUCCEEDED
+    push_delivery: SUCCEEDED
+    sms_delivery: SUCCEEDED
+    scope_ct: [georga, organization]
+    scope_id: 100
+- model: georga.message
+  pk: 171
+  fields:
+    uuid: 00000101-0000-0000-0000-000000000171
+    title: FBC Html Content
+    contents: >
+      <h1>Tätigkeit:</h1>
+      <p>
+        In der Notunkterkunft wird Hilfe für die Kommunikation zwischen Bewohnern und
+        Betreuuern benötigt. Bitte <b>nur mit 2G-Nachweis</b>
+      </p>
+    category: NEWS
+    priority: NORMAL
+    state: PUBLISHED
+    email_delivery: SUCCEEDED
+    push_delivery: SUCCEEDED
+    sms_delivery: SUCCEEDED
+    scope_ct: [georga, organization]
+    scope_id: 100
+
+# Org2 ------------------------------------------------------------------------
+
+- model: georga.message
+  pk: 200
   fields:
     uuid: 00000101-0000-0000-0000-000000000105
-    title: Momo
+    title: SEI Org News Normal Published
     contents: >
       Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod
       tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At
@@ -119,14 +800,12 @@
       duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
       Lorem ipsum dolor sit amet.
     priority: NORMAL
-    category: ACTIVITY
-    state: DRAFT
-    email_delivery: SCHEDULED
-    push_delivery: SENT
-    sms_delivery: FAILED
-    scope_ct: [georga, operation]
-    scope_id: 100
-
-# Org2 ------------------------------------------------------------------------
+    category: NEWS
+    state: PUBLISHED
+    email_delivery: SUCCEEDED
+    push_delivery: SUCCEEDED
+    sms_delivery: SUCCEEDED
+    scope_ct: [georga, organization]
+    scope_id: 200
 
 # Org3 ------------------------------------------------------------------------
