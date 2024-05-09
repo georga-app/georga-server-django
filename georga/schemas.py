@@ -957,8 +957,6 @@ class DeleteLocationCategoryMutation(UUIDDjangoModelFormMutation):
 message_ro_fields = [
     'created_at',
     'modified_at',
-    'category',
-    'priority',
     'state',
     'email_delivery',
     'push_delivery',
@@ -969,6 +967,7 @@ message_wo_fields = [
 message_rw_fields = [
     'title',
     'contents',
+    'category',
     'priority',
     'scope',
 ]
@@ -1006,7 +1005,6 @@ class MessageFilterSet(GFKFilterSet):
         fields = message_filter_fields
 
     def filterByOrganization(self, queryset, name, value):
-        print(value)
         if not value:
             return queryset
         _, uuid = from_global_id(value)
