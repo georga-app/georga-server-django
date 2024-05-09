@@ -168,6 +168,9 @@ class GFKModelFormMetaclass(ModelFormMetaclass):
     def __new__(mcs, name, bases, attrs, *args, **kwargs):
         # add GlobalIDFormField for GenericForeignKey fields
         gfk_fields = []
+        for base in bases:
+            if hasattr(base, '_meta') and hasattr(base._meta, 'gfk_fields'):
+                gfk_fields.extend(base._meta.gfk_fields)
         if "Meta" in attrs:
             model = getattr(attrs["Meta"], "model", None)
             fields = getattr(attrs["Meta"], "fields", [])
